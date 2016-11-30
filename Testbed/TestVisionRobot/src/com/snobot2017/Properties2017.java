@@ -31,6 +31,9 @@ public class Properties2017
     // Configuration Contants
     // **************************************************************
 
+    // Vision
+    public static final int sVISION_COMMS_PORT = 8254;
+
     // Logger
     public static final IntegerProperty sLOG_COUNT = new IntegerProperty("LogCount", 25);
     public static final StringProperty sLOG_FILE_PATH;

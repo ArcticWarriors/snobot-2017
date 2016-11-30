@@ -5,7 +5,7 @@ public class ToggleButton
     private boolean mSwitchState;
     private boolean mLastSwitchState;
 
-    public ToggleButton(int aButton)
+    public ToggleButton()
     {
         mSwitchState = false;
     }

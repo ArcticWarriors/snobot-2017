@@ -40,4 +40,10 @@ public interface IDriverJoystick extends ISubsystem
      * @return Tells whether or not the Arcade mode is on or not
      */
     boolean isArcadeMode();
+
+    /**
+     * 
+     * @return
+     */
+    boolean isTakePicture();
 }

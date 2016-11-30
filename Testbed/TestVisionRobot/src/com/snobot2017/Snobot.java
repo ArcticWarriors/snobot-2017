@@ -8,6 +8,8 @@ import com.snobot2017.drivetrain.SnobotDriveTrainWithCan;
 import com.snobot2017.joystick.SnobotDriveXboxJoystick;
 import com.snobot2017.positioner.IPositioner;
 import com.snobot2017.positioner.SimplePositioner;
+import com.snobot2017.vision.VisionAdbServer;
+import com.snobot2017.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CANTalon;
@@ -26,6 +28,10 @@ public class Snobot extends ASnobot
     // Modules
     private IDriveTrain mDrivetrain;
     private IPositioner mPositioner;
+
+    // Vision
+    private VisionAdbServer mVisionServer;
+    private VisionManager mVisionManager;
 
     public Snobot()
     {
@@ -50,6 +56,11 @@ public class Snobot extends ASnobot
         Gyro mGyro = new ADXRS450_Gyro();
         mPositioner = new SimplePositioner(mGyro, mDrivetrain, mLogger);
         mSubsystems.add(mPositioner);
+
+        // Vision
+        mVisionServer = new VisionAdbServer(Properties2017.sVISION_COMMS_PORT);
+        mVisionManager = new VisionManager(driverXbox, mVisionServer);
+        mSubsystems.add(mVisionManager);
     }
 
     @Override

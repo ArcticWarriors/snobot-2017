@@ -1,5 +1,6 @@
 package com.snobot2017.joystick;
 
+import com.snobot.xlib.LatchedButton;
 import com.snobot.xlib.XboxButtonMap;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,6 +16,8 @@ public class SnobotDriveXboxJoystick implements IDriverJoystick
     private Joystick mJoystick;
     private double mLeftSpeed;
     private double mRightSpeed;
+    private boolean mTakePicture;
+    private LatchedButton mTakePictureLatcher;
 
     /**
      * 
@@ -24,6 +27,7 @@ public class SnobotDriveXboxJoystick implements IDriverJoystick
     public SnobotDriveXboxJoystick(Joystick aJoystick)
     {
         mJoystick = aJoystick;
+        mTakePictureLatcher = new LatchedButton();
     }
 
     @Override
@@ -37,6 +41,8 @@ public class SnobotDriveXboxJoystick implements IDriverJoystick
     {
         mLeftSpeed = mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS);
         mRightSpeed = mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
+
+        mTakePicture = mTakePictureLatcher.update(mJoystick.getRawButton(4));
     }
 
     @Override
@@ -97,6 +103,12 @@ public class SnobotDriveXboxJoystick implements IDriverJoystick
     public boolean isArcadeMode()
     {
         return false;
+    }
+
+    @Override
+    public boolean isTakePicture()
+    {
+        return mTakePicture;
     }
 
 }
