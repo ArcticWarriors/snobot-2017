@@ -27,7 +27,7 @@ public class VisionAdbServer extends RobotConnectionServer
         Level logLevel = Level.INFO;
         if ("heartbeat".equals(message))
         {
-            String outMessage = "heartbeat";
+            String outMessage = "heartbeat\n";
             ByteBuffer buffer = ByteBuffer.wrap(outMessage.getBytes());
             send(buffer);
 
@@ -54,7 +54,7 @@ public class VisionAdbServer extends RobotConnectionServer
 
     public void takePicture()
     {
-        ByteBuffer message = ByteBuffer.wrap("takepicture".getBytes());
+        ByteBuffer message = ByteBuffer.wrap("takepicture\n".getBytes());
         send(message);
     }
 
