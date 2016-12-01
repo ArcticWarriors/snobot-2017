@@ -1,6 +1,7 @@
 package com.snobot.xlib.adb;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -9,26 +10,16 @@ import java.util.logging.Logger;
 public class AdbBridge
 {
     private Logger sLOGGER = Logger.getLogger("AdbBridge");
-    public final static Path DEFAULT_LOCATION = Paths.get("C:/Users/PJ/AppData/Local/Android/sdk/platform-tools/adb.exe");
 
     protected Path mAdbLocation;
     protected String mRestartAppCommand;
+    protected boolean mValidAdb;
 
-    public AdbBridge(String aRestartAppCommand)
+    public AdbBridge(String aRestartAppCommand, String aAdbLocation)
     {
         mRestartAppCommand = aRestartAppCommand;
-
-        Path adb_location;
-        String env_val = System.getenv("FRC_ADB_LOCATION");
-        if (env_val == null || "".equals(env_val))
-        {
-            adb_location = DEFAULT_LOCATION;
-        }
-        else
-        {
-            adb_location = Paths.get(env_val);
-        }
-        mAdbLocation = adb_location;
+        mAdbLocation = Paths.get(aAdbLocation);
+        mValidAdb = Files.exists(mAdbLocation);
     }
 
     public AdbBridge(Path location)
@@ -38,6 +29,12 @@ public class AdbBridge
 
     private boolean runCommand(String args)
     {
+        if (!mValidAdb)
+        {
+            sLOGGER.log(Level.SEVERE, "ADB Location is not valid, cannot run commands!");
+            return false;
+        }
+
         Runtime r = Runtime.getRuntime();
         String cmd = mAdbLocation.toString() + " " + args;
         sLOGGER.log(Level.FINE, "ADB Command: " + cmd);

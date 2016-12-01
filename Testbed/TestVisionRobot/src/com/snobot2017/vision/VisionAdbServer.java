@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import com.snobot.xlib.adb.AdbBridge;
 import com.snobot.xlib.external_connection.RobotConnectionServer;
+import com.snobot2017.Properties2017;
 
 public class VisionAdbServer extends RobotConnectionServer
 {
@@ -16,9 +17,10 @@ public class VisionAdbServer extends RobotConnectionServer
     {
         super(bindPort);
 
-        AdbBridge adb = new AdbBridge(sRESTART_APP_COMMAND);
+        AdbBridge adb = new AdbBridge(sRESTART_APP_COMMAND, Properties2017.sADB_LOCATION.getValue());
         adb.start();
         adb.reversePortForward(bindPort, bindPort);
+        adb.portForward(1180, 5800);
     }
 
     @Override

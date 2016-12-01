@@ -35,30 +35,30 @@ public class Snobot extends ASnobot
 
     public Snobot()
     {
-        super(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), 0, "");
+        super(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), Properties2017.sLOG_COUNT.getValue(), Properties2017.sLOG_FILE_PATH.getValue());
 
         // Raw Joysticks
-        Joystick rawDriverJoystick = new Joystick(Properties2017.sDRIVER_JOYSTICK_PORT);
+        Joystick rawDriverJoystick = new Joystick(PortMappings2017.sDRIVER_JOYSTICK_PORT);
 
         // Our Joysticks
         SnobotDriveXboxJoystick driverXbox = new SnobotDriveXboxJoystick(rawDriverJoystick);
         mSubsystems.add(driverXbox);
 
         // Drive train
-        CANTalon leftMotorA = new CANTalon(Properties2017.sDRIVE_CAN_LEFT_A_PORT);
-        CANTalon leftMotorB = new CANTalon(Properties2017.sDRIVE_CAN_LEFT_B_PORT);
-        CANTalon rightMotorA = new CANTalon(Properties2017.sDRIVE_CAN_RIGHT_A_PORT);
-        CANTalon rightMotorB = new CANTalon(Properties2017.sDRIVE_CAN_RIGHT_B_PORT);
+        CANTalon leftMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
+        CANTalon leftMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_B_PORT);
+        CANTalon rightMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
+        CANTalon rightMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
         mDrivetrain = new SnobotDriveTrainWithCan(leftMotorA, leftMotorB, rightMotorA, rightMotorB, driverXbox, mLogger);
         mSubsystems.add(mDrivetrain);
 
         // Positioner
-        Gyro mGyro = new ADXRS450_Gyro();
-        mPositioner = new SimplePositioner(mGyro, mDrivetrain, mLogger);
+        Gyro gyro = new ADXRS450_Gyro();
+        mPositioner = new SimplePositioner(gyro, mDrivetrain, mLogger);
         mSubsystems.add(mPositioner);
 
         // Vision
-        mVisionServer = new VisionAdbServer(Properties2017.sVISION_COMMS_PORT);
+        mVisionServer = new VisionAdbServer(Properties2017.sVISION_COMMS_PORT.getValue());
         mVisionManager = new VisionManager(driverXbox, mVisionServer);
         mSubsystems.add(mVisionManager);
     }

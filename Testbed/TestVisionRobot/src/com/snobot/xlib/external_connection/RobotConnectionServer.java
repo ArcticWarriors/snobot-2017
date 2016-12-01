@@ -28,7 +28,7 @@ public abstract class RobotConnectionServer
         {
             mServerSocket = new ServerSocket(bindPort);
 
-            new Thread(mConnectionThread).start();
+            new Thread(mConnectionThread, "RobotConnectionServer::ConnectionMonitor").start();
         }
         catch (IOException e)
         {
@@ -143,7 +143,7 @@ public abstract class RobotConnectionServer
                     sLOGGER.log(Level.INFO, "Accepted Socket: " + p);
 
                     ServerThread s = new ServerThread(p);
-                    new Thread(s).start();
+                    new Thread(s, "RobotConnectionServer::ServerConnection").start();
                     mServerThreads.add(s);
                 }
                 catch (IOException e)
