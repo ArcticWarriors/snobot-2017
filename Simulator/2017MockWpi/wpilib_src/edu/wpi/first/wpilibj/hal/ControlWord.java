@@ -19,7 +19,7 @@ public class ControlWord
     private boolean m_fmsAttached;
     private boolean m_dsAttached;
 
-    void update(boolean enabled, boolean autonomous, boolean test, boolean emergencyStop, boolean fmsAttached, boolean dsAttached)
+    public void update(boolean enabled, boolean autonomous, boolean test, boolean emergencyStop, boolean fmsAttached, boolean dsAttached)
     {
         m_enabled = enabled;
         m_autonomous = autonomous;

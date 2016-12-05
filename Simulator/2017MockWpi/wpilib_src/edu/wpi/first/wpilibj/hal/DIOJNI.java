@@ -7,17 +7,24 @@
 
 package edu.wpi.first.wpilibj.hal;
 
+import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.module_wrapper.DigitalSourceWrapper;
+
 @SuppressWarnings("AbbreviationAsWordInName")
 public class DIOJNI extends JNIWrapper
 {
+
     public static int initializeDIOPort(int halPortHandle, boolean input)
     {
-        return 0;
+        DigitalSourceWrapper wrapper = new DigitalSourceWrapper(halPortHandle);
+        SensorActuatorRegistry.get().register(wrapper, halPortHandle);
+
+        return halPortHandle;
     }
 
     public static boolean checkDIOChannel(int channel)
     {
-        return false;
+        return !SensorActuatorRegistry.get().getDigitalSources().containsKey(channel);
     }
 
     public static void freeDIOPort(int dioPortHandle)
@@ -27,12 +34,12 @@ public class DIOJNI extends JNIWrapper
 
     public static void setDIO(int dioPortHandle, short value)
     {
-
+        getWrapperFromBuffer(dioPortHandle).set(value == 1);
     }
 
     public static boolean getDIO(int dioPortHandle)
     {
-        return false;
+        return getWrapperFromBuffer(dioPortHandle).get();
     }
 
     public static boolean getDIODirection(int dioPortHandle)
@@ -83,5 +90,14 @@ public class DIOJNI extends JNIWrapper
     public static void setDigitalPWMOutputChannel(int pwmGenerator, int channel)
     {
 
+    }
+
+    /////////////////////////////////////
+    // Our stuff
+    /////////////////////////////////////
+    private static DigitalSourceWrapper getWrapperFromBuffer(long digital_port_pointer)
+    {
+        int port = (int) digital_port_pointer;
+        return SensorActuatorRegistry.get().getDigitalSources().get(port);
     }
 }

@@ -10,6 +10,9 @@ package edu.wpi.first.wpilibj.hal;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 
+import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.module_wrapper.AnalogWrapper;
+
 public class AnalogJNI extends JNIWrapper
 {
     /**
@@ -43,7 +46,10 @@ public class AnalogJNI extends JNIWrapper
 
     public static int initializeAnalogInputPort(int halPortHandle)
     {
-        return 0;
+        AnalogWrapper wrapper = new AnalogWrapper(halPortHandle);
+        SensorActuatorRegistry.get().register(wrapper, halPortHandle);
+
+        return halPortHandle;
     }
 
     public static void freeAnalogInputPort(int portHandle)
@@ -53,7 +59,10 @@ public class AnalogJNI extends JNIWrapper
 
     public static int initializeAnalogOutputPort(int halPortHandle)
     {
-        return 0;
+        AnalogWrapper wrapper = new AnalogWrapper(halPortHandle);
+        SensorActuatorRegistry.get().register(wrapper, halPortHandle);
+
+        return halPortHandle;
     }
 
     public static void freeAnalogOutputPort(int portHandle)
@@ -68,7 +77,7 @@ public class AnalogJNI extends JNIWrapper
 
     public static boolean checkAnalogInputChannel(int channel)
     {
-        return false;
+        return !SensorActuatorRegistry.get().getAnalog().containsKey(channel);
     }
 
     public static boolean checkAnalogOutputChannel(int channel)
@@ -88,12 +97,12 @@ public class AnalogJNI extends JNIWrapper
 
     public static void setAnalogSampleRate(double samplesPerSecond)
     {
-
+        sAnalogSampleRate = samplesPerSecond;
     }
 
     public static double getAnalogSampleRate()
     {
-        return 0;
+        return sAnalogSampleRate;
     }
 
     public static void setAnalogAverageBits(int analogPortHandle, int bits)
@@ -103,7 +112,7 @@ public class AnalogJNI extends JNIWrapper
 
     public static int getAnalogAverageBits(int analogPortHandle)
     {
-        return 0;
+        return 1;
     }
 
     public static void setAnalogOversampleBits(int analogPortHandle, int bits)
@@ -133,7 +142,7 @@ public class AnalogJNI extends JNIWrapper
 
     public static double getAnalogVoltage(int analogPortHandle)
     {
-        return 0;
+        return getWrapperFromBuffer(analogPortHandle).getVoltage();
     }
 
     public static double getAnalogAverageVoltage(int analogPortHandle)
@@ -143,7 +152,7 @@ public class AnalogJNI extends JNIWrapper
 
     public static int getAnalogLSBWeight(int analogPortHandle)
     {
-        return 0;
+        return 256;
     }
 
     public static int getAnalogOffset(int analogPortHandle)
@@ -163,7 +172,7 @@ public class AnalogJNI extends JNIWrapper
 
     public static void resetAccumulator(int analogPortHandle)
     {
-
+        getWrapperFromBuffer(analogPortHandle).setAccumulator(0);
     }
 
     public static void setAccumulatorCenter(int analogPortHandle, int center)
@@ -188,12 +197,18 @@ public class AnalogJNI extends JNIWrapper
 
     public static void getAccumulatorOutput(int analogPortHandle, LongBuffer value, LongBuffer count)
     {
+        double accum_value = getWrapperFromBuffer(analogPortHandle).getAccumulator();
+        accum_value *= 1000000000;
+        accum_value *= .007; // Volts per degree second
+        accum_value *= 100;
 
+        value.put((long) accum_value);
+        count.put(1);
     }
 
     public static int initializeAnalogTrigger(int analogInputHandle, IntBuffer index)
     {
-        return 0;
+        return analogInputHandle;
     }
 
     public static void cleanAnalogTrigger(int analogTriggerHandle)
@@ -235,4 +250,15 @@ public class AnalogJNI extends JNIWrapper
     {
         return false;
     }
+
+    //////////////////////////////////////////////////////
+    // Our stuff
+    //////////////////////////////////////////////////////
+    private static AnalogWrapper getWrapperFromBuffer(long buffer)
+    {
+        int port = (int) buffer;
+        return SensorActuatorRegistry.get().getAnalog().get(port);
+    }
+
+    private static double sAnalogSampleRate;
 }

@@ -9,6 +9,7 @@ package edu.wpi.first.wpilibj.hal;
 
 public class PortsJNI extends JNIWrapper
 {
+
     public static int getNumAccumulators()
     {
         return 0;
@@ -21,12 +22,12 @@ public class PortsJNI extends JNIWrapper
 
     public static int getNumAnalogInputs()
     {
-        return 0;
+        return 8;
     }
 
     public static int getNumAnalogOutputs()
     {
-        return 0;
+        return 2;
     }
 
     public static int getNumCounters()
@@ -46,12 +47,12 @@ public class PortsJNI extends JNIWrapper
 
     public static int getNumDigitalChannels()
     {
-        return 0;
+        return 26;
     }
 
     public static int getNumPWMChannels()
     {
-        return 0;
+        return 20;
     }
 
     public static int getNumDigitalPWMOutputs()
@@ -91,11 +92,11 @@ public class PortsJNI extends JNIWrapper
 
     public static int getNumPDPModules()
     {
-        return 0;
+        return 23;
     }
 
     public static int getNumPDPChannels()
     {
-        return 0;
+        return 16;
     }
 }

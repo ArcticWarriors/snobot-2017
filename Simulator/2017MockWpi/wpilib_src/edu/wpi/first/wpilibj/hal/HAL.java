@@ -9,6 +9,14 @@ package edu.wpi.first.wpilibj.hal;
 
 import java.nio.ByteBuffer;
 
+import com.snobot.simulator.RobotStateSingleton;
+import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.joysticks.IMockJoystick;
+import com.snobot.simulator.joysticks.JoystickFactory;
+
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
+
 /**
  * JNI Wrapper for HAL<br>
  * .
@@ -19,12 +27,15 @@ public class HAL extends JNIWrapper
 {
     public static void waitForDSData()
     {
+        Timer.delay(sWaitTime);
+        sMatchTime += sCYCLE_TIME;
 
+        RobotStateSingleton.get().updateLoopListeners();
     }
 
     public static int initialize(int mode)
     {
-        return 0;
+        return 1;
     }
 
     public static void observeUserProgramStarting()
@@ -85,6 +96,11 @@ public class HAL extends JNIWrapper
      */
     public static int report(int resource, int instanceNumber, int context, String feature)
     {
+        if (resource == tResourceType.kResourceType_Solenoid)
+        {
+            int port = (int) instanceNumber;
+            SensorActuatorRegistry.get().getSolenoids().get(port).setIsReal(true);
+        }
         return 0;
     }
 
@@ -93,9 +109,7 @@ public class HAL extends JNIWrapper
     @SuppressWarnings("JavadocMethod")
     public static void getControlWord(ControlWord controlWord)
     {
-        int word = nativeGetControlWord();
-        controlWord.update((word & 1) != 0, ((word >> 1) & 1) != 0, ((word >> 2) & 1) != 0, ((word >> 3) & 1) != 0, ((word >> 4) & 1) != 0,
-                ((word >> 5) & 1) != 0);
+        sRobotState.updateControlWord(controlWord);
     }
 
     private static native int nativeGetAllianceStation();
@@ -127,21 +141,45 @@ public class HAL extends JNIWrapper
 
     public static short getJoystickAxes(byte joystickNum, float[] axesArray)
     {
-        return 0;
+        IMockJoystick joystick = sJoystickFactory.get(joystickNum);
+        short[] joystickValue = joystick.getAxisValues();
+
+        for (int i = 0; i < joystickValue.length; ++i)
+        {
+            axesArray[i] = joystickValue[i] * 127;
+        }
+
+        return (short) joystickValue.length;
     }
 
     public static short getJoystickPOVs(byte joystickNum, short[] povsArray)
     {
-        return 0;
+        IMockJoystick joystick = sJoystickFactory.get(joystickNum);
+        short[] joystickValue = joystick.getPovValues();
+
+        for (int i = 0; i < joystickValue.length; ++i)
+        {
+            povsArray[i] = joystickValue[i];
+        }
+
+        return (short) joystickValue.length;
     }
 
     public static int getJoystickButtons(byte joystickNum, ByteBuffer count)
     {
-        return 0;
+        int num_buttons = sJoystickFactory.get(joystickNum).getButtonCount();
+        int masked_values = sJoystickFactory.get(joystickNum).getButtonMask();
+
+        count.clear();
+        count.put((byte) num_buttons);
+        count.position(0);
+
+        return masked_values;
     }
 
     public static int setJoystickOutputs(byte joystickNum, int outputs, short leftRumble, short rightRumble)
     {
+        sJoystickFactory.get(joystickNum).setRumble(leftRumble);
         return 0;
     }
 
@@ -167,7 +205,7 @@ public class HAL extends JNIWrapper
 
     public static double getMatchTime()
     {
-        return 0;
+        return sMatchTime;
     }
 
     public static boolean getSystemActive()
@@ -187,6 +225,33 @@ public class HAL extends JNIWrapper
 
     public static int sendError(boolean isError, int errorCode, boolean isLVCode, String details, String location, String callStack, boolean printMsg)
     {
+        System.err.println("HAL::" + details);
         return 0;
+    }
+
+    // **************************************************
+    // Our stuff
+    // **************************************************
+    private static RobotStateSingleton sRobotState = RobotStateSingleton.get();
+    private static final JoystickFactory sJoystickFactory = JoystickFactory.get();
+
+    private static final double sCYCLE_TIME = .02; // The period that the main
+                                                   // loop should be run at
+
+    private static double sWaitTime = .02; // The time to sleep. You can run
+                                           // simulations faster/slower by
+                                           // changing this. For example,
+                                           // making the wait time 1 second,
+                                           // means one 20ms cycle will happen
+                                           // each second, 50x slower than
+                                           // normal. Or, you could make it
+                                           // .002, which would make the code
+                                           // execute at 10x speed
+
+    private static double sMatchTime = 0;
+
+    public static void setWaitTime(double aTime)
+    {
+        sWaitTime = aTime;
     }
 }

@@ -7,11 +7,17 @@
 
 package edu.wpi.first.wpilibj.hal;
 
+import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.module_wrapper.RelayWrapper;
+
 public class RelayJNI extends DIOJNI
 {
     public static int initializeRelayPort(int halPortHandle, boolean forward)
     {
-        return 0;
+        RelayWrapper wrapper = new RelayWrapper(halPortHandle);
+        SensorActuatorRegistry.get().register(wrapper, halPortHandle);
+
+        return halPortHandle;
     }
 
     public static void freeRelayPort(int relayPortHandle)
@@ -21,16 +27,26 @@ public class RelayJNI extends DIOJNI
 
     public static boolean checkRelayChannel(int channel)
     {
-        return false;
+        return true;
     }
 
     public static void setRelay(int relayPortHandle, boolean on)
     {
-
+        getWrapperFromBuffer(relayPortHandle).setRelayForwards(on);
     }
 
     public static boolean getRelay(int relayPortHandle)
     {
-        return false;
+        return getWrapperFromBuffer(relayPortHandle).getRelayForwards();
+    }
+
+    //////////////////////////////////
+    //
+    //////////////////////////////////
+    private static RelayWrapper getWrapperFromBuffer(long digital_port_pointer)
+    {
+        int port = (int) digital_port_pointer;
+
+        return SensorActuatorRegistry.get().getRelays().get(port);
     }
 }

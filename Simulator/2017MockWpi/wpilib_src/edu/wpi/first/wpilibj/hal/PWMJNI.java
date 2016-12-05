@@ -7,19 +7,28 @@
 
 package edu.wpi.first.wpilibj.hal;
 
+import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
+
 import edu.wpi.first.wpilibj.PWMConfigDataResult;
 
 @SuppressWarnings("AbbreviationAsWordInName")
 public class PWMJNI extends DIOJNI
 {
+
     public static int initializePWMPort(int halPortHandle)
     {
-        return 0;
+        boolean canAllocate = !SensorActuatorRegistry.get().getSpeedControllers().containsKey(halPortHandle);
+
+        SpeedControllerWrapper wrapper = new SpeedControllerWrapper((int) halPortHandle);
+        SensorActuatorRegistry.get().register(wrapper, (int) halPortHandle, false);
+
+        return halPortHandle;
     }
 
     public static boolean checkPWMChannel(int channel)
     {
-        return false;
+        return !SensorActuatorRegistry.get().getSpeedControllers().containsKey(channel);
     }
 
     public static void freePWMPort(int pwmPortHandle)
@@ -59,7 +68,7 @@ public class PWMJNI extends DIOJNI
 
     public static void setPWMSpeed(int pwmPortHandle, double speed)
     {
-
+        getWrapperFromBuffer((int) pwmPortHandle).set(speed);
     }
 
     public static void setPWMPosition(int pwmPortHandle, double position)
@@ -74,7 +83,7 @@ public class PWMJNI extends DIOJNI
 
     public static double getPWMSpeed(int pwmPortHandle)
     {
-        return 0;
+        return getWrapperFromBuffer((int) pwmPortHandle).get();
     }
 
     public static double getPWMPosition(int pwmPortHandle)
@@ -95,5 +104,13 @@ public class PWMJNI extends DIOJNI
     public static void setPWMPeriodScale(int pwmPortHandle, int squelchMask)
     {
 
+    }
+
+    // *************************************************
+    // Our custom functions
+    // *************************************************
+    private static SpeedControllerWrapper getWrapperFromBuffer(int digital_port_pointer)
+    {
+        return SensorActuatorRegistry.get().getSpeedControllers().get(digital_port_pointer);
     }
 }

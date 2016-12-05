@@ -8,9 +8,6 @@
 package edu.wpi.first.wpilibj.hal;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 //
 // base class for all JNI wrappers
@@ -26,7 +23,7 @@ public class JNIWrapper
         {
             if (!libraryLoaded)
             {
-                System.loadLibrary("wpilibJavaJNI");
+                // System.loadLibrary("wpilibJavaJNI");
                 libraryLoaded = true;
             }
 
@@ -40,11 +37,11 @@ public class JNIWrapper
 
     public static int getPortWithModule(byte module, byte channel)
     {
-        return 0;
+        return channel;
     }
 
     public static int getPort(byte channel)
     {
-        return 0;
+        return channel;
     }
 }

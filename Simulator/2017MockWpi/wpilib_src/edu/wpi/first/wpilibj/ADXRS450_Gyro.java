@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 @SuppressWarnings({"TypeName", "AbbreviationAsWordInName"})
 public class ADXRS450_Gyro extends GyroBase implements Gyro, PIDSource, LiveWindowSendable {
   private static final double kSamplePeriod = 0.001;
-  private static final double kCalibrationSampleTime = 5.0;
+    private static final double kCalibrationSampleTime = .001;
   private static final double kDegreePerSecondPerLSB = 0.0125;
 
   private static final int kRateRegister = 0x00;

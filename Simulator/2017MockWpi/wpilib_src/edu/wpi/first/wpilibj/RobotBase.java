@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.Manifest;
+
 import org.opencv.core.Core;
 
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
@@ -54,7 +55,7 @@ public abstract class RobotBase {
     // Resource.RestartProgram();
 
     NetworkTable.setNetworkIdentity("Robot");
-    NetworkTable.setPersistentFilename("/home/lvuser/networktables.ini");
+        // NetworkTable.setPersistentFilename("/home/lvuser/networktables.ini");
     NetworkTable.setServerMode();// must be before b
     m_ds = DriverStation.getInstance();
     NetworkTable.getTable(""); // forces network tables to initialize
