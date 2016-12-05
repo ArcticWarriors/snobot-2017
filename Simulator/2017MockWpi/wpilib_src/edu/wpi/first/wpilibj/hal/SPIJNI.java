@@ -8,51 +8,104 @@
 package edu.wpi.first.wpilibj.hal;
 
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 
 @SuppressWarnings("AbbreviationAsWordInName")
-public class SPIJNI extends JNIWrapper {
-  public static native void spiInitialize(byte port);
+public class SPIJNI extends JNIWrapper
+{
+    public static void spiInitialize(byte port)
+    {
 
-  public static native int spiTransaction(byte port, ByteBuffer dataToSend,
-                                          ByteBuffer dataReceived, byte size);
+    }
 
-  public static native int spiWrite(byte port, ByteBuffer dataToSend, byte sendSize);
+    public static int spiTransaction(byte port, ByteBuffer dataToSend, ByteBuffer dataReceived, byte size)
+    {
+        return 0;
+    }
 
-  public static native int spiRead(byte port, ByteBuffer dataReceived, byte size);
+    public static int spiWrite(byte port, ByteBuffer dataToSend, byte sendSize)
+    {
+        return 0;
+    }
 
-  public static native void spiClose(byte port);
+    public static int spiRead(byte port, ByteBuffer dataReceived, byte size)
+    {
+        return 0;
+    }
 
-  public static native void spiSetSpeed(byte port, int speed);
+    public static void spiClose(byte port)
+    {
 
-  public static native void spiSetOpts(byte port, int msbFirst, int sampleOnTrailing,
-                                       int clkIdleHigh);
+    }
 
-  public static native void spiSetChipSelectActiveHigh(byte port);
+    public static void spiSetSpeed(byte port, int speed)
+    {
 
-  public static native void spiSetChipSelectActiveLow(byte port);
+    }
 
-  public static native void spiInitAccumulator(byte port, int period, int cmd, byte xferSize,
-                                               int validMask, int validValue, byte dataShift,
-                                               byte dataSize, boolean isSigned, boolean bigEndian);
+    public static void spiSetOpts(byte port, int msbFirst, int sampleOnTrailing, int clkIdleHigh)
+    {
 
-  public static native void spiFreeAccumulator(byte port);
+    }
 
-  public static native void spiResetAccumulator(byte port);
+    public static void spiSetChipSelectActiveHigh(byte port)
+    {
 
-  public static native void spiSetAccumulatorCenter(byte port, int center);
+    }
 
-  public static native void spiSetAccumulatorDeadband(byte port, int deadband);
+    public static void spiSetChipSelectActiveLow(byte port)
+    {
 
-  public static native int spiGetAccumulatorLastValue(byte port);
+    }
 
-  public static native long spiGetAccumulatorValue(byte port);
+    public static void spiInitAccumulator(byte port, int period, int cmd, byte xferSize, int validMask, int validValue, byte dataShift, byte dataSize,
+            boolean isSigned, boolean bigEndian)
+    {
 
-  public static native int spiGetAccumulatorCount(byte port);
+    }
 
-  public static native double spiGetAccumulatorAverage(byte port);
+    public static void spiFreeAccumulator(byte port)
+    {
 
-  public static native void spiGetAccumulatorOutput(byte port, LongBuffer value,
-                                                    LongBuffer count);
+    }
+
+    public static void spiResetAccumulator(byte port)
+    {
+
+    }
+
+    public static void spiSetAccumulatorCenter(byte port, int center)
+    {
+
+    }
+
+    public static void spiSetAccumulatorDeadband(byte port, int deadband)
+    {
+
+    }
+
+    public static int spiGetAccumulatorLastValue(byte port)
+    {
+        return 0;
+    }
+
+    public static long spiGetAccumulatorValue(byte port)
+    {
+        return 0;
+    }
+
+    public static int spiGetAccumulatorCount(byte port)
+    {
+        return 0;
+    }
+
+    public static double spiGetAccumulatorAverage(byte port)
+    {
+        return 0;
+    }
+
+    public static void spiGetAccumulatorOutput(byte port, LongBuffer value, LongBuffer count)
+    {
+
+    }
 }

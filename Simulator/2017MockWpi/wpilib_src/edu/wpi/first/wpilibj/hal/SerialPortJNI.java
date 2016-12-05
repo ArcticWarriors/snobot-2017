@@ -9,40 +9,95 @@ package edu.wpi.first.wpilibj.hal;
 
 import java.nio.ByteBuffer;
 
-public class SerialPortJNI extends JNIWrapper {
-  public static native void serialInitializePort(byte port);
+public class SerialPortJNI extends JNIWrapper
+{
+    public static void serialInitializePort(byte port)
+    {
 
-  public static native void serialSetBaudRate(byte port, int baud);
+    }
 
-  public static native void serialSetDataBits(byte port, byte bits);
+    public static void serialSetBaudRate(byte port, int baud)
+    {
 
-  public static native void serialSetParity(byte port, byte parity);
+    }
 
-  public static native void serialSetStopBits(byte port, byte stopBits);
+    public static void serialSetDataBits(byte port, byte bits)
+    {
 
-  public static native void serialSetWriteMode(byte port, byte mode);
+    }
 
-  public static native void serialSetFlowControl(byte port, byte flow);
+    public static void serialSetParity(byte port, byte parity)
+    {
 
-  public static native void serialSetTimeout(byte port, double timeout);
+    }
 
-  public static native void serialEnableTermination(byte port, char terminator);
+    public static void serialSetStopBits(byte port, byte stopBits)
+    {
 
-  public static native void serialDisableTermination(byte port);
+    }
 
-  public static native void serialSetReadBufferSize(byte port, int size);
+    public static void serialSetWriteMode(byte port, byte mode)
+    {
 
-  public static native void serialSetWriteBufferSize(byte port, int size);
+    }
 
-  public static native int serialGetBytesRecieved(byte port);
+    public static void serialSetFlowControl(byte port, byte flow)
+    {
 
-  public static native int serialRead(byte port, ByteBuffer buffer, int count);
+    }
 
-  public static native int serialWrite(byte port, ByteBuffer buffer, int count);
+    public static void serialSetTimeout(byte port, double timeout)
+    {
 
-  public static native void serialFlush(byte port);
+    }
 
-  public static native void serialClear(byte port);
+    public static void serialEnableTermination(byte port, char terminator)
+    {
 
-  public static native void serialClose(byte port);
+    }
+
+    public static void serialDisableTermination(byte port)
+    {
+
+    }
+
+    public static void serialSetReadBufferSize(byte port, int size)
+    {
+
+    }
+
+    public static void serialSetWriteBufferSize(byte port, int size)
+    {
+
+    }
+
+    public static int serialGetBytesRecieved(byte port)
+    {
+        return 0;
+    }
+
+    public static int serialRead(byte port, ByteBuffer buffer, int count)
+    {
+        return 0;
+    }
+
+    public static int serialWrite(byte port, ByteBuffer buffer, int count)
+    {
+        return 0;
+    }
+
+    public static void serialFlush(byte port)
+    {
+
+    }
+
+    public static void serialClear(byte port)
+    {
+
+    }
+
+    public static void serialClose(byte port)
+    {
+
+    }
 }

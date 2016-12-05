@@ -7,12 +7,25 @@
 
 package edu.wpi.first.wpilibj.hal;
 
-public class DigitalGlitchFilterJNI extends JNIWrapper {
-  public static native void setFilterSelect(int digitalPortHandle, int filterIndex);
+public class DigitalGlitchFilterJNI extends JNIWrapper
+{
+    public static void setFilterSelect(int digitalPortHandle, int filterIndex)
+    {
 
-  public static native int getFilterSelect(int digitalPortHandle);
+    }
 
-  public static native void setFilterPeriod(int filterIndex, int fpgaCycles);
+    public static int getFilterSelect(int digitalPortHandle)
+    {
+        return 0;
+    }
 
-  public static native int getFilterPeriod(int filterIndex);
+    public static void setFilterPeriod(int filterIndex, int fpgaCycles)
+    {
+
+    }
+
+    public static int getFilterPeriod(int filterIndex)
+    {
+        return 0;
+    }
 }

@@ -15,24 +15,36 @@ import java.io.OutputStream;
 //
 // base class for all JNI wrappers
 //
-public class JNIWrapper {
-  static boolean libraryLoaded = false;
-  static File jniLibrary = null;
+public class JNIWrapper
+{
+    static boolean libraryLoaded = false;
+    static File jniLibrary = null;
 
-  static {
-    try {
-      if (!libraryLoaded) {
-        System.loadLibrary("wpilibJavaJNI");
-        libraryLoaded = true;
-      }
+    static
+    {
+        try
+        {
+            if (!libraryLoaded)
+            {
+                System.loadLibrary("wpilibJavaJNI");
+                libraryLoaded = true;
+            }
 
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      System.exit(1);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            System.exit(1);
+        }
     }
-  }
 
-  public static native int getPortWithModule(byte module, byte channel);
+    public static int getPortWithModule(byte module, byte channel)
+    {
+        return 0;
+    }
 
-  public static native int getPort(byte channel);
+    public static int getPort(byte channel)
+    {
+        return 0;
+    }
 }

@@ -10,34 +10,51 @@ package edu.wpi.first.wpilibj.hal;
 /**
  * The NotifierJNI class directly wraps the C++ HAL Notifier.
  *
- * <p>This class is not meant for direct use by teams. Instead, the edu.wpi.first.wpilibj.Notifier
- * class, which corresponds to the C++ Notifier class, should be used.
+ * <p>
+ * This class is not meant for direct use by teams. Instead, the
+ * edu.wpi.first.wpilibj.Notifier class, which corresponds to the C++ Notifier
+ * class, should be used.
  */
-public class NotifierJNI extends JNIWrapper {
-  /**
-   * Callback function.
-   */
-  public interface NotifierJNIHandlerFunction {
-    void apply(long curTime);
-  }
+public class NotifierJNI extends JNIWrapper
+{
+    /**
+     * Callback function.
+     */
+    public interface NotifierJNIHandlerFunction
+    {
+        void apply(long curTime);
+    }
 
-  /**
-   * Initializes the notifier.
-   */
-  public static native int initializeNotifier(NotifierJNIHandlerFunction func);
+    /**
+     * Initializes the notifier.
+     */
+    public static int initializeNotifier(NotifierJNIHandlerFunction func)
+    {
+        return 0;
+    }
 
-  /**
-   * Deletes the notifier object when we are done with it.
-   */
-  public static native void cleanNotifier(int notifierHandle);
+    /**
+     * Deletes the notifier object when we are done with it.
+     */
+    public static void cleanNotifier(int notifierHandle)
+    {
 
-  /**
-   * Sets the notifier to call the callback in another triggerTime microseconds.
-   */
-  public static native void updateNotifierAlarm(int notifierHandle, long triggerTime);
+    }
 
-  /**
-   * Tells the notifier to stop calling the callback.
-   */
-  public static native void stopNotifierAlarm(int notifierHandle);
+    /**
+     * Sets the notifier to call the callback in another triggerTime
+     * microseconds.
+     */
+    public static void updateNotifierAlarm(int notifierHandle, long triggerTime)
+    {
+
+    }
+
+    /**
+     * Tells the notifier to stop calling the callback.
+     */
+    public static void stopNotifierAlarm(int notifierHandle)
+    {
+
+    }
 }

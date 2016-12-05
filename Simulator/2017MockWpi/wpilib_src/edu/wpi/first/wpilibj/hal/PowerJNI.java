@@ -7,32 +7,75 @@
 
 package edu.wpi.first.wpilibj.hal;
 
-public class PowerJNI extends JNIWrapper {
-  public static native double getVinVoltage();
+public class PowerJNI extends JNIWrapper
+{
+    public static double getVinVoltage()
+    {
+        return 0;
+    }
 
-  public static native double getVinCurrent();
+    public static double getVinCurrent()
+    {
+        return 0;
+    }
 
-  public static native double getUserVoltage6V();
+    public static double getUserVoltage6V()
+    {
+        return 0;
+    }
 
-  public static native double getUserCurrent6V();
+    public static double getUserCurrent6V()
+    {
+        return 0;
+    }
 
-  public static native boolean getUserActive6V();
+    public static boolean getUserActive6V()
+    {
+        return false;
+    }
 
-  public static native int getUserCurrentFaults6V();
+    public static int getUserCurrentFaults6V()
+    {
+        return 0;
+    }
 
-  public static native double getUserVoltage5V();
+    public static double getUserVoltage5V()
+    {
+        return 0;
+    }
 
-  public static native double getUserCurrent5V();
+    public static double getUserCurrent5V()
+    {
+        return 0;
+    }
 
-  public static native boolean getUserActive5V();
+    public static boolean getUserActive5V()
+    {
+        return false;
+    }
 
-  public static native int getUserCurrentFaults5V();
+    public static int getUserCurrentFaults5V()
+    {
+        return 0;
+    }
 
-  public static native double getUserVoltage3V3();
+    public static double getUserVoltage3V3()
+    {
+        return 0;
+    }
 
-  public static native double getUserCurrent3V3();
+    public static double getUserCurrent3V3()
+    {
+        return 0;
+    }
 
-  public static native boolean getUserActive3V3();
+    public static boolean getUserActive3V3()
+    {
+        return false;
+    }
 
-  public static native int getUserCurrentFaults3V3();
+    public static int getUserCurrentFaults3V3()
+    {
+        return 0;
+    }
 }

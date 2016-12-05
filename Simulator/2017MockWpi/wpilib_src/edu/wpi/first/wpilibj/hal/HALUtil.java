@@ -8,33 +8,59 @@
 package edu.wpi.first.wpilibj.hal;
 
 @SuppressWarnings("AbbreviationAsWordInName")
-public class HALUtil extends JNIWrapper {
-  public static final int NULL_PARAMETER = -1005;
-  public static final int SAMPLE_RATE_TOO_HIGH = 1001;
-  public static final int VOLTAGE_OUT_OF_RANGE = 1002;
-  public static final int LOOP_TIMING_ERROR = 1004;
-  public static final int INCOMPATIBLE_STATE = 1015;
-  public static final int ANALOG_TRIGGER_PULSE_OUTPUT_ERROR = -1011;
-  public static final int NO_AVAILABLE_RESOURCES = -104;
-  public static final int PARAMETER_OUT_OF_RANGE = -1028;
+public class HALUtil extends JNIWrapper
+{
+    public static final int NULL_PARAMETER = -1005;
+    public static final int SAMPLE_RATE_TOO_HIGH = 1001;
+    public static final int VOLTAGE_OUT_OF_RANGE = 1002;
+    public static final int LOOP_TIMING_ERROR = 1004;
+    public static final int INCOMPATIBLE_STATE = 1015;
+    public static final int ANALOG_TRIGGER_PULSE_OUTPUT_ERROR = -1011;
+    public static final int NO_AVAILABLE_RESOURCES = -104;
+    public static final int PARAMETER_OUT_OF_RANGE = -1028;
 
-  public static native short getFPGAVersion();
+    public static short getFPGAVersion()
+    {
+        return 0;
+    }
 
-  public static native int getFPGARevision();
+    public static int getFPGARevision()
+    {
+        return 0;
+    }
 
-  public static native long getFPGATime();
+    public static long getFPGATime()
+    {
+        return 0;
+    }
 
-  public static native int getHALRuntimeType();
+    public static int getHALRuntimeType()
+    {
+        return 0;
+    }
 
-  public static native boolean getFPGAButton();
+    public static boolean getFPGAButton()
+    {
+        return false;
+    }
 
-  public static native String getHALErrorMessage(int code);
+    public static String getHALErrorMessage(int code)
+    {
+        return "";
+    }
 
-  public static native int getHALErrno();
+    public static int getHALErrno()
+    {
+        return 0;
+    }
 
-  public static native String getHALstrerror(int errno);
+    public static String getHALstrerror(int errno)
+    {
+        return "";
+    }
 
-  public static String getHALstrerror() {
-    return getHALstrerror(getHALErrno());
-  }
+    public static String getHALstrerror()
+    {
+        return getHALstrerror(getHALErrno());
+    }
 }

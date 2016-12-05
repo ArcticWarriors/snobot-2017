@@ -7,26 +7,60 @@
 
 package edu.wpi.first.wpilibj.hal;
 
-public class SolenoidJNI extends JNIWrapper {
-  public static native int initializeSolenoidPort(int halPortHandle);
+public class SolenoidJNI extends JNIWrapper
+{
+    public static int initializeSolenoidPort(int halPortHandle)
+    {
+        return 0;
+    }
 
-  public static native boolean checkSolenoidModule(int module);
+    public static boolean checkSolenoidModule(int module)
+    {
+        return false;
+    }
 
-  public static native boolean checkSolenoidChannel(int channel);
+    public static boolean checkSolenoidChannel(int channel)
+    {
+        return false;
+    }
 
-  public static native void freeSolenoidPort(int portHandle);
+    public static void freeSolenoidPort(int portHandle)
+    {
 
-  public static native void setSolenoid(int portHandle, boolean on);
+    }
 
-  public static native boolean getSolenoid(int portHandle);
+    public static void setSolenoid(int portHandle, boolean on)
+    {
 
-  public static native byte getAllSolenoids(byte module);
+    }
 
-  public static native int getPCMSolenoidBlackList(byte module);
+    public static boolean getSolenoid(int portHandle)
+    {
+        return false;
+    }
 
-  public static native boolean getPCMSolenoidVoltageStickyFault(byte module);
+    public static byte getAllSolenoids(byte module)
+    {
+        return 0;
+    }
 
-  public static native boolean getPCMSolenoidVoltageFault(byte module);
+    public static int getPCMSolenoidBlackList(byte module)
+    {
+        return 0;
+    }
 
-  public static native void clearAllPCMStickyFaults(byte module);
+    public static boolean getPCMSolenoidVoltageStickyFault(byte module)
+    {
+        return false;
+    }
+
+    public static boolean getPCMSolenoidVoltageFault(byte module)
+    {
+        return false;
+    }
+
+    public static void clearAllPCMStickyFaults(byte module)
+    {
+
+    }
 }

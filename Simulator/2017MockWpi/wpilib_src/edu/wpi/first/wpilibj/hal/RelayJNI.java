@@ -7,14 +7,30 @@
 
 package edu.wpi.first.wpilibj.hal;
 
-public class RelayJNI extends DIOJNI {
-  public static native int initializeRelayPort(int halPortHandle, boolean forward);
+public class RelayJNI extends DIOJNI
+{
+    public static int initializeRelayPort(int halPortHandle, boolean forward)
+    {
+        return 0;
+    }
 
-  public static native void freeRelayPort(int relayPortHandle);
+    public static void freeRelayPort(int relayPortHandle)
+    {
 
-  public static native boolean checkRelayChannel(int channel);
+    }
 
-  public static native void setRelay(int relayPortHandle, boolean on);
+    public static boolean checkRelayChannel(int channel)
+    {
+        return false;
+    }
 
-  public static native boolean getRelay(int relayPortHandle);
+    public static void setRelay(int relayPortHandle, boolean on)
+    {
+
+    }
+
+    public static boolean getRelay(int relayPortHandle)
+    {
+        return false;
+    }
 }

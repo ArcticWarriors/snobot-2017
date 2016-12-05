@@ -7,40 +7,95 @@
 
 package edu.wpi.first.wpilibj.hal;
 
-public class PortsJNI extends JNIWrapper {
-  public static native int getNumAccumulators();
+public class PortsJNI extends JNIWrapper
+{
+    public static int getNumAccumulators()
+    {
+        return 0;
+    }
 
-  public static native int getNumAnalogTriggers();
+    public static int getNumAnalogTriggers()
+    {
+        return 0;
+    }
 
-  public static native int getNumAnalogInputs();
+    public static int getNumAnalogInputs()
+    {
+        return 0;
+    }
 
-  public static native int getNumAnalogOutputs();
+    public static int getNumAnalogOutputs()
+    {
+        return 0;
+    }
 
-  public static native int getNumCounters();
+    public static int getNumCounters()
+    {
+        return 0;
+    }
 
-  public static native int getNumDigitalHeaders();
+    public static int getNumDigitalHeaders()
+    {
+        return 0;
+    }
 
-  public static native int getNumPWMHeaders();
+    public static int getNumPWMHeaders()
+    {
+        return 0;
+    }
 
-  public static native int getNumDigitalChannels();
+    public static int getNumDigitalChannels()
+    {
+        return 0;
+    }
 
-  public static native int getNumPWMChannels();
+    public static int getNumPWMChannels()
+    {
+        return 0;
+    }
 
-  public static native int getNumDigitalPWMOutputs();
+    public static int getNumDigitalPWMOutputs()
+    {
+        return 0;
+    }
 
-  public static native int getNumEncoders();
+    public static int getNumEncoders()
+    {
+        return 0;
+    }
 
-  public static native int getNumInterrupts();
+    public static int getNumInterrupts()
+    {
+        return 0;
+    }
 
-  public static native int getNumRelayChannels();
+    public static int getNumRelayChannels()
+    {
+        return 0;
+    }
 
-  public static native int getNumRelayHeaders();
+    public static int getNumRelayHeaders()
+    {
+        return 0;
+    }
 
-  public static native int getNumPCMModules();
+    public static int getNumPCMModules()
+    {
+        return 0;
+    }
 
-  public static native int getNumSolenoidChannels();
+    public static int getNumSolenoidChannels()
+    {
+        return 0;
+    }
 
-  public static native int getNumPDPModules();
+    public static int getNumPDPModules()
+    {
+        return 0;
+    }
 
-  public static native int getNumPDPChannels();
+    public static int getNumPDPChannels()
+    {
+        return 0;
+    }
 }

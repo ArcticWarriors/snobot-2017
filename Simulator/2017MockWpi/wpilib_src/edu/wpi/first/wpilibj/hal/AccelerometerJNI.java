@@ -7,14 +7,30 @@
 
 package edu.wpi.first.wpilibj.hal;
 
-public class AccelerometerJNI extends JNIWrapper {
-  public static native void setAccelerometerActive(boolean active);
+public class AccelerometerJNI extends JNIWrapper
+{
+    public static void setAccelerometerActive(boolean active)
+    {
 
-  public static native void setAccelerometerRange(int range);
+    }
 
-  public static native double getAccelerometerX();
+    public static void setAccelerometerRange(int range)
+    {
 
-  public static native double getAccelerometerY();
+    }
 
-  public static native double getAccelerometerZ();
+    public static double getAccelerometerX()
+    {
+        return 0;
+    }
+
+    public static double getAccelerometerY()
+    {
+        return 0;
+    }
+
+    public static double getAccelerometerZ()
+    {
+        return 0;
+    }
 }

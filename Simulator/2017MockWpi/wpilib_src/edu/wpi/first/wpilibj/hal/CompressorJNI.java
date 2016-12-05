@@ -7,32 +7,75 @@
 
 package edu.wpi.first.wpilibj.hal;
 
-public class CompressorJNI extends JNIWrapper {
-  public static native int initializeCompressor(byte module);
+public class CompressorJNI extends JNIWrapper
+{
+    public static int initializeCompressor(byte module)
+    {
+        return 0;
+    }
 
-  public static native boolean checkCompressorModule(byte module);
+    public static boolean checkCompressorModule(byte module)
+    {
+        return false;
+    }
 
-  public static native boolean getCompressor(int compressorHandle);
+    public static boolean getCompressor(int compressorHandle)
+    {
+        return false;
+    }
 
-  public static native void setCompressorClosedLoopControl(int compressorHandle, boolean value);
+    public static void setCompressorClosedLoopControl(int compressorHandle, boolean value)
+    {
 
-  public static native boolean getCompressorClosedLoopControl(int compressorHandle);
+    }
 
-  public static native boolean getCompressorPressureSwitch(int compressorHandle);
+    public static boolean getCompressorClosedLoopControl(int compressorHandle)
+    {
+        return false;
+    }
 
-  public static native double getCompressorCurrent(int compressorHandle);
+    public static boolean getCompressorPressureSwitch(int compressorHandle)
+    {
+        return false;
+    }
 
-  public static native boolean getCompressorCurrentTooHighFault(int compressorHandle);
+    public static double getCompressorCurrent(int compressorHandle)
+    {
+        return 0;
+    }
 
-  public static native boolean getCompressorCurrentTooHighStickyFault(int compressorHandle);
+    public static boolean getCompressorCurrentTooHighFault(int compressorHandle)
+    {
+        return false;
+    }
 
-  public static native boolean getCompressorShortedStickyFault(int compressorHandle);
+    public static boolean getCompressorCurrentTooHighStickyFault(int compressorHandle)
+    {
+        return false;
+    }
 
-  public static native boolean getCompressorShortedFault(int compressorHandle);
+    public static boolean getCompressorShortedStickyFault(int compressorHandle)
+    {
+        return false;
+    }
 
-  public static native boolean getCompressorNotConnectedStickyFault(int compressorHandle);
+    public static boolean getCompressorShortedFault(int compressorHandle)
+    {
+        return false;
+    }
 
-  public static native boolean getCompressorNotConnectedFault(int compressorHandle);
+    public static boolean getCompressorNotConnectedStickyFault(int compressorHandle)
+    {
+        return false;
+    }
 
-  public static native void clearAllPCMStickyFaults(byte compressorModule);
+    public static boolean getCompressorNotConnectedFault(int compressorHandle)
+    {
+        return false;
+    }
+
+    public static void clearAllPCMStickyFaults(byte compressorModule)
+    {
+
+    }
 }
