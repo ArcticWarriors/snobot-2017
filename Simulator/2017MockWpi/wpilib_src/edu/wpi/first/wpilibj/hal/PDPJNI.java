@@ -17,7 +17,7 @@ public class PDPJNI extends JNIWrapper
 
     public static boolean checkPDPModule(int module)
     {
-        return false;
+        return true;
     }
 
     public static boolean checkPDPChannel(int channel)

@@ -7,11 +7,14 @@
 
 package edu.wpi.first.wpilibj.hal;
 
+import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.module_wrapper.AnalogWrapper;
+
 public class AnalogGyroJNI extends JNIWrapper
 {
     public static int initializeAnalogGyro(int halAnalogInputHandle)
     {
-        return 0;
+        return halAnalogInputHandle;
     }
 
     public static void setupAnalogGyro(int handle)
@@ -51,7 +54,8 @@ public class AnalogGyroJNI extends JNIWrapper
 
     public static double getAnalogGyroAngle(int handle)
     {
-        return 0;
+        AnalogWrapper wrapper = getWrapperFromBuffer(handle);
+        return wrapper.getAccumulator();
     }
 
     public static double getAnalogGyroRate(int handle)
@@ -67,5 +71,14 @@ public class AnalogGyroJNI extends JNIWrapper
     public static int getAnalogGyroCenter(int handle)
     {
         return 0;
+    }
+
+    // ////////////////////////////////////////////////////
+    // Our stuff
+    // ////////////////////////////////////////////////////
+    private static AnalogWrapper getWrapperFromBuffer(long buffer)
+    {
+        int port = (int) buffer;
+        return SensorActuatorRegistry.get().getAnalog().get(port);
     }
 }
