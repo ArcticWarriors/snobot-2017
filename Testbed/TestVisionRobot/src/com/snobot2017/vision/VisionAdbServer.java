@@ -13,6 +13,9 @@ public class VisionAdbServer extends RobotConnectionServer
             "shell am force-stop snobit.com.cameratester \\; " + 
             "am start snobit.com.cameratester/snobit.com.cameratester.SelfieCameraActivity";
 
+    private static final String sHEARTBEAT_MESSAGE = "heartbeat";
+    private static final String sTAKE_PICTURE_MESSAGE = "takepicture";
+
     public VisionAdbServer(int bindPort)
     {
         super(bindPort);
@@ -27,9 +30,9 @@ public class VisionAdbServer extends RobotConnectionServer
     public void handleMessage(String message, double timestamp)
     {
         Level logLevel = Level.INFO;
-        if ("heartbeat".equals(message))
+        if (sHEARTBEAT_MESSAGE.equals(message))
         {
-            String outMessage = "heartbeat\n";
+            String outMessage = sHEARTBEAT_MESSAGE + "\n";
             ByteBuffer buffer = ByteBuffer.wrap(outMessage.getBytes());
             send(buffer);
 
@@ -41,7 +44,7 @@ public class VisionAdbServer extends RobotConnectionServer
         }
         else
         {
-            System.err.println("Unknown message " + message);
+            sLOGGER.log(Level.SEVERE, "Unknown message " + message);
             logLevel = Level.SEVERE;
         }
 
@@ -56,7 +59,8 @@ public class VisionAdbServer extends RobotConnectionServer
 
     public void takePicture()
     {
-        ByteBuffer message = ByteBuffer.wrap("takepicture\n".getBytes());
+        String messageText = sTAKE_PICTURE_MESSAGE + "\n";
+        ByteBuffer message = ByteBuffer.wrap(messageText.getBytes());
         send(message);
     }
 
