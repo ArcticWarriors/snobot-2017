@@ -63,28 +63,4 @@ public class HALUtil extends JNIWrapper
     {
         return getHALstrerror(getHALErrno());
     }
-
-    // *****************************************************
-    // Our Stuff
-    // *****************************************************
-
-    // private static final double sCYCLE_TIME = .02; // The period that the
-    // main
-    // // loop should be run at
-    // private static double sWaitTime = .02; // The time to sleep. You can run
-    // // simulations faster/slower by
-    // // changing this. For example,
-    // // making the wait time 1 second,
-    // // means one 20ms cycle will happen
-    // // each second, 50x slower than
-    // // normal. Or, you could make it
-    // // .002, which would make the code
-    // // execute at 10x speed
-    // private static double sMatchTime = 0;
-
-    // public static double getCycleTime()
-    // {
-    // return sCYCLE_TIME;
-    // }
-
 }

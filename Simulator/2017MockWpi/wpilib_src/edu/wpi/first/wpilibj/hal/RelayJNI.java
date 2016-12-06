@@ -17,7 +17,7 @@ public class RelayJNI extends DIOJNI
         RelayWrapper wrapper = new RelayWrapper(halPortHandle);
         SensorActuatorRegistry.get().register(wrapper, halPortHandle);
 
-        return halPortHandle;
+        return forward ? halPortHandle : halPortHandle + 1;
     }
 
     public static void freeRelayPort(int relayPortHandle)
@@ -32,7 +32,36 @@ public class RelayJNI extends DIOJNI
 
     public static void setRelay(int relayPortHandle, boolean on)
     {
-        getWrapperFromBuffer(relayPortHandle).setRelayForwards(on);
+        boolean forward = relayPortHandle % 2 == 0;
+        
+        RelayWrapper wrapper = null;
+        if(forward)
+        {
+            wrapper = getWrapperFromBuffer(relayPortHandle);
+            wrapper.setRelayForwards(on);
+        }
+        else
+        {
+            wrapper = getWrapperFromBuffer(relayPortHandle - 1);
+            wrapper.setRelayReverse(on);
+        }
+            
+
+//        RelayWrapper wrapper = getWrapperFromBuffer(relayPortHandle);
+//        if (wrapper == null)
+//        {
+//            wrapper = getWrapperFromBuffer(relayPortHandle + 1);
+//            forward = false;
+//        }
+//
+//        if (forward)
+//        {
+//            wrapper.setRelayForwards(on);
+//        }
+//        else
+//        {
+        // // wrapper.setRelayReverse(on);
+        // }
     }
 
     public static boolean getRelay(int relayPortHandle)
@@ -48,5 +77,10 @@ public class RelayJNI extends DIOJNI
         int port = (int) digital_port_pointer;
 
         return SensorActuatorRegistry.get().getRelays().get(port);
+    }
+
+    public static int getPort(byte channel)
+    {
+        return channel * 2;
     }
 }

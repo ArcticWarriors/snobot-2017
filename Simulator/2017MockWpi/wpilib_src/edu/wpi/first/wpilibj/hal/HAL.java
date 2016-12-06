@@ -254,4 +254,9 @@ public class HAL extends JNIWrapper
     {
         sWaitTime = aTime;
     }
+
+    public static double getCycleTime()
+    {
+        return sCYCLE_TIME;
+    }
 }
