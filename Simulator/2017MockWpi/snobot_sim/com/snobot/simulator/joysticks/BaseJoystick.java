@@ -14,9 +14,10 @@ public class BaseJoystick implements IMockJoystick
     protected final List<Identifier> mAxis;
     protected final List<Identifier> mButtons;
     protected final List<Identifier> mPOV;
-    protected final short[] mAxisValues;
-    protected final short[] mPovValues;
     protected final Controller mController;
+
+    protected short[] mAxisValues;
+    protected short[] mPovValues;
 
     public BaseJoystick(String aName, Controller aController, List<Identifier> aAxisList, List<Identifier> aButtonList, List<Identifier> aPOV)
     {

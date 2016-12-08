@@ -37,8 +37,6 @@ public class WrappedJoystickPanel extends JPanel
         analogPanel.removeAll();
         digitalPanel.removeAll();
 
-        System.out.println(aJoystick);
-
         if (mJoystick != null)
         {
             mAnalogDisplays = new ArrayList<>();

@@ -39,7 +39,6 @@ public class GraphicalSensorDisplayPanel extends JPanel
         mAnalogPanel = new AnalogOutputDisplay(reg.getAnalog());
         mEncoderPanel = new EncoderGraphicDisplay(reg.getEncoders(), "Encoders (Digital Input)");
         mCanEncoderPanel = new EncoderGraphicDisplay(reg.getCanEncoders(), "Encoders (CAN)");
-        System.out.println(reg.getCanEncoders());
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

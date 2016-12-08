@@ -13,11 +13,13 @@ import com.snobot.simulator.gui.joysticks.sub_panels.RawJoystickPanel;
 import com.snobot.simulator.gui.joysticks.sub_panels.WrappedJoystickPanel;
 import com.snobot.simulator.gui.joysticks.sub_panels.XboxPanel;
 import com.snobot.simulator.joysticks.IMockJoystick;
+import com.snobot.simulator.joysticks.joystick_specializations.GenericGamepadJoystick;
 import com.snobot.simulator.joysticks.joystick_specializations.KeyboardJoystick;
 import com.snobot.simulator.joysticks.joystick_specializations.NullJoystick;
 import com.snobot.simulator.joysticks.joystick_specializations.Ps4Joystick;
 
 import net.java.games.input.Controller;
+import net.java.games.input.Controller.Type;
 
 public class JoystickTabPanel extends JPanel
 {
@@ -58,8 +60,15 @@ public class JoystickTabPanel extends JPanel
         add(mSelectInterperetTypeBox, BorderLayout.NORTH);
         add(tabbedPane, BorderLayout.CENTER);
 
-        mSelectInterperetTypeBox.addItem("Keyboard");
-        mSelectInterperetTypeBox.addItem("PS4");
+        if (mController.getType() == Type.KEYBOARD)
+        {
+            mSelectInterperetTypeBox.addItem("Keyboard");
+        }
+        else
+        {
+            mSelectInterperetTypeBox.addItem("PS4");
+            mSelectInterperetTypeBox.addItem("Generic Gamepad");
+        }
 
         mSelectInterperetTypeBox.addItemListener(new ItemListener()
         {
@@ -74,7 +83,7 @@ public class JoystickTabPanel extends JPanel
             }
         });
 
-        handleWrapperSelected("Keyboard");
+        handleWrapperSelected(mSelectInterperetTypeBox.getItemAt(0));
     }
 
     private void handleWrapperSelected(String aType)
@@ -89,7 +98,9 @@ public class JoystickTabPanel extends JPanel
         case "PS4":
             wrappedJoystick = new Ps4Joystick(mController);
             break;
-
+        case "Generic Gamepad":
+            wrappedJoystick = new GenericGamepadJoystick(mController);
+            break;
         }
 
         if (wrappedJoystick == null)

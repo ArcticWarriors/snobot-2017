@@ -68,6 +68,58 @@ public class XboxPanel extends JPanel
 
         drawTrigger(g, mJoystick.getRawAxis(XboxButtonMap.LEFT_TRIGGER), 155, 40);
         drawTrigger(g, mJoystick.getRawAxis(XboxButtonMap.RIGHT_TRIGGER), 530, 40);
+
+        drawPOV(g, mJoystick.getPovValues());
+    }
+
+    private void drawPOV(Graphics g, short[] aPov)
+    {
+        if (aPov.length != 0)
+        {
+            short pov = aPov[0];
+
+            switch (pov)
+            {
+            case 0:
+                drawPOV(g, 250, 300);
+                break;
+            case 45:
+                drawPOV(g, 250, 300);
+                drawPOV(g, 288, 340);
+                break;
+            case 90:
+                drawPOV(g, 288, 340);
+                break;
+            case 135:
+                drawPOV(g, 288, 340);
+                drawPOV(g, 250, 365);
+                break;
+            case 180:
+                drawPOV(g, 250, 365);
+                break;
+            case 225:
+                drawPOV(g, 250, 365);
+                drawPOV(g, 210, 340);
+                break;
+            case 270:
+                drawPOV(g, 210, 340);
+                break;
+            case -45:
+                drawPOV(g, 210, 340);
+                drawPOV(g, 250, 300);
+                break;
+            case -1:
+                break;
+            default:
+                System.err.println("Unexpected POV value: " + pov);
+            }
+        }
+    }
+
+    private void drawPOV(Graphics g, int x, int y)
+    {
+        g.setColor(Color.red);
+        g.fillRect(x, y, 40, 40);
     }
 
     private void drawTrigger(Graphics g, double value, int x, int y)

@@ -75,7 +75,6 @@ public class SimulatorFrame extends JFrame
 	private void showJoystickDialog() {
 		JoystickManagerDialog dialog = new JoystickManagerDialog();
 		dialog.setModal(true);
-        dialog.setSize(750, 600);
 		dialog.setVisible(true);
 	}
 }
