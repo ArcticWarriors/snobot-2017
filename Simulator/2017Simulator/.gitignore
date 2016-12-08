@@ -5,3 +5,4 @@
 *.preferences.ini.bak
 joystick_config.properties
 simulator_config.properties
+hs_*.log
