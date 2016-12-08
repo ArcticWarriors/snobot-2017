@@ -7,12 +7,14 @@
 
 package edu.wpi.first.wpilibj;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import edu.wpi.cscore.CameraServerJNI;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.MJPEGServer;
-import edu.wpi.cscore.USBCamera;
-import edu.wpi.cscore.VideoEvent;
+import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoException;
 import edu.wpi.cscore.VideoListener;
 import edu.wpi.cscore.VideoMode;
@@ -21,8 +23,6 @@ import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.tables.ITable;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Singleton class for creating and keeping camera servers.
@@ -64,9 +64,9 @@ public class CameraServer {
   @SuppressWarnings("JavadocMethod")
   private static String makeSourceValue(int source) {
     switch (VideoSource.getKindFromInt(CameraServerJNI.getSourceKind(source))) {
-      case kUSB:
-        return "usb:" + CameraServerJNI.getUSBCameraPath(source);
-      case kHTTP:
+      case kUsb:
+			return "usb:" + CameraServerJNI.getUsbCameraPath(source);
+      case kHttp:
         // TODO
         return "ip:";
       case kCv:
@@ -90,8 +90,8 @@ public class CameraServer {
   private synchronized void updateStreamValues() {
     // Over all the sinks...
     for (VideoSink i : m_sinks.values()) {
-      // Ignore all but MJPEGServer
-      if (i.getKind() != VideoSink.Kind.kMJPEG) {
+			// Ignore all but MjpegServer
+      if (i.getKind() != VideoSink.Kind.kMjpeg) {
         continue;
       }
       int sink = i.getHandle();
@@ -104,11 +104,11 @@ public class CameraServer {
       }
 
       // Get port
-      int port = CameraServerJNI.getMJPEGServerPort(sink);
+			int port = CameraServerJNI.getMjpegServerPort(sink);
 
       // Generate values
       ArrayList<String> values = new ArrayList<String>(m_addresses.length + 1);
-      String listenAddress = CameraServerJNI.getMJPEGServerListenAddress(sink);
+			String listenAddress = CameraServerJNI.getMjpegServerListenAddress(sink);
       if (!listenAddress.isEmpty()) {
         // If a listen address is specified, only use that
         values.add(makeStreamValue(listenAddress, port));
@@ -244,7 +244,7 @@ public class CameraServer {
    *
    * <p>This overload calls {@link #startAutomaticCapture(int)} with device 0.
    */
-  public USBCamera startAutomaticCapture() {
+	public UsbCamera startAutomaticCapture() {
     return startAutomaticCapture(0);
   }
 
@@ -253,8 +253,8 @@ public class CameraServer {
    *
    * @param dev The device number of the camera interface
    */
-  public USBCamera startAutomaticCapture(int dev) {
-    USBCamera camera = new USBCamera("USB Camera " + dev, dev);
+	public UsbCamera startAutomaticCapture(int dev) {
+		UsbCamera camera = new UsbCamera("USB Camera " + dev, dev);
     startAutomaticCapture(camera);
     return camera;
   }
@@ -265,8 +265,8 @@ public class CameraServer {
    * @param name The name to give the camera
    * @param dev The device number of the camera interface
    */
-  public USBCamera startAutomaticCapture(String name, int dev) {
-    USBCamera camera = new USBCamera(name, dev);
+	public UsbCamera startAutomaticCapture(String name, int dev) {
+		UsbCamera camera = new UsbCamera(name, dev);
     startAutomaticCapture(camera);
     return camera;
   }
@@ -277,8 +277,8 @@ public class CameraServer {
    * @param name The name to give the camera
    * @param path The device path (e.g. "/dev/video0") of the camera
    */
-  public USBCamera startAutomaticCapture(String name, String path) {
-    USBCamera camera = new USBCamera(name, path);
+	public UsbCamera startAutomaticCapture(String name, String path) {
+		UsbCamera camera = new UsbCamera(name, path);
     startAutomaticCapture(camera);
     return camera;
   }
@@ -361,7 +361,7 @@ public class CameraServer {
    *
    * @param name Server name
    */
-  public MJPEGServer addServer(String name) {
+	public MjpegServer addServer(String name) {
     int port;
     synchronized (this) {
       port = m_nextPort;
@@ -375,8 +375,8 @@ public class CameraServer {
    *
    * @param name Server name
    */
-  public MJPEGServer addServer(String name, int port) {
-    MJPEGServer server = new MJPEGServer(name, port);
+	public MjpegServer addServer(String name, int port) {
+		MjpegServer server = new MjpegServer(name, port);
     addServer(server);
     return server;
   }
@@ -429,13 +429,16 @@ public class CameraServer {
     }
   }
 
-  /**
-   * Sets the size of the image to use. Use the public kSize constants to set the correct mode, or
-   * set it directly on a camera and call the appropriate startAutomaticCapture method.
-   *
-   * @deprecated Use setResolution on the USBCamera returned by startAutomaticCapture() instead.
-   * @param size The size to use
-   */
+  	/**
+	 * Sets the size of the image to use. Use the public kSize constants to set
+	 * the correct mode, or set it directly on a camera and call the appropriate
+	 * startAutomaticCapture method.
+	 *
+	 * @deprecated Use setResolution on the UsbCamera returned by
+	 *             startAutomaticCapture() instead.
+	 * @param size
+	 *            The size to use
+	 */
   @Deprecated
   public void setSize(int size) {
     VideoSource source = null;

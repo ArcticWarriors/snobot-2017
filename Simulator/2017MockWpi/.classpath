@@ -9,7 +9,12 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/3rdParyLibraries"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="templibs/ntcore-windows.jar"/>
+	<classpathentry kind="lib" path="templibs/ntcore-windows.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/templibs/x64"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="templibs/opencv-2413.jar"/>
+	<classpathentry kind="lib" path="templibs/cscore-windows.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
