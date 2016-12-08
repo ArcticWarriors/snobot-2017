@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="2016 Snobot SD Extensions" default="jar">
+  
+	<property file="build.properties"/>
+
+    <path id="CoordinateGui.classpath">
+        <pathelement location="${CoordinateGui.location}/bin"/>
+    </path>
+
+	  <target name="clean" description="Clean up all build and distribution artifacts.">
+	    <echo>Cleaning "${build.dir}" and "${dist.dir}"</echo>
+	    <delete dir="${build.dir}"/>
+	    <delete dir="${dist.dir}"/>
+	  </target>
+
+	  <!-- Targets -->
+
+	  <target name="compile_extensions" description="Compile the source code.">
+	    <mkdir dir="${build.dir}"/>
+	    <echo>Compiling ${src.dir} with classpath=${classpath} to ${build.dir}</echo>
+
+	    <javac srcdir="${src.dir}"
+	     destdir="${build.dir}"
+	     includeAntRuntime="no"
+	     includeJavaRuntime="no"
+	     target="${ant.java.version}"
+	     source="${ant.java.version}"
+	     compiler="javac${ant.java.version}"
+	     debug="true">
+	    	<classpath path="${build.dir}"/>
+	    	<classpath path="${classpath}"/>
+	    </javac>
+	  </target>
+
+	  <target name="jar" depends="compile_extensions">
+	    <echo>Making jar ${dist.jar}.</echo>
+	    <mkdir dir="${dist.dir}" />
+	    <mkdir dir="${build.jars}" />
+
+	    <echo>Copying jars from ${classpath} to ${build.jars}.</echo>
+	    <copy todir="${build.jars}" flatten="true">
+	      <path>
+	      <pathelement path="${classpath}"/>
+	      </path>
+	    </copy>
+
+	    <jar destfile="${dist.jar}" update="false">
+	        <fileset dir="${build.dir}" includes="**/*.class"/>
+	        <fileset dir="${src.dir}" includes="**/*.png **/*.jpg"/>
+	    </jar>
+	  </target>
+
+
+</project> 
