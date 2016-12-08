@@ -1,12 +1,11 @@
 package com.snobot.simulator.joysticks;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.hal.HAL;
 import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier;
 import net.java.games.input.Controller;
-import edu.wpi.first.wpilibj.hal.HAL;
 
 public class BaseJoystick implements IMockJoystick
 {
@@ -15,15 +14,16 @@ public class BaseJoystick implements IMockJoystick
     protected final List<Identifier> mAxis;
     protected final List<Identifier> mButtons;
     protected final List<Identifier> mPOV;
-    protected short[] mAxisValues;
-    protected short[] mPovValues;
-    protected Controller mController;
+    protected final short[] mAxisValues;
+    protected final short[] mPovValues;
+    protected final Controller mController;
 
-    public BaseJoystick(String aName)
+    public BaseJoystick(String aName, Controller aController, List<Identifier> aAxisList, List<Identifier> aButtonList, List<Identifier> aPOV)
     {
-        mAxis = new ArrayList<>();
-        mButtons = new ArrayList<>();
-        mPOV = new ArrayList<>();
+        mController = aController;
+        mAxis = aAxisList;
+        mButtons = aButtonList;
+        mPOV = aPOV;
         mName = aName;
 
         mAxisValues = new short[mAxis.size()];

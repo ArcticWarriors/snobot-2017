@@ -13,8 +13,8 @@ public class NullJoystick implements IMockJoystick
 
     public NullJoystick()
     {
-        mAxis = new short[sNUM_BUTTONS];
-        mPov = new short[4];
+        mAxis = new short[sNUM_AXIS];
+        mPov = new short[0];
         for (int i = 0; i < mPov.length; ++i)
         {
             mPov[i] = -1;
