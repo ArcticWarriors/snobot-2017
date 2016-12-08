@@ -16,13 +16,21 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class Simulator
 {
-    private static final String sPROPERTIES_FILE = "simulator_config.properties";
+	private static final String sUSER_CONFIG_DIR = "user_config/";
+	private static final String sPROPERTIES_FILE = sUSER_CONFIG_DIR + "simulator_config.properties";
 
     private String mClassName; // The name of the class that should be instantiated
     private String mSimulatorClassName; // The name of the class that represents the simulator
 
     private RobotBase mRobot; // The robot code to run
     private ISimulatorUpdater mSimulator; // The robot code to run
+
+	public Simulator() {
+		File config_dir = new File(sUSER_CONFIG_DIR);
+		if (!Files.exists(config_dir.toPath())) {
+				config_dir.mkdir();
+		}
+	}
 
     private void loadConfig(String aFile)
     {
@@ -59,7 +67,7 @@ public class Simulator
         loadConfig(sPROPERTIES_FILE);
 
         // Do all of the stuff that
-        NetworkTable.setPersistentFilename(mClassName + ".preferences.ini");
+		NetworkTable.setPersistentFilename(sUSER_CONFIG_DIR + mClassName + ".preferences.ini");
         HAL.setWaitTime(.02);
 
         createSimulator();

@@ -1,8 +1,6 @@
 /bin/
 
 /logs/
-*.preferences.ini
-*.preferences.ini.bak
-joystick_config.properties
-simulator_config.properties
+/user_config
+
 hs_*.log

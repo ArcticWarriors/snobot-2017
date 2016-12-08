@@ -17,7 +17,7 @@ public class JoystickFactory
 {
 
     private static final JoystickFactory sInstance = new JoystickFactory();
-    private static final String sJOYSTICK_CONFIG_FILE = "joystick_config.properties";
+	private static final String sJOYSTICK_CONFIG_FILE = "user_config/joystick_config.properties";
     private static final int sNUMBER_OF_STICKS = 6;
     private static final String sKEY = "Joystick_";
 
