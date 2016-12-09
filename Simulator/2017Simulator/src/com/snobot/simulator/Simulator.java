@@ -97,9 +97,12 @@ public class Simulator
                         // created and hook itself up
                         try
                         {
+                            System.out.println("Waiting for robot to initialize...");
+                            HAL.waitForProgramStart();
+
                             mSimulator = (ISimulatorUpdater) Class.forName(mSimulatorClassName).newInstance();
                             mSimulator.setRobot(mRobot);
-                            System.out.println("Creating simulator : " + mSimulatorClassName);
+                            System.out.println("Created simulator : " + mSimulatorClassName);
 
                             RobotStateSingleton.get().addLoopListener(new RobotStateSingleton.LoopListener()
                             {

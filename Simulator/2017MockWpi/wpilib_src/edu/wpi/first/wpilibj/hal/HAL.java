@@ -40,7 +40,11 @@ public class HAL extends JNIWrapper
 
     public static void observeUserProgramStarting()
     {
-
+        synchronized (sPROGRAM_STARTED_LOCK)
+        {
+            System.out.println("Robot Initialized");
+            sPROGRAM_STARTED_LOCK.notify();
+        }
     }
 
     public static void observeUserProgramDisabled()
@@ -109,7 +113,7 @@ public class HAL extends JNIWrapper
     @SuppressWarnings("JavadocMethod")
     public static void getControlWord(ControlWord controlWord)
     {
-        sRobotState.updateControlWord(controlWord);
+        sROBOT_STATE.updateControlWord(controlWord);
     }
 
     private static native int nativeGetAllianceStation();
@@ -141,7 +145,7 @@ public class HAL extends JNIWrapper
 
     public static short getJoystickAxes(byte joystickNum, float[] axesArray)
     {
-        IMockJoystick joystick = sJoystickFactory.get(joystickNum);
+        IMockJoystick joystick = sJOYSTICK_FACTORY.get(joystickNum);
         short[] joystickValue = joystick.getAxisValues();
 
         for (int i = 0; i < joystickValue.length; ++i)
@@ -154,7 +158,7 @@ public class HAL extends JNIWrapper
 
     public static short getJoystickPOVs(byte joystickNum, short[] povsArray)
     {
-        IMockJoystick joystick = sJoystickFactory.get(joystickNum);
+        IMockJoystick joystick = sJOYSTICK_FACTORY.get(joystickNum);
         short[] joystickValue = joystick.getPovValues();
 
         for (int i = 0; i < joystickValue.length; ++i)
@@ -167,8 +171,8 @@ public class HAL extends JNIWrapper
 
     public static int getJoystickButtons(byte joystickNum, ByteBuffer count)
     {
-        int num_buttons = sJoystickFactory.get(joystickNum).getButtonCount();
-        int masked_values = sJoystickFactory.get(joystickNum).getButtonMask();
+        int num_buttons = sJOYSTICK_FACTORY.get(joystickNum).getButtonCount();
+        int masked_values = sJOYSTICK_FACTORY.get(joystickNum).getButtonMask();
 
         count.clear();
         count.put((byte) num_buttons);
@@ -179,7 +183,7 @@ public class HAL extends JNIWrapper
 
     public static int setJoystickOutputs(byte joystickNum, int outputs, short leftRumble, short rightRumble)
     {
-        sJoystickFactory.get(joystickNum).setRumble(leftRumble);
+        sJOYSTICK_FACTORY.get(joystickNum).setRumble(leftRumble);
         return 0;
     }
 
@@ -232,8 +236,9 @@ public class HAL extends JNIWrapper
     // **************************************************
     // Our stuff
     // **************************************************
-    private static RobotStateSingleton sRobotState = RobotStateSingleton.get();
-    private static final JoystickFactory sJoystickFactory = JoystickFactory.get();
+    private static final RobotStateSingleton sROBOT_STATE = RobotStateSingleton.get();
+    private static final JoystickFactory sJOYSTICK_FACTORY = JoystickFactory.get();
+    private static final Object sPROGRAM_STARTED_LOCK = new Object();
 
     private static final double sCYCLE_TIME = .02; // The period that the main
                                                    // loop should be run at
@@ -258,5 +263,21 @@ public class HAL extends JNIWrapper
     public static double getCycleTime()
     {
         return sCYCLE_TIME;
+    }
+
+    public static void waitForProgramStart()
+    {
+        synchronized (sPROGRAM_STARTED_LOCK)
+        {
+            try
+            {
+                sPROGRAM_STARTED_LOCK.wait();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
