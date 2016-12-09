@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public abstract class RobotConnectionServer
 {
     protected static final Logger sLOGGER = Logger.getLogger("RobotConnectionServer");

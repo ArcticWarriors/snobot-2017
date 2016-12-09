@@ -24,7 +24,6 @@ public class JoystickFactory
     private static final String sJOYSTICK_CONFIG_FILE = "user_config/joystick_config.properties";
     private static final String sKEY = "Joystick_";
 
-
     public static JoystickFactory get()
     {
         return sINSTANCE;
@@ -36,17 +35,17 @@ public class JoystickFactory
     private JoystickFactory()
     {
         mControllerConfig = new HashMap<>();
-    	
+
         mJoystickMap = new IMockJoystick[DriverStation.kJoystickPorts];
         for (int i = 0; i < DriverStation.kJoystickPorts; ++i)
-    	{
-    		mJoystickMap[i] = new NullJoystick();
-    	}
-    	
+        {
+            mJoystickMap[i] = new NullJoystick();
+        }
+
         mControllerConfig = JoystickDiscoverer.rediscoverJoysticks();
-    	loadSticks();
+        loadSticks();
     }
-    
+
     public Map<String, ControllerConfiguration> getControllerConfiguration()
     {
         return mControllerConfig;
@@ -63,7 +62,7 @@ public class JoystickFactory
 
                 ControllerConfiguration config = mControllerConfig.get(joystickName);
                 String specializationName = config == null ? null : config.mSpecialization.getName();
-                
+
                 p.put(sKEY + i, joystickName + "---" + specializationName);
             }
 

@@ -87,9 +87,9 @@ public class AdbBridge
     }
 
     public void restartApp()
-     {
+    {
         sLOGGER.log(Level.INFO, "Restarting App");
         runCommand(mRestartAppCommand);
-     }
+    }
 
 }

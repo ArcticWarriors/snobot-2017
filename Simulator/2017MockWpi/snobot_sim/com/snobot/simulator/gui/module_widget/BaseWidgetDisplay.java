@@ -19,14 +19,14 @@ public abstract class BaseWidgetDisplay<KeyType, ItemType extends ASensorWrapper
 
     public BaseWidgetDisplay(Map<KeyType, ItemType> aMap)
     {
-    	setLayout(new GridBagLayout());
+        setLayout(new GridBagLayout());
 
-    	int i = 0;
+        int i = 0;
         for (Entry<KeyType, ItemType> pair : aMap.entrySet())
         {
-        	GridBagConstraints gc = new GridBagConstraints();
-        	gc.gridy = i;
-        	
+            GridBagConstraints gc = new GridBagConstraints();
+            gc.gridy = i;
+
             Container panelPair = createWidget(pair);
             if (panelPair != null)
             {

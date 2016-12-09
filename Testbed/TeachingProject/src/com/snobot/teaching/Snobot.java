@@ -33,38 +33,38 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Snobot extends IterativeRobot
 {
-	//////////////////////////////////////
+    //////////////////////////////////////
     // Outputs
-	//////////////////////////////////////
+    //////////////////////////////////////
 
-	// PWM
+    // PWM
     private SpeedController mTestMotor1;
     private SpeedController mTestMotor2;
-	private Servo mServo;
+    private Servo mServo;
 
-	// Digital IO
+    // Digital IO
     private DigitalOutput mDigitalOutput;
 
-	// Solenoid
+    // Solenoid
     private Solenoid mSolenoid;
 
-	// Relay
+    // Relay
     private Relay mRelay;
 
-	//////////////////////////////////////
+    //////////////////////////////////////
     // Inputs
-	//////////////////////////////////////
+    //////////////////////////////////////
 
-	// Joysticks
+    // Joysticks
     private Joystick mJoystick1;
     private XboxController mJoystick2;
 
-	// Digital IO
+    // Digital IO
     private Encoder mRightEncoder;
     private Encoder mLeftEncoder;
-	private Ultrasonic mUltrasonic;
+    private Ultrasonic mUltrasonic;
 
-	// Analog IO
+    // Analog IO
     private Gyro mAnalogGryo;
     private Gyro mSpiGryo;
     private Potentiometer mPotentiometer;
@@ -79,39 +79,39 @@ public class Snobot extends IterativeRobot
      */
     public void robotInit()
     {
-		// PWM's
+        // PWM's
         mTestMotor1 = new Talon(0);
         mTestMotor2 = new Jaguar(1);
-		mServo = new Servo(2);
+        mServo = new Servo(2);
 
-		// Digital IO
+        // Digital IO
         mDigitalOutput = new DigitalOutput(0);
-		mRightEncoder = new Encoder(4, 5);
-		mLeftEncoder = new Encoder(1, 2);
-		mUltrasonic = new Ultrasonic(7, 6);
+        mRightEncoder = new Encoder(4, 5);
+        mLeftEncoder = new Encoder(1, 2);
+        mUltrasonic = new Ultrasonic(7, 6);
 
-		// Analog IO
-		mAnalogGryo = new AnalogGyro(0);
-		mPotentiometer = new AnalogPotentiometer(1);
+        // Analog IO
+        mAnalogGryo = new AnalogGyro(0);
+        mPotentiometer = new AnalogPotentiometer(1);
 
-		// Solenoid
+        // Solenoid
         mSolenoid = new Solenoid(0);
 
-		// Relay
+        // Relay
         mRelay = new Relay(0);
 
-		// Joysticks
+        // Joysticks
         mJoystick1 = new Joystick(0);
         mJoystick2 = new XboxController(1);
 
-		// SPI
+        // SPI
         mSpiGryo = new ADXRS450_Gyro();
 
-		// Utilities
+        // Utilities
         mTimer = new Timer();
         mPDP = new PowerDistributionPanel();
 
-		Preferences.getInstance().putDouble("Motor One Speed", .5);
+        Preferences.getInstance().putDouble("Motor One Speed", .5);
     }
 
     public void autonomousInit()
@@ -140,11 +140,11 @@ public class Snobot extends IterativeRobot
      */
     public void teleopPeriodic()
     {
-		double speed = Preferences.getInstance().getDouble("Motor One Speed", .5);
+        double speed = Preferences.getInstance().getDouble("Motor One Speed", .5);
 
         if (mJoystick1.getRawButton(1))
         {
-			mTestMotor1.set(speed);
+            mTestMotor1.set(speed);
         }
         else
         {
@@ -163,5 +163,5 @@ public class Snobot extends IterativeRobot
     {
 
     }
-    
+
 }

@@ -43,12 +43,12 @@ public interface IPositioner extends ISubsystem
     /**
      * 
      * @param aX
-     *          The X plane 
+     *            The X plane
      * @param aY
-     *          The Y plane
+     *            The Y plane
      * @param aAngle
-     *              The Angle
-     *              
+     *            The Angle
+     * 
      */
     public void setPosition(double aX, double aY, double aAngle);
 }

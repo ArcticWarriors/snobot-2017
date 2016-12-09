@@ -46,25 +46,34 @@ public class Snobot extends ASnobot
         mSubsystems.add(driverXbox);
 
         // Drive train
-//        CANTalon leftMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
-//        CANTalon leftMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_B_PORT);
-//        CANTalon rightMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
-//        CANTalon rightMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
-//        mDrivetrain = new SnobotDriveTrainWithCan(leftMotorA, leftMotorB, rightMotorA, rightMotorB, driverXbox, mLogger);
+        // CANTalon leftMotorA = new
+        // CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
+        // CANTalon leftMotorB = new
+        // CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_B_PORT);
+        // CANTalon rightMotorA = new
+        // CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
+        // CANTalon rightMotorB = new
+        // CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
+        // mDrivetrain = new SnobotDriveTrainWithCan(leftMotorA, leftMotorB,
+        // rightMotorA, rightMotorB, driverXbox, mLogger);
 
-		// Drive train
+        // Drive train
         Talon leftMotorA = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
         Talon leftMotorB = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
         Talon rightMotorA = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
         Talon rightMotorB = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
-		Encoder leftEncoder = new Encoder(
-				PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A,
-				PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
-		Encoder rightEncoder = new Encoder(
-				PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A,
-				PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
-        mDrivetrain = new SnobotDriveTrainWithEncoders(leftMotorA, leftMotorB, rightMotorA, rightMotorB, leftEncoder, rightEncoder, driverXbox, mLogger);
-        
+        Encoder leftEncoder = new Encoder(
+                PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A,
+                PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
+        Encoder rightEncoder = new Encoder(
+                PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A,
+                PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
+        mDrivetrain = new SnobotDriveTrainWithEncoders(
+                leftMotorA, leftMotorB, rightMotorA, rightMotorB, 
+                leftEncoder, rightEncoder, 
+                driverXbox,
+                mLogger);
+
         mSubsystems.add(mDrivetrain);
 
         // Positioner

@@ -12,24 +12,24 @@ public class TeachingRobotSimulator extends ASimulator
 
     public TeachingRobotSimulator()
     {
-		EncoderWrapper leftEncoder = SensorActuatorRegistry.get().getEncoder(4, 5);
-		SpeedControllerWrapper leftSC = SensorActuatorRegistry.get().getSpeedControllers().get(0);
-		leftSC.setMotorParameters(70);
-		leftEncoder.setSpeedController(leftSC);
+        EncoderWrapper leftEncoder = SensorActuatorRegistry.get().getEncoder(4, 5);
+        SpeedControllerWrapper leftSC = SensorActuatorRegistry.get().getSpeedControllers().get(0);
+        leftSC.setMotorParameters(70);
+        leftEncoder.setSpeedController(leftSC);
 
-		EncoderWrapper rightEncoder = SensorActuatorRegistry.get().getEncoder(1, 2);
-		SpeedControllerWrapper rightSC = SensorActuatorRegistry.get().getSpeedControllers().get(1);
-		rightSC.setMotorParameters(70);
-		rightEncoder.setSpeedController(rightSC);
+        EncoderWrapper rightEncoder = SensorActuatorRegistry.get().getEncoder(1, 2);
+        SpeedControllerWrapper rightSC = SensorActuatorRegistry.get().getSpeedControllers().get(1);
+        rightSC.setMotorParameters(70);
+        rightEncoder.setSpeedController(rightSC);
 
-		AnalogWrapper gyroAnalog;
-		AnalogWrapper gyroSpi;
+        AnalogWrapper gyroAnalog;
+        AnalogWrapper gyroSpi;
 
-		gyroAnalog = SensorActuatorRegistry.get().getAnalog().get(0);
-		gyroSpi = SensorActuatorRegistry.get().getAnalog().get(100);
+        gyroAnalog = SensorActuatorRegistry.get().getAnalog().get(0);
+        gyroSpi = SensorActuatorRegistry.get().getAnalog().get(100);
 
-		mSimulatorComponenets.add(new TankDriveGyroSimulator(leftEncoder, rightEncoder, gyroAnalog));
-		mSimulatorComponenets.add(new TankDriveGyroSimulator(rightEncoder, leftEncoder, gyroSpi));
+        mSimulatorComponenets.add(new TankDriveGyroSimulator(leftEncoder, rightEncoder, gyroAnalog));
+        mSimulatorComponenets.add(new TankDriveGyroSimulator(rightEncoder, leftEncoder, gyroSpi));
 
     }
 }

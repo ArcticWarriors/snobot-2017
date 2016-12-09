@@ -30,7 +30,6 @@ public class JoystickDiscoverer
         sAVAILABLE_SPECIALIZATIONS.put(KeyboardJoystick.class, "Keyboard");
     }
 
-
     private JoystickDiscoverer()
     {
 

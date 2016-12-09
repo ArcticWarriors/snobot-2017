@@ -51,7 +51,6 @@ public class RawJoystickPanel extends JPanel
                     mDigitalComponents.add(component);
                 }
             }
-            
 
             for (int i = 0; i < mAnalogComponents.size(); ++i)
             {
@@ -87,12 +86,10 @@ public class RawJoystickPanel extends JPanel
         }
     }
 
-
     private void initComponents()
     {
         digitalPanel = new JPanel();
         analogPanel = new JPanel();
     }
-
 
 }

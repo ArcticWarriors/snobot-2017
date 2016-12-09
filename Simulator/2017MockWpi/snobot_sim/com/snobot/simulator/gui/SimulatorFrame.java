@@ -17,7 +17,7 @@ public class SimulatorFrame extends JFrame
 
     private GraphicalSensorDisplayPanel mBasicPanel;
     private EnablePanel mEnablePanel;
-	private JButton mConfigureJoysticksBtn;
+    private JButton mConfigureJoysticksBtn;
 
     public SimulatorFrame()
     {
@@ -40,7 +40,7 @@ public class SimulatorFrame extends JFrame
     {
         mBasicPanel = new GraphicalSensorDisplayPanel();
         mEnablePanel = new EnablePanel();
-		mConfigureJoysticksBtn = new JButton("Configure Joysticks");
+        mConfigureJoysticksBtn = new JButton("Configure Joysticks");
 
         mEnablePanel.addStateChangedListener(new ActionListener()
         {
@@ -53,17 +53,19 @@ public class SimulatorFrame extends JFrame
             }
         });
 
-		mConfigureJoysticksBtn.addActionListener(new ActionListener() {
+        mConfigureJoysticksBtn.addActionListener(new ActionListener()
+        {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				showJoystickDialog();
-			}
-		});
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                showJoystickDialog();
+            }
+        });
 
-		add(mBasicPanel, BorderLayout.CENTER);
+        add(mBasicPanel, BorderLayout.CENTER);
         add(mEnablePanel, BorderLayout.NORTH);
-		add(mConfigureJoysticksBtn, BorderLayout.SOUTH);
+        add(mConfigureJoysticksBtn, BorderLayout.SOUTH);
 
         RobotStateSingleton.get().setDisabled(false);
         RobotStateSingleton.get().setAutonomous(false);
@@ -72,9 +74,10 @@ public class SimulatorFrame extends JFrame
         RobotStateSingleton.get().setDisabled(false);
     }
 
-	private void showJoystickDialog() {
-		JoystickManagerDialog dialog = new JoystickManagerDialog();
-		dialog.setModal(true);
-		dialog.setVisible(true);
-	}
+    private void showJoystickDialog()
+    {
+        JoystickManagerDialog dialog = new JoystickManagerDialog();
+        dialog.setModal(true);
+        dialog.setVisible(true);
+    }
 }

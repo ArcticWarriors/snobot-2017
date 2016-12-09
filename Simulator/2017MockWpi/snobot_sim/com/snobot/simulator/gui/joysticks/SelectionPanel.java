@@ -23,7 +23,7 @@ public class SelectionPanel extends JPanel
     {
         private int mJoystickIndex;
         private JComboBox<String> mComboBox;
-        
+
         public SinglePanel(int aIndex)
         {
             mJoystickIndex = aIndex;

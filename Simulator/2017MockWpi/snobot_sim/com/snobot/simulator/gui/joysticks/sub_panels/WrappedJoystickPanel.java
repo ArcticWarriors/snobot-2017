@@ -23,6 +23,7 @@ public class WrappedJoystickPanel extends JPanel
     {
         this(null);
     }
+
     public WrappedJoystickPanel(IMockJoystick aJoystick)
     {
         initComponents();
@@ -84,26 +85,23 @@ public class WrappedJoystickPanel extends JPanel
         }
     }
 
-
     private void initComponents()
     {
         digitalPanel = new JPanel();
         analogPanel = new JPanel();
 
         GroupLayout groupLayout = new GroupLayout(this);
-        groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(
-                groupLayout
-                        .createSequentialGroup()
-                        .addGroup(
-                                groupLayout.createParallelGroup(Alignment.LEADING)
-                                        .addComponent(analogPanel, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-                                        .addComponent(digitalPanel, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)).addGap(0)));
-        groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(
-                groupLayout.createSequentialGroup().addComponent(analogPanel, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+        groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                .addGroup(groupLayout.createSequentialGroup()
+                        .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                                .addComponent(analogPanel, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE).addComponent(digitalPanel,
+                                        GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
+                        .addGap(0)));
+        groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                .addGroup(groupLayout.createSequentialGroup().addComponent(analogPanel, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
                         .addPreferredGap(ComponentPlacement.RELATED).addComponent(digitalPanel, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                         .addGap(0)));
         setLayout(groupLayout);
     }
-
 
 }

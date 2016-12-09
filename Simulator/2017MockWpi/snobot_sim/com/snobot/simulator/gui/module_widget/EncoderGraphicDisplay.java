@@ -28,7 +28,7 @@ public class EncoderGraphicDisplay<T> extends BaseWidgetDisplay<T, EncoderWrappe
 
         public void updateDisplay(EncoderWrapper aValue)
         {
-            if(aValue.isHookedUp())
+            if (aValue.isHookedUp())
             {
                 DecimalFormat df = new DecimalFormat("#.###");
                 mRawField.setText("" + aValue.getRaw());

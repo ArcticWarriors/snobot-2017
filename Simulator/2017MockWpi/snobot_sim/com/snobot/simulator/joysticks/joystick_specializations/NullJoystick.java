@@ -2,7 +2,6 @@ package com.snobot.simulator.joysticks.joystick_specializations;
 
 import com.snobot.simulator.joysticks.IMockJoystick;
 
-
 public class NullJoystick implements IMockJoystick
 {
     public static final String sNAME = "Null Joystick";

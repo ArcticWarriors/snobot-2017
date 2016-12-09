@@ -64,7 +64,6 @@ public class XboxPanel extends JPanel
                 mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS), 115, 228);
         drawJoystick(g, mJoystick.getRawButton(XboxButtonMap.R3_BUTTON), mJoystick.getRawAxis(XboxButtonMap.RIGHT_X_AXIS),
                 mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS), 420, 330);
-        
 
         drawTrigger(g, mJoystick.getRawAxis(XboxButtonMap.LEFT_TRIGGER), 155, 40);
         drawTrigger(g, mJoystick.getRawAxis(XboxButtonMap.RIGHT_TRIGGER), 530, 40);

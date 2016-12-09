@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
  * 
  * @author jbnol_000
  *
- * Xbax Joystick class
+ *         Xbax Joystick class
  */
 public class SnobotDriveXboxJoystick implements IDriverJoystick
 {
@@ -22,7 +22,7 @@ public class SnobotDriveXboxJoystick implements IDriverJoystick
     /**
      * 
      * @param aJoystick
-     *                  The Joystick
+     *            The Joystick
      */
     public SnobotDriveXboxJoystick(Joystick aJoystick)
     {

@@ -1,6 +1,5 @@
 package com.snobot.simulator.module_wrapper;
 
-
 public class AnalogSpiWrapper extends AnalogWrapper
 {
 
