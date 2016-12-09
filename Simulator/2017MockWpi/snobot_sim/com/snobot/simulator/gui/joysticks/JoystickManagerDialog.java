@@ -67,6 +67,7 @@ public class JoystickManagerDialog extends JDialog
 
         setLayout(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setFocusable(false);
 
         JoystickFactory joystickFactory = JoystickFactory.get();
 
@@ -91,8 +92,8 @@ public class JoystickManagerDialog extends JDialog
 
         mSelectionPanel = new SelectionPanel(goodControllers.keySet(), joystickFactory.getAll());
 
-        add(tabbedPane, BorderLayout.CENTER);
         add(mSelectionPanel, BorderLayout.WEST);
+        add(tabbedPane, BorderLayout.CENTER);
     }
 
     public void close()

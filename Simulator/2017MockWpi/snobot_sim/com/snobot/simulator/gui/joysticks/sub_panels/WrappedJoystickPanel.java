@@ -61,19 +61,26 @@ public class WrappedJoystickPanel extends JPanel
 
     public void updateDisplay()
     {
-        short[] axisValues = mJoystick.getAxisValues();
-        int buttonMask = mJoystick.getButtonMask();
+        if (mJoystick != null)
+        {
+            short[] axisValues = mJoystick.getAxisValues();
+            int buttonMask = mJoystick.getButtonMask();
 
-        for (int i = 0; i < axisValues.length; ++i)
-        {
-            AnalogControllerInputPanel panel = mAnalogDisplays.get(i);
-            panel.setValue(axisValues[i]);
+            for (int i = 0; i < axisValues.length; ++i)
+            {
+                AnalogControllerInputPanel panel = mAnalogDisplays.get(i);
+                panel.setValue(axisValues[i]);
+            }
+            for (int i = 0; i < mJoystick.getButtonCount(); ++i)
+            {
+                DigitalControllerInputPanel panel = mDigitalDisplays.get(i);
+                boolean active = (buttonMask & (1 << i)) != 0;
+                panel.setValue(active);
+            }
         }
-        for (int i = 0; i < mJoystick.getButtonCount(); ++i)
+        else
         {
-            DigitalControllerInputPanel panel = mDigitalDisplays.get(i);
-            boolean active = (buttonMask & (1 << i)) != 0;
-            panel.setValue(active);
+            System.err.println("Joystick is null");
         }
     }
 

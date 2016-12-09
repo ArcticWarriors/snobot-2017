@@ -20,11 +20,6 @@ public class RawJoystickPanel extends JPanel
     private List<Component> mAnalogComponents;
     private List<Component> mDigitalComponents;
 
-    public RawJoystickPanel()
-    {
-        this(null);
-    }
-
     public RawJoystickPanel(Controller aJoystick)
     {
         initComponents();

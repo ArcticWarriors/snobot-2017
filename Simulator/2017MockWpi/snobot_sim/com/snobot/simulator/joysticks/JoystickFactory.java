@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -81,6 +83,12 @@ public class JoystickFactory
     @SuppressWarnings("unchecked")
     private void loadSticks()
     {
+        if (!Files.exists(Paths.get(sJOYSTICK_CONFIG_FILE)))
+        {
+            writeJoystickFile();
+            return;
+        }
+
         try
         {
             InputStream input_stream = new FileInputStream(sJOYSTICK_CONFIG_FILE);
@@ -118,12 +126,16 @@ public class JoystickFactory
 
     public void setSpecialization(String aName, Class<? extends IMockJoystick> aClass, boolean aAutoSave)
     {
-        mControllerConfig.get(aName).mSpecialization = aClass;
-
-        if (aAutoSave)
+        if (mControllerConfig.containsKey(aName))
         {
-            writeJoystickFile();
+            mControllerConfig.get(aName).mSpecialization = aClass;
+
+            if (aAutoSave)
+            {
+                writeJoystickFile();
+            }
         }
+
     }
 
     public IMockJoystick[] getAll()

@@ -27,6 +27,7 @@ public class JoystickDiscoverer
         sAVAILABLE_SPECIALIZATIONS.put(Ps4Joystick.class, "PS4");
         sAVAILABLE_SPECIALIZATIONS.put(GenericGamepadJoystick.class, "Generic Gamepad");
         sAVAILABLE_SPECIALIZATIONS.put(XboxJoystick.class, "XBOX");
+        sAVAILABLE_SPECIALIZATIONS.put(KeyboardJoystick.class, "Keyboard");
     }
 
 

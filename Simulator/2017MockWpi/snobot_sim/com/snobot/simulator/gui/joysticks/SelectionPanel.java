@@ -29,8 +29,11 @@ public class SelectionPanel extends JPanel
             mJoystickIndex = aIndex;
 
             mComboBox = new JComboBox<>();
+            mComboBox.setFocusable(false);
 
-            add(new JLabel("Joystick " + aIndex));
+            JLabel label = new JLabel("Joystick " + aIndex);
+
+            add(label);
             add(mComboBox);
         }
 

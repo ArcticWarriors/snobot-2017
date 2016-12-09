@@ -42,6 +42,7 @@ public class JoystickTabPanel extends JPanel
         if (JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.containsKey(aDefaultSpecialization))
         {
             mSelectInterperetTypeBox.setSelectedItem(JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.get(aDefaultSpecialization));
+            handleWrapperSelected(mSelectInterperetTypeBox.getSelectedItem().toString());
         }
         else
         {
@@ -52,7 +53,10 @@ public class JoystickTabPanel extends JPanel
     private void initComponents() throws IOException
     {
         JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setFocusable(false);
+
         mSelectInterperetTypeBox = new JComboBox<>();
+        mSelectInterperetTypeBox.setFocusable(false);
 
         // Raw Panel
         mRawPanel = new RawJoystickPanel(mController);

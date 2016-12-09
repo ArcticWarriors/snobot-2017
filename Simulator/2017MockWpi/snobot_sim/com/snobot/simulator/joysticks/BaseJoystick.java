@@ -2,7 +2,6 @@ package com.snobot.simulator.joysticks;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.hal.HAL;
 import net.java.games.input.Component;
 import net.java.games.input.Component.Identifier;
 import net.java.games.input.Controller;
@@ -110,8 +109,6 @@ public class BaseJoystick implements IMockJoystick
     @Override
     public short[] getPovValues()
     {
-        short[] output = new short[HAL.kMaxJoystickPOVs];
-
         int i;
         for (i = 0; i < mPOV.size(); ++i)
         {
@@ -122,21 +119,21 @@ public class BaseJoystick implements IMockJoystick
                 double value = component.getPollData();
                 if (value == 0)
                 {
-                    output[i] = -1;
+                    mPovValues[i] = -1;
                 }
                 else
                 {
-                    output[i] = (short) ((value - .25) * 360);
+                    mPovValues[i] = (short) ((value - .25) * 360);
                 }
             }
         }
 
-        for (; i < output.length; ++i)
+        for (; i < mPovValues.length; ++i)
         {
-            output[i] = -1;
+            mPovValues[i] = -1;
         }
 
-        return output;
+        return mPovValues;
     }
 
     public String getName()
@@ -160,14 +157,6 @@ public class BaseJoystick implements IMockJoystick
     @Override
     public double getRawAxis(int aIndex)
     {
-        double output = 0;
-
-        Component c = mController.getComponent(mAxis.get(aIndex));
-        if (c != null)
-        {
-            output = c.getPollData();
-        }
-
-        return output;
+        return mAxisValues[aIndex] / 127.0;
     }
 }
