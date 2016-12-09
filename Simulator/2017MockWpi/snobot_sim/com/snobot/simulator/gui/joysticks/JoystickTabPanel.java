@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.util.Map.Entry;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -13,10 +14,9 @@ import com.snobot.simulator.gui.joysticks.sub_panels.RawJoystickPanel;
 import com.snobot.simulator.gui.joysticks.sub_panels.WrappedJoystickPanel;
 import com.snobot.simulator.gui.joysticks.sub_panels.XboxPanel;
 import com.snobot.simulator.joysticks.IMockJoystick;
-import com.snobot.simulator.joysticks.joystick_specializations.GenericGamepadJoystick;
-import com.snobot.simulator.joysticks.joystick_specializations.KeyboardJoystick;
+import com.snobot.simulator.joysticks.JoystickDiscoverer;
+import com.snobot.simulator.joysticks.JoystickFactory;
 import com.snobot.simulator.joysticks.joystick_specializations.NullJoystick;
-import com.snobot.simulator.joysticks.joystick_specializations.Ps4Joystick;
 
 import net.java.games.input.Controller;
 import net.java.games.input.Controller.Type;
@@ -30,12 +30,23 @@ public class JoystickTabPanel extends JPanel
     private XboxPanel mXboxPanel;
 
     private Controller mController;
+    private String mJoystickName;
 
-    public JoystickTabPanel(Controller aController) throws IOException
+    public JoystickTabPanel(String aJoystickName, Controller aController, Class<?> aDefaultSpecialization) throws IOException
     {
         mController = aController;
+        mJoystickName = aJoystickName;
 
         initComponents();
+
+        if (JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.containsKey(aDefaultSpecialization))
+        {
+            mSelectInterperetTypeBox.setSelectedItem(JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.get(aDefaultSpecialization));
+        }
+        else
+        {
+            handleWrapperSelected(mSelectInterperetTypeBox.getItemAt(0));
+        }
     }
 
     private void initComponents() throws IOException
@@ -66,8 +77,10 @@ public class JoystickTabPanel extends JPanel
         }
         else
         {
-            mSelectInterperetTypeBox.addItem("PS4");
-            mSelectInterperetTypeBox.addItem("Generic Gamepad");
+            for (String name : JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.values())
+            {
+                mSelectInterperetTypeBox.addItem(name);
+            }
         }
 
         mSelectInterperetTypeBox.addItemListener(new ItemListener()
@@ -82,25 +95,28 @@ public class JoystickTabPanel extends JPanel
                 }
             }
         });
-
-        handleWrapperSelected(mSelectInterperetTypeBox.getItemAt(0));
     }
 
     private void handleWrapperSelected(String aType)
     {
         IMockJoystick wrappedJoystick = null;
 
-        switch (aType)
+        // Assuming values are unique as well as keys
+        for (Entry<Class<? extends IMockJoystick>, String> pair : JoystickDiscoverer.sAVAILABLE_SPECIALIZATIONS.entrySet())
         {
-        case "Keyboard":
-            wrappedJoystick = new KeyboardJoystick(mController);
-            break;
-        case "PS4":
-            wrappedJoystick = new Ps4Joystick(mController);
-            break;
-        case "Generic Gamepad":
-            wrappedJoystick = new GenericGamepadJoystick(mController);
-            break;
+            if (pair.getValue().equals(aType))
+            {
+                try
+                {
+                    JoystickFactory.get().setSpecialization(mJoystickName, pair.getKey());
+                    wrappedJoystick = pair.getKey().getDeclaredConstructor(Controller.class).newInstance(mController);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                break;
+            }
         }
 
         if (wrappedJoystick == null)

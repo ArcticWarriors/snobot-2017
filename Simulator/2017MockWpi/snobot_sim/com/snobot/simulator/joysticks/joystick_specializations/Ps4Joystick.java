@@ -46,6 +46,11 @@ public class Ps4Joystick extends BaseJoystick
 
     public Ps4Joystick(Controller aController)
     {
-        super("PS4", aController, Arrays.asList(sAXIS), Arrays.asList(sBUTTONS), Arrays.asList(sPOV));
+        this(aController, "PS4");
+    }
+
+    public Ps4Joystick(Controller aController, String aName)
+    {
+        super(aName, aController, Arrays.asList(sAXIS), Arrays.asList(sBUTTONS), Arrays.asList(sPOV));
     }
 }

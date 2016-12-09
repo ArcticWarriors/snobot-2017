@@ -42,6 +42,11 @@ public class KeyboardJoystick extends BaseJoystick
 
     public KeyboardJoystick(Controller aController)
     {
-        super("Keyboard", aController, Arrays.asList(sAXIS), Arrays.asList(sBUTTONS), Arrays.asList(sPOV));
+        this(aController, "Keyboard");
+    }
+
+    public KeyboardJoystick(Controller aController, String aName)
+    {
+        super(aName, aController, Arrays.asList(sAXIS), Arrays.asList(sBUTTONS), Arrays.asList(sPOV));
     }
 }

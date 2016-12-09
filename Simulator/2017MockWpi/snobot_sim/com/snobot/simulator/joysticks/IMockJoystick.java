@@ -19,4 +19,6 @@ public interface IMockJoystick
 
     double getRawAxis(int aIndex);
 
+    String getName();
+
 }

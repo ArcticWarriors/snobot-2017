@@ -55,6 +55,8 @@ public class WrappedJoystickPanel extends JPanel
                 digitalPanel.add(panel);
             }
         }
+
+        repaint();
     }
 
     public void updateDisplay()

@@ -5,6 +5,8 @@ import com.snobot.simulator.joysticks.IMockJoystick;
 
 public class NullJoystick implements IMockJoystick
 {
+    public static final String sNAME = "Null Joystick";
+
     private static final int sNUM_BUTTONS = 10;
     private static final int sNUM_AXIS = 6;
 
@@ -66,6 +68,12 @@ public class NullJoystick implements IMockJoystick
     public double getRawAxis(int aIndex)
     {
         return 0;
+    }
+
+    @Override
+    public String getName()
+    {
+        return sNAME;
     }
 
 }

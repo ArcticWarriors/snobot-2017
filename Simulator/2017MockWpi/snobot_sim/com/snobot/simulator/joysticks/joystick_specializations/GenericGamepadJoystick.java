@@ -9,9 +9,15 @@ import net.java.games.input.Controller;
 
 public class GenericGamepadJoystick extends BaseJoystick
 {
+
     public GenericGamepadJoystick(Controller aController)
     {
-        super("Generic Gamepad", aController, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        this(aController, "Generic Gamepad");
+    }
+
+    public GenericGamepadJoystick(Controller aController, String aName)
+    {
+        super(aName, aController, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         if (mController != null)
         {
