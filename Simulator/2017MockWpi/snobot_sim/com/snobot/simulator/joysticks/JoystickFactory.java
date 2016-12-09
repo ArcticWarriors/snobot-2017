@@ -190,4 +190,47 @@ public class JoystickFactory
         }
     }
 
+    public void registerJoystickCreated(int aPort)
+    {
+        if (mJoystickMap[aPort] instanceof NullJoystick)
+        {
+            tryToReplaceGamepad(aPort);
+        }
+    }
+
+    private IMockJoystick tryToReplaceGamepad(int aJoystickIndex)
+    {
+        IMockJoystick output = null;
+
+        for (Entry<String, ControllerConfiguration> pair : mControllerConfig.entrySet())
+        {
+            ControllerConfiguration configuration = pair.getValue();
+
+            if (configuration.mController == null)
+            {
+                continue;
+            }
+
+            boolean foundController = false;
+
+            for (IMockJoystick mockJoystick : mJoystickMap)
+            {
+                if (mockJoystick.getController() != null && mockJoystick.getController().equals(configuration.mController))
+                {
+                    foundController = true;
+                    break;
+                }
+            }
+
+            if (!foundController)
+            {
+                System.out.println("Replacing null joystick with '" + pair.getKey() + "'");
+                setJoysticks(aJoystickIndex, pair.getKey());
+                break;
+            }
+        }
+
+        return output;
+    }
+
 }

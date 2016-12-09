@@ -43,6 +43,10 @@ public class HAL extends JNIWrapper
         synchronized (sPROGRAM_STARTED_LOCK)
         {
             System.out.println("Robot Initialized");
+            System.out.println("*************************************************************");
+            System.out.println("*                    Starting Robot Code                    *");
+            System.out.println("*************************************************************");
+            System.out.println("\n\n");
             sPROGRAM_STARTED_LOCK.notify();
         }
     }
@@ -102,8 +106,11 @@ public class HAL extends JNIWrapper
     {
         if (resource == tResourceType.kResourceType_Solenoid)
         {
-            int port = (int) instanceNumber;
-            SensorActuatorRegistry.get().getSolenoids().get(port).setIsReal(true);
+            SensorActuatorRegistry.get().getSolenoids().get(instanceNumber).setIsReal(true);
+        }
+        else if (resource == tResourceType.kResourceType_Joystick)
+        {
+            JoystickFactory.get().registerJoystickCreated(instanceNumber);
         }
         return 0;
     }

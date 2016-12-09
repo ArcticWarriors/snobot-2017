@@ -2,6 +2,8 @@ package com.snobot.simulator.joysticks.joystick_specializations;
 
 import com.snobot.simulator.joysticks.IMockJoystick;
 
+import net.java.games.input.Controller;
+
 public class NullJoystick implements IMockJoystick
 {
     public static final String sNAME = "Null Joystick";
@@ -73,6 +75,12 @@ public class NullJoystick implements IMockJoystick
     public String getName()
     {
         return sNAME;
+    }
+
+    @Override
+    public Controller getController()
+    {
+        return null;
     }
 
 }

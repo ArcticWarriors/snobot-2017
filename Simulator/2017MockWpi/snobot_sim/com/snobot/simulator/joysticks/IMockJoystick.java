@@ -1,5 +1,7 @@
 package com.snobot.simulator.joysticks;
 
+import net.java.games.input.Controller;
+
 public interface IMockJoystick
 {
 
@@ -20,5 +22,7 @@ public interface IMockJoystick
     double getRawAxis(int aIndex);
 
     String getName();
+
+    Controller getController();
 
 }
