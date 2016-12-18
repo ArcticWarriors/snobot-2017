@@ -23,7 +23,7 @@ public class StaticLoadDcMotorSimTest
         System.out.println("Voltage=6V, Load=.01 kg*m^2");
         for (int i = 0; i < 1000; ++i)
         {
-            rs775.setAppliedVoltage(6.0);
+            rs775.setVoltagePercentage(.5);
             rs775.update(0.01);
 
             if (i % 100 == 0)
@@ -50,7 +50,7 @@ public class StaticLoadDcMotorSimTest
         System.out.println("Voltage=12V, Load=.01 kg*m^2");
         for (int i = 0; i < 1000; ++i)
         {
-            rs775.setAppliedVoltage(12.0);
+            rs775.setVoltagePercentage(1);
             rs775.update(0.01);
 
             if (i % 100 == 0)
@@ -77,7 +77,7 @@ public class StaticLoadDcMotorSimTest
         System.out.println("Voltage=12V, Load=1.0 kg*m^2");
         for (int i = 0; i < 1000; ++i)
         {
-            rs775.setAppliedVoltage(12.0);
+            rs775.setVoltagePercentage(1);
             rs775.update(0.01);
 
             if (i % 100 == 0)
@@ -103,7 +103,7 @@ public class StaticLoadDcMotorSimTest
         System.out.println("(2 motors) Voltage=12V, Load=1.0 kg*m^2");
         for (int i = 0; i < 1000; ++i)
         {
-            rs775.setAppliedVoltage(12.0);
+            rs775.setVoltagePercentage(1);
             rs775.update(0.01);
 
             if (i % 100 == 0)
@@ -129,7 +129,7 @@ public class StaticLoadDcMotorSimTest
         System.out.println("(2 motors, 80% efficient) Voltage=12V, Load=1.0 kg*m^2");
         for (int i = 0; i < 1000; ++i)
         {
-            rs775.setAppliedVoltage(12.0);
+            rs775.setVoltagePercentage(1);
             rs775.update(0.01);
 
             if (i % 100 == 0)
@@ -151,14 +151,14 @@ public class StaticLoadDcMotorSimTest
     @Test
     public void testRS775_Neg12VSmallLoad()
     {
-        DcMotorModel rs775 = MakeTransmission.makeTransmission(MotorFactory.makeRS775(), 1, 10.0, 1.0);
+        StaticLoadDcMotorSim rs775 = new StaticLoadDcMotorSim(getSingle775WithTransmission(1, 1.0), 1.0);
 
         // Go in reverse.
         System.out.println("Voltage=-12V, Load=1.0 kg*m^2");
-        rs775.reset(0, 0, 0);
         for (int i = 0; i < 1000; ++i)
         {
-            rs775.step(-12.0, 1.0, 0.0, 0.01);
+            rs775.setVoltagePercentage(-1);
+            rs775.update(0.01);
 
             if (i % 100 == 0)
             {
@@ -171,43 +171,5 @@ public class StaticLoadDcMotorSimTest
         assertEquals(rs775.getCurrent(), 48.912, 1E-3);
         assertEquals(rs775.getVelocity(), -59.329, 1E-1);
 
-    }
-
-    @Test
-    public void testGravity()
-    {
-        DcMotorModel rs775 = MakeTransmission.makeTransmission(MotorFactory.makeRS775(), 1, 10.0, 1.0);
-        System.out.println("Voltage=12V, Load=0.4 kg*m^2, .2m pulley against gravity");
-        for (int i = 0; i < 1000; ++i)
-        {
-            // Assume pulling against gravity.
-            // Load is a 1kg mass on .2m pulley.
-            rs775.step(12.0, 0.04, -9.8 / .2, 0.01);
-
-            if (i % 100 == 0)
-            {
-                System.out.print("Time: " + 0.01 * i);
-                System.out.print(", Position: " + rs775.getPosition());
-                System.out.print(", Velocity: " + rs775.getVelocity());
-                System.out.println(", Current: " + rs775.getCurrent());
-            }
-        }
-
-        System.out.println("Voltage=-12V, Load=0.4 kg*m^2, .2m pulley with gravity");
-        rs775.reset(0, 0, 0);
-        for (int i = 0; i < 1000; ++i)
-        {
-            // Assume pulling with gravity.
-            // Load is a 1kg mass on .2m pulley.
-            rs775.step(-12.0, 0.04, -9.8 / .2, 0.01);
-
-            if (i % 100 == 0)
-            {
-                System.out.print("Time: " + 0.01 * i);
-                System.out.print(", Position: " + rs775.getPosition());
-                System.out.print(", Velocity: " + rs775.getVelocity());
-                System.out.println(", Current: " + rs775.getCurrent());
-            }
-        }
     }
 }

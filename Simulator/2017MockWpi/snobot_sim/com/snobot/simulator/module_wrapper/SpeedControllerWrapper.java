@@ -21,12 +21,12 @@ public class SpeedControllerWrapper extends ASensorWrapper
 
     public double get()
     {
-        return mMotorSimulator.getAppliedVoltage();
+        return mMotorSimulator.getVoltagePercentage();
     }
 
     public void set(double speed)
     {
-        mMotorSimulator.setAppliedVoltage(speed);
+        mMotorSimulator.setVoltagePercentage(speed);
         mMotorSimulator.update(HAL.getCycleTime());
     }
 

@@ -5,7 +5,7 @@ public class StaticLoadDcMotorSim implements IMotorSimulator
     protected DcMotorModel mMotorModel;
     protected double mLoad;
 
-    protected double mAppliedVoltage;
+    protected double mVoltagePercentage;
 
 
     public StaticLoadDcMotorSim(DcMotorModel aModel, double aLoad)
@@ -17,19 +17,19 @@ public class StaticLoadDcMotorSim implements IMotorSimulator
     @Override
     public void update(double cycleTime)
     {
-        mMotorModel.step(mAppliedVoltage, mLoad, 0, cycleTime);
+        mMotorModel.step(mVoltagePercentage * 12, mLoad, 0, cycleTime);
     }
 
     @Override
-    public void setAppliedVoltage(double speed)
+    public void setVoltagePercentage(double speed)
     {
-        mAppliedVoltage = speed;
+        mVoltagePercentage = speed;
     }
 
     @Override
-    public double getAppliedVoltage()
+    public double getVoltagePercentage()
     {
-        return mAppliedVoltage;
+        return mVoltagePercentage;
     }
 
     @Override

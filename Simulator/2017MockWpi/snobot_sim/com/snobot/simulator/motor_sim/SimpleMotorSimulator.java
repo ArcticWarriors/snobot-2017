@@ -15,13 +15,13 @@ public class SimpleMotorSimulator implements IMotorSimulator
     }
 
     @Override
-    public void setAppliedVoltage(double speed)
+    public void setVoltagePercentage(double speed)
     {
         mVoltagePercent = speed;
     }
 
     @Override
-    public double getAppliedVoltage()
+    public double getVoltagePercentage()
     {
         return mVoltagePercent;
     }
