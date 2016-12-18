@@ -11,6 +11,8 @@ import com.snobot.simulator.gui.module_widget.RelayGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.SolenoidGraphicDisplay;
 import com.snobot.simulator.gui.module_widget.SpeedControllerGraphicDisplay;
 
+@SuppressWarnings(
+{ "rawtypes", "unchecked" })
 public class GraphicalSensorDisplayPanel extends JPanel
 {
     public GraphicalSensorDisplayPanel()

@@ -48,6 +48,7 @@ public class EncoderGraphicDisplay<T> extends BaseWidgetDisplay<T, EncoderWrappe
         setBorder(new TitledBorder(aString));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void update(Map<T, EncoderWrapper> aMap)
     {
