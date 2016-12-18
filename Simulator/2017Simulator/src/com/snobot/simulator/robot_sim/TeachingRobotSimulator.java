@@ -6,6 +6,7 @@ import com.snobot.simulator.module_wrapper.AnalogWrapper;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
 import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
 import com.snobot.simulator.module_wrapper.TankDriveGyroSimulator;
+import com.snobot.simulator.motor_sim.SimpleMotorSimulator;
 
 public class TeachingRobotSimulator extends ASimulator
 {
@@ -14,12 +15,12 @@ public class TeachingRobotSimulator extends ASimulator
     {
         EncoderWrapper leftEncoder = SensorActuatorRegistry.get().getEncoder(4, 5);
         SpeedControllerWrapper leftSC = SensorActuatorRegistry.get().getSpeedControllers().get(0);
-        leftSC.setMotorParameters(70);
+        leftSC.setMotorSimulator(new SimpleMotorSimulator(70));
         leftEncoder.setSpeedController(leftSC);
 
         EncoderWrapper rightEncoder = SensorActuatorRegistry.get().getEncoder(1, 2);
         SpeedControllerWrapper rightSC = SensorActuatorRegistry.get().getSpeedControllers().get(1);
-        rightSC.setMotorParameters(70);
+        rightSC.setMotorSimulator(new SimpleMotorSimulator(70));
         rightEncoder.setSpeedController(rightSC);
 
         AnalogWrapper gyroAnalog;
