@@ -13,14 +13,18 @@ public class TeachingRobotSimulator extends ASimulator
 
     public TeachingRobotSimulator()
     {
+        // double motor_speed = 120;
+        double motor_speed = 350;
+        // double motor_speed = 500;
+
         EncoderWrapper leftEncoder = SensorActuatorRegistry.get().getEncoder(4, 5);
         SpeedControllerWrapper leftSC = SensorActuatorRegistry.get().getSpeedControllers().get(0);
-        leftSC.setMotorSimulator(new SimpleMotorSimulator(70));
+        leftSC.setMotorSimulator(new SimpleMotorSimulator(motor_speed));
         leftEncoder.setSpeedController(leftSC);
 
         EncoderWrapper rightEncoder = SensorActuatorRegistry.get().getEncoder(1, 2);
         SpeedControllerWrapper rightSC = SensorActuatorRegistry.get().getSpeedControllers().get(1);
-        rightSC.setMotorSimulator(new SimpleMotorSimulator(70));
+        rightSC.setMotorSimulator(new SimpleMotorSimulator(motor_speed));
         rightEncoder.setSpeedController(rightSC);
 
         AnalogWrapper gyroAnalog;

@@ -78,7 +78,7 @@ public class EncoderJNI extends JNIWrapper
 
     public static double getEncoderDistance(int encoderHandle)
     {
-        return 0;
+        return getWrapperFromBuffer(encoderHandle).getDistance();
     }
 
     public static double getEncoderRate(int encoderHandle)

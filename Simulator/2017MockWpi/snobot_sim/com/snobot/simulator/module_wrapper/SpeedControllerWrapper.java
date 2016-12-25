@@ -12,6 +12,8 @@ public class SpeedControllerWrapper extends ASensorWrapper
     public SpeedControllerWrapper(int index)
     {
         super("Speed Controller " + index);
+        
+        mMotorSimulator = new IMotorSimulator.NullMotorSimulator();
     }
 
     public void setMotorSimulator(IMotorSimulator aSimulator)
