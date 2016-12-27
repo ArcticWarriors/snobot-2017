@@ -17,39 +17,37 @@ public interface IMotorSimulator
 
     public class NullMotorSimulator implements IMotorSimulator
     {
+        @Override
+        public void setVoltagePercentage(double speed)
+        {
+        }
 
-		@Override
-		public void setVoltagePercentage(double speed) {
-		}
-
-		@Override
+        @Override
         public double getVoltagePercentage()
         {
-			return 0;
-		}
+            return 0;
+        }
 
-		@Override
+        @Override
         public double getVelocity()
         {
-			return 0;
-		}
+            return 0;
+        }
 
-		@Override
+        @Override
         public double getPosition()
         {
-			return 0;
-		}
+            return 0;
+        }
 
-		@Override
+        @Override
         public void reset()
         {
-			
-		}
+        }
 
-		@Override
+        @Override
         public void update(double cycleTime)
         {
-		}
-    	
+        }
     }
 }

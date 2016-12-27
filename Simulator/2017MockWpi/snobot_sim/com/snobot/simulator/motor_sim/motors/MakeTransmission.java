@@ -4,15 +4,19 @@ import com.snobot.simulator.motor_sim.DcMotorModel;
 
 public class MakeTransmission
 {
-    public static DcMotorModel makeTransmission(
-            DcMotorModel motor, 
-            int num_motors,
-            double gear_reduction, 
-            double efficiency) 
+    public static DcMotorModel makeTransmission(DcMotorModel motor, int num_motors, double gear_reduction, double efficiency)
     {
-        return new DcMotorModel(
-                num_motors * gear_reduction * efficiency * motor.mKT, motor.mKV / gear_reduction, 
-                motor.mResistance / num_motors,
-                motor.mMotorInertia * num_motors * gear_reduction * gear_reduction);
+        DcMotorModel output = new DcMotorModel(
+                motor.NOMINAL_VOLTAGE,
+                motor.FREE_SPEED_RPM / gear_reduction,
+                motor.FREE_CURRENT  * num_motors,
+                motor.STALL_TORQUE  * num_motors,
+                motor.STALL_CURRENT * num_motors,
+                motor.mMotorInertia * num_motors * gear_reduction * gear_reduction
+                );
+
+        output.mKT *= efficiency * num_motors * gear_reduction;
+
+        return output;
     }
 }

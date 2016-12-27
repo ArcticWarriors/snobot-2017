@@ -5,13 +5,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.snobot.simulator.motor_sim.motors.MakeTransmission;
-import com.snobot.simulator.motor_sim.motors.MotorFactory;
+import com.snobot.simulator.motor_sim.motors.PublishedMotorFactory;
 
 public class StaticLoadDcMotorSimTest
 {
     private DcMotorModel getSingle775WithTransmission(int numMotors, double effiecency)
     {
-        return MakeTransmission.makeTransmission(MotorFactory.makeRS775(), numMotors, 10.0, effiecency);
+        return MakeTransmission.makeTransmission(PublishedMotorFactory.makeRS775(), numMotors, 10.0, effiecency);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class StaticLoadDcMotorSimTest
         // We expect negligible final current, and a final velocity of ~68.04
         // rad/sec.
         assertEquals(rs775.getCurrent(), 0.0, 1E-3);
-        assertEquals(rs775.getVelocity(), 68.04, 1E-2);
+        assertEquals(rs775.getVelocity(), 68.06, 1E-2);
 
     }
 
@@ -91,8 +91,8 @@ public class StaticLoadDcMotorSimTest
 
         // This is slower, so 1000 iterations isn't enough to get to steady
         // state
-        assertEquals(rs775.getCurrent(), 48.912, 1E-3);
-        assertEquals(rs775.getVelocity(), 59.329, 1E-1);
+        assertEquals(rs775.getCurrent(), 48.758, 1E-3);
+        assertEquals(rs775.getVelocity(), 59.59, 1E-1);
     }
 
     @Test
@@ -117,8 +117,8 @@ public class StaticLoadDcMotorSimTest
 
         // We expect the two motor version to move faster than the single motor
         // version.
-        assertEquals(rs775.getCurrent(), 17.599, 1E-3);
-        assertEquals(rs775.getVelocity(), 122.307, 1E-1);
+        assertEquals(rs775.getCurrent(), 17.378, 1E-3);
+        assertEquals(rs775.getVelocity(), 122.517, 1E-1);
     }
     @Test
     public void testDoubleRS775_80Efficiency_12VLargeLoad()
@@ -141,8 +141,8 @@ public class StaticLoadDcMotorSimTest
             }
         }
 
-        assertEquals(rs775.getCurrent(), 27.819, 1E-3);
-        assertEquals(rs775.getVelocity(), 114.29, 1E-1);
+        assertEquals(rs775.getCurrent(), 27.540, 1E-3);
+        assertEquals(rs775.getVelocity(), 114.545, 1E-1);
         // We expect the less efficient version to be slower.
         // assert (rs775.getVelocity() + EPS < final_velocity);
         // assert (rs775.getPosition() + EPS < final_position);
@@ -168,8 +168,8 @@ public class StaticLoadDcMotorSimTest
                 System.out.println(", Current: " + rs775.getCurrent());
             }
         }
-        assertEquals(rs775.getCurrent(), 48.912, 1E-3);
-        assertEquals(rs775.getVelocity(), -59.329, 1E-1);
+        assertEquals(rs775.getCurrent(), 48.758, 1E-3);
+        assertEquals(rs775.getVelocity(), -59.590, 1E-1);
 
     }
 }

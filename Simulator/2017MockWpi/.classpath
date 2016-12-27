@@ -5,11 +5,6 @@
 	<classpathentry kind="src" path="snobot_sim"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="3rdParyLibraries/jinput.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/3rdParyLibraries"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="templibs/ntcore-windows.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/templibs/x64"/>
@@ -18,5 +13,12 @@
 	<classpathentry kind="lib" path="templibs/opencv-2413.jar"/>
 	<classpathentry kind="lib" path="templibs/cscore-windows.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="3rdParyLibraries/jinput/jinput.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/3rdParyLibraries/jinput"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="3rdParyLibraries/jfreechart/jcommon-1.0.17.jar"/>
+	<classpathentry kind="lib" path="3rdParyLibraries/jfreechart/jfreechart-1.0.14.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

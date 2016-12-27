@@ -4,50 +4,40 @@ package com.snobot.simulator.motor_sim;
 public class DcMotorModel
 {
 
+    // Motor Parameters
+    public final double NOMINAL_VOLTAGE;
+    public final double FREE_SPEED_RPM;
+    public final double FREE_CURRENT;
+    public final double STALL_TORQUE;
+    public final double STALL_CURRENT;
+
     // Motor constants
-    public final double mKT;
-    public final double mKV;
-    public final double mResistance;
-    public final double mMotorInertia;
+    public double mKT;
+    public double mKV;
+    public double mResistance;
+    public double mMotorInertia;
 
     // Current motor state
     protected double mPosition;
     protected double mVelocity;
     protected double mCurrent;
 
-    /**
-     * Simulate a simple DC motor.
-     * 
-     * @param kt
-     *            Torque constant (N*m / amp)
-     * @param kv
-     *            Voltage constant (rad/sec / V)
-     * @param resistance
-     *            (ohms)
-     * @param inertia
-     *            (kg*m^2)
-     */
-    public DcMotorModel(double kt, double kv, double resistance, double inertia)
+    public DcMotorModel(double aNominalVoltage, double aFreeSpeedRpm, double aFreeCurrent, double aStallTorque, double aStallCurrent,
+            double aMotorInertia)
     {
-        mKT = kt;
-        mKV = kv;
-        mResistance = resistance;
-        mMotorInertia = inertia;
-    }
+        NOMINAL_VOLTAGE = aNominalVoltage;
+        FREE_SPEED_RPM = aFreeSpeedRpm;
+        FREE_CURRENT = aFreeCurrent;
+        STALL_TORQUE = aStallTorque;
+        STALL_CURRENT = aStallCurrent;
 
-    /**
-     * Simulate a simple DC motor.
-     * 
-     * @param kt
-     *            Torque constant (N*m / amp)
-     * @param kv
-     *            Voltage constant (rad/sec / V)
-     * @param resistance
-     *            (ohms)
-     */
-    public DcMotorModel(double kt, double kv, double resistance)
-    {
-        this(kt, kv, resistance, 0);
+        mKT = aStallTorque / aStallCurrent;
+        mKV = (aFreeSpeedRpm / aNominalVoltage) * (Math.PI * 2.0) / 60.0;
+        mResistance = aNominalVoltage / aStallCurrent;
+        mMotorInertia = aMotorInertia;
+
+        // System.out.println("NEW: " + mKT + ", " + mKV + ", " + mResistance +
+        // ", " + mMotorInertia);
     }
 
     /**
@@ -75,7 +65,7 @@ public class DcMotorModel
      * @param timestep
      *            How long the input is applied (s)
      */
-    protected void step(double applied_voltage, double load, double external_torque, double timestep)
+    public void step(double applied_voltage, double load, double external_torque, double timestep)
     {
         /*
          * Using the 971-style first order system model. V = I * R + Kv * w
