@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -117,22 +116,30 @@ public class Snobot extends IterativeRobot
     public void autonomousInit()
     {
         mTimer.start();
+        mRightEncoder.reset();
+        mLeftEncoder.reset();
     }
 
     public void autonomousPeriodic()
     {
-        if (mTimer.get() < 2)
+        double distance = mRightEncoder.getDistance();
+        double desDistance = 408;
+        double deadband = 1;
+        double speed = .8;
+
+        if (distance + deadband > desDistance && distance - deadband < desDistance)
         {
-            mRelay.set(Value.kForward);
+            mTestMotor1.set(0);
         }
-        else if (mTimer.get() < 4)
+        else if (distance < desDistance)
         {
-            mRelay.set(Value.kReverse);
+            mTestMotor1.set(speed);
         }
         else
         {
-            mRelay.set(Value.kOn);
+            mTestMotor1.set(-speed);
         }
+        System.out.println(mRightEncoder.getDistance());
     }
 
     /**
@@ -144,7 +151,7 @@ public class Snobot extends IterativeRobot
 
         if (mJoystick1.getRawButton(1))
         {
-            mTestMotor1.set(speed);
+            mTestMotor1.set(1);
         }
         else
         {
