@@ -44,6 +44,11 @@ public class StaticLoadDcMotorSim implements IMotorSimulator
         return mMotorModel.getPosition();
     }
 
+    public double getAcceleration()
+    {
+        return mMotorModel.getAcceleration();
+    }
+
     @Override
     public void reset()
     {

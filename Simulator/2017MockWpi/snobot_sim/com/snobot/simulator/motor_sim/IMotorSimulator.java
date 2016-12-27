@@ -7,6 +7,8 @@ public interface IMotorSimulator
 
     double getVoltagePercentage();
 
+    double getAcceleration();
+
     double getVelocity();
 
     double getPosition();
@@ -24,6 +26,12 @@ public interface IMotorSimulator
 
         @Override
         public double getVoltagePercentage()
+        {
+            return 0;
+        }
+
+        @Override
+        public double getAcceleration()
         {
             return 0;
         }

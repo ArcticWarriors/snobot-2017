@@ -20,6 +20,7 @@ public class DcMotorModel
     // Current motor state
     protected double mPosition;
     protected double mVelocity;
+    protected double mAcceleration;
     protected double mCurrent;
 
     public DcMotorModel(double aNominalVoltage, double aFreeSpeedRpm, double aFreeCurrent, double aStallTorque, double aStallCurrent,
@@ -76,10 +77,10 @@ public class DcMotorModel
          * dw/dt = (V - Kv * w) * Kt / (R * J) - external_torque / J
          */
         load += mMotorInertia;
-        double acceleration = (applied_voltage - mVelocity / mKV) * mKT / (mResistance * load) + external_torque / load;
-        mVelocity += acceleration * timestep;
-        mPosition += mVelocity * timestep + .5 * acceleration * timestep * timestep;
-        mCurrent = load * acceleration * Math.signum(applied_voltage) / mKT;
+        mAcceleration = (applied_voltage - mVelocity / mKV) * mKT / (mResistance * load) + external_torque / load;
+        mVelocity += mAcceleration * timestep;
+        mPosition += mVelocity * timestep + .5 * mAcceleration * timestep * timestep;
+        mCurrent = load * mAcceleration * Math.signum(applied_voltage) / mKT;
     }
 
     public double getPosition()
@@ -95,6 +96,11 @@ public class DcMotorModel
     public double getCurrent()
     {
         return mCurrent;
+    }
+
+    public double getAcceleration()
+    {
+        return mAcceleration;
     }
 
 }

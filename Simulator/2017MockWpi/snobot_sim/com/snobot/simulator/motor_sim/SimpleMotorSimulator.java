@@ -27,6 +27,12 @@ public class SimpleMotorSimulator implements IMotorSimulator
     }
 
     @Override
+    public double getAcceleration()
+    {
+        return 0;
+    }
+
+    @Override
     public double getVelocity()
     {
         return mVelocity;
