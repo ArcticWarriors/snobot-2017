@@ -14,7 +14,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import com.snobot.simulator.motor_sim.DcMotorModel;
-import com.snobot.simulator.motor_sim.StaticLoadDcMotorSim;
+import com.snobot.simulator.motor_sim.GravityLoadDcMotorSim;
+import com.snobot.simulator.motor_sim.IMotorSimulator;
 import com.snobot.simulator.motor_sim.motors.MakeTransmission;
 import com.snobot.simulator.motor_sim.motors.VexMotorFactory;
 
@@ -33,8 +34,8 @@ public class MotorResponsePlotter extends JPanel
         series.addSeries(velocityPoints);
         // series.addSeries(positionPoints);
 
-        double gearReduction = 15;
-        double load = 1.5;
+        double gearReduction = 10;
+        double load = .01;
 
         double spinUpVoltage = 1;
         double spinDownVoltage = 0;
@@ -43,10 +44,13 @@ public class MotorResponsePlotter extends JPanel
         double spinDownTime = 30;
         double dt = .002;
 
-        DcMotorModel rawMotor = VexMotorFactory.makeCIMMotor();
+        // DcMotorModel rawMotor = VexMotorFactory.makeCIMMotor();
+        DcMotorModel rawMotor = VexMotorFactory.makeBaneBotsRS775();
         DcMotorModel transMotor = MakeTransmission.makeTransmission(rawMotor, 1, gearReduction, 1);
 
-        StaticLoadDcMotorSim motorSim = new StaticLoadDcMotorSim(transMotor, load);
+        // IMotorSimulator motorSim = new StaticLoadDcMotorSim(transMotor,
+        // load);
+        IMotorSimulator motorSim = new GravityLoadDcMotorSim(transMotor, load);
 
         double t = 0;
         for (; t < spinUpTime; t += dt)

@@ -36,8 +36,18 @@ public class SpeedControllerWrapper extends ASensorWrapper
         return mMotorSimulator.getPosition();
     }
 
-    public void resetDistance()
+    public double getVelocity()
+    {
+        return mMotorSimulator.getVelocity();
+    }
+
+    public void reset()
     {
         mMotorSimulator.reset();
+    }
+
+    public void reset(double aPosition, double aVelocity, double aCurrent)
+    {
+        mMotorSimulator.reset(aPosition, aVelocity, aCurrent);
     }
 }

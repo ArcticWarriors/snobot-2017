@@ -47,7 +47,14 @@ public class SimpleMotorSimulator implements IMotorSimulator
     @Override
     public void reset()
     {
-        mPosition = mVelocity = 0;
+        reset(0, 0, 0);
+    }
+
+    @Override
+    public void reset(double aPosition, double aVelocity, double aCurrent)
+    {
+        mPosition = aPosition;
+        mVelocity = aVelocity;
     }
 
     @Override

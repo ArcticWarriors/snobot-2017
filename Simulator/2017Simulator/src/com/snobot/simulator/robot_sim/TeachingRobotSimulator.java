@@ -17,7 +17,8 @@ public class TeachingRobotSimulator extends ASimulator
     public TeachingRobotSimulator()
     {
         double load = .1;
-        double gearReduction = 1;
+        // double gearReduction = 1;
+        double gearReduction = 10;
 
         EncoderWrapper leftEncoder = SensorActuatorRegistry.get().getEncoder(4, 5);
         SpeedControllerWrapper leftSC = SensorActuatorRegistry.get().getSpeedControllers().get(0);
@@ -30,7 +31,7 @@ public class TeachingRobotSimulator extends ASimulator
         EncoderWrapper rightEncoder = SensorActuatorRegistry.get().getEncoder(1, 2);
         SpeedControllerWrapper rightSC = SensorActuatorRegistry.get().getSpeedControllers().get(1);
         DcMotorModel rightMotor = VexMotorFactory.makeCIMMotor();
-        rightMotor = MakeTransmission.makeTransmission(leftMotor, 2, gearReduction, 1.0);
+        rightMotor = MakeTransmission.makeTransmission(rightMotor, 2, gearReduction, 1.0);
         rightSC.setMotorSimulator(new StaticLoadDcMotorSim(rightMotor, load));
         // rightSC.setMotorSimulator(new SimpleMotorSimulator(70));
         rightEncoder.setSpeedController(rightSC);

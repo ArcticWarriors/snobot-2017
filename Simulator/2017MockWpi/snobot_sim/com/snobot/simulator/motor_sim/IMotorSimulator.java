@@ -3,7 +3,7 @@ package com.snobot.simulator.motor_sim;
 public interface IMotorSimulator
 {
 
-    void setVoltagePercentage(double speed);
+    void setVoltagePercentage(double aSpeed);
 
     double getVoltagePercentage();
 
@@ -15,13 +15,16 @@ public interface IMotorSimulator
 
     void reset();
 
-    void update(double cycleTime);
+    void reset(double aPosition, double aVelocity, double aCurrent);
+
+    void update(double aCycleTime);
 
     public class NullMotorSimulator implements IMotorSimulator
     {
         @Override
         public void setVoltagePercentage(double speed)
         {
+
         }
 
         @Override
@@ -54,8 +57,16 @@ public interface IMotorSimulator
         }
 
         @Override
+        public void reset(double aPosition, double aVelocity, double aCurrent)
+        {
+
+        }
+
+        @Override
         public void update(double cycleTime)
         {
+
         }
+
     }
 }

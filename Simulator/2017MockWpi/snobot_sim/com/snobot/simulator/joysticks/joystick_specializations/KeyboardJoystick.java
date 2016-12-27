@@ -26,7 +26,6 @@ public class KeyboardJoystick extends BaseJoystick
 
     private static final Identifier[] sBUTTONS = new Identifier[]
     {
-            Identifier.Key._0,
             Identifier.Key._1,
             Identifier.Key._2,
             Identifier.Key._3,
@@ -36,6 +35,7 @@ public class KeyboardJoystick extends BaseJoystick
             Identifier.Key._7,
             Identifier.Key._8,
             Identifier.Key._9,
+            Identifier.Key._0,
     };
 
     private static final Identifier[] sPOV = new Identifier[] {

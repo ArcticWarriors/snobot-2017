@@ -41,7 +41,7 @@ public class EncoderWrapper extends ASensorWrapper
     {
         if (mMotorWrapper != null)
         {
-            mMotorWrapper.resetDistance();
+            mMotorWrapper.reset();
         }
     }
 
