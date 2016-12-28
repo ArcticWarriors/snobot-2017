@@ -1,5 +1,9 @@
 package com.snobot.simulator.motor_sim;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.junit.Test;
 
 import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
@@ -8,38 +12,31 @@ import com.snobot.simulator.motor_sim.motors.PublishedMotorFactory;
 
 public class RotationalLoadDcMotorSimTest
 {
-    private DcMotorModel getSingle775WithTransmission(int numMotors, double effiecency)
-    {
-        return MakeTransmission.makeTransmission(PublishedMotorFactory.makeRS775(), numMotors, 10.0, effiecency);
-    }
-
     @Test
-    public void testMotor()
+    public void testMotor() throws IOException
     {
-        int motors = 1;
-        double efficiency = .1;
-        double load = 109;
-        double centerOfMass = 0;
+        double dt = .0001;
 
-        SpeedControllerWrapper wrapper = new SpeedControllerWrapper(0);
-        IMotorSimulator motorSim = new RotationalLoadDcMotorSim(getSingle775WithTransmission(motors, efficiency), wrapper, load, centerOfMass);
+        double armCenterOfMass = .82;  // m
+        double armMass = .2;  // kg
+        double constantAssistTorque = 0.0;  // N*m
+        double overCenterAssistTorque = 0.0;  // N*m
+
+        SpeedControllerWrapper wrapper = new SpeedControllerWrapper(0, dt);
+
+        DcMotorModel motor = MakeTransmission.makeTransmission(PublishedMotorFactory.makeRS775(), 2, 77.0, .8);
+        IMotorSimulator motorSim = new RotationalLoadDcMotorSim(motor, wrapper, armCenterOfMass, armMass, constantAssistTorque, overCenterAssistTorque);
         wrapper.setMotorSimulator(motorSim);
 
-        for (int i = 0; i < 10; ++i)
-        {
-            wrapper.set(.5);
+        BufferedWriter bw = new BufferedWriter(new FileWriter("test.txt"));
 
-            if (i % 1 == 0)
-            {
-                System.out.print("Time: " + 0.01 * i);
-                System.out.print(", Position: " + wrapper.getPosition());
-                System.out.print(", Velocity: " + wrapper.getVelocity());
-                // System.out.println(", Current: " + rs775.getCurrent());
-                System.out.println();
-            }
+        for (int i = 0; i < 1136; ++i)
+        {
+            wrapper.set(1);
+            bw.write(i * dt + ", " + motor.getPosition() + ", " + motor.getVelocity() + ", " + motor.getCurrent() + ", " + "\n");
         }
 
-        System.out.println(motorSim);
+        bw.close();
     }
 
 }

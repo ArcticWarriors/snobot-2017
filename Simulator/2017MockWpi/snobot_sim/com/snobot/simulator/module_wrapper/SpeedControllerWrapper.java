@@ -7,11 +7,19 @@ import edu.wpi.first.wpilibj.hal.HAL;
 public class SpeedControllerWrapper extends ASensorWrapper
 {
 
+    private final double mWaitTime;
     private IMotorSimulator mMotorSimulator;
 
     public SpeedControllerWrapper(int index)
     {
+        this(index, HAL.getCycleTime());
+    }
+
+    public SpeedControllerWrapper(int index, double aWaitTime)
+    {
         super("Speed Controller " + index);
+
+        mWaitTime = aWaitTime;
         mMotorSimulator = new IMotorSimulator.NullMotorSimulator();
     }
 
@@ -28,7 +36,7 @@ public class SpeedControllerWrapper extends ASensorWrapper
     public void set(double speed)
     {
         mMotorSimulator.setVoltagePercentage(speed);
-        mMotorSimulator.update(HAL.getCycleTime());
+        mMotorSimulator.update(mWaitTime);
     }
 
     public double getPosition()
