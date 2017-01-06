@@ -20,7 +20,6 @@ public class SPIJNI extends JNIWrapper
     public static void spiInitialize(byte port)
     {
         int conv_port = port + 100;
-        AnalogSpiWrapper spiWrapper = new AnalogSpiWrapper(conv_port);
         SensorActuatorRegistry.get().register(new AnalogSpiWrapper(conv_port), conv_port);
     }
 

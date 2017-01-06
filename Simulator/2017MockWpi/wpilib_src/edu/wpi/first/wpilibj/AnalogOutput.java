@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.util.AllocationException;
 
 /**
  * Analog output class.
@@ -46,6 +45,13 @@ public class AnalogOutput extends SensorBase implements LiveWindowSendable {
     AnalogJNI.freeAnalogOutputPort(m_port);
     m_port = 0;
     m_channel = 0;
+  }
+
+  /**
+   * Get the channel of this AnalogOutput.
+   */
+  public int getChannel() {
+    return m_channel;
   }
 
   public void setVoltage(double voltage) {

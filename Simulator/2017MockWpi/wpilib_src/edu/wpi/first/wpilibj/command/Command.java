@@ -9,7 +9,6 @@ package edu.wpi.first.wpilibj.command;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import java.util.Vector;
 
 import edu.wpi.first.wpilibj.NamedSendable;
 import edu.wpi.first.wpilibj.RobotState;
@@ -385,6 +384,15 @@ public abstract class Command implements NamedSendable {
     if (m_table != null) {
       m_table.putBoolean("isParented", true);
     }
+  }
+
+  /**
+   * Clears list of subsystem requirements. This is only used by
+   * {@link ConditionalCommand} so cancelling the chosen command works properly
+   * in {@link CommandGroup}.
+   */
+  protected void clearRequirements() {
+    m_requirements = new Set();
   }
 
   /**

@@ -7,22 +7,27 @@
 
 package edu.wpi.first.wpilibj;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CameraServerJNI;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoEvent;
 import edu.wpi.cscore.VideoException;
 import edu.wpi.cscore.VideoListener;
 import edu.wpi.cscore.VideoMode;
+import edu.wpi.cscore.VideoMode.PixelFormat;
+import edu.wpi.cscore.VideoProperty;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.tables.ITable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Singleton class for creating and keeping camera servers.
@@ -56,8 +61,8 @@ public class CameraServer {
   private HashMap<String, VideoSink> m_sinks;
   private HashMap<Integer, ITable> m_tables;  // indexed by source handle
   private ITable m_publishTable;
-  private VideoListener m_videoListener;
-  private int m_tableListener;
+  private VideoListener m_videoListener; //NOPMD
+  private int m_tableListener; //NOPMD
   private int m_nextPort;
   private String[] m_addresses;
 
@@ -65,12 +70,19 @@ public class CameraServer {
   private static String makeSourceValue(int source) {
     switch (VideoSource.getKindFromInt(CameraServerJNI.getSourceKind(source))) {
       case kUsb:
-			return "usb:" + CameraServerJNI.getUsbCameraPath(source);
-      case kHttp:
-        // TODO
-        return "ip:";
+        return "usb:" + CameraServerJNI.getUsbCameraPath(source);
+      case kHttp: {
+        String[] urls = CameraServerJNI.getHttpCameraUrls(source);
+        if (urls.length > 0) {
+          return "ip:" + urls[0];
+        } else {
+          return "ip:";
+        }
+      }
       case kCv:
-        return "cv:";
+        // FIXME: Should be "cv:", but LabVIEW dashboard requires "usb:".
+        // https://github.com/wpilibsuite/allwpilib/issues/407
+        return "usb:";
       default:
         return "unknown:";
     }
@@ -86,49 +98,242 @@ public class CameraServer {
     return m_tables.get(source);
   }
 
-  @SuppressWarnings("JavadocMethod")
+  @SuppressWarnings({"JavadocMethod", "PMD.AvoidUsingHardCodedIP"})
+  private synchronized String[] getSinkStreamValues(int sink) {
+    // Ignore all but MjpegServer
+    if (VideoSink.getKindFromInt(CameraServerJNI.getSinkKind(sink)) != VideoSink.Kind.kMjpeg) {
+      return new String[0];
+    }
+
+    // Get port
+    int port = CameraServerJNI.getMjpegServerPort(sink);
+
+    // Generate values
+    ArrayList<String> values = new ArrayList<String>(m_addresses.length + 1);
+    String listenAddress = CameraServerJNI.getMjpegServerListenAddress(sink);
+    if (!listenAddress.isEmpty()) {
+      // If a listen address is specified, only use that
+      values.add(makeStreamValue(listenAddress, port));
+    } else {
+      // Otherwise generate for hostname and all interface addresses
+      values.add(makeStreamValue(CameraServerJNI.getHostname() + ".local", port));
+      for (String addr : m_addresses) {
+        if (addr.equals("127.0.0.1")) {
+          continue;  // ignore localhost
+        }
+        values.add(makeStreamValue(addr, port));
+      }
+    }
+
+    return values.toArray(new String[0]);
+  }
+
+  @SuppressWarnings({"JavadocMethod", "PMD.AvoidUsingHardCodedIP"})
+  private synchronized String[] getSourceStreamValues(int source) {
+    // Ignore all but HttpCamera
+    if (VideoSource.getKindFromInt(CameraServerJNI.getSourceKind(source))
+            != VideoSource.Kind.kHttp) {
+      return new String[0];
+    }
+
+    // Generate values
+    String[] values = CameraServerJNI.getHttpCameraUrls(source);
+    for (int j = 0; j < values.length; j++) {
+      values[j] = "mjpg:" + values[j];
+    }
+
+    // Look to see if we have a passthrough server for this source
+    for (VideoSink i : m_sinks.values()) {
+      int sink = i.getHandle();
+      int sinkSource = CameraServerJNI.getSinkSource(sink);
+      if (source == sinkSource
+          && VideoSink.getKindFromInt(CameraServerJNI.getSinkKind(sink)) == VideoSink.Kind.kMjpeg) {
+        // Add USB-only passthrough
+        String[] finalValues = new String[values.length + 1];
+        for (int j = 0; j < values.length; j++) {
+          finalValues[j] = values[j];
+        }
+        int port = CameraServerJNI.getMjpegServerPort(sink);
+        finalValues[values.length] = makeStreamValue("172.22.11.2", port);
+        return finalValues;
+      }
+    }
+
+    return values;
+  }
+
+  @SuppressWarnings({"JavadocMethod", "PMD.AvoidUsingHardCodedIP"})
   private synchronized void updateStreamValues() {
     // Over all the sinks...
     for (VideoSink i : m_sinks.values()) {
-			// Ignore all but MjpegServer
-      if (i.getKind() != VideoSink.Kind.kMjpeg) {
-        continue;
-      }
       int sink = i.getHandle();
 
       // Get the source's subtable (if none exists, we're done)
       int source = CameraServerJNI.getSinkSource(sink);
-      ITable table = m_tables.get(source);
-      if (table == null) {
+      if (source == 0) {
         continue;
       }
+      ITable table = m_tables.get(source);
+      if (table != null) {
+        // Don't set stream values if this is a HttpCamera passthrough
+        if (VideoSource.getKindFromInt(CameraServerJNI.getSourceKind(source))
+            == VideoSource.Kind.kHttp) {
+          continue;
+        }
 
-      // Get port
-			int port = CameraServerJNI.getMjpegServerPort(sink);
-
-      // Generate values
-      ArrayList<String> values = new ArrayList<String>(m_addresses.length + 1);
-			String listenAddress = CameraServerJNI.getMjpegServerListenAddress(sink);
-      if (!listenAddress.isEmpty()) {
-        // If a listen address is specified, only use that
-        values.add(makeStreamValue(listenAddress, port));
-      } else {
-        // Otherwise generate for hostname and all interface addresses
-        values.add(makeStreamValue(CameraServerJNI.getHostname() + ".local", port));
-        for (String addr : m_addresses) {
-          if (addr.equals("127.0.0.1")) {
-            continue;  // ignore localhost
-          }
-          values.add(makeStreamValue(addr, port));
+        // Set table value
+        String[] values = getSinkStreamValues(sink);
+        if (values.length > 0) {
+          table.putStringArray("streams", values);
         }
       }
+    }
 
-      // Set table value
-      table.putStringArray("streams", values.toArray(new String[0]));
+    // Over all the sources...
+    for (VideoSource i : m_sources.values()) {
+      int source = i.getHandle();
+
+      // Get the source's subtable (if none exists, we're done)
+      ITable table = m_tables.get(source);
+      if (table != null) {
+        // Set table value
+        String[] values = getSourceStreamValues(source);
+        if (values.length > 0) {
+          table.putStringArray("streams", values);
+        }
+      }
     }
   }
 
   @SuppressWarnings("JavadocMethod")
+  private static String pixelFormatToString(PixelFormat pixelFormat) {
+    switch (pixelFormat) {
+      case kMJPEG:
+        return "MJPEG";
+      case kYUYV:
+        return "YUYV";
+      case kRGB565:
+        return "RGB565";
+      case kBGR:
+        return "BGR";
+      case kGray:
+        return "Gray";
+      default:
+        return "Unknown";
+    }
+  }
+
+  @SuppressWarnings("JavadocMethod")
+  private static PixelFormat pixelFormatFromString(String pixelFormatStr) {
+    switch (pixelFormatStr) {
+      case "MJPEG":
+      case "mjpeg":
+      case "JPEG":
+      case "jpeg":
+        return PixelFormat.kMJPEG;
+      case "YUYV":
+      case "yuyv":
+        return PixelFormat.kYUYV;
+      case "RGB565":
+      case "rgb565":
+        return PixelFormat.kRGB565;
+      case "BGR":
+      case "bgr":
+        return PixelFormat.kBGR;
+      case "GRAY":
+      case "Gray":
+      case "gray":
+        return PixelFormat.kGray;
+      default:
+        return PixelFormat.kUnknown;
+    }
+  }
+
+  private static final Pattern reMode =
+      Pattern.compile("(?<width>[0-9]+)\\s*x\\s*(?<height>[0-9]+)\\s+(?<format>.*?)\\s+"
+          + "(?<fps>[0-9.]+)\\s*fps");
+
+  /// Construct a video mode from a string description.
+  @SuppressWarnings("JavadocMethod")
+  private static VideoMode videoModeFromString(String modeStr) {
+    Matcher matcher = reMode.matcher(modeStr);
+    if (!matcher.matches()) {
+      return new VideoMode(PixelFormat.kUnknown, 0, 0, 0);
+    }
+    PixelFormat pixelFormat = pixelFormatFromString(matcher.group("format"));
+    int width = Integer.parseInt(matcher.group("width"));
+    int height = Integer.parseInt(matcher.group("height"));
+    int fps = (int) Double.parseDouble(matcher.group("fps"));
+    return new VideoMode(pixelFormat, width, height, fps);
+  }
+
+  /// Provide string description of video mode.
+  /// The returned string is "{width}x{height} {format} {fps} fps".
+  @SuppressWarnings("JavadocMethod")
+  private static String videoModeToString(VideoMode mode) {
+    return mode.width + "x" + mode.height + " " + pixelFormatToString(mode.pixelFormat)
+        + " " + mode.fps + " fps";
+  }
+
+  @SuppressWarnings("JavadocMethod")
+  private static String[] getSourceModeValues(int sourceHandle) {
+    VideoMode[] modes = CameraServerJNI.enumerateSourceVideoModes(sourceHandle);
+    String[] modeStrings = new String[modes.length];
+    for (int i = 0; i < modes.length; i++) {
+      modeStrings[i] = videoModeToString(modes[i]);
+    }
+    return modeStrings;
+  }
+
+  @SuppressWarnings("JavadocMethod")
+  private static void putSourcePropertyValue(ITable table, VideoEvent event, boolean isNew) {
+    String name;
+    String infoName;
+    if (event.name.startsWith("raw_")) {
+      name = "RawProperty/" + event.name.substring(4);
+      infoName = "RawPropertyInfo/" + event.name.substring(4);
+    } else {
+      name = "Property/" + event.name;
+      infoName = "PropertyInfo/" + event.name;
+    }
+
+    switch (event.propertyKind) {
+      case kBoolean:
+        if (isNew) {
+          table.setDefaultBoolean(name, event.value != 0);
+        } else {
+          table.putBoolean(name, event.value != 0);
+        }
+        break;
+      case kInteger:
+      case kEnum:
+        if (isNew) {
+          table.setDefaultNumber(name, event.value);
+          table.putNumber(infoName + "/min",
+              CameraServerJNI.getPropertyMin(event.propertyHandle));
+          table.putNumber(infoName + "/max",
+              CameraServerJNI.getPropertyMax(event.propertyHandle));
+          table.putNumber(infoName + "/step",
+              CameraServerJNI.getPropertyStep(event.propertyHandle));
+          table.putNumber(infoName + "/default",
+              CameraServerJNI.getPropertyDefault(event.propertyHandle));
+        } else {
+          table.putNumber(name, event.value);
+        }
+        break;
+      case kString:
+        if (isNew) {
+          table.setDefaultString(name, event.valueStr);
+        } else {
+          table.putString(name, event.valueStr);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  @SuppressWarnings({"JavadocMethod", "PMD.UnusedLocalVariable"})
   private CameraServer() {
     m_sources = new HashMap<String, VideoSource>();
     m_sinks = new HashMap<String, VideoSink>();
@@ -141,7 +346,12 @@ public class CameraServer {
     // "/CameraPublisher/{Source.Name}/" - root
     // - "source" (string): Descriptive, prefixed with type (e.g. "usb:0")
     // - "streams" (string array): URLs that can be used to stream data
-    // - properties (scaled units)
+    // - "description" (string): Description of the source
+    // - "connected" (boolean): Whether source is connected
+    // - "mode" (string): Current video mode
+    // - "modes" (string array): Available video modes
+    // - "Property/{Property}" - Property values
+    // - "PropertyInfo/{Property}" - Property supporting information
 
     // Listener for video events
     m_videoListener = new VideoListener(event -> {
@@ -156,7 +366,10 @@ public class CameraServer {
           table.putString("description",
               CameraServerJNI.getSourceDescription(event.sourceHandle));
           table.putBoolean("connected", CameraServerJNI.isSourceConnected(event.sourceHandle));
-          table.putStringArray("streams", new String[0]);
+          table.putStringArray("streams", getSourceStreamValues(event.sourceHandle));
+          VideoMode mode = CameraServerJNI.getSourceVideoMode(event.sourceHandle);
+          table.setDefaultString("mode", videoModeToString(mode));
+          table.putStringArray("modes", getSourceModeValues(event.sourceHandle));
           break;
         }
         case kSourceDestroyed: {
@@ -164,6 +377,7 @@ public class CameraServer {
           if (table != null) {
             table.putString("source", "");
             table.putStringArray("streams", new String[0]);
+            table.putStringArray("modes", new String[0]);
           }
           break;
         }
@@ -185,34 +399,45 @@ public class CameraServer {
           break;
         }
         case kSourceVideoModesUpdated: {
+          ITable table = getSourceTable(event.sourceHandle);
+          if (table != null) {
+            table.putStringArray("modes", getSourceModeValues(event.sourceHandle));
+          }
           break;
         }
         case kSourceVideoModeChanged: {
+          ITable table = getSourceTable(event.sourceHandle);
+          if (table != null) {
+            table.putString("mode", videoModeToString(event.mode));
+          }
           break;
         }
         case kSourcePropertyCreated: {
+          ITable table = getSourceTable(event.sourceHandle);
+          if (table != null) {
+            putSourcePropertyValue(table, event, true);
+          }
           break;
         }
         case kSourcePropertyValueUpdated: {
+          ITable table = getSourceTable(event.sourceHandle);
+          if (table != null) {
+            putSourcePropertyValue(table, event, false);
+          }
           break;
         }
         case kSourcePropertyChoicesUpdated: {
+          ITable table = getSourceTable(event.sourceHandle);
+          if (table != null) {
+            String[] choices = CameraServerJNI.getEnumPropertyChoices(event.propertyHandle);
+            table.putStringArray("PropertyInfo/" + event.name + "/choices", choices);
+          }
           break;
         }
-        case kSinkSourceChanged: {
-          updateStreamValues();
-          break;
-        }
-        case kSinkCreated: {
-          break;
-        }
+        case kSinkSourceChanged:
+        case kSinkCreated:
         case kSinkDestroyed: {
-          break;
-        }
-        case kSinkEnabled: {
-          break;
-        }
-        case kSinkDisabled: {
+          updateStreamValues();
           break;
         }
         case kNetworkInterfacesChanged: {
@@ -222,17 +447,63 @@ public class CameraServer {
         default:
           break;
       }
-    }, 0x7fff, true);
+    }, 0x4fff, true);
 
     // Listener for NetworkTable events
-    m_tableListener = NetworkTablesJNI.addEntryListener(kPublishName, (uid, key, value, flags) -> {
-      if (!key.startsWith(kPublishName + "/")) {
-        return;
-      }
-      String relativeKey = key.substring(kPublishName.length());
+    m_tableListener = NetworkTablesJNI.addEntryListener(kPublishName + "/",
+      (uid, key, value, flags) -> {
+        String relativeKey = key.substring(kPublishName.length() + 1);
 
-    }, ITable.NOTIFY_IMMEDIATE | ITable.NOTIFY_UPDATE);
+        // get source (sourceName/...)
+        int subKeyIndex = relativeKey.indexOf('/');
+        if (subKeyIndex == -1) {
+          return;
+        }
+        String sourceName = relativeKey.substring(0, subKeyIndex);
+        VideoSource source = m_sources.get(sourceName);
+        if (source == null) {
+          return;
+        }
 
+        // get subkey
+        relativeKey = relativeKey.substring(subKeyIndex + 1);
+
+        // handle standard names
+        String propName;
+        if (relativeKey.equals("mode")) {
+          VideoMode mode = videoModeFromString((String) value);
+          if (mode.pixelFormat == PixelFormat.kUnknown || !source.setVideoMode(mode)) {
+            // reset to current mode
+            NetworkTablesJNI.putString(key, videoModeToString(source.getVideoMode()));
+          }
+          return;
+        } else if (relativeKey.startsWith("Property/")) {
+          propName = relativeKey.substring(9);
+        } else if (relativeKey.startsWith("RawProperty/")) {
+          propName = "raw_" + relativeKey.substring(12);
+        } else {
+          return;  // ignore
+        }
+
+        // everything else is a property
+        VideoProperty property = source.getProperty(propName);
+        switch (property.getKind()) {
+          case kNone:
+            return;
+          case kBoolean:
+            property.set(((Boolean) value).booleanValue() ? 1 : 0);
+            return;
+          case kInteger:
+          case kEnum:
+            property.set(((Double) value).intValue());
+            return;
+          case kString:
+            property.setString((String) value);
+            return;
+          default:
+            return;
+        }
+      }, ITable.NOTIFY_IMMEDIATE | ITable.NOTIFY_UPDATE);
   }
 
   /**
@@ -242,19 +513,23 @@ public class CameraServer {
    * If you also want to perform vision processing on the roboRIO, use
    * getVideo() to get access to the camera images.
    *
-   * <p>This overload calls {@link #startAutomaticCapture(int)} with device 0.
+   * <p>This overload calls {@link #startAutomaticCapture(int)} with device 0,
+   * creating a camera named "USB Camera 0".
    */
-	public UsbCamera startAutomaticCapture() {
+  public UsbCamera startAutomaticCapture() {
     return startAutomaticCapture(0);
   }
 
   /**
    * Start automatically capturing images to send to the dashboard.
    *
+   * <p>This overload calls {@link #startAutomaticCapture(String, int)} with
+   * a name of "USB Camera {dev}".
+   *
    * @param dev The device number of the camera interface
    */
-	public UsbCamera startAutomaticCapture(int dev) {
-		UsbCamera camera = new UsbCamera("USB Camera " + dev, dev);
+  public UsbCamera startAutomaticCapture(int dev) {
+    UsbCamera camera = new UsbCamera("USB Camera " + dev, dev);
     startAutomaticCapture(camera);
     return camera;
   }
@@ -265,8 +540,8 @@ public class CameraServer {
    * @param name The name to give the camera
    * @param dev The device number of the camera interface
    */
-	public UsbCamera startAutomaticCapture(String name, int dev) {
-		UsbCamera camera = new UsbCamera(name, dev);
+  public UsbCamera startAutomaticCapture(String name, int dev) {
+    UsbCamera camera = new UsbCamera(name, dev);
     startAutomaticCapture(camera);
     return camera;
   }
@@ -277,8 +552,8 @@ public class CameraServer {
    * @param name The name to give the camera
    * @param path The device path (e.g. "/dev/video0") of the camera
    */
-	public UsbCamera startAutomaticCapture(String name, String path) {
-		UsbCamera camera = new UsbCamera(name, path);
+  public UsbCamera startAutomaticCapture(String name, String path) {
+    UsbCamera camera = new UsbCamera(name, path);
     startAutomaticCapture(camera);
     return camera;
   }
@@ -293,6 +568,56 @@ public class CameraServer {
     addCamera(camera);
     VideoSink server = addServer("serve_" + camera.getName());
     server.setSource(camera);
+  }
+
+  /**
+   * Adds an Axis IP camera.
+   *
+   * <p>This overload calls {@link #addAxisCamera(String, String)} with
+   * name "Axis Camera".
+   *
+   * @param host Camera host IP or DNS name (e.g. "10.x.y.11")
+   */
+  public AxisCamera addAxisCamera(String host) {
+    return addAxisCamera("Axis Camera", host);
+  }
+
+  /**
+   * Adds an Axis IP camera.
+   *
+   * <p>This overload calls {@link #addAxisCamera(String, String[])} with
+   * name "Axis Camera".
+   *
+   * @param hosts Array of Camera host IPs/DNS names
+   */
+  public AxisCamera addAxisCamera(String[] hosts) {
+    return addAxisCamera("Axis Camera", hosts);
+  }
+
+  /**
+   * Adds an Axis IP camera.
+   *
+   * @param name The name to give the camera
+   * @param host Camera host IP or DNS name (e.g. "10.x.y.11")
+   */
+  public AxisCamera addAxisCamera(String name, String host) {
+    AxisCamera camera = new AxisCamera(name, host);
+    // Create a passthrough MJPEG server for USB access
+    startAutomaticCapture(camera);
+    return camera;
+  }
+
+  /**
+   * Adds an Axis IP camera.
+   *
+   * @param name The name to give the camera
+   * @param hosts Array of Camera host IPs/DNS names
+   */
+  public AxisCamera addAxisCamera(String name, String[] hosts) {
+    AxisCamera camera = new AxisCamera(name, hosts);
+    // Create a passthrough MJPEG server for USB access
+    startAutomaticCapture(camera);
+    return camera;
   }
 
   /**
@@ -343,6 +668,23 @@ public class CameraServer {
   }
 
   /**
+   * Get OpenCV access to the specified camera.  This allows you to get
+   * images from the camera for image processing on the roboRIO.
+   *
+   * @param name Camera name
+   */
+  public CvSink getVideo(String name) {
+    VideoSource source;
+    synchronized (this) {
+      source = m_sources.get(name);
+      if (source == null) {
+        throw new VideoException("could not find camera " + name);
+      }
+    }
+    return getVideo(source);
+  }
+
+  /**
    * Create a MJPEG stream with OpenCV input. This can be called to pass custom
    * annotated images to the dashboard.
    *
@@ -361,7 +703,7 @@ public class CameraServer {
    *
    * @param name Server name
    */
-	public MjpegServer addServer(String name) {
+  public MjpegServer addServer(String name) {
     int port;
     synchronized (this) {
       port = m_nextPort;
@@ -375,8 +717,8 @@ public class CameraServer {
    *
    * @param name Server name
    */
-	public MjpegServer addServer(String name, int port) {
-		MjpegServer server = new MjpegServer(name, port);
+  public MjpegServer addServer(String name, int port) {
+    MjpegServer server = new MjpegServer(name, port);
     addServer(server);
     return server;
   }
@@ -429,16 +771,13 @@ public class CameraServer {
     }
   }
 
-  	/**
-	 * Sets the size of the image to use. Use the public kSize constants to set
-	 * the correct mode, or set it directly on a camera and call the appropriate
-	 * startAutomaticCapture method.
-	 *
-	 * @deprecated Use setResolution on the UsbCamera returned by
-	 *             startAutomaticCapture() instead.
-	 * @param size
-	 *            The size to use
-	 */
+  /**
+   * Sets the size of the image to use. Use the public kSize constants to set the correct mode, or
+   * set it directly on a camera and call the appropriate startAutomaticCapture method.
+   *
+   * @deprecated Use setResolution on the UsbCamera returned by startAutomaticCapture() instead.
+   * @param size The size to use
+   */
   @Deprecated
   public void setSize(int size) {
     VideoSource source = null;

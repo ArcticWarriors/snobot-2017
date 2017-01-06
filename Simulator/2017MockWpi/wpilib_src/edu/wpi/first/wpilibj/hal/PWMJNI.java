@@ -18,8 +18,6 @@ public class PWMJNI extends DIOJNI
 
     public static int initializePWMPort(int halPortHandle)
     {
-        boolean canAllocate = !SensorActuatorRegistry.get().getSpeedControllers().containsKey(halPortHandle);
-
         SpeedControllerWrapper wrapper = new SpeedControllerWrapper((int) halPortHandle);
         SensorActuatorRegistry.get().register(wrapper, (int) halPortHandle, false);
 

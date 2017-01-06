@@ -14,7 +14,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.Manifest;
-
 import org.opencv.core.Core;
 
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
@@ -38,6 +37,12 @@ public abstract class RobotBase {
    */
   public static final int ROBOT_TASK_PRIORITY = 101;
 
+  /**
+   * The ID of the main Java thread.
+   */
+  // This is usually 1, but it is best to make sure
+  public static final long MAIN_THREAD_ID = Thread.currentThread().getId();
+
   protected final DriverStation m_ds;
 
   /**
@@ -55,7 +60,7 @@ public abstract class RobotBase {
     // Resource.RestartProgram();
 
     NetworkTable.setNetworkIdentity("Robot");
-        // NetworkTable.setPersistentFilename("/home/lvuser/networktables.ini");
+    NetworkTable.setPersistentFilename("/home/lvuser/networktables.ini");
     NetworkTable.setServerMode();// must be before b
     m_ds = DriverStation.getInstance();
     NetworkTable.getTable(""); // forces network tables to initialize
@@ -184,6 +189,7 @@ public abstract class RobotBase {
   /**
    * Starting point for the applications.
    */
+  @SuppressWarnings("PMD.UnusedFormalParameter")
   public static void main(String... args) {
     initializeHardwareConfiguration();
 
@@ -227,6 +233,7 @@ public abstract class RobotBase {
       file.createNewFile();
 
       try (FileOutputStream output = new FileOutputStream(file)) {
+        output.write("Java ".getBytes());
         output.write(WPILibVersion.Version.getBytes());
       }
 

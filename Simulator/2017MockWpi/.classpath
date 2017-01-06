@@ -13,11 +13,7 @@
 	<classpathentry kind="lib" path="3rdParyLibraries/jfreechart/jcommon-1.0.17.jar"/>
 	<classpathentry kind="lib" path="3rdParyLibraries/jfreechart/jfreechart-1.0.14.jar"/>
 	<classpathentry kind="var" path="cscore" sourcepath="cscore.sources"/>
-	<classpathentry kind="var" path="networktables" sourcepath="networktables.sources">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/templibs/ntcore/Windows/amd64"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="var" path="networktables" sourcepath="networktables.sources"/>
 	<classpathentry kind="lib" path="templibs/opencv/opencv-2413.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/templibs/opencv/x64"/>
