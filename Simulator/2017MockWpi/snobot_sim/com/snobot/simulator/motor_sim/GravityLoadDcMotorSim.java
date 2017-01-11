@@ -19,12 +19,6 @@ public class GravityLoadDcMotorSim extends BaseDcMotorSimulator
     {
         double extraAcceleration = -sGRAVITY;
 
-        // If you are going up, you will be fighting gravity
-        if (mVoltagePercentage > 0)
-        {
-            extraAcceleration *= -1;
-        }
-
         mMotorModel.step(mVoltagePercentage * 12, mLoad, extraAcceleration, cycleTime);
     }
 }
