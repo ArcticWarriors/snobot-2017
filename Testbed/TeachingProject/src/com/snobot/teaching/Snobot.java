@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -122,24 +123,18 @@ public class Snobot extends IterativeRobot
 
     public void autonomousPeriodic()
     {
-        double distance = mRightEncoder.getDistance();
-        double desDistance = 408;
-        double deadband = 1;
-        double speed = .8;
-
-        if (distance + deadband > desDistance && distance - deadband < desDistance)
+        if (mTimer.get() < 2)
         {
-            mTestMotor1.set(0);
+            mRelay.set(Value.kForward);
         }
-        else if (distance < desDistance)
+        else if (mTimer.get() < 4)
         {
-            mTestMotor1.set(speed);
+            mRelay.set(Value.kReverse);
         }
         else
         {
-            mTestMotor1.set(-speed);
+            mRelay.set(Value.kOn);
         }
-        System.out.println(mRightEncoder.getDistance());
     }
 
     /**
