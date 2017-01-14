@@ -1,0 +1,6 @@
+/bin/
+/build/
+/dist/
+/doc/
+/.metadata/
+sysProps.xml

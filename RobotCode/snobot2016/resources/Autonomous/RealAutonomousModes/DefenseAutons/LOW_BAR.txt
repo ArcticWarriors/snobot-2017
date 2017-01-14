@@ -1,0 +1,3 @@
+#SuperSmartHarvester 100
+#SmartScaler Ground
+DriveStraightPath 180 45 120
