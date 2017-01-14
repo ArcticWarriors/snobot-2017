@@ -1,6 +1,8 @@
 package com.snobot2017;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,7 +18,11 @@ public class Snobot extends IterativeRobot {
 	final String customAuto = "My Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
-
+	private Encoder mRightDriveEncoder;
+	private Encoder mLeftDriveEncoder;
+	private SpeedController mRightDriveMotor;
+	private SpeedController mLeftDriveMotor;
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
