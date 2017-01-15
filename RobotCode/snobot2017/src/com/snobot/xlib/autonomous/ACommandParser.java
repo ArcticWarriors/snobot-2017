@@ -1,4 +1,4 @@
-package com.snobot.xlib;
+package com.snobot.xlib.autonomous;
 
 import java.io.BufferedReader;
 import java.io.File;
