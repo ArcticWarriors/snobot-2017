@@ -153,11 +153,11 @@ public class HAL extends JNIWrapper
     public static short getJoystickAxes(byte joystickNum, float[] axesArray)
     {
         IMockJoystick joystick = sJOYSTICK_FACTORY.get(joystickNum);
-        short[] joystickValue = joystick.getAxisValues();
+        float[] joystickValue = joystick.getAxisValues();
 
         for (int i = 0; i < joystickValue.length; ++i)
         {
-            axesArray[i] = joystickValue[i] * 127;
+            axesArray[i] = joystickValue[i];
         }
 
         return (short) joystickValue.length;

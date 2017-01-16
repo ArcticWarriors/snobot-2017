@@ -64,7 +64,7 @@ public class WrappedJoystickPanel extends JPanel
     {
         if (mJoystick != null)
         {
-            short[] axisValues = mJoystick.getAxisValues();
+            float[] axisValues = mJoystick.getAxisValues();
             int buttonMask = mJoystick.getButtonMask();
 
             for (int i = 0; i < axisValues.length; ++i)

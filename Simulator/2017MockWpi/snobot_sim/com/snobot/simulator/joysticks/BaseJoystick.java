@@ -8,14 +8,13 @@ import net.java.games.input.Controller;
 
 public class BaseJoystick implements IMockJoystick
 {
-
     protected final String mName;
     protected final List<Identifier> mAxis;
     protected final List<Identifier> mButtons;
     protected final List<Identifier> mPOV;
     protected final Controller mController;
 
-    protected short[] mAxisValues;
+    protected float[] mAxisValues;
     protected short[] mPovValues;
 
     public BaseJoystick(String aName, Controller aController, List<Identifier> aAxisList, List<Identifier> aButtonList, List<Identifier> aPOV)
@@ -26,7 +25,7 @@ public class BaseJoystick implements IMockJoystick
         mPOV = aPOV;
         mName = aName;
 
-        mAxisValues = new short[mAxis.size()];
+        mAxisValues = new float[mAxis.size()];
         mPovValues = new short[mPOV.size()];
     }
 
@@ -54,7 +53,7 @@ public class BaseJoystick implements IMockJoystick
     }
 
     @Override
-    public short[] getAxisValues()
+    public float[] getAxisValues()
     {
 
         if (mController != null)
@@ -66,7 +65,7 @@ public class BaseJoystick implements IMockJoystick
                 Component c = mController.getComponent(mAxis.get(i));
                 if (c != null)
                 {
-                    mAxisValues[i] = (short) (c.getPollData() * 127);
+                    mAxisValues[i] = c.getPollData();
                 }
             }
         }
@@ -157,6 +156,6 @@ public class BaseJoystick implements IMockJoystick
     @Override
     public double getRawAxis(int aIndex)
     {
-        return mAxisValues[aIndex] / 127.0;
+        return mAxisValues[aIndex];
     }
 }

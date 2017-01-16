@@ -11,7 +11,7 @@ public interface IMockJoystick
 
     void setRumble(short s);
 
-    short[] getAxisValues();
+    float[] getAxisValues();
 
     short[] getPovValues();
 

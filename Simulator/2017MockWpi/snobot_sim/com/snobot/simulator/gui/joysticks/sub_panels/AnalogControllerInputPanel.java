@@ -19,8 +19,8 @@ public class AnalogControllerInputPanel extends JPanel
         add(mSlider);
     }
 
-    public void setValue(int aValue)
+    public void setValue(double aValue)
     {
-        mSlider.setValue(aValue);
+        mSlider.setValue((int) aValue);
     }
 }
