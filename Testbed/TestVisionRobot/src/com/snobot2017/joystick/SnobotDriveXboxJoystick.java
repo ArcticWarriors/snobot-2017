@@ -1,7 +1,7 @@
 package com.snobot2017.joystick;
 
-import com.snobot.xlib.LatchedButton;
-import com.snobot.xlib.XboxButtonMap;
+import com.snobot.lib.ui.LatchedButton;
+import com.snobot.lib.ui.XboxButtonMap;
 
 import edu.wpi.first.wpilibj.Joystick;
 

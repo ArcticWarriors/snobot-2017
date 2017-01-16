@@ -1,6 +1,6 @@
 package com.snobot2017.vision;
 
-import com.snobot.xlib.ISubsystem;
+import com.snobot.lib.ISubsystem;
 import com.snobot2017.joystick.IDriverJoystick;
 
 public class VisionManager implements ISubsystem
