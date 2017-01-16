@@ -1,4 +1,4 @@
-package com.snobot.xlib.autonomous;
+package com.snobot.lib.autonomous;
 
 import java.io.File;
 import java.io.IOException;

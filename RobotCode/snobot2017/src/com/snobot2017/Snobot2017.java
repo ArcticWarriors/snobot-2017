@@ -2,7 +2,7 @@ package com.snobot2017;
 
 import java.text.SimpleDateFormat;
 
-import com.snobot.xlib.ASnobot;
+import com.snobot.lib.ASnobot;
 import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.drivetrain.IDriveTrain;
 

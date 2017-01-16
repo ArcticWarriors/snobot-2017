@@ -1,4 +1,4 @@
-package com.snobot.xlib;
+package com.snobot.lib;
 
 /**
  * This class holds a bunch of static methods and variables needed for

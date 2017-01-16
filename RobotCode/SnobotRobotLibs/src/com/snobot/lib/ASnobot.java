@@ -1,4 +1,4 @@
-package com.snobot.xlib;
+package com.snobot.lib;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

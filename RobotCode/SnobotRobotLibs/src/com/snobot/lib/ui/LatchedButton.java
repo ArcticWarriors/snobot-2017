@@ -1,4 +1,4 @@
-package com.snobot.xlib.ui;
+package com.snobot.lib.ui;
 
 public class LatchedButton
 {

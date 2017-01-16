@@ -2,7 +2,7 @@ package com.snobot2017.autonomous;
 
 import java.io.File;
 
-import com.snobot.xlib.autonomous.SnobotAutonCrawler;
+import com.snobot.lib.autonomous.SnobotAutonCrawler;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;

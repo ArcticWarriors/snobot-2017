@@ -2,7 +2,7 @@ package com.snobot2017.autonomous;
 
 import java.util.List;
 
-import com.snobot.xlib.autonomous.ACommandParser;
+import com.snobot.lib.autonomous.ACommandParser;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
 

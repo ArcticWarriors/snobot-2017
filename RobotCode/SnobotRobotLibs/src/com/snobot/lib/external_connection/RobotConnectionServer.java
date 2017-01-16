@@ -1,4 +1,4 @@
-package com.snobot.xlib.external_connection;
+package com.snobot.lib.external_connection;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.snobot.xlib;
+package com.snobot.lib;
 
 import edu.wpi.first.wpilibj.Preferences;
 

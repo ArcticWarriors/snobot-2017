@@ -1,4 +1,4 @@
-package com.snobot.xlib.adb;
+package com.snobot.lib.adb;
 
 import java.io.IOException;
 import java.nio.file.Files;
