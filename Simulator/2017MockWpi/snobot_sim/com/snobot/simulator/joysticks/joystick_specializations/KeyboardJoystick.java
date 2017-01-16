@@ -11,8 +11,8 @@ import net.java.games.input.Controller;
 public class KeyboardJoystick extends BaseJoystick
 {
     // Backwards on purpose
-    private static final short sNEGATIVE_VALUE = 127;
-    private static final short sPOSITIVE_VALUE = -127;
+    private static final short sNEGATIVE_VALUE = 1;
+    private static final short sPOSITIVE_VALUE = -1;
 
     private static final Identifier[] sAXIS = new Identifier[]
     {
@@ -39,7 +39,7 @@ public class KeyboardJoystick extends BaseJoystick
     };
 
     private static final Identifier[] sPOV = new Identifier[] {
-
+            Identifier.Key._0,
     };
 
     public KeyboardJoystick(Controller aController)

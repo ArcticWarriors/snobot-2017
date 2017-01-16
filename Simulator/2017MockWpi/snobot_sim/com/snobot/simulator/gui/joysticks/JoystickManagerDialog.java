@@ -14,6 +14,7 @@ import com.snobot.simulator.joysticks.JoystickFactory;
 
 public class JoystickManagerDialog extends JDialog
 {
+    private static final int sUPDATE_TIME = 20;
 
     private Map<String, JoystickTabPanel> mJoystickPanels;
     private SelectionPanel mSelectionPanel;
@@ -41,7 +42,7 @@ public class JoystickManagerDialog extends JDialog
 
                     try
                     {
-                        Thread.sleep(100);
+                        Thread.sleep(sUPDATE_TIME);
                     }
                     catch (InterruptedException e)
                     {
@@ -61,7 +62,7 @@ public class JoystickManagerDialog extends JDialog
         // int width = gd.getDisplayMode().getWidth();
         // int height = gd.getDisplayMode().getHeight();
         // setSize(width - 100, height - 100);
-        setSize(750, 600);
+        setSize(1000, 600);
 
         mJoystickPanels = new HashMap<>();
 

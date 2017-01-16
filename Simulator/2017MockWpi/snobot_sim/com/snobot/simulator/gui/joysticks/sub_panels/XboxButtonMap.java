@@ -29,6 +29,7 @@ public class XboxButtonMap
     public static final int START_BUTTON = 8;
     public static final int L3_BUTTON = 9;
     public static final int R3_BUTTON = 10;
+    public static final int XBOX_BUTTON = 11;
 
     // D-PAD
     public static final int D_PAD_UP = 0;
