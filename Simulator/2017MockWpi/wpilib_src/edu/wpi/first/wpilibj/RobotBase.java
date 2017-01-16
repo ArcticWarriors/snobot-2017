@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.jar.Manifest;
+
 import org.opencv.core.Core;
 
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
@@ -60,7 +61,14 @@ public abstract class RobotBase {
     // Resource.RestartProgram();
 
     NetworkTable.setNetworkIdentity("Robot");
-    NetworkTable.setPersistentFilename("/home/lvuser/networktables.ini");
+    try
+    {
+        NetworkTable.setPersistentFilename("/home/lvuser/networktables.ini");
+    }
+    catch(IllegalStateException e)
+    {
+        //Ignore
+    }
     NetworkTable.setServerMode();// must be before b
     m_ds = DriverStation.getInstance();
     NetworkTable.getTable(""); // forces network tables to initialize
@@ -77,14 +85,14 @@ public abstract class RobotBase {
    * @return If the robot is running in simulation.
    */
   public static boolean isSimulation() {
-    return false;
+    return true;
   }
 
   /**
    * @return If the robot is running in the real world.
    */
   public static boolean isReal() {
-    return true;
+    return !isSimulation();
   }
 
   /**

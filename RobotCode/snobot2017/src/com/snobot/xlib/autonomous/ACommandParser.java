@@ -9,21 +9,33 @@ import java.util.StringTokenizer;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.tables.ITable;
 
 public abstract class ACommandParser
 {
+    protected final ITable mAutonTable;
+    protected final String mAutonSdCommandTextName;
+    protected final String mAutonSdCommandParsedTextName;
+
     protected final String mDelimiter;
     protected final String mCommentStart;
 
     protected String mErrorText;
     protected boolean mSuccess;
 
-    public ACommandParser(String aDelimiter, String aCommentStart)
+    public ACommandParser(
+            ITable aAutonTable,
+            String aAutonSdCommandTextName, String aAutonSdCommandParsedTextName,
+            String aDelimiter, String aCommentStart)
     {
-        mErrorText = "";
-        mSuccess = false;
+        mAutonTable = aAutonTable;
+        mAutonSdCommandTextName = aAutonSdCommandTextName;
+        mAutonSdCommandParsedTextName = aAutonSdCommandParsedTextName;
         mDelimiter = aDelimiter;
         mCommentStart = aCommentStart;
+
+        mErrorText = "";
+        mSuccess = false;
     }
 
     protected void addError(String aError)
@@ -176,7 +188,17 @@ public abstract class ACommandParser
         return output;
     }
 
-    protected abstract Command parseCommand(List<String> args);
+    protected void publishParsingResults(String aCommandString)
+    {
+        if (!mErrorText.isEmpty())
+        {
+            aCommandString += "\n\n# There was an error parsing the commands...\n#\n";
+            aCommandString += mErrorText;
+        }
 
-    protected abstract void publishParsingResults(String fileContents);
+        mAutonTable.putString(mAutonSdCommandTextName, aCommandString);
+        mAutonTable.putBoolean(mAutonSdCommandParsedTextName, mSuccess);
+    }
+
+    protected abstract Command parseCommand(List<String> args);
 }

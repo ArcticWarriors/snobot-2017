@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public abstract class ASnobot extends IterativeRobot implements ISubsystem
@@ -15,6 +16,9 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
 
     protected Logger mLogger;
     private SimpleDateFormat mLogDateFormat;
+
+    // Autonomous
+    private CommandGroup mAutonCommand;
 
     public ASnobot(SimpleDateFormat aLogFormat, int aLogConfigCount, String aLogPath)
     {
@@ -46,6 +50,27 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
         updateSmartDashboard();
         updateLog();
 
+    }
+
+    @Override
+    public void autonomousInit()
+    {
+        mAutonCommand = createAutonomousCommand();
+
+        if (mAutonCommand != null)
+        {
+            mAutonCommand.start();
+        }
+    }
+
+    @Override
+    public void teleopInit()
+    {
+        if (mAutonCommand != null)
+        {
+            mAutonCommand.cancel();
+            Scheduler.getInstance().run();
+        }
     }
 
     /**
@@ -156,5 +181,7 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     {
 
     }
+
+    protected abstract CommandGroup createAutonomousCommand();
 
 }
