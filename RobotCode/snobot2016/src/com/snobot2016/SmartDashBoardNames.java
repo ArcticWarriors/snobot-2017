@@ -14,10 +14,6 @@ public class SmartDashBoardNames
     public static final String sORIENTATION = "Robot's Orientation";
     public static final String sSPEED = "Robot's Current Speed";
 
-    // Camera
-    public static final String sUPDATE_IMAGE_SUCCESS = "Image Update Success";
-    public static final String sSNOBOT_LIGHT = "Light";
-
     // Acquisition
     public static final String sHARVESTER_POT_VOLTAGE = "Harv. Pot Voltage";
     public static final String sHARVESTER_POT_PERCENTAGE = "Harv. Pot Percentage";

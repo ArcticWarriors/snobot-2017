@@ -4,7 +4,7 @@ import com.snobot.xlib.Logger;
 import com.snobot2016.Properties2016;
 import com.snobot2016.joystick.IDriverJoystick;
 
-import edu.wpi.first.wpilibj.CANTalon;
+import com.ctre.CANTalon;
 
 /**
  * 

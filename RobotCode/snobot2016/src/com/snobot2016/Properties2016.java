@@ -56,10 +56,6 @@ public class Properties2016
     // Configuration Contants
     // **************************************************************
 
-    // Camera
-    public static final StringProperty sCAMERA_HOST_IP = new StringProperty("CameraHostIP", "10.1.74.11");
-    public static final BooleanProperty sENABLE_CAMERA;
-
     // Autonomous
     public static final StringProperty sAUTON_DIRECTORY;
     public static final StringProperty sAUTON_DEFENSE_DIRECTORY;
@@ -142,13 +138,11 @@ public class Properties2016
     {
         String logPath;
         String resourcesDir;
-        boolean enableCamera;
 
         if (RobotBase.isSimulation())
         {
             logPath = "logs/";
             resourcesDir = "../../RobotCode/snobot2016/resources/";
-            enableCamera = false;
 
             System.out.println("Using simulation constants");
         }
@@ -156,13 +150,11 @@ public class Properties2016
         {
             logPath = "/u/logs/";
             resourcesDir = "/home/lvuser/2016Resources/";
-            enableCamera = true;
 
             System.out.println("Using tactical constants");
 
         }
 
-        sENABLE_CAMERA = new BooleanProperty("CameraEnable", enableCamera);
         sLOG_FILE_PATH = new StringProperty("LogFilePath", logPath);
 
         sAUTON_PATH_DIRECTORY = new StringProperty("AutonDirPaths", resourcesDir + "traj");
