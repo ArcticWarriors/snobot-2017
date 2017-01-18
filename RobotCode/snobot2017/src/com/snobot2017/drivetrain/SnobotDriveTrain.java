@@ -1,8 +1,9 @@
 package com.snobot2017.drivetrain;
+import edu.wpi.first.wpilibj.SpeedController;
 
 public class SnobotDriveTrain implements IDriveTrain
 {
-    public SnobotDriveTrain()
+    public SnobotDriveTrain(SpeedController aLeftMotor,SpeedController aRightMotor)
     {
 
     }
