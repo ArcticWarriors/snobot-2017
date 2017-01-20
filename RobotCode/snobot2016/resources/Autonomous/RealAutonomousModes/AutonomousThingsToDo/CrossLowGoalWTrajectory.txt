@@ -1,0 +1,18 @@
+#TiltLowerScaler 1
+CrossDefense
+StupidDriveStraight 1 -.35
+StupidDriveStraight 1 0
+FudgeThePosition Same 140
+GoToLowGoalTrajectory
+SuperSmartHarvester 70
+RollerOuttake 1
+
+
+# There was an error parsing the commands...
+#
+#Received unexpected command name 'SmartRaiseLowerHarvester'
+
+
+# There was an error parsing the commands...
+#
+#You have not specified enough aguments for the command: TiltLowerScaler. Index: 1, Size: 1

@@ -1,0 +1,66 @@
+#DriveStraightPath 120 100 90
+#FudgeThePosition Same 140
+Trajectory  TestPath.csv
+
+
+#Drive for _1 seconds at _2 speed
+#StupidDriveStraight 5 .2
+#
+#Drive for _1 inches at _2 speed (no PID)
+#DriveStraightADistance 50 .4
+#
+#Turn _1 speed for _2 seconds
+#StupidTurn 180 .4
+#
+#Turn _1 degrees at _2 speed (No PID)
+#TurnWithDegrees 180 .1
+#
+#Go to position  (_1, _2) at speed _3 (No PID)
+#GoToXY 10 20 .05
+#
+#Go to XY using paths
+#GoToXYPath 60 80 45 90 180 180
+#
+#Raises the harvester for _1 seconds
+#RaiseHarvester 1.6
+#
+#Lowers the harvester for _1 seconds
+#LowerHarvester 1.2
+#
+#Sucks the ball in for _1 seconds
+#RollerIntake .6
+#
+#Spits the ball out for _1 seconds
+#RollerOuttake .6
+#
+#Lowers the scaler for _1 seconds
+#TiltLowerScaler .8
+#
+#Raises the scaler for _1 seconds
+#TiltRaiseScaler .7
+#
+#Moves the harvester to the fully up or fully down position.  _1 should be "Raise" to raise, "Lower" to lower
+#SmartHarvester Raise
+#
+#Moves the harvester to _1 percentage (0=the floor, 100=fully up)
+#SuperSmartHarvester 57
+#
+#Moves the scaler to the preset position.  _1 "Ground", "MoveForIntake", "Vertical", or "Hook"
+#SmartScaler MoveForIntake
+#
+#Drives a pre-planed path. Goes to position _1 in inches, at velocity _2 in/sec, with acceleration _3 in/sec/sec
+#DriveStraightPath 120 45 90
+#
+#Drives a pre-planed path. Goes to angle _1 in degrees, at velocity _2 deg/sec, with acceleration _3 deg/sec/sec
+#DriveTurnPath 270 90 120
+#
+#Re-sets the robots postion, aka a "fudge factor".  Sets the X position at _1, Y Position at _2
+#FudgeThePosition 48 68
+#
+#Goes to the low goal.  If the robot is on the right side of the origin, it goes to the right low goal.
+#If it is on the left side of the origin, it goes to the left goal.  To do this, it first runs a 
+#"Turn Path" command at _1 degrees/sec, _2 deg/sec/sec, then does a "Drive Path" command at _3 in/sec, _4 in/sec/sec
+#GoToLowGoal 60 100 180 180
+#
+#Will run the "cross defense" command.  Uses the defense selected in the SendableChooser
+#CrossDefense
