@@ -21,16 +21,18 @@ public interface IMotorSimulator
 
     public class NullMotorSimulator implements IMotorSimulator
     {
-        @Override
-        public void setVoltagePercentage(double speed)
-        {
+        private double mSpeed;
 
+        @Override
+        public void setVoltagePercentage(double aSpeed)
+        {
+            mSpeed = aSpeed;
         }
 
         @Override
         public double getVoltagePercentage()
         {
-            return 0;
+            return mSpeed;
         }
 
         @Override

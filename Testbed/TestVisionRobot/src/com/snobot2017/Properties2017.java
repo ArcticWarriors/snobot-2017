@@ -1,8 +1,8 @@
 package com.snobot2017;
 
-import com.snobot.xlib.PropertyManager.DoubleProperty;
-import com.snobot.xlib.PropertyManager.IntegerProperty;
-import com.snobot.xlib.PropertyManager.StringProperty;
+import com.snobot.lib.PropertyManager.DoubleProperty;
+import com.snobot.lib.PropertyManager.IntegerProperty;
+import com.snobot.lib.PropertyManager.StringProperty;
 
 import edu.wpi.first.wpilibj.RobotBase;
 

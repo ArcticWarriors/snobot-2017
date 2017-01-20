@@ -34,7 +34,7 @@ public class GenericGamepadJoystick extends BaseJoystick
                     mButtons.add(components[j].getIdentifier());
                 }
             }
-            mAxisValues = new short[mAxis.size()];
+            mAxisValues = new float[mAxis.size()];
             mPovValues = new short[mPOV.size()];
         }
     }

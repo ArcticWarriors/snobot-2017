@@ -3,8 +3,8 @@ package com.snobot2017.vision;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
 
-import com.snobot.xlib.adb.AdbBridge;
-import com.snobot.xlib.external_connection.RobotConnectionServer;
+import com.snobot.lib.adb.AdbBridge;
+import com.snobot.lib.external_connection.RobotConnectionServer;
 import com.snobot2017.Properties2017;
 
 public class VisionAdbServer extends RobotConnectionServer
