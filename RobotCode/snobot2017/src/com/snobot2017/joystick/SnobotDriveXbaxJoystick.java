@@ -18,78 +18,47 @@ public SnobotDriveXbaxJoystick (Joystick aJoystick)
     
     }
 
+
+@Override
 public void init()
-    {
+{
+    // TODO Auto-generated method stub
     
-    }
+}
 
+
+@Override
 public void update()
-    {
+{
+    mLeftSpeed= mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS);
+    mRightSpeed= mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
     
-        mLeftSpeed= mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS);
-        mRightSpeed= mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
-        
-    }
+}
 
+
+@Override
 public void control()
-    {
+{
+    // TODO Auto-generated method stub
     
-    }
-    
+}
+
+
+@Override
 public void rereadPreferences()
-    {
+{
+    // TODO Auto-generated method stub
     
-    }
+}
 
+
+@Override
 public void updateSmartDashboard()
-    {
+{
+    // TODO Auto-generated method stub
     
-    }
+}
 
-public void updatelog()
-    {
-    
-    }
-
-public void stop()
-    {
-    
-    }
-
-public double getLeftSpeed()
-    {
-    
-    return mLeftSpeed;
-    
-    }
-
-public double getRightSpeed()
-    {
-    
-        return mRightSpeed;  
-    
-    }
-
-public double getArcadeTurn()
-    {
-    
-        return 0;
-    
-    }
-
-public double getArcadePower()
-    {
-    
-        return 0;
-    
-    }
-
-public boolean isArcadeMode()
-    {
-    
-        return false;
-    
-    }
 
 @Override
 public void updateLog()
@@ -97,5 +66,55 @@ public void updateLog()
     // TODO Auto-generated method stub
     
 }
+
+
+@Override
+public void stop()
+{
+    // TODO Auto-generated method stub
+    
+}
+
+
+@Override
+public double getRightSpeed()
+{
+  
+    return mRightSpeed;
+}
+
+
+@Override
+public double getLeftSpeed()
+{
+ 
+    return mLeftSpeed;
+}
+
+
+@Override
+public double getArcadePower()
+{
+    // TODO Auto-generated method stub
+    return 0;
+}
+
+
+@Override
+public double getArcadeTurn()
+{
+    // TODO Auto-generated method stub
+    return 0;
+}
+
+
+@Override
+public boolean isArcadeMode()
+{
+    // TODO Auto-generated method stub
+    return false;
+}
+
+
 
 }
