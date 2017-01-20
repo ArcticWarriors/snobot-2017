@@ -1,0 +1,4 @@
+DriveStraightPath 192 30 120
+#SuperSmartHarvester 100
+#DriveStraightPath 100 45 302
+#DriveStraightPath 70 65 30

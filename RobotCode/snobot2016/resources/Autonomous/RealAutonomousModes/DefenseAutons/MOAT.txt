@@ -1,0 +1,2 @@
+StupidDriveStraight 2.3 0.6
+StupidDriveStraight .1 -.8
