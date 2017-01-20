@@ -62,9 +62,15 @@ public class CommandParser extends ACommandParser
                 newCommand = parseWaitCommand(args);
                 break;
             }
+            case AutonomousCommandNames.sSTUPID_DRIVE_STRAIGHT_COMMAND:
+            {
+                newCommand = parseStupidDriveStraightCommand(args);
+                break;
+            }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
+          
         }
         catch (IndexOutOfBoundsException e)
         {
@@ -76,6 +82,13 @@ public class CommandParser extends ACommandParser
             e.printStackTrace();
         }
         return newCommand;
+    }
+
+    private Command parseStupidDriveStraightCommand(List<String> args)
+    {
+        double time = Double.parseDouble(args.get(1));
+        double speed = Double.parseDouble(args.get(2));
+        return new StupidDriveStraight(mSnobot.getDriveTrain(), time, speed);
     }
 
     protected Command parseWaitCommand(List<String> args)
