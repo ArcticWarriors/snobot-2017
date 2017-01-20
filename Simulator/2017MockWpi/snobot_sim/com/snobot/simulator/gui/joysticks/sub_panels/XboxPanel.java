@@ -49,20 +49,30 @@ public class XboxPanel extends JPanel
         g.clearRect(0, 0, getWidth(), getHeight());
         g.drawImage(mControllerImage, 0, 0, null);
 
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.X_BUTTON), 490, 218);
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.Y_BUTTON), 550, 170);
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.B_BUTTON), 602, 215);
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.A_BUTTON), 540, 260);
-        colorBumper(g, mJoystick.getRawButton(XboxButtonMap.LB_BUTTON), 95, 95);
-        colorBumper(g, mJoystick.getRawButton(XboxButtonMap.RB_BUTTON), 510, 95);
+        // System.out.println("XXXX");
+        // System.out.println(mJoystick.getRawButton(XboxButtonMap.X_BUTTON -
+        // 1));
+        // System.out.println(mJoystick.getRawButton(XboxButtonMap.Y_BUTTON -
+        // 1));
+        // System.out.println(mJoystick.getRawButton(XboxButtonMap.B_BUTTON -
+        // 1));
+        // System.out.println(mJoystick.getRawButton(XboxButtonMap.A_BUTTON -
+        // 1));
 
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON), 265, 220);
-        colorButton(g, mJoystick.getRawButton(XboxButtonMap.START_BUTTON), 415, 220);
-        colorButton(g, mJoystick.getRawButton(0), 340, 217);
+        colorButton(g, mJoystick.getRawButton(XboxButtonMap.X_BUTTON - 1), 490, 218);
+        colorButton(g, mJoystick.getRawButton(XboxButtonMap.Y_BUTTON - 1), 550, 170);
+        colorButton(g, mJoystick.getRawButton(XboxButtonMap.B_BUTTON - 1), 602, 215);
+        colorButton(g, mJoystick.getRawButton(XboxButtonMap.A_BUTTON - 1), 540, 260);
+        colorBumper(g, mJoystick.getRawButton(XboxButtonMap.LB_BUTTON - 1), 95, 95);
+        colorBumper(g, mJoystick.getRawButton(XboxButtonMap.RB_BUTTON - 1), 510, 95);
 
-        drawJoystick(g, mJoystick.getRawButton(XboxButtonMap.L3_BUTTON), mJoystick.getRawAxis(XboxButtonMap.LEFT_X_AXIS),
+        colorButton(g, mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON - 1), 265, 220);
+        colorButton(g, mJoystick.getRawButton(XboxButtonMap.START_BUTTON - 1), 415, 220);
+        colorButton(g, mJoystick.getRawButton(XboxButtonMap.XBOX_BUTTON), 340, 217);
+
+        drawJoystick(g, mJoystick.getRawButton(XboxButtonMap.L3_BUTTON - 1), mJoystick.getRawAxis(XboxButtonMap.LEFT_X_AXIS),
                 mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS), 115, 228);
-        drawJoystick(g, mJoystick.getRawButton(XboxButtonMap.R3_BUTTON), mJoystick.getRawAxis(XboxButtonMap.RIGHT_X_AXIS),
+        drawJoystick(g, mJoystick.getRawButton(XboxButtonMap.R3_BUTTON - 1), mJoystick.getRawAxis(XboxButtonMap.RIGHT_X_AXIS),
                 mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS), 420, 330);
 
         drawTrigger(g, mJoystick.getRawAxis(XboxButtonMap.LEFT_TRIGGER), 155, 40);

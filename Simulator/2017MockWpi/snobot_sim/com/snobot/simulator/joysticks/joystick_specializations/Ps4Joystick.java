@@ -22,7 +22,6 @@ public class Ps4Joystick extends BaseJoystick
 
     private static final Identifier[] sBUTTONS = new Identifier[]
     {
-            Identifier.Button._12, // ps4 button
             Identifier.Button._1, // X
             Identifier.Button._2, // Circle
             Identifier.Button._0, // Square
@@ -36,7 +35,8 @@ public class Ps4Joystick extends BaseJoystick
             Identifier.Button._6, // L2 (half pressed or more)
             Identifier.Button._7, // R2 (half pressed or more)
             Identifier.Button._12, // ps4 button
-            Identifier.Button._13 // Motion pad
+            Identifier.Button._13, // Motion pad
+            Identifier.Button._12, // ps4 button
     };
 
     private static final Identifier[] sPOV = new Identifier[] 

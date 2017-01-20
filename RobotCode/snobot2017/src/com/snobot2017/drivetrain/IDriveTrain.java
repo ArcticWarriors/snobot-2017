@@ -1,6 +1,6 @@
 package com.snobot2017.drivetrain;
 
-import com.snobot.xlib.ISubsystem;
+import com.snobot.lib.ISubsystem;
 
 public interface IDriveTrain extends ISubsystem
 {

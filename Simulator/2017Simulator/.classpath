@@ -9,5 +9,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/templibs/ntcore"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/snobot2017"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

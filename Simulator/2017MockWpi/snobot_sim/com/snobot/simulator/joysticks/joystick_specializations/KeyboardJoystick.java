@@ -11,8 +11,8 @@ import net.java.games.input.Controller;
 public class KeyboardJoystick extends BaseJoystick
 {
     // Backwards on purpose
-    private static final short sNEGATIVE_VALUE = 127;
-    private static final short sPOSITIVE_VALUE = -127;
+    private static final short sNEGATIVE_VALUE = 1;
+    private static final short sPOSITIVE_VALUE = -1;
 
     private static final Identifier[] sAXIS = new Identifier[]
     {
@@ -39,7 +39,7 @@ public class KeyboardJoystick extends BaseJoystick
     };
 
     private static final Identifier[] sPOV = new Identifier[] {
-
+            Identifier.Key._0,
     };
 
     public KeyboardJoystick(Controller aController)
@@ -53,7 +53,7 @@ public class KeyboardJoystick extends BaseJoystick
     }
 
     @Override
-    public short[] getAxisValues()
+    public float[] getAxisValues()
     {
         if (mController != null)
         {
@@ -157,41 +157,41 @@ public class KeyboardJoystick extends BaseJoystick
 
         if (up && right)
         {
-            mAxisValues[0] = 45;
+            mPovValues[0] = 45;
         }
         else if (right && down)
         {
-            mAxisValues[0] = 135;
+            mPovValues[0] = 135;
         }
         else if (left && down)
         {
-            mAxisValues[0] = 225;
+            mPovValues[0] = 225;
         }
         else if (left && up)
         {
-            mAxisValues[0] = -45;
+            mPovValues[0] = -45;
         }
         else if (up)
         {
-            mAxisValues[0] = 0;
+            mPovValues[0] = 0;
         }
         else if (right)
         {
-            mAxisValues[0] = 90;
+            mPovValues[0] = 90;
         }
         else if (down)
         {
-            mAxisValues[0] = 180;
+            mPovValues[0] = 180;
         }
         else if (left)
         {
-            mAxisValues[0] = 270;
+            mPovValues[0] = 270;
         }
         else
         {
-            mAxisValues[0] = -1;
+            mPovValues[0] = -1;
         }
 
-        return mAxisValues;
+        return mPovValues;
     }
 }

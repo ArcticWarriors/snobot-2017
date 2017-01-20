@@ -2,7 +2,7 @@ package com.snobot2017;
 
 import java.text.SimpleDateFormat;
 
-import com.snobot.xlib.ASnobot;
+import com.snobot.lib.ASnobot;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrainWithEncoders;
 import com.snobot2017.joystick.SnobotDriveXboxJoystick;
@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
@@ -87,14 +88,14 @@ public class Snobot extends ASnobot
         mSubsystems.add(mVisionManager);
     }
 
-    @Override
-    public void robotInit()
-    {
-        init();
-    }
-
     public IDriveTrain getDriveTrain()
     {
         return this.mDrivetrain;
+    }
+
+    @Override
+    protected CommandGroup createAutonomousCommand()
+    {
+        return null;
     }
 }

@@ -1,6 +1,6 @@
 package com.snobot2017.drivetrain;
 
-import com.snobot.xlib.Logger;
+import com.snobot.lib.Logger;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IDriverJoystick;
 
