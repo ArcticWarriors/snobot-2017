@@ -4,9 +4,14 @@ import com.snobot.lib.ISubsystem;
 
 public interface IClimbing extends ISubsystem
 {
-
-    void catchRope();
+    /**
+     * Catch the Rope
+     */
+    void CatchRope();
     
-    void climbRope();
+    /**
+     * Climb the Rope
+     */
+    void ClimbRope();
     
 }

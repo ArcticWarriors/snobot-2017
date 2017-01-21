@@ -4,7 +4,8 @@ import com.snobot.lib.ISubsystem;
 
 public interface IOperatorJoystick extends ISubsystem
 {
-    enum GearBossPositions {
+    enum GearBossPositions 
+    {
         NONE, UP, DOWN
     }
     
@@ -14,6 +15,19 @@ public interface IOperatorJoystick extends ISubsystem
      * @return Climbing Speed
      */
     double getTakeOffSpeed();
+    
+    /**
+     * Is the catch rope button pressed?
+     * @return true if pressed
+     */
+    boolean isCatchRope();
+    
+    /**
+     * Is the climb button pressed?
+     * @return true if pressed
+     */
+    boolean isClimb();
+
     
     /**
      * Returns UP if up button is pressed, 

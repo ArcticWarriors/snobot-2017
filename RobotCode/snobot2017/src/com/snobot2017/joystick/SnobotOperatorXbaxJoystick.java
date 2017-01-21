@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
 {
-    private Joystick mJoystick;
+    private Joystick mJoystick; 
+    private boolean mClimb;
+    private boolean mCatch;
     
     //Gear Boss
     private  GearBossPositions mGearBossPos;
@@ -50,6 +52,10 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
         
         //Ready for take off
         mLiftOffSpeed = mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
+        
+        //Climb
+        mClimb = mJoystick.getRawButton(XboxButtonMap.RB_BUTTON);
+        mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
     }
 
     @Override
@@ -97,6 +103,20 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     public GearBossPositions moveGearBossToPosition()
     {
         return mGearBossPos;
+    }
+
+    @Override
+    public boolean isCatchRope()
+    {
+        
+        return mCatch;
+    }
+
+    @Override
+    public boolean isClimb()
+    {
+
+        return mClimb;
     }
 
 }

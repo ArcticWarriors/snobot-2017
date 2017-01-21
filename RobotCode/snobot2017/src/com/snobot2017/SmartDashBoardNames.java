@@ -12,6 +12,7 @@ public class SmartDashBoardNames
     //Climbing
     public static final String sROBOT_CLIMBING_ROPE = "Climbing Rope";
     public static final String sROBOT_CATCHING_ROPE = "Catching Rope";
+    public static final String sROBOT_CLIMBING_ENCODER = "Spool Motor Speed";
        
     public static final String sLEFT_DRIVE_MOTOR_ENCODER = "Left Drive Motor Encoder";
     public static final String sRIGHT_DRIVE_MOTOR_ENCODER = "Right Drive Motor Encoder";

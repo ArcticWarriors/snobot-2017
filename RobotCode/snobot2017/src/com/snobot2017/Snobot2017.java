@@ -4,10 +4,14 @@ import java.text.SimpleDateFormat;
 
 import com.snobot.lib.ASnobot;
 import com.snobot2017.autonomous.AutonomousFactory;
+import com.snobot2017.climbing.Climbing;
+import com.snobot2017.climbing.IClimbing;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
 import com.snobot2017.joystick.IDriverJoystick;
+import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
+import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -25,16 +29,14 @@ public class Snobot2017 extends ASnobot
 
     // Joystick
     private IDriverJoystick mDriverJoystick;
+    private IOperatorJoystick mOperatorJoystick;
+    
+    //Climb
+    private IClimbing mClimb;
 
     public Snobot2017()
     {
         super(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), Properties2017.sLOG_COUNT.getValue(), Properties2017.sLOG_FILE_PATH.getValue());
-
-        // Drivetrain
-        Encoder rightDriveEncoder;
-        Encoder leftDriveEncoder;
-        SpeedController rightDriveMotor;
-        SpeedController leftDriveMotor;
 
         // Autonomous
         mAutonFactory = new AutonomousFactory(this);
@@ -43,6 +45,10 @@ public class Snobot2017 extends ASnobot
         Joystick driverXbax = new Joystick(0);
         mDriverJoystick = new SnobotDriveXbaxJoystick(driverXbax);
         mSubsystems.add(mDriverJoystick);
+        
+        Joystick operatorJoystick = new Joystick(1);
+        mOperatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystick);
+        mSubsystems.add(mOperatorJoystick);
 
         // Drive Train
         SpeedController mFrontLeftMotor = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
@@ -55,7 +61,12 @@ public class Snobot2017 extends ASnobot
         mDriveTrain = new SnobotDriveTrain(mFrontLeftMotor, mRearLeftMotor, mFrontRightMotor, mRearRightMotor, mDriverJoystick, mLogger,
                 mLeftDriveEncoder, mRightDriveEncoder);
         mSubsystems.add(mDriveTrain);
-
+        
+        // Climbing
+        SpeedController mSpoolMotor = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_C_PORT);
+        IClimbing mClimb = new Climbing(mSpoolMotor, mLogger, mOperatorJoystick);
+        mSubsystems.add(mClimb);
+        
     }
 
     @Override
