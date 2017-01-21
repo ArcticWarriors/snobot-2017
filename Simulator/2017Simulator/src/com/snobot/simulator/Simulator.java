@@ -97,7 +97,6 @@ public class Simulator
                         // created and hook itself up
                         try
                         {
-                            System.out.println("Waiting for robot to initialize...");
                             HAL.waitForProgramStart();
 
                             mSimulator = (ISimulatorUpdater) Class.forName(mSimulatorClassName).newInstance();
