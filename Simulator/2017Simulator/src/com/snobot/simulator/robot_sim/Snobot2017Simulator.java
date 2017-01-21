@@ -30,7 +30,7 @@ public class Snobot2017Simulator extends ASimulator
 
         EncoderWrapper rightEncoder = SensorActuatorRegistry.get().getEncoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A,
                 PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
-        SpeedControllerWrapper rightSC = SensorActuatorRegistry.get().getSpeedControllers().get(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
+        SpeedControllerWrapper rightSC = SensorActuatorRegistry.get().getSpeedControllers().get(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
         DcMotorModel rightMotor = VexMotorFactory.makeCIMMotor();
         rightMotor = MakeTransmission.makeTransmission(rightMotor, 2, gearReduction, 1.0);
         rightSC.setMotorSimulator(new StaticLoadDcMotorSim(rightMotor, load));
