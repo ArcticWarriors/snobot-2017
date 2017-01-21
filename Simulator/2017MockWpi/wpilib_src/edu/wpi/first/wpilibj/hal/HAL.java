@@ -48,6 +48,7 @@ public class HAL extends JNIWrapper
             System.out.println("*************************************************************");
             System.out.println("\n\n");
             sPROGRAM_STARTED_LOCK.notify();
+            sROBOT_STARTED = true;
         }
     }
 
@@ -246,6 +247,7 @@ public class HAL extends JNIWrapper
     private static final RobotStateSingleton sROBOT_STATE = RobotStateSingleton.get();
     private static final JoystickFactory sJOYSTICK_FACTORY = JoystickFactory.get();
     private static final Object sPROGRAM_STARTED_LOCK = new Object();
+    private static boolean sROBOT_STARTED = false;
 
     private static final double sCYCLE_TIME = .02; // The period that the main
                                                    // loop should be run at
@@ -274,16 +276,24 @@ public class HAL extends JNIWrapper
 
     public static void waitForProgramStart()
     {
-        synchronized (sPROGRAM_STARTED_LOCK)
+        if (!sROBOT_STARTED)
         {
-            try
+            synchronized (sPROGRAM_STARTED_LOCK)
             {
-                sPROGRAM_STARTED_LOCK.wait();
+                try
+                {
+                    System.out.println("Waiting for robot to initialize...");
+                    sPROGRAM_STARTED_LOCK.wait();
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
             }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
+        }
+        else
+        {
+            System.out.println("Robot already initialized!");
         }
 
     }

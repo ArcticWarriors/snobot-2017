@@ -32,8 +32,6 @@ public void update()
 {
     mLeftSpeed= mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS);
     mRightSpeed= mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
-    System.out.println("LeftSpeed:"+ mLeftSpeed);
-    
 }
 
 

@@ -70,8 +70,6 @@ public class Simulator
 		NetworkTable.setPersistentFilename(sUSER_CONFIG_DIR + mClassName + ".preferences.ini");
         HAL.setWaitTime(.02);
 
-        createSimulator();
-
         Thread robotThread = new Thread(createRobotThread());
         Runnable guiThread = createGuiThread();
 
@@ -97,7 +95,6 @@ public class Simulator
                         // created and hook itself up
                         try
                         {
-                            System.out.println("Waiting for robot to initialize...");
                             HAL.waitForProgramStart();
 
                             mSimulator = (ISimulatorUpdater) Class.forName(mSimulatorClassName).newInstance();
@@ -153,6 +150,7 @@ public class Simulator
 
                 try
                 {
+                    createSimulator();
                     mRobot.startCompetition();
                 }
                 catch (UnsatisfiedLinkError e)
