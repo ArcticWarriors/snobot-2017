@@ -1,9 +1,13 @@
 package com.snobot2017.drivetrain;
 
 import com.snobot.lib.Logger;
+import com.snobot2017.SmartDashBoardNames;
+import com.snobot2017.joystick.IDriverJoystick;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnobotDriveTrain implements IDriveTrain
 {
@@ -15,9 +19,12 @@ public class SnobotDriveTrain implements IDriveTrain
     private final SpeedController mRearRightMotor;
     private final Logger mLogger;
     private final RobotDrive mRobotDrive;
+    private final IDriverJoystick mDriverJoystick;
+    private final Encoder mLeftDriveEncoder;
+    private final Encoder mRightDriveEncoder;
 
     public SnobotDriveTrain(SpeedController aFrontLeftMotor, SpeedController aRearLeftMotor, SpeedController aFrontRightMotor,
-            SpeedController aRearRightMotor, Logger aLogger)
+            SpeedController aRearRightMotor, IDriverJoystick aDriverJoystick, Logger aLogger, Encoder aLeftDriveEncoder, Encoder aRightDriveEncoder)
     {
         mFrontLeftMotor = aFrontLeftMotor;
         mRearLeftMotor = aRearLeftMotor;
@@ -25,6 +32,9 @@ public class SnobotDriveTrain implements IDriveTrain
         mRearRightMotor = aRearRightMotor;
         mRobotDrive = new RobotDrive(mFrontLeftMotor, mRearLeftMotor, mFrontRightMotor, mRearRightMotor);
         mLogger = aLogger;
+        mDriverJoystick = aDriverJoystick;
+        mLeftDriveEncoder = aLeftDriveEncoder;
+        mRightDriveEncoder = aRightDriveEncoder;
     }
 
     @Override
@@ -48,7 +58,7 @@ public class SnobotDriveTrain implements IDriveTrain
     @Override
     public void control()
     {
-        // TODO Auto-generated method stub
+        setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
 
     }
 
@@ -62,14 +72,10 @@ public class SnobotDriveTrain implements IDriveTrain
     @Override
     public void updateSmartDashboard()
     {
-        // SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_ENCODER,
-        // getLeftEncoderDistance());
-        // SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER,
-        // getRightEncoderDistance());
-        // SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_SPEED,
-        // mLeftMotor.get());
-        // SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_SPEED,
-        // mRightMotor.get());
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_ENCODER, getLeftDistance());
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, getRightDistance());
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_SPEED, mFrontLeftMotor.get());
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_SPEED, mFrontRightMotor.get());
     }
 
     @Override
@@ -78,9 +84,7 @@ public class SnobotDriveTrain implements IDriveTrain
         mLogger.updateLogger(getLeftDistance());
         mLogger.updateLogger(getRightDistance());
         mLogger.updateLogger(mFrontLeftMotor.get());
-        mLogger.updateLogger(mRearLeftMotor.get());
         mLogger.updateLogger(mFrontRightMotor.get());
-        mLogger.updateLogger(mRearRightMotor.get());
     }
 
     @Override
@@ -92,13 +96,13 @@ public class SnobotDriveTrain implements IDriveTrain
     @Override
     public double getRightDistance()
     {
-        return 0;
+        return mRightDriveEncoder.getDistance();
     }
 
     @Override
     public double getLeftDistance()
     {
-        return 0;
+        return mLeftDriveEncoder.getDistance();
     }
 
     @Override
