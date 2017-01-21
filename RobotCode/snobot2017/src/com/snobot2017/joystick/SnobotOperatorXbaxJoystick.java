@@ -37,11 +37,11 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     public void update()
     {
         //Gear Boss
-        if(mJoystick.getRawButton(XboxButtonMap.D_PAD_UP))
+        if(mJoystick.getPOV() == (XboxButtonMap.D_PAD_UP))
         {
             mGearBossPos = GearBossPositions.UP;
         }
-        else if(mJoystick.getRawButton(XboxButtonMap.D_PAD_DOWN))
+        else if(mJoystick.getPOV() == (XboxButtonMap.D_PAD_DOWN))
         {
             mGearBossPos = GearBossPositions.DOWN;
         }
@@ -118,5 +118,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
 
         return mClimb;
     }
+
+    
 
 }

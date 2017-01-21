@@ -8,6 +8,8 @@ import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
+import com.snobot2017.gearboss.IGearBoss;
+import com.snobot2017.gearboss.SnobotGearBoss;
 import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
@@ -15,6 +17,7 @@ import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -33,6 +36,12 @@ public class Snobot2017 extends ASnobot
     
     //Climb
     private IClimbing mClimb;
+    
+    //GearBoss
+    private Solenoid mGearSolenoid;
+    private IGearBoss mGearBoss;
+    
+    
 
     public Snobot2017()
     {
@@ -67,6 +76,10 @@ public class Snobot2017 extends ASnobot
         IClimbing mClimb = new Climbing(mSpoolMotor, mLogger, mOperatorJoystick);
         mSubsystems.add(mClimb);
         
+        //GearsBoss
+        Solenoid mGearSolenoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL) ;
+        IGearBoss mGearBoss = new SnobotGearBoss(mGearSolenoid, mOperatorJoystick);
+        mSubsystems.add(mGearBoss);
     }
 
     @Override

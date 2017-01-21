@@ -20,5 +20,7 @@ public class PortMappings2017
     public static final int sRIGHT_DRIVE_ENCODER_PORT_A = 2;
     public static final int sRIGHT_DRIVE_ENCODER_PORT_B = 3;
 
+    //Solenoid
+    public static final int sGEARBOSS_SOLENOID_CHANNEL = 1;
 }
 
