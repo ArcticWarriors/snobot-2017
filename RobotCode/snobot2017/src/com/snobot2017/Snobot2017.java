@@ -38,25 +38,24 @@ public class Snobot2017 extends ASnobot
 
         // Autonomous
         mAutonFactory = new AutonomousFactory(this);
-        
-        //Joystick
+
+        // Joystick
         Joystick driverXbax = new Joystick(0);
-        mDriverJoystick = new SnobotDriveXbaxJoystick(driverXbax); 
+        mDriverJoystick = new SnobotDriveXbaxJoystick(driverXbax);
         mSubsystems.add(mDriverJoystick);
-        
-        //Drive Train
-        SpeedController mFrontLeftMotor = new Talon(1);
-        SpeedController mRearLeftMotor = new Talon(2);
-        SpeedController mFrontRightMotor = new Talon(3);
-        SpeedController mRearRightMotor = new Talon(4);
-        Encoder mLeftDriveEncoder = new Encoder(1, 2);
-        Encoder mRightDriveEncoder = new Encoder(3, 4);
-        
-        
-        
-        mDriveTrain = new SnobotDriveTrain(mFrontLeftMotor, mRearLeftMotor, mFrontRightMotor, mRearRightMotor, mDriverJoystick, mLogger, mLeftDriveEncoder, mRightDriveEncoder);
+
+        // Drive Train
+        SpeedController mFrontLeftMotor = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
+        SpeedController mRearLeftMotor = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
+        SpeedController mFrontRightMotor = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
+        SpeedController mRearRightMotor = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
+        Encoder mLeftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
+        Encoder mRightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
+
+        mDriveTrain = new SnobotDriveTrain(mFrontLeftMotor, mRearLeftMotor, mFrontRightMotor, mRearRightMotor, mDriverJoystick, mLogger,
+                mLeftDriveEncoder, mRightDriveEncoder);
         mSubsystems.add(mDriveTrain);
-        
+
     }
 
     @Override
@@ -64,7 +63,6 @@ public class Snobot2017 extends ASnobot
     {
         return mAutonFactory.createAutonMode();
     }
-
 
     /**
      * Returns the class that controls the robots drivetrain
