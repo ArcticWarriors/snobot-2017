@@ -67,11 +67,15 @@ public class CommandParser extends ACommandParser
                 newCommand = parseStupidDriveStraightCommand(args);
                 break;
             }
+            case AutonomousCommandNames.sSCORE_GEAR_COMMAND:
+            {
+                newCommand = parseScoreGearCommand(args);
+                break;
+            }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
-          
-        }
+            }
         catch (IndexOutOfBoundsException e)
         {
             addError("You have not specified enough aguments for the command: " + commandName + ". " + e.getMessage());
@@ -82,6 +86,18 @@ public class CommandParser extends ACommandParser
             e.printStackTrace();
         }
         return newCommand;
+    }
+
+    private Command parseScoreGearCommand(List<String> args)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    private Command parseMoveGearLowCommand(List<String> args)
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     private Command parseStupidDriveStraightCommand(List<String> args)
