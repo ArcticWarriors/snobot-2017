@@ -19,4 +19,9 @@ public class SmartDashBoardNames
     public static final String sLEFT_DRIVE_MOTOR_SPEED = "Left Motor Speed";
     public static final String sRIGHT_DRIVE_MOTOR_SPEED = "Right Motor Speed";
 
+    public static final String sX_POSITION = "X Position";
+    public static final String sY_POSITION = "Y Position";
+    public static final String sORIENTATION = "Orientation";
+    public static final String sSPEED = "Speed";
 }
+

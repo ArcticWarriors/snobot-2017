@@ -63,7 +63,7 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mDriveTrain);
         
         // Climbing
-        SpeedController mSpoolMotor = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_C_PORT);
+        SpeedController mSpoolMotor = new Talon(PortMappings2017.sCLIMB_PWM_PORT);
         IClimbing mClimb = new Climbing(mSpoolMotor, mLogger, mOperatorJoystick);
         mSubsystems.add(mClimb);
         
