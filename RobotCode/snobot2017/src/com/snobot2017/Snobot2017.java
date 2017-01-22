@@ -30,18 +30,11 @@ public class Snobot2017 extends ASnobot
     // Autonomous
     private AutonomousFactory mAutonFactory;
 
-    // Joystick
-    private IDriverJoystick mDriverJoystick;
-    private IOperatorJoystick mOperatorJoystick;
-    
-    //Climb
-    private IClimbing mClimb;
-    
-    //GearBoss
-    private Solenoid mGearSolenoid;
+    // Climb
+    private IClimbing mClimber;
+
+    // GearBoss
     private IGearBoss mGearBoss;
-    
-    
 
     public Snobot2017()
     {
@@ -51,34 +44,42 @@ public class Snobot2017 extends ASnobot
         mAutonFactory = new AutonomousFactory(this);
 
         // Joystick
-        Joystick driverXbax = new Joystick(0);
-        mDriverJoystick = new SnobotDriveXbaxJoystick(driverXbax);
+        Joystick driverJostickRaw = new Joystick(0);
+        Joystick operatorJoystickRaw = new Joystick(1);
+
+        IDriverJoystick mDriverJoystick = new SnobotDriveXbaxJoystick(driverJostickRaw);
         mSubsystems.add(mDriverJoystick);
-        
-        Joystick operatorJoystick = new Joystick(1);
-        mOperatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystick);
-        mSubsystems.add(mOperatorJoystick);
+
+        IOperatorJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw);
+        mSubsystems.add(operatorJoystick);
 
         // Drive Train
-        SpeedController mFrontLeftMotor = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
-        SpeedController mRearLeftMotor = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
-        SpeedController mFrontRightMotor = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
-        SpeedController mRearRightMotor = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
+        SpeedController driveLeftMotorA = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
+        SpeedController driveLeftMotorB = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
+        SpeedController driveRightMotorA = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
+        SpeedController driveRightMotorB = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
         Encoder mLeftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
         Encoder mRightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
 
-        mDriveTrain = new SnobotDriveTrain(mFrontLeftMotor, mRearLeftMotor, mFrontRightMotor, mRearRightMotor, mDriverJoystick, mLogger,
-                mLeftDriveEncoder, mRightDriveEncoder);
+        mDriveTrain = new SnobotDriveTrain(
+                driveLeftMotorA, 
+                driveLeftMotorB, 
+                driveRightMotorA, 
+                driveRightMotorB, 
+                mDriverJoystick, 
+                mLogger,
+                mLeftDriveEncoder, 
+                mRightDriveEncoder);
         mSubsystems.add(mDriveTrain);
-        
+
         // Climbing
-        SpeedController mSpoolMotor = new Talon(PortMappings2017.sCLIMB_PWM_PORT);
-        IClimbing mClimb = new Climbing(mSpoolMotor, mLogger, mOperatorJoystick);
-        mSubsystems.add(mClimb);
-        
-        //GearsBoss
-        Solenoid mGearSolenoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL) ;
-        IGearBoss mGearBoss = new SnobotGearBoss(mGearSolenoid, mOperatorJoystick);
+        SpeedController climbingMotor = new Talon(PortMappings2017.sCLIMB_PWM_PORT);
+        mClimber = new Climbing(climbingMotor, mLogger, operatorJoystick);
+        mSubsystems.add(mClimber);
+
+        // GearsBoss
+        Solenoid gearSolonoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL);
+        mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick);
         mSubsystems.add(mGearBoss);
     }
 

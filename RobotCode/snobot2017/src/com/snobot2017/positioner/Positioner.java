@@ -88,7 +88,6 @@ public class Positioner implements ISubsystem, IPositioner
         double orientationRadians = Math.toRadians(mOrientation);
 
         // ChangeInDistance and X/Y
-        // TODO Need to account for slips when driving over defenses
         mTotalDistance = (mDriveTrain.getRightDistance() + mDriveTrain.getLeftDistance()) / 2;
         double deltaDistance = mTotalDistance - mLastDistance;
         mXPosition += deltaDistance * Math.sin(orientationRadians);
@@ -100,46 +99,37 @@ public class Positioner implements ISubsystem, IPositioner
         mLastDistance = mTotalDistance;
     }
 
-    /**
-     * @return The robot's current X-position.
-     */
+    @Override
     public double getXPosition()
     {
         return mXPosition;
     }
 
-    /**
-     * @return The robot's current Y-position.
-     */
+    @Override
     public double getYPosition()
     {
         return mYPosition;
     }
 
-    /**
-     * @return The robot's current orientation in degrees.
-     */
+    @Override
     public double getOrientationDegrees()
     {
         return mOrientation;
     }
 
-    /**
-     * @return the robot's current orientation in radians.
-     */
+    @Override
     public double getOrientationRadians()
     {
         return Math.toRadians(mOrientation);
     }
 
-    /**
-     * @return The total distance traversed by the robot.
-     */
+    @Override
     public double getTotalDistance()
     {
         return mTotalDistance;
     }
 
+    @Override
     public void setPosition(double aX, double aY, double aAngle)
     {
         mDriveTrain.resetEncoders();

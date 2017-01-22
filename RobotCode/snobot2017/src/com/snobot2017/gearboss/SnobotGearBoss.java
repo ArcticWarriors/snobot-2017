@@ -9,11 +9,12 @@ public class SnobotGearBoss implements IGearBoss
     private Solenoid mGearSolenoid;
     private IOperatorJoystick mOperatorJoystick;
 
-    public SnobotGearBoss(Solenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick )
+    public SnobotGearBoss(Solenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick)
     {
         mGearSolenoid = aGearSolenoid;
         mOperatorJoystick = aOperatorJoystick;
     }
+
     @Override
     public void init()
     {
@@ -24,7 +25,7 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void update()
     {
-        switch ( mOperatorJoystick.moveGearBossToPosition())
+        switch (mOperatorJoystick.moveGearBossToPosition())
         {
         case UP:
         {
@@ -41,7 +42,7 @@ public class SnobotGearBoss implements IGearBoss
             // Do nothing.
             break;
         }
-    }
+        }
     }
 
     @Override
@@ -79,11 +80,10 @@ public class SnobotGearBoss implements IGearBoss
 
     }
 
-   
     @Override
     public void moveGearHigh()
     {
-       mGearSolenoid.set(true);
+        mGearSolenoid.set(true);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class SnobotGearBoss implements IGearBoss
 
     @Override
     public boolean getGearHeight()
-    {  
+    {
         return mGearSolenoid.get();
     }
 

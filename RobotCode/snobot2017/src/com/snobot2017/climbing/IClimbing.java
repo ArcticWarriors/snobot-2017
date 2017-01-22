@@ -7,11 +7,11 @@ public interface IClimbing extends ISubsystem
     /**
      * Catch the Rope
      */
-    void CatchRope();
-    
+    void catchRope();
+
     /**
      * Climb the Rope
      */
-    void ClimbRope();
-    
+    void climbRope();
+
 }

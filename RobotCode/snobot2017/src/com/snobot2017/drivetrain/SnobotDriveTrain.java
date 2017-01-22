@@ -59,8 +59,6 @@ public class SnobotDriveTrain implements IDriveTrain
     public void control()
     {
         setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
-        System.out.println(mDriverJoystick.getLeftSpeed());
-        System.out.println(mDriverJoystick.getRightSpeed());
     }
 
     @Override

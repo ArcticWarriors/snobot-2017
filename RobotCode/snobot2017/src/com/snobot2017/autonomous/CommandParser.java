@@ -29,10 +29,8 @@ public class CommandParser extends ACommandParser
      */
     public CommandParser(Snobot2017 aSnobot)
     {
-        super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME),
-              SmartDashBoardNames.sROBOT_COMMAND_TEXT,
-              SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON,
-              " ", "#");
+        super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
+                SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
 
         mSnobot = aSnobot;
     }
@@ -75,7 +73,7 @@ public class CommandParser extends ACommandParser
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
-            }
+        }
         catch (IndexOutOfBoundsException e)
         {
             addError("You have not specified enough aguments for the command: " + commandName + ". " + e.getMessage());

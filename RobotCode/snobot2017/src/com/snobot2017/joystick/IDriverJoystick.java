@@ -5,40 +5,34 @@ import com.snobot.lib.ISubsystem;
 public interface IDriverJoystick extends ISubsystem
 {
 
-/**
- * 
- * @return Returns the right speed
- */
-double getRightSpeed();
+    /**
+     * 
+     * @return Returns the right speed
+     */
+    double getRightSpeed();
 
-/**
- * 
- * @return Returns the left speed
- */
-double getLeftSpeed();
+    /**
+     * 
+     * @return Returns the left speed
+     */
+    double getLeftSpeed();
 
-/**
- * 
- * @return Returns the arcade power
- */
-double getArcadePower();
+    /**
+     * 
+     * @return Returns the arcade power
+     */
+    double getArcadePower();
 
-/**
- * 
- * @return Turn Radius in Arcade mode
- */
-double getArcadeTurn();
+    /**
+     * 
+     * @return Turn Radius in Arcade mode
+     */
+    double getArcadeTurn();
 
-/**
- * 
- * @return Is Arcade mode enabled
- */
-boolean isArcadeMode();
-
+    /**
+     * 
+     * @return Is Arcade mode enabled
+     */
+    boolean isArcadeMode();
 
 }
-
-
-
-
-
