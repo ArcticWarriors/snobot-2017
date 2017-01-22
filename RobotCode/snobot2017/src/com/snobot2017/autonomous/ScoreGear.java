@@ -6,21 +6,21 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ScoreGear extends Command
 {
-        private IGearBoss mGearBoss;
+    private IGearBoss mGearBoss;
 
-        public ScoreGear (IGearBoss aGearBoss)
-        {
-            mGearBoss=aGearBoss;
-        }
+    public ScoreGear(IGearBoss aGearBoss)
+    {
+        mGearBoss = aGearBoss;
+    }
 
-        @Override
-        protected boolean isFinished()
-        {
-            return mGearBoss.getGearHeight()== false;
-        }
-       
-        protected void execute() 
-        {
-            mGearBoss.moveGearLow();
-        }
+    @Override
+    protected boolean isFinished()
+    {
+        return mGearBoss.getGearHeight() == false;
+    }
+
+    protected void execute()
+    {
+        mGearBoss.moveGearLow();
+    }
 }

@@ -104,9 +104,16 @@ public class SnobotDriveTrain implements IDriveTrain
         return mLeftDriveEncoder.getDistance();
     }
 
+    public void resetEncoders()
+    {
+        mLeftDriveEncoder.reset();
+        mRightDriveEncoder.reset();
+    }
+
     @Override
     public void setLeftRightSpeed(double aLeftSpeed, double aRightSpeed)
     {
         mRobotDrive.setLeftRightMotorOutputs(aLeftSpeed, aRightSpeed);
     }
+
 }

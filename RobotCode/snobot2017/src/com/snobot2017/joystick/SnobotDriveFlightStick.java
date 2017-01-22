@@ -9,17 +9,18 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     private Joystick mRight;
     private double mRightSpeed;
     private double mLeftSpeed;
-    
-    public SnobotDriveFlightStick (Joystick aLeft, Joystick aRight)
+
+    public SnobotDriveFlightStick(Joystick aLeft, Joystick aRight)
     {
         mLeft = aLeft;
         mRight = aRight;
     }
+
     @Override
     public void init()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -33,35 +34,35 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     public void control()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void rereadPreferences()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void updateSmartDashboard()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void updateLog()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void stop()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -74,7 +75,7 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     @Override
     public double getLeftSpeed()
     {
- 
+
         return mLeftSpeed;
     }
 

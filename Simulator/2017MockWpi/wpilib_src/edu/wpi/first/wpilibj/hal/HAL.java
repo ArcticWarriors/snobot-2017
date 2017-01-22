@@ -30,7 +30,10 @@ public class HAL extends JNIWrapper
         Timer.delay(sWaitTime);
         sMatchTime += sCYCLE_TIME;
 
-        RobotStateSingleton.get().updateLoopListeners();
+        synchronized (sPROGRAM_STARTED_LOCK)
+        {
+            RobotStateSingleton.get().updateLoopListeners();
+        }
     }
 
     public static int initialize(int mode)
