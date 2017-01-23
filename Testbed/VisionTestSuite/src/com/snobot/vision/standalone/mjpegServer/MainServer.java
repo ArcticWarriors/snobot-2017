@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 
 import org.yaml.snakeyaml.Yaml;
 
+import com.snobot.lib.vision.MjpgServer;
+
 public class MainServer
 {
     private static final String IMAGE_CONFIG = "config/image_config.yml";

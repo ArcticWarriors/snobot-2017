@@ -22,4 +22,9 @@ public class PortMappings2017
 
     // Solenoid
     public static final int sGEARBOSS_SOLENOID_CHANNEL = 1;
+
+    // Vision
+    public static final boolean sENABLE_VISION = true;
+    public static final int sADB_BIND_PORT = 8254;
+    public static final int sMJPEG_FORWARD_PORT = 5800;
 }

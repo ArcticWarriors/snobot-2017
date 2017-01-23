@@ -1,8 +1,11 @@
 package com.snobot2017;
 
+import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 
 import com.snobot.lib.ASnobot;
+import com.snobot.lib.vision.MjpegReceiver;
+import com.snobot.lib.vision.MjpegReceiver.ImageReceiver;
 import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
@@ -14,6 +17,7 @@ import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
+import com.snobot2017.vision.VisionAdbServer;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -81,6 +85,32 @@ public class Snobot2017 extends ASnobot
         Solenoid gearSolonoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick);
         mSubsystems.add(mGearBoss);
+        
+
+        // Vision
+        if (PortMappings2017.sENABLE_VISION)
+        {
+            int mjpegForwardingPort = PortMappings2017.sMJPEG_FORWARD_PORT;
+
+            new VisionAdbServer(PortMappings2017.sADB_BIND_PORT, mjpegForwardingPort);
+            MjpegReceiver visionReceiver = new MjpegReceiver();
+            visionReceiver.start("http://127.0.0.1:" + mjpegForwardingPort);
+
+            ImageReceiver receiver = new ImageReceiver()
+            {
+
+                @Override
+                public void onImage(BufferedImage image)
+                {
+                    if (image != null)
+                    {
+                        System.out.println("Got an image");
+                    }
+                }
+            };
+
+            visionReceiver.addImageReceiver(receiver);
+        }
     }
 
     @Override
