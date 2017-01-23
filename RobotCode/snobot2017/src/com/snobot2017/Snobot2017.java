@@ -1,11 +1,10 @@
 package com.snobot2017;
 
-import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
+import java.util.logging.LogManager;
 
 import com.snobot.lib.ASnobot;
-import com.snobot.lib.vision.MjpegReceiver;
-import com.snobot.lib.vision.MjpegReceiver.ImageReceiver;
+import com.snobot.lib.LogFormatter;
 import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
@@ -17,7 +16,7 @@ import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
-import com.snobot2017.vision.VisionAdbServer;
+import com.snobot2017.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -40,9 +39,14 @@ public class Snobot2017 extends ASnobot
     // GearBoss
     private IGearBoss mGearBoss;
 
+    // Vision
+    private VisionManager mVisionManager;
+
     public Snobot2017()
     {
         super(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), Properties2017.sLOG_COUNT.getValue(), Properties2017.sLOG_FILE_PATH.getValue());
+
+        LogManager.getLogManager().getLogger("").getHandlers()[0].setFormatter(new LogFormatter());
 
         // Autonomous
         mAutonFactory = new AutonomousFactory(this);
@@ -51,8 +55,8 @@ public class Snobot2017 extends ASnobot
         Joystick driverJostickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
 
-        IDriverJoystick mDriverJoystick = new SnobotDriveXbaxJoystick(driverJostickRaw);
-        mSubsystems.add(mDriverJoystick);
+        IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJostickRaw);
+        mSubsystems.add(driverJoystick);
 
         IOperatorJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw);
         mSubsystems.add(operatorJoystick);
@@ -62,18 +66,18 @@ public class Snobot2017 extends ASnobot
         SpeedController driveLeftMotorB = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
         SpeedController driveRightMotorA = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
         SpeedController driveRightMotorB = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
-        Encoder mLeftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
-        Encoder mRightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
+        Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
+        Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
 
         mDriveTrain = new SnobotDriveTrain(
                 driveLeftMotorA, 
                 driveLeftMotorB, 
                 driveRightMotorA, 
                 driveRightMotorB, 
-                mDriverJoystick, 
+                driverJoystick, 
                 mLogger,
-                mLeftDriveEncoder, 
-                mRightDriveEncoder);
+                leftDriveEncoder, 
+                rightDriveEncoder);
         mSubsystems.add(mDriveTrain);
 
         // Climbing
@@ -85,32 +89,10 @@ public class Snobot2017 extends ASnobot
         Solenoid gearSolonoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick);
         mSubsystems.add(mGearBoss);
-        
 
         // Vision
-        if (PortMappings2017.sENABLE_VISION)
-        {
-            int mjpegForwardingPort = PortMappings2017.sMJPEG_FORWARD_PORT;
-
-            new VisionAdbServer(PortMappings2017.sADB_BIND_PORT, mjpegForwardingPort);
-            MjpegReceiver visionReceiver = new MjpegReceiver();
-            visionReceiver.start("http://127.0.0.1:" + mjpegForwardingPort);
-
-            ImageReceiver receiver = new ImageReceiver()
-            {
-
-                @Override
-                public void onImage(BufferedImage image)
-                {
-                    if (image != null)
-                    {
-                        System.out.println("Got an image");
-                    }
-                }
-            };
-
-            visionReceiver.addImageReceiver(receiver);
-        }
+        mVisionManager = new VisionManager();
+        mSubsystems.add(mVisionManager);
     }
 
     @Override

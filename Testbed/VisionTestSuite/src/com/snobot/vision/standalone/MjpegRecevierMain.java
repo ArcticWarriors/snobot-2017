@@ -11,8 +11,9 @@ import javax.swing.JFrame;
 
 import org.opencv.core.Core;
 
+import com.snobot.lib.vision.MjpegReceiver;
+import com.snobot.lib.vision.MjpegReceiver.ImageReceiver;
 import com.snobot.vision.VisionAlgorithm;
-import com.snobot.vision.standalone.MjpegReceiver.ImageReceiver;
 
 public class MjpegRecevierMain
 {

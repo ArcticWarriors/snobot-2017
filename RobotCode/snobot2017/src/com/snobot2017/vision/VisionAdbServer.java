@@ -1,30 +1,29 @@
 package com.snobot2017.vision;
 
 import java.nio.ByteBuffer;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.Level;
 
 import com.snobot.lib.adb.AdbBridge;
 import com.snobot.lib.external_connection.RobotConnectionServer;
+import com.snobot2017.Properties2017;
 
 public class VisionAdbServer extends RobotConnectionServer
 {
-    private static final String sRESTART_APP_COMMAND = 
-            "shell am force-stop snobit.com.cameratester \\; " + 
-            "am start snobit.com.cameratester/snobit.com.cameratester.SelfieCameraActivity";
+    private static final String sAPP_PACKAGE = "snobot.com.visionapp";
+    private static final String sAPP_MAIN_ACTIVITY = "CameraActivity";
 
-    private static final Path sADB_PATH = Paths.get("C:/Users/PJ/AppData/Local/Android/sdk/platform-tools/adb.exe");
+    private static final double sTIMEOUT_PERIOD = 1.1; // Based on how often the App sends the heartbeat
 
-    public VisionAdbServer(int aAppBindPort, int aMjpegBindPort)
+    private AdbBridge mAdb;
+
+    public VisionAdbServer(int aAppBindPort, int aAppMjpegBindPort, int aAppForwardedMjpegBindPort)
     {
-        super(aAppBindPort);
+        super(aAppBindPort, sTIMEOUT_PERIOD);
 
-        AdbBridge adb = new AdbBridge(sRESTART_APP_COMMAND, sADB_PATH.toString());
-        adb.start();
-        adb.reversePortForward(aAppBindPort, aAppBindPort);
-        adb.portForward(aMjpegBindPort, aMjpegBindPort);
-        adb.reversePortForward(aMjpegBindPort, aMjpegBindPort);
+        mAdb = new AdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY);
+        mAdb.start();
+        mAdb.reversePortForward(aAppBindPort, aAppBindPort);
+        mAdb.portForward(aAppForwardedMjpegBindPort, aAppMjpegBindPort);
     }
 
     @Override
@@ -49,12 +48,30 @@ public class VisionAdbServer extends RobotConnectionServer
             logLevel = Level.SEVERE;
         }
 
-        // sLOGGER.log(logLevel, message);
+        sLOGGER.log(logLevel, message);
     }
 
+    @Override
     public double getTimestamp()
     {
-        return System.currentTimeMillis();
+        return System.currentTimeMillis() * 1e-3;
+    }
+
+    @Override
+    public void onConnected()
+    {
+        sLOGGER.info("App connected");
+    }
+
+    @Override
+    public void onDisconnected()
+    {
+        sLOGGER.warning("App disconnected");
+    }
+
+    public void restartApp()
+    {
+        mAdb.restartApp();
     }
 
 }

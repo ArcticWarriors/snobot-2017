@@ -133,11 +133,11 @@ public class MjpegReceiver
         @Override
         public void run()
         {
+            System.out.println("Attempting to connect to camera at " + mImageUrl);
             while (mRunning)
             {
                 try
                 {
-                    System.out.println("Attempting to connect to camera at " + mImageUrl);
                     ByteArrayOutputStream imageBuffer = new ByteArrayOutputStream();
                     InputStream stream = null;
 

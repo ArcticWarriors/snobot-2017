@@ -58,6 +58,10 @@ public class Simulator
 
     private void createSimulator() throws InstantiationException, IllegalAccessException, ClassNotFoundException
     {
+        System.out.println("*************************************************************");
+        System.out.println("*                    Starting Robot Code                    *");
+        System.out.println("*************************************************************");
+
         mRobot = (RobotBase) Class.forName(mClassName).newInstance();
     }
 
@@ -69,10 +73,10 @@ public class Simulator
         // Do all of the stuff that
 		NetworkTable.setPersistentFilename(sUSER_CONFIG_DIR + mClassName + ".preferences.ini");
         HAL.setWaitTime(.02);
-        
+
         createSimulator();
 
-        Thread robotThread = new Thread(createRobotThread());
+        Thread robotThread = new Thread(createRobotThread(), "RobotThread");
         Runnable guiThread = createGuiThread();
 
         robotThread.start();

@@ -1,5 +1,6 @@
 package com.snobot2017;
 
+import com.snobot.lib.PropertyManager.BooleanProperty;
 import com.snobot.lib.PropertyManager.DoubleProperty;
 import com.snobot.lib.PropertyManager.IntegerProperty;
 import com.snobot.lib.PropertyManager.StringProperty;
@@ -15,6 +16,7 @@ public class Properties2017
     // Vision
     public static final StringProperty sADB_LOCATION;
     public static final IntegerProperty sVISION_COMMS_PORT = new IntegerProperty("VisionCommsPort", 8254);
+    public static final BooleanProperty sENABLE_VISION = new BooleanProperty("EnableVision", true);
 
     // Logger
     public static final IntegerProperty sLOG_COUNT = new IntegerProperty("LogCount", 25);

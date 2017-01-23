@@ -16,17 +16,28 @@ public abstract class RobotConnectionServer
 
     private ServerSocket mServerSocket;
     private boolean mIsConnected = false;
+    private double mLastReceivedMessage = 0;
 
     private boolean mRunning = true;
     private ArrayList<ServerThread> mServerThreads = new ArrayList<>();
 
-    public RobotConnectionServer(int bindPort)
+    /**
+     * Constructor
+     * 
+     * @param bindPort
+     *            The port the accepting socket will bind to
+     * @param aConnectionTimeout
+     *            The amount of time that should elapse in seconds between
+     *            heartbeats that would indicate the connection has been lost
+     */
+    public RobotConnectionServer(int bindPort, double aConnectionTimeout)
     {
         try
         {
             mServerSocket = new ServerSocket(bindPort);
 
-            new Thread(mConnectionThread, "RobotConnectionServer::ConnectionMonitor").start();
+            new Thread(mConnectionThread, "RobotConnectionServer::ConnectionAcceptor").start();
+            new Thread(new AppMaintainanceThread(aConnectionTimeout), "RobotConnectionServer::ConnectionMonitor").start();
         }
         catch (IOException e)
         {
@@ -95,6 +106,7 @@ public abstract class RobotConnectionServer
                 while (mSocket.isConnected() && (read = is.read(buffer)) != -1)
                 {
                     double timestamp = getTimestamp();
+                    mLastReceivedMessage = timestamp;
                     String messageRaw = new String(buffer, 0, read);
                     String[] messages = messageRaw.split("\n");
                     for (String message : messages)
@@ -162,7 +174,93 @@ public abstract class RobotConnectionServer
         }
     };
 
+    private class AppMaintainanceThread implements Runnable
+    {
+        /**
+         * If the time between the last message and now (in seconds) is greater
+         * than this, the connection will be considered disconnected
+         */
+        private final double mTimeout;
+
+        /**
+         * Time to sleep inbetween loops, in milliseconds
+         */
+        private final long mRefreshRate;
+
+        public AppMaintainanceThread(double aTimeoutPeriod)
+        {
+            this(200, aTimeoutPeriod);
+        }
+
+        public AppMaintainanceThread(long aRefreshRate, double aTimeoutPeriod)
+        {
+            mRefreshRate = aRefreshRate;
+            mTimeout = aTimeoutPeriod;
+        }
+
+        @Override
+        public void run()
+        {
+            while (true)
+            {
+                double timestampDiff = getTimestamp() - mLastReceivedMessage;
+                if (timestampDiff > mTimeout)
+                {
+                    if (mIsConnected)
+                    {
+                        onDisconnected();
+                    }
+                    mIsConnected = false;
+                }
+                else
+                {
+                    if (!mIsConnected)
+                    {
+                        onConnected();
+                    }
+                    mIsConnected = true;
+                }
+
+                try
+                {
+                    Thread.sleep(mRefreshRate);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Called when the connection monitor has determined a connection has been
+     * started for the first time
+     */
+    public abstract void onConnected();
+
+    /**
+     * Called when the connection monitor has determined the connection has been
+     * lost.
+     */
+    public abstract void onDisconnected();
+
+    /**
+     * Called when a message has been received. Up to the child class to
+     * determine how to parse it and what to do with it
+     * 
+     * @param message
+     *            The message to parse
+     * @param timestamp
+     *            The timestamp it was received, according to
+     *            {@link #getTimestamp}
+     */
     public abstract void handleMessage(String message, double timestamp);
 
+    /**
+     * Gets the current time, in seconds
+     * 
+     * @return The time
+     */
     protected abstract double getTimestamp();
 }
