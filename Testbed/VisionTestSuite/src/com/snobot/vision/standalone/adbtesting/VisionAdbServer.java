@@ -23,7 +23,7 @@ public class VisionAdbServer extends RobotConnectionServer
         AdbBridge adb = new AdbBridge(sRESTART_APP_COMMAND, sADB_PATH.toString());
         adb.start();
         adb.reversePortForward(bindPort, bindPort);
-        // adb.reversePortForward(5800, 5800);
+        adb.reversePortForward(5800, 20000);
     }
 
     @Override

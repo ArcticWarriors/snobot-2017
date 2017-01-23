@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import org.yaml.snakeyaml.Yaml;
 
 public class MainServer
 {
-    private static final String IMAGE_CONFIG = "config/test_images.yml";
+    private static final String IMAGE_CONFIG = "config/image_config.yml";
 
     private interface ImageWaiter
     {
@@ -74,7 +75,22 @@ public class MainServer
 
         Yaml yaml = new Yaml();
         Map<String, Object> config = (Map<String, Object>) yaml.load(new FileInputStream(IMAGE_CONFIG));
-        List<String> files = (List<String>) config.get("images");
+
+        List<String> files = new ArrayList<>();
+
+        if (config.containsKey("image_dir"))
+        {
+            String dir = config.get("image_dir").toString();
+            File[] filesList = new File(dir).listFiles();
+            for (File file : filesList)
+            {
+                files.add(file.getAbsolutePath());
+            }
+        }
+        else if (config.containsKey("images"))
+        {
+            files = (List<String>) config.get("images");
+        }
 
         while (true)
         {
@@ -96,7 +112,7 @@ public class MainServer
 
     public static void main(String[] args) throws IOException
     {
-        // new MainServer(new ImageWaiterThreadSleep(1000));
-        new MainServer(new ImageWaiterConsoleInput());
+        new MainServer(new ImageWaiterThreadSleep(1));
+        // new MainServer(new ImageWaiterConsoleInput());
     }
 }

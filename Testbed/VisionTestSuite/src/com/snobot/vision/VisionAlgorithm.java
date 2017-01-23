@@ -45,11 +45,15 @@ public class VisionAlgorithm implements com.snobot.vision.standalone.SetThreshol
     public void processImage(BufferedImage originalImage)
     {
         currentImage = originalImage;
-        byte[] pixels = ((DataBufferByte) originalImage.getRaster().getDataBuffer()).getData();
-        Mat matImage = new Mat(originalImage.getHeight(), originalImage.getWidth(), CvType.CV_8UC3);
-        matImage.put(0, 0, pixels);
 
-        processImage(matImage);
+        if (originalImage != null)
+        {
+            byte[] pixels = ((DataBufferByte) currentImage.getRaster().getDataBuffer()).getData();
+            Mat matImage = new Mat(originalImage.getHeight(), originalImage.getWidth(), CvType.CV_8UC3);
+            matImage.put(0, 0, pixels);
+
+            processImage(matImage);
+        }
     }
 
     public void processImage(Mat originalImage)

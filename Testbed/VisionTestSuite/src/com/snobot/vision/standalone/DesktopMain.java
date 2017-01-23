@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import com.snobot.vision.VisionAlgorithm;
 
 public class DesktopMain
 {
+    private static final String sDEFAULT_IMAGE_PATH = "config/image_config.yml";
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws IOException
@@ -26,13 +28,29 @@ public class DesktopMain
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         Yaml yaml = new Yaml();
-        Map<String, Object> config = (Map<String, Object>) yaml.load(new FileInputStream("config/test_images.yml"));
-        List<String> files = (List<String>) config.get("images");
+        Map<String, Object> config = (Map<String, Object>) yaml.load(new FileInputStream(sDEFAULT_IMAGE_PATH));
         boolean oneAtATime = Boolean.parseBoolean(config.get("one_at_a_time").toString());
         String thresholdsFile = (String) config.get("threshold_config");
 
+        List<String> files = new ArrayList<>();
+
+        if (config.containsKey("image_dir"))
+        {
+            String dir = config.get("image_dir").toString();
+            File[] filesList = new File(dir).listFiles();
+            for (File file : filesList)
+            {
+                files.add(file.getAbsolutePath());
+            }
+        }
+        else if (config.containsKey("images"))
+        {
+            files = (List<String>) config.get("images");
+        }
+
         for (String file : files)
         {
+            System.out.println(file);
             BufferedImage image = ImageIO.read(new File(file));
 
             VisionAlgorithm algorithm = new VisionAlgorithm();
