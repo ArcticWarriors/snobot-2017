@@ -1,10 +1,12 @@
-package snobot.com.visionapp;
+package com.snobot.vision_app.app2017;
 
 import android.util.Log;
 
 import java.nio.ByteBuffer;
 
 import com.snobot.vision_app.utils.RobotConnection;
+
+import org.opencv.android.CameraBridgeViewBase;
 
 /**
  * Created by PJ on 11/24/2016.
@@ -15,17 +17,18 @@ public class VisionRobotConnection extends RobotConnection {
     private static final String sTAG = "RobotConnection";
 
     private static final String sHEARTBEAT_MESSAGE = "heartbeat";
-    private static final String sTAKE_PICTURE_MESSAGE = "takepicture";
+    private static final String sUSE_FRONT_CAMERA = "usefrontcamera";
+    private static final String sUSE_BACK_CAMERA = "usebackcamera";
 
-    private final IVisionActivity mCameraActivity;
+    private final SnobotVisionActivity mCameraActivity;
 
 
-    public VisionRobotConnection(IVisionActivity aCameraActivity) {
+    public VisionRobotConnection(SnobotVisionActivity aCameraActivity) {
         super();
         mCameraActivity = aCameraActivity;
     }
 
-    public VisionRobotConnection(CameraActivity aCameraActivity, String host, int port) {
+    public VisionRobotConnection(SnobotVisionActivity aCameraActivity, String host, int port) {
         super(host, port);
         mCameraActivity = aCameraActivity;
     }
@@ -35,9 +38,13 @@ public class VisionRobotConnection extends RobotConnection {
         {
             mLastHeartbeatReceiveTime = System.currentTimeMillis();
         }
-        else if(sTAKE_PICTURE_MESSAGE.equals(message))
+        else if(sUSE_FRONT_CAMERA.equals(message))
         {
-            mCameraActivity.takePicture();
+            mCameraActivity.useCamera(CameraBridgeViewBase.CAMERA_ID_FRONT);
+        }
+        else if(sUSE_BACK_CAMERA.equals(message))
+        {
+            mCameraActivity.useCamera(CameraBridgeViewBase.CAMERA_ID_BACK);
         }
         else
         {
@@ -59,12 +66,6 @@ public class VisionRobotConnection extends RobotConnection {
     @Override
     protected void sendHeartbeatMessage() {
         String message  = sHEARTBEAT_MESSAGE + "\n";
-        send(ByteBuffer.wrap(message.getBytes()));
-    }
-
-    public void sendPictureTakenMessage()
-    {
-        String message = "pictureTaken\n";
         send(ByteBuffer.wrap(message.getBytes()));
     }
 }

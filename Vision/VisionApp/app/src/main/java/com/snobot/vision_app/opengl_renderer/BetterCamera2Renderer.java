@@ -2,6 +2,7 @@ package com.snobot.vision_app.opengl_renderer;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -11,6 +12,8 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.Image;
+import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -20,6 +23,7 @@ import android.view.Surface;
 
 import org.opencv.android.CameraBridgeViewBase;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
@@ -267,6 +271,26 @@ public class BetterCamera2Renderer extends BetterCameraGLRendererBase {
             mPreviewRequestBuilder = mCameraDevice
                     .createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             mPreviewRequestBuilder.addTarget(surface);
+
+//        ImageReader.OnImageAvailableListener imageListener = new ImageReader.OnImageAvailableListener() {
+//            @Override
+//            public void onImageAvailable(ImageReader reader) {
+//                Image image = null;
+//                try {
+////                    image = reader.acquireLatestImage();
+////                    ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+////                    byte[] bytes = new byte[buffer.capacity()];
+////                    buffer.get(bytes);
+//                } finally {
+//                    if (image != null) {
+//                        image.close();
+//                    }
+//                }
+//            }
+//        };
+//            ImageReader reader = ImageReader.newInstance(w, h, ImageFormat.JPEG, 1);
+//            reader.setOnImageAvailableListener(imageListener, mBackgroundHandler);
+//            mPreviewRequestBuilder.addTarget(reader.getSurface());
 
             mCameraDevice.createCaptureSession(Arrays.asList(surface),
                     new CameraCaptureSession.StateCallback() {

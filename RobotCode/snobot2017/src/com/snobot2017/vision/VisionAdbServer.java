@@ -10,9 +10,18 @@ import com.snobot2017.Properties2017;
 public class VisionAdbServer extends RobotConnectionServer
 {
     private static final String sAPP_PACKAGE = "snobot.com.visionapp";
-    private static final String sAPP_MAIN_ACTIVITY = "CameraActivity";
+    private static final String sAPP_MAIN_ACTIVITY = "com.snobot.vision_app.app2017.SnobotVisionActivity";
 
     private static final double sTIMEOUT_PERIOD = 1.1; // Based on how often the App sends the heartbeat
+
+    private static final String sHEARTBEAT_MESSAGE = "heartbeat";
+    private static final String sUSE_FRONT_CAMERA_MESSAGE = "usefrontcamera";
+    private static final String sUSE_BACK_CAMERA_MESSAGE = "usebackcamera";
+
+    public enum CameraFacingDirection
+    {
+        Front, Rear
+    }
 
     private AdbBridge mAdb;
 
@@ -23,6 +32,7 @@ public class VisionAdbServer extends RobotConnectionServer
         mAdb = new AdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY);
         mAdb.start();
         mAdb.reversePortForward(aAppBindPort, aAppBindPort);
+        // mAdb.portForward(aAppBindPort, aAppBindPort);
         mAdb.portForward(aAppForwardedMjpegBindPort, aAppMjpegBindPort);
     }
 
@@ -30,17 +40,13 @@ public class VisionAdbServer extends RobotConnectionServer
     public void handleMessage(String message, double timestamp)
     {
         Level logLevel = Level.INFO;
-        if ("heartbeat".equals(message))
+        if (sHEARTBEAT_MESSAGE.equals(message))
         {
-            String outMessage = "heartbeat";
+            String outMessage = sHEARTBEAT_MESSAGE;
             ByteBuffer buffer = ByteBuffer.wrap(outMessage.getBytes());
             send(buffer);
 
             logLevel = Level.FINE;
-        }
-        else if ("pictureTaken".equals(message))
-        {
-            logLevel = Level.INFO;
         }
         else
         {
@@ -72,6 +78,27 @@ public class VisionAdbServer extends RobotConnectionServer
     public void restartApp()
     {
         mAdb.restartApp();
+    }
+
+    public void setCameraDirection(CameraFacingDirection aDirection)
+    {
+        switch (aDirection)
+        {
+        case Front:
+        {
+            send(ByteBuffer.wrap(sUSE_FRONT_CAMERA_MESSAGE.getBytes()));
+            break;
+        }
+        case Rear:
+        {
+            send(ByteBuffer.wrap(sUSE_BACK_CAMERA_MESSAGE.getBytes()));
+            break;
+        }
+        default:
+            sLOGGER.severe("Unknown camera direction " + aDirection);
+            break;
+
+        }
     }
 
 }

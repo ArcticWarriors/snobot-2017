@@ -1,23 +1,15 @@
 package com.snobot.vision_app.app2017;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.TextureView;
-import android.view.View;
+import android.view.SurfaceView;
 
 import com.snobot.vision_app.opengl_renderer.VisionTrackerGLSurfaceView;
 import com.snobot.vision_app.utils.MjpgServer;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import snobot.com.visionapp.IVisionActivity;
 import snobot.com.visionapp.VisionRobotConnection;
@@ -79,7 +71,7 @@ public class SnobotVisionActivity extends Activity implements IVisionActivity {
         }
 
         mView = (VisionTrackerGLSurfaceView) findViewById(R.id.texture);
-        mView.setCameraTextureListener(mView);
+//        mView.setCameraTextureListener(mView);
     }
 
     @Override

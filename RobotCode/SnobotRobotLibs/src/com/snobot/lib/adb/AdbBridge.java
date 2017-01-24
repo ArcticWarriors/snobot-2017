@@ -48,6 +48,7 @@ public class AdbBridge
 
         try
         {
+            System.out.println(cmd);
             Process p = r.exec(cmd);
             success = p.waitFor(10, TimeUnit.SECONDS);
         }
@@ -97,7 +98,7 @@ public class AdbBridge
         sLOGGER.log(Level.INFO, "Restarting App");
 
         runCommand("shell am force-stop " + mAppPackage);
-        runCommand("shell am start -n \"" + mAppPackage + "/" + mAppPackage + "." + mAppActivity);
+        runCommand("shell am start -n \"" + mAppPackage + "/" + mAppActivity);
     }
 
 }

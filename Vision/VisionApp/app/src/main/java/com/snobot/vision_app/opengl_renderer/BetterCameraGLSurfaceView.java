@@ -52,7 +52,7 @@ public class BetterCameraGLSurfaceView extends GLSurfaceView {
         super(context, attrs);
 
         TypedArray styledAttrs = getContext().obtainStyledAttributes(attrs, R.styleable.CameraBridgeViewBase);
-        int cameraIndex = styledAttrs.getInt(R.styleable.CameraBridgeViewBase_camera_id, -1);
+        int cameraIndex = styledAttrs.getInt(R.styleable.CameraBridgeViewBase_camera_id, 98);
         styledAttrs.recycle();
 
         mRenderer = new BetterCamera2Renderer(this, settings);
