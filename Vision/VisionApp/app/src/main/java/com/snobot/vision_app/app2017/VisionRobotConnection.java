@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import com.snobot.vision_app.utils.RobotConnection;
 
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.core.Mat;
 
 /**
  * Created by PJ on 11/24/2016.
@@ -20,15 +21,20 @@ public class VisionRobotConnection extends RobotConnection {
     private static final String sUSE_FRONT_CAMERA = "usefrontcamera";
     private static final String sUSE_BACK_CAMERA = "usebackcamera";
 
-    private final SnobotVisionActivity mCameraActivity;
+    private final IVisionActivity mCameraActivity;
+
+    public interface IVisionActivity
+    {
+        void useCamera(int aCameraId);
+    }
 
 
-    public VisionRobotConnection(SnobotVisionActivity aCameraActivity) {
+    public VisionRobotConnection(IVisionActivity aCameraActivity) {
         super();
         mCameraActivity = aCameraActivity;
     }
 
-    public VisionRobotConnection(SnobotVisionActivity aCameraActivity, String host, int port) {
+    public VisionRobotConnection(IVisionActivity aCameraActivity, String host, int port) {
         super(host, port);
         mCameraActivity = aCameraActivity;
     }

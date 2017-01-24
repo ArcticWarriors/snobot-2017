@@ -26,7 +26,7 @@ public class VisionManager implements ISubsystem
     @Override
     public void init()
     {
-        mVisionServer.restartApp();
+        // mVisionServer.restartApp();
 
         // TODO Add log headers
     }

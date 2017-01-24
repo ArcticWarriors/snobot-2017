@@ -22,9 +22,11 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
         <activity
-            android:name=".SnobotVisionActivity"
+            android:name=".SnobotVisionGLActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name">
+        </activity>
+        <activity android:name=".SnobotVisionStandardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

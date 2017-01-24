@@ -23,10 +23,6 @@ Thumbs.db
 # OSX files
 .DS_Store
 
-# Eclipse project files
-.classpath
-.project
-
 # Android Studio
 *.iml
 .idea

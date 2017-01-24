@@ -25,7 +25,7 @@ public class SnobotVisionGLSurfaceView extends VisionTrackerGLSurfaceView{
     @Override
     protected void processTexture(int texIn, int texOut, int width, int height, long image_timestamp) {
         Log.i(LOGTAG, "Processing texture");
-        Bitmap b = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
         this.draw(c);
 
