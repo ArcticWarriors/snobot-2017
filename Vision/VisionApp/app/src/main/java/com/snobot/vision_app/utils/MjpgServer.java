@@ -1,4 +1,4 @@
-package snobot.com.visionapp.utils;
+package com.snobot.vision_app.utils;
 
 import android.os.AsyncTask;
 import android.util.Log;

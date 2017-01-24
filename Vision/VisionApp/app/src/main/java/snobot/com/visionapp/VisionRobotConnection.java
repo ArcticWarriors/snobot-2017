@@ -4,7 +4,7 @@ import android.util.Log;
 
 import java.nio.ByteBuffer;
 
-import snobot.com.visionapp.utils.RobotConnection;
+import com.snobot.vision_app.utils.RobotConnection;
 
 /**
  * Created by PJ on 11/24/2016.
@@ -17,10 +17,10 @@ public class VisionRobotConnection extends RobotConnection {
     private static final String sHEARTBEAT_MESSAGE = "heartbeat";
     private static final String sTAKE_PICTURE_MESSAGE = "takepicture";
 
-    private final CameraActivity mCameraActivity;
+    private final IVisionActivity mCameraActivity;
 
 
-    public VisionRobotConnection(CameraActivity aCameraActivity) {
+    public VisionRobotConnection(IVisionActivity aCameraActivity) {
         super();
         mCameraActivity = aCameraActivity;
     }

@@ -1,4 +1,4 @@
-package snobot.com.visionapp.utils;
+package com.snobot.vision_app.utils;
 
 import android.util.Log;
 
@@ -87,7 +87,7 @@ public abstract class RobotConnection {
                         InputStream is = mSocket.getInputStream();
                         reader = new BufferedReader(new InputStreamReader(is));
                     } catch (IOException e) {
-                        Log.e(sTAG, "Could not get input stream");
+//                        Log.e(sTAG, "Could not get input stream");
                         continue;
                     } catch (NullPointerException npe) {
                         Log.e(sTAG, "socket was null");
@@ -156,7 +156,7 @@ public abstract class RobotConnection {
                 mSocket = new Socket(mSendAddress, mSendPort);
                 mSocket.setSoTimeout(100);
             } catch (IOException e) {
-                Log.w(sTAG, "Could not connect");
+//                Log.w(sTAG, "Could not connect");
                 mSocket = null;
             }
         }

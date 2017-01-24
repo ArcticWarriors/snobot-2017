@@ -5,28 +5,25 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CaptureRequest;
-import android.media.Image;
-import android.media.ImageReader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
 import snobot.com.visionapp.camera.CameraRenderer;
-import snobot.com.visionapp.utils.MjpgServer;
-import snobot.com.visionapp.utils.RobotConnection;
+
+import com.snobot.vision_app.app2017.R;
+import com.snobot.vision_app.utils.MjpgServer;
 
 
-public class CameraActivity extends Activity {
+public class CameraActivity extends Activity implements IVisionActivity {
     private static final String TAG = "CameraActivity";
     private static final int REQUEST_CAMERA_PERMISSION = 200;
 
@@ -38,6 +35,7 @@ public class CameraActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         if(sRobotConnection == null)
         {
@@ -45,7 +43,6 @@ public class CameraActivity extends Activity {
             sRobotConnection.start();
         }
 
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
@@ -88,27 +85,27 @@ public class CameraActivity extends Activity {
         }
     };
 
-    protected void takePicture() {
+    public void takePicture() {
 
-        ImageReader.OnImageAvailableListener imageListener = new ImageReader.OnImageAvailableListener() {
-            @Override
-            public void onImageAvailable(ImageReader reader) {
-                Image image = null;
-                try {
-                    image = reader.acquireLatestImage();
-                    ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                    byte[] bytes = new byte[buffer.capacity()];
-                    buffer.get(bytes);
-                    onImageBytes(bytes);
-                } finally {
-                    if (image != null) {
-                        image.close();
-                    }
-                }
-            }
-        };
-
-        cameraRenderer.runSingleCapture(imageListener);
+//        ImageReader.OnImageAvailableListener imageListener = new ImageReader.OnImageAvailableListener() {
+//            @Override
+//            public void onImageAvailable(ImageReader reader) {
+//                Image image = null;
+//                try {
+//                    image = reader.acquireLatestImage();
+//                    ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+//                    byte[] bytes = new byte[buffer.capacity()];
+//                    buffer.get(bytes);
+//                    onImageBytes(bytes);
+//                } finally {
+//                    if (image != null) {
+//                        image.close();
+//                    }
+//                }
+//            }
+//        };
+//
+//        cameraRenderer.runSingleCapture(imageListener);
     }
     private void openCamera() {
         MjpgServer.getInstance();
@@ -144,10 +141,10 @@ public class CameraActivity extends Activity {
     }
     @Override
     protected void onPause() {
+        super.onPause();
         Log.e(TAG, "onPause");
 
         cameraRenderer.closeCamera();
-        super.onPause();
     }
 
 
