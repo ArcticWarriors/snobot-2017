@@ -1,8 +1,6 @@
 package com.snobot2017.vision;
 
 import com.snobot.lib.ISubsystem;
-import com.snobot.lib.vision.MjpegForwarder;
-import com.snobot.lib.vision.MjpegReceiver;
 import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 
@@ -16,10 +14,6 @@ public class VisionManager implements ISubsystem
         {
             mVisionServer = new VisionAdbServer(PortMappings2017.sADB_BIND_PORT, PortMappings2017.sAPP_MJPEG_PORT,
                     PortMappings2017.sAPP_MJPEG_FORWARDED_PORT);
-
-            MjpegReceiver visionReceiver = new MjpegReceiver();
-            visionReceiver.start("http://127.0.0.1:" + PortMappings2017.sAPP_MJPEG_FORWARDED_PORT);
-            visionReceiver.addImageReceiver(new MjpegForwarder(12345));
         }
     }
 

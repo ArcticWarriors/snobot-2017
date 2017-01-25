@@ -24,6 +24,7 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
     private static VisionRobotConnection sRobotConnection;
 
     private SnobotVisionGLSurfaceView mView;
+    private JavaVisionAlgorithm mAlgorithm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +76,13 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
             return;
         }
 
+        mAlgorithm = new JavaVisionAlgorithm();
+
         mView = (SnobotVisionGLSurfaceView) findViewById(R.id.texture);
         mView.setCameraTextureListener(mView);
-        mView.setVisionAlgorithm(new JavaVisionAlgorithm());
+        mView.setVisionAlgorithm(mAlgorithm);
+
+        mAlgorithm.setDisplayType(JavaVisionAlgorithm.DisplayType.OriginalImage);
     }
 
     @Override

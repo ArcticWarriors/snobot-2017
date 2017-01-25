@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
 
@@ -13,11 +14,24 @@ import java.io.ByteArrayOutputStream;
 
 public class JavaVisionAlgorithm
 {
+    public enum DisplayType
+    {
+        OriginalImage,
+        PostThreshold
+    }
+
     private VisionGripAlgorithm mGrip;
+    private DisplayType mDisplayType;
 
     public JavaVisionAlgorithm()
     {
         mGrip = new VisionGripAlgorithm();
+        mDisplayType = DisplayType.OriginalImage;
+    }
+
+    public void setDisplayType(DisplayType aDisplayType)
+    {
+        mDisplayType = aDisplayType;
     }
 
     public Mat processImage(Bitmap aBitmap) {
@@ -31,7 +45,26 @@ public class JavaVisionAlgorithm
     {
         mGrip.process(mat);
 
-        return mat;
+
+        Mat output;
+
+        switch(mDisplayType) {
+            case PostThreshold:
+            {
+                output = new Mat();
+                Imgproc.cvtColor(mGrip.hslThresholdOutput(), output, 9); //TODO magic number, should be CV_GRAY2RGBA but I can't find it
+                break;
+            }
+            case OriginalImage:
+            default: // Intentional fallthrough
+            {
+                output = mat;
+                break;
+            }
+
+        }
+
+        return output;
     }
 
 
