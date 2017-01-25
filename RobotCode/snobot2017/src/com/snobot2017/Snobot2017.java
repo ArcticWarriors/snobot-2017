@@ -77,8 +77,10 @@ public class Snobot2017 extends ASnobot
         mClimber = new Climbing(climbingMotor, mLogger, operatorJoystick);
         mSubsystems.add(mClimber);
 
-        // GearsBoss
+        // GearBoss
         Solenoid gearSolonoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL);
+       //ToDo Delete this later 
+        gearSolonoid.set(true);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick);
         mSubsystems.add(mGearBoss);
     }
@@ -97,5 +99,11 @@ public class Snobot2017 extends ASnobot
     public IDriveTrain getDriveTrain()
     {
         return this.mDriveTrain;
+    }
+
+    public IGearBoss getGearBoss()
+    {
+        // TODO Auto-generated method stub
+        return mGearBoss;
     }
 }

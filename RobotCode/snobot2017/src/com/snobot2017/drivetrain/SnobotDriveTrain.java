@@ -35,6 +35,8 @@ public class SnobotDriveTrain implements IDriveTrain
         mDriverJoystick = aDriverJoystick;
         mLeftDriveEncoder = aLeftDriveEncoder;
         mRightDriveEncoder = aRightDriveEncoder;
+        
+        mRobotDrive.setSafetyEnabled(false);
     }
 
     @Override
