@@ -27,7 +27,6 @@ public class SpeedControllerGraphicDisplay extends BaseWidgetDisplay<Integer, Sp
         public void updateDisplay(double aValue)
         {
             mMotorSpeed = aValue;
-            repaint();
         }
 
         @Override

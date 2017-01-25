@@ -28,7 +28,6 @@ public class AnalogOutputDisplay extends BaseWidgetDisplay<Integer, AnalogWrappe
         public void updateDisplay(double aValue)
         {
             mMotorSpeed = aValue;
-            repaint();
         }
 
         @Override
