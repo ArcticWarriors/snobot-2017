@@ -20,22 +20,18 @@ public class JavaVisionAlgorithm
         mGrip = new VisionGripAlgorithm();
     }
 
-    public byte[] processImage(Bitmap aBitmap)
-    {
+    public Mat processImage(Bitmap aBitmap) {
         Mat mat = new Mat();
         Utils.bitmapToMat(aBitmap, mat);
 
+        return processImage(mat);
+    }
+
+    public Mat processImage(Mat mat)
+    {
         mGrip.process(mat);
 
-        Mat outputMat = mat;
-
-        Bitmap bitmap = Bitmap.createBitmap(outputMat.cols(), outputMat.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(outputMat, bitmap);
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, os);
-
-        return os.toByteArray();
+        return mat;
     }
 
 

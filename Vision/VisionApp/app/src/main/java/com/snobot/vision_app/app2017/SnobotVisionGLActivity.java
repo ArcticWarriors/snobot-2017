@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import com.snobot.vision_app.app2017.java_algorithm.JavaVisionAlgorithm;
 import com.snobot.vision_app.opengl_renderer.VisionTrackerGLSurfaceView;
 import com.snobot.vision_app.utils.MjpgServer;
+
+import org.opencv.android.OpenCVLoader;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -20,7 +23,7 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
 
     private static VisionRobotConnection sRobotConnection;
 
-    private VisionTrackerGLSurfaceView mView;
+    private SnobotVisionGLSurfaceView mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,12 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         {
             sRobotConnection = new VisionRobotConnection(this);
             sRobotConnection.start();
+        }
+
+        if (!OpenCVLoader.initDebug()) {
+            Log.e(this.getClass().getSimpleName(), "  OpenCVLoader.initDebug(), not working.");
+        } else {
+            Log.d(this.getClass().getSimpleName(), "  OpenCVLoader.initDebug(), working.");
         }
 
         setContentView(R.layout.activity_snobot_vision_gl);
@@ -66,8 +75,9 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
             return;
         }
 
-        mView = (VisionTrackerGLSurfaceView) findViewById(R.id.texture);
-//        mView.setCameraTextureListener(mView);
+        mView = (SnobotVisionGLSurfaceView) findViewById(R.id.texture);
+        mView.setCameraTextureListener(mView);
+        mView.setVisionAlgorithm(new JavaVisionAlgorithm());
     }
 
     @Override

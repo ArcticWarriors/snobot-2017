@@ -21,8 +21,11 @@ import com.snobot.vision_app.standard_renderer.CameraRenderer;
 import com.snobot.vision_app.utils.MjpgServer;
 
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
+import org.opencv.core.Mat;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,8 +72,6 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
         captureRequests.put(CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE, CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE_OFF);
         captureRequests.put(CaptureRequest.SENSOR_EXPOSURE_TIME, 1000000L);
         captureRequests.put(CaptureRequest.LENS_FOCUS_DISTANCE, .2f);
-
-        Log.i(TAG, Core.NATIVE_LIBRARY_NAME);
 
         if (!OpenCVLoader.initDebug()) {
             Log.e(this.getClass().getSimpleName(), "  OpenCVLoader.initDebug(), not working.");
@@ -153,9 +154,16 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
     public void handleImage(Bitmap aBitmap) {
 
         if(visionAlgorithm != null) {
-            byte[] userImage = visionAlgorithm.processImage(aBitmap);
+            Mat userImage = visionAlgorithm.processImage(aBitmap);
 
-            MjpgServer.getInstance().update(userImage);
+
+            Bitmap bitmap = Bitmap.createBitmap(userImage.cols(), userImage.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(userImage, bitmap);
+
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, os);
+
+            MjpgServer.getInstance().update(os.toByteArray());
         }
         Log.i(TAG, "Captured image");
     }

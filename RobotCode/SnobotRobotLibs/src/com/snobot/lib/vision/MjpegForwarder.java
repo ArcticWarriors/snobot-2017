@@ -15,6 +15,7 @@ public class MjpegForwarder implements ImageReceiver
     public MjpegForwarder(int aBindPort)
     {
         mBindPort = aBindPort;
+        MjpgServer.getInstance(mBindPort);
     }
 
     @Override
