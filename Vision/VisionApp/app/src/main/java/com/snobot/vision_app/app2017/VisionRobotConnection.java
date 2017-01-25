@@ -39,7 +39,9 @@ public class VisionRobotConnection extends RobotConnection {
         mCameraActivity = aCameraActivity;
     }
 
+    @Override
     public void handleMessage(String message) {
+        Log.i(sTAG, message);
         if(sHEARTBEAT_MESSAGE.equals(message))
         {
             mLastHeartbeatReceiveTime = System.currentTimeMillis();

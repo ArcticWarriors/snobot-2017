@@ -16,9 +16,9 @@ public class VisionAdbServer extends RobotConnectionServer
 
     private static final double sTIMEOUT_PERIOD = 1.1; // Based on how often the App sends the heartbeat
 
-    private static final String sHEARTBEAT_MESSAGE = "heartbeat";
-    private static final String sUSE_FRONT_CAMERA_MESSAGE = "usefrontcamera";
-    private static final String sUSE_BACK_CAMERA_MESSAGE = "usebackcamera";
+    private static final String sHEARTBEAT_MESSAGE = "heartbeat\n";
+    private static final String sUSE_FRONT_CAMERA_MESSAGE = "usefrontcamera\n";
+    private static final String sUSE_BACK_CAMERA_MESSAGE = "usebackcamera\n";
 
     public enum CameraFacingDirection
     {
@@ -42,7 +42,7 @@ public class VisionAdbServer extends RobotConnectionServer
     public void handleMessage(String message, double timestamp)
     {
         Level logLevel = Level.INFO;
-        if (sHEARTBEAT_MESSAGE.equals(message))
+        if ("heartbeat".equals(message))
         {
             String outMessage = sHEARTBEAT_MESSAGE;
             ByteBuffer buffer = ByteBuffer.wrap(outMessage.getBytes());
