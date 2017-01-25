@@ -90,5 +90,7 @@ public class GraphicalSensorDisplayPanel extends JPanel
         mAnalogPanel.update(reg.getAnalog());
         mEncoderPanel.update(reg.getEncoders());
         mCanEncoderPanel.update(reg.getCanEncoders());
+
+        repaint();
     }
 }

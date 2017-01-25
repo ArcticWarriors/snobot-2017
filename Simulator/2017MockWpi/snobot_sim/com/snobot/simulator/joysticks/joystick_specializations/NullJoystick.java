@@ -10,6 +10,7 @@ public class NullJoystick implements IMockJoystick
 
     private static final int sNUM_BUTTONS = 10;
     private static final int sNUM_AXIS = 6;
+    private static final int sNUM_POV = 1;
 
     private float[] mAxis;
     private short[] mPov;
@@ -17,7 +18,7 @@ public class NullJoystick implements IMockJoystick
     public NullJoystick()
     {
         mAxis = new float[sNUM_AXIS];
-        mPov = new short[0];
+        mPov = new short[sNUM_POV];
         for (int i = 0; i < mPov.length; ++i)
         {
             mPov[i] = -1;

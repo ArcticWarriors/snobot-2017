@@ -32,7 +32,6 @@ public class SolenoidGraphicDisplay extends BaseWidgetDisplay<Integer, SolenoidW
         public void updateDisplay(boolean aValue)
         {
             mState = aValue;
-            repaint();
         }
 
         @Override

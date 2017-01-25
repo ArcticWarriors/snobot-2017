@@ -27,7 +27,6 @@ public class DigitalSourceGraphicDisplay extends BaseWidgetDisplay<Integer, Digi
         public void updateDisplay(boolean aValue)
         {
             mState = aValue;
-            repaint();
         }
 
         @Override

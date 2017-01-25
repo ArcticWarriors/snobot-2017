@@ -4,27 +4,32 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AdbBridge
 {
-    private Logger sLOGGER = Logger.getLogger("AdbBridge");
+    private static final Logger sLOGGER = Logger.getLogger("AdbBridge");
 
-    protected Path mAdbLocation;
-    protected String mRestartAppCommand;
-    protected boolean mValidAdb;
+    protected final Path mAdbLocation;
+    protected final boolean mValidAdb;
 
-    public AdbBridge(String aRestartAppCommand, String aAdbLocation)
+    protected final String mAppPackage;
+    protected final String mAppActivity;
+
+    public AdbBridge(String aAdbLocation, String aAppPackage, String aAppMainActivity)
     {
-        mRestartAppCommand = aRestartAppCommand;
         mAdbLocation = Paths.get(aAdbLocation);
         mValidAdb = Files.exists(mAdbLocation);
-    }
 
-    public AdbBridge(Path location)
-    {
-        mAdbLocation = location;
+        mAppPackage = aAppPackage;
+        mAppActivity = aAppMainActivity;
+
+        if (!mValidAdb)
+        {
+            sLOGGER.severe("ADB could not be found at '" + aAdbLocation + "'");
+        }
     }
 
     private boolean runCommand(String args)
@@ -39,22 +44,24 @@ public class AdbBridge
         String cmd = mAdbLocation.toString() + " " + args;
         sLOGGER.log(Level.FINE, "ADB Command: " + cmd);
 
+        boolean success = false;
+
         try
         {
+            System.out.println(cmd);
             Process p = r.exec(cmd);
-            p.waitFor();
+            success = p.waitFor(10, TimeUnit.SECONDS);
         }
         catch (IOException e)
         {
             sLOGGER.log(Level.WARNING, "Could not run command: " + cmd, e);
-            return false;
         }
         catch (InterruptedException e)
         {
             sLOGGER.log(Level.WARNING, "Could not run command: " + cmd, e);
-            return false;
         }
-        return true;
+
+        return success;
     }
 
     public void start()
@@ -89,7 +96,9 @@ public class AdbBridge
     public void restartApp()
     {
         sLOGGER.log(Level.INFO, "Restarting App");
-        runCommand(mRestartAppCommand);
+
+        runCommand("shell am force-stop " + mAppPackage);
+        runCommand("shell am start -n \"" + mAppPackage + "/" + mAppActivity);
     }
 
 }

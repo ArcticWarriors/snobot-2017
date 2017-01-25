@@ -1,0 +1,4 @@
+
+one_at_a_time: true
+threshold_config: config/threshold_config.yml
+image_dir: C:\Users\PJ\Desktop\VisionExample\Vision Images\LED Peg
