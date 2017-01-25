@@ -9,10 +9,10 @@ import com.snobot2017.Properties2017;
 
 public class VisionAdbServer extends RobotConnectionServer
 {
-//     private static final String sAPP_PACKAGE = "snobot.com.visionapp";
-//    private static final String sAPP_MAIN_ACTIVITY = "com.snobot.vision_app.app2017.SnobotVisionGLActivity";
     private static final String sAPP_PACKAGE = "snobot.com.visionapp";
-    private static final String sAPP_MAIN_ACTIVITY = "com.snobot.vision_app.app2017.SnobotVisionStandardActivity";
+    private static final String sAPP_MAIN_ACTIVITY = "com.snobot.vision_app.app2017.SnobotVisionGLActivity";
+//    private static final String sAPP_PACKAGE = "snobot.com.visionapp";
+//    private static final String sAPP_MAIN_ACTIVITY = "com.snobot.vision_app.app2017.SnobotVisionStandardActivity";
 
     private static final double sTIMEOUT_PERIOD = 1.1; // Based on how often the App sends the heartbeat
 

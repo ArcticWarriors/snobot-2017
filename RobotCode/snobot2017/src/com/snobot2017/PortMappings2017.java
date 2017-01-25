@@ -40,10 +40,4 @@ public class PortMappings2017
      * This forwards data coming from the apps MJPEG server to this port
      */
     public static final int sAPP_MJPEG_FORWARDED_PORT = 1800;
-
-    /**
-     * The port the robot will blast MJPEGs out of. This is what the SD should
-     * listen to
-     */
-    public static final int sLOCAL_MJPEG_BIND_PORT = 12345;
 }
