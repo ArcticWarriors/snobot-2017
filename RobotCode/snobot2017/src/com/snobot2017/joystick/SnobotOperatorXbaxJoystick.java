@@ -30,7 +30,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     @Override
     public void init()
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -69,7 +68,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     @Override
     public void rereadPreferences()
     {
-        // TODO Auto-generated method stub
 
     }
 

@@ -103,7 +103,6 @@ public class Snobot2017 extends ASnobot
 
     public IGearBoss getGearBoss()
     {
-        // TODO Auto-generated method stub
         return mGearBoss;
     }
 }

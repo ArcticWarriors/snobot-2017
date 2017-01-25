@@ -20,7 +20,6 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public void init()
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -41,7 +40,6 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public void rereadPreferences()
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -83,21 +81,18 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public double getArcadePower()
     {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public double getArcadeTurn()
     {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public boolean isArcadeMode()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 

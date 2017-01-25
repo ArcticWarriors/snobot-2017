@@ -66,7 +66,6 @@ public class SnobotDriveTrain implements IDriveTrain
     @Override
     public void rereadPreferences()
     {
-        // TODO Auto-generated method stub
 
     }
 

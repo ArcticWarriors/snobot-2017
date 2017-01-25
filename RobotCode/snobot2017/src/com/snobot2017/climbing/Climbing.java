@@ -59,7 +59,6 @@ public class Climbing implements IClimbing
     @Override
     public void rereadPreferences()
     {
-        // TODO Auto-generated method stub
 
     }
 

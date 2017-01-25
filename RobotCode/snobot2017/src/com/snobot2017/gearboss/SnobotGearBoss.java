@@ -18,7 +18,6 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void init()
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -55,7 +54,6 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void rereadPreferences()
     {
-        // TODO Auto-generated method stub
 
     }
 
