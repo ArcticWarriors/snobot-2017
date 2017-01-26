@@ -98,7 +98,7 @@ public class CameraSimulator implements ISimulatorUpdater
     @Override
     public void setRobot(RobotBase aRobot)
     {
-        mPositioner = ((Snobot2017) aRobot).getPositioner();
+        // mPositioner = ((Snobot2017) aRobot).getPositioner();
     }
 
 }

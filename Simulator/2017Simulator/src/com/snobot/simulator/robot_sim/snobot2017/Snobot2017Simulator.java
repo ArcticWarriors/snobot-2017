@@ -15,6 +15,12 @@ public class Snobot2017Simulator extends ASimulator
 
     public Snobot2017Simulator()
     {
+
+    }
+
+    @Override
+    protected void createSimulatorComponents()
+    {
         double load = .1;
         // double gearReduction = 1;
         double gearReduction = 10;
