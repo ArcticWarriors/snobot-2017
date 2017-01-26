@@ -12,6 +12,7 @@ import com.snobot2017.PortMappings2017;
 
 public class Snobot2017Simulator extends ASimulator
 {
+    private static final boolean sSIMULATE_CAMERA = false;
 
     public Snobot2017Simulator()
     {
@@ -43,7 +44,10 @@ public class Snobot2017Simulator extends ASimulator
         // rightSC.setMotorSimulator(new SimpleMotorSimulator(70));
         rightEncoder.setSpeedController(rightSC);
 
-        CameraSimulator cameraSimulator = new CameraSimulator();
-        mSimulatorComponenets.add(cameraSimulator);
+        if (sSIMULATE_CAMERA)
+        {
+            CameraSimulator cameraSimulator = new CameraSimulator();
+            mSimulatorComponenets.add(cameraSimulator);
+        }
     }
 }
