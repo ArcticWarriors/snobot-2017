@@ -9,7 +9,7 @@ import com.snobot.coordinate_gui.ui.renderProps.RobotLayerRenderProps;
 
 public class CoordinateGui2017 extends BaseCoordinateGui
 {
-    private static final String FIELD_IMAGE_PATH = "/com/snobot/sd2017/coordinategui/widget/2016Field.png";
+    private static final String FIELD_IMAGE_PATH = "/com/snobot/sd2017/coordinategui/widget/2017Field.png";
 
     private static final double FIELD_WIDTH = 27;
     private static final double FIELD_HEIGHT = 54;
@@ -37,8 +37,8 @@ public class CoordinateGui2017 extends BaseCoordinateGui
         mCoordinateLayer = new CoordinateLayer(mCoordinateDataProvider, aCoordinateLayerRenderProps, mConverter);
 
         mLayerManager.addLayer(mFieldLayer);
-        mLayerManager.addLayer(mRobotLayer);
-        mLayerManager.addLayer(mCoordinateLayer);
+        // mLayerManager.addLayer(mRobotLayer);
+        // mLayerManager.addLayer(mCoordinateLayer);
     }
 
 }
