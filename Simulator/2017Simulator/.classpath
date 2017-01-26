@@ -10,5 +10,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/snobot2017"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SnobotRobotLibs"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

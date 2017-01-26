@@ -121,7 +121,7 @@ public class Simulator
                         }
                         catch (ClassNotFoundException e)
                         {
-                            System.err.println("Could not find simulator class " + mSimulatorClassName);
+                            throw new RuntimeException("Could not find simulator class " + mSimulatorClassName);
                         }
                     }
 
