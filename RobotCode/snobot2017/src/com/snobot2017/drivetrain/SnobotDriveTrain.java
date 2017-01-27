@@ -24,6 +24,12 @@ public class SnobotDriveTrain implements IDriveTrain
     private final Encoder mLeftDriveEncoder;
     private final Encoder mRightDriveEncoder;
     private final AutoLogger mAutoLogger;
+    private double mFrontLeftDriveMotorSpeed;
+    private double mFrontRightDriveMotorSpeed;
+    private double mRearLeftDriveMotorSpeed;
+    private double mRearRightDriveMotorSpeed;
+    private double mRightMotorDistance;
+    private double mLeftMotorDistance;
 
     public SnobotDriveTrain(SpeedController aFrontLeftMotor, SpeedController aRearLeftMotor, SpeedController aFrontRightMotor,
             SpeedController aRearRightMotor, IDriverJoystick aDriverJoystick, Logger aLogger, Encoder aLeftDriveEncoder, Encoder aRightDriveEncoder,
@@ -62,7 +68,11 @@ public class SnobotDriveTrain implements IDriveTrain
     @Override
     public void update()
     {
-        // TODO Auto-generated method stub
+        mFrontLeftDriveMotorSpeed = mFrontLeftMotor.get();
+        mFrontRightDriveMotorSpeed = mFrontRightMotor.get();
+        mLeftMotorDistance = mLeftDriveEncoder.getDistance();
+        mRightMotorDistance = mRearRightMotor.get();
+        mRearLeftDriveMotorSpeed = mRearLeftMotor.get();
 
     }
 
@@ -81,28 +91,24 @@ public class SnobotDriveTrain implements IDriveTrain
     @Override
     public void updateSmartDashboard()
     {
-        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_ENCODER, getLeftDistance());
-        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, getRightDistance());
-        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_SPEED, mFrontLeftMotor.get());
-        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_SPEED, mFrontRightMotor.get());
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_ENCODER, mLeftMotorDistance);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, mRightMotorDistance);
+        SmartDashboard.putNumber(SmartDashBoardNames.sFRONT_LEFT_DRIVE_MOTOR_SPEED, mFrontLeftDriveMotorSpeed);
+        SmartDashboard.putNumber(SmartDashBoardNames.sFRONT_RIGHT_DRIVE_MOTOR_SPEED, mFrontRightDriveMotorSpeed);
+        SmartDashboard.putNumber(SmartDashBoardNames.sREAR_RIGHT_DRIVE_MOTOR_SPEED, mRearRightDriveMotorSpeed);
+        SmartDashboard.putNumber(SmartDashBoardNames.sREAR_LEFT_DRIVE_MOTOR_SPEED, mRearLeftDriveMotorSpeed);
+
     }
 
     @Override
     public void updateLog()
     {
-        mLogger.updateLogger(getLeftDistance());
-        mLogger.updateLogger(getRightDistance());
-        mLogger.updateLogger(mFrontLeftMotor.get());
-        mLogger.updateLogger(mRearLeftMotor.get());
-        mLogger.updateLogger(mFrontRightMotor.get());
-        mLogger.updateLogger(mRearRightMotor.get());
-
-        mAutoLogger.updateLogger(mFrontLeftMotor.get());
-        mAutoLogger.updateLogger(mRearLeftMotor.get());
-        mAutoLogger.updateLogger(mFrontRightMotor.get());
-        mAutoLogger.updateLogger(mRearRightMotor.get());
-
-        System.out.println("Updating log");
+        mLogger.updateLogger(mLeftMotorDistance);
+        mLogger.updateLogger(mRightMotorDistance);
+        mLogger.updateLogger(mFrontLeftDriveMotorSpeed);
+        mLogger.updateLogger(mRearLeftDriveMotorSpeed);
+        mLogger.updateLogger(mFrontRightDriveMotorSpeed);
+        mLogger.updateLogger(mRearLeftDriveMotorSpeed);
     }
 
     @Override
@@ -114,13 +120,13 @@ public class SnobotDriveTrain implements IDriveTrain
     @Override
     public double getRightDistance()
     {
-        return mRightDriveEncoder.getDistance();
+        return mRightMotorDistance;
     }
 
     @Override
     public double getLeftDistance()
     {
-        return mLeftDriveEncoder.getDistance();
+        return mLeftMotorDistance;
     }
 
     public void resetEncoders()
