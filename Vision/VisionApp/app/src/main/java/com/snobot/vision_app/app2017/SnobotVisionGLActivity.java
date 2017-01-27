@@ -89,4 +89,9 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
     public void useCamera(int aCameraId) {
         mView.setCameraIndex(aCameraId);
     }
+
+    @Override
+    public void iterateDisplayType() {
+        mAlgorithm.iterateDisplayType();
+    }
 }

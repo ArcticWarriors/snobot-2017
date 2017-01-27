@@ -26,11 +26,11 @@ public class VisionRobotConnection extends RobotConnection {
 
     private final IVisionActivity mCameraActivity;
 
-    private JavaVisionAlgorithm visionAlgorithm;
-
     public interface IVisionActivity
     {
         void useCamera(int aCameraId);
+
+        void iterateDisplayType();
     }
 
 
@@ -61,7 +61,7 @@ public class VisionRobotConnection extends RobotConnection {
         }
         else if (sITERATE_SHOWN_IMAGE_MESSAGE.equals(message))
         {
-            visionAlgorithm.iterateDisplayType();
+            mCameraActivity.iterateDisplayType();
         }
         else
         {

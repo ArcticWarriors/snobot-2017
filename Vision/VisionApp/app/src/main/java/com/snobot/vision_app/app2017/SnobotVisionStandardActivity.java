@@ -151,6 +151,11 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
     }
 
     @Override
+    public void iterateDisplayType() {
+        visionAlgorithm.iterateDisplayType();
+    }
+
+    @Override
     public void handleImage(Bitmap aBitmap) {
 
         if(visionAlgorithm != null) {
