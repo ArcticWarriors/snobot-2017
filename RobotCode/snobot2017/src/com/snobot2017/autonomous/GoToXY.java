@@ -23,7 +23,7 @@ public class GoToXY extends Command
     private double mTurnDegrees;
     private double mDriveDistance;
     private double mSpeed;
-    private Command mStupidTurn;
+    private Command mTurnWithDegrees;
     private Command mDriveStraightADistance;
     private CommandGroup mCommandGroup;
 
@@ -65,11 +65,11 @@ public class GoToXY extends Command
         mCurrentY = mPositioner.getYPosition();
         mDriveDistance = Math.sqrt((Math.pow((mFinalXCoor - mCurrentX), 2)) + (Math.pow((mFinalYCoor - mCurrentY), 2)));
         mTurnDegrees = Math.toDegrees(Math.atan2((mFinalXCoor - mCurrentX), (mFinalYCoor - mCurrentY)));
-        mStupidTurn = new StupidTurn(mDriveTrain, mPositioner,
-        // mTurnDegrees, mSpeed);
+        mTurnWithDegrees = new TurnWithDegrees(mSpeed, mTurnDegrees,
+         mDriveTrain, mPositioner);
         System.out.println(mTurnDegrees);
-        // mDriveStraightADistance = new DriveStraightADistance(mDriveTrain,
-        // mPositioner, mDriveDistance, mSpeed);
+         mDriveStraightADistance = new DriveStraightADistance(mDriveDistance,
+         mSpeed, mDriveTrain, mPositioner);
         mCommandGroup.addSequential(mTurnWithDegrees);
         mCommandGroup.addSequential(mDriveStraightADistance);
         mCommandGroup.start();

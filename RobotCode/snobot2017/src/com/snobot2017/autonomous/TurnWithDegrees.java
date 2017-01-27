@@ -3,7 +3,9 @@ package com.snobot2017.autonomous;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.positioner.IPositioner;
 
-public class TurnWithDegrees 
+import edu.wpi.first.wpilibj.command.Command;
+
+public class TurnWithDegrees extends Command
 {
 private double mSpeed;
 private double mTurnAngle;
@@ -49,5 +51,11 @@ private void Turn()
         mDriveTrain.setLeftRightSpeed(0, 0);
     }
     }
+}
+@Override
+protected boolean isFinished()
+{
+    // TODO Auto-generated method stub
+    return false;
 }
 }
