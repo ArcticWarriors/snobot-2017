@@ -1,5 +1,6 @@
 package com.snobot2017.joystick;
 
+import com.snobot.lib.ui.LatchedButton;
 import com.snobot.lib.ui.XboxButtonMap;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,16 +16,20 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     private Joystick mJoystick;
     private boolean mClimb;
     private boolean mCatch;
-    private boolean mSwitchAppView;
     // Gear Boss
     private GearBossPositions mGearBossPos;
 
     // Ready for take off
     private double mLiftOffSpeed;
 
+    private LatchedButton mSwitchAppViewLatcher;
+    private boolean mSwitchAppView;
+
     public SnobotOperatorXbaxJoystick(Joystick aJoystick)
     {
         mJoystick = aJoystick;
+
+        mSwitchAppViewLatcher = new LatchedButton();
     }
 
     @Override
@@ -58,7 +63,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
         mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
         
         //App
-        mSwitchAppView = mJoystick.getRawButton(XboxButtonMap.A_BUTTON);
+        mSwitchAppView = mSwitchAppViewLatcher.update(mJoystick.getRawButton(XboxButtonMap.A_BUTTON));
     }
 
     @Override
