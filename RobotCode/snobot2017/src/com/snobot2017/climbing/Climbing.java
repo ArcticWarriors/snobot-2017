@@ -13,7 +13,14 @@ public class Climbing implements IClimbing
     private SpeedController mClimbingMotor;
     private IOperatorJoystick mJoystick;
     private Logger mLogger;
-
+    private double mMotorSpeed;
+    
+    /**
+     * This is the constructor
+     * @param aClimbingMotor
+     * @param aLogger
+     * @param aJoystick
+     */
     public Climbing(SpeedController aClimbingMotor, Logger aLogger, IOperatorJoystick aJoystick)
     {
         mClimbingMotor = aClimbingMotor;
@@ -30,8 +37,7 @@ public class Climbing implements IClimbing
     @Override
     public void update()
     {
-        // TODO Auto-generated method stub
-
+        mMotorSpeed = mClimbingMotor.get();
     }
 
     @Override
@@ -40,6 +46,9 @@ public class Climbing implements IClimbing
         controlRotation();
     }
 
+    /**
+     * This passes the button press for catching and climbing modes.
+     */
     private void controlRotation()
     {
         if (mJoystick.isCatchRope())
@@ -58,15 +67,14 @@ public class Climbing implements IClimbing
 
     @Override
     public void rereadPreferences()
-    {
-        // TODO Auto-generated method stub
-
+    { 
+        // Nothing
     }
 
     @Override
     public void updateSmartDashboard()
     {
-
+        SmartDashboard.putNumber(SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, mMotorSpeed);   
     }
 
     @Override
