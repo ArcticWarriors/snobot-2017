@@ -1,10 +1,13 @@
 package com.snobot2017;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.LogManager;
 
 import com.snobot.lib.ASnobot;
 import com.snobot.lib.LogFormatter;
+import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
@@ -42,6 +45,9 @@ public class Snobot2017 extends ASnobot
     // Vision
     private VisionManager mVisionManager;
 
+    // Logger
+    private AutoLogger mAutoLogger;
+    private DateFormat mAutoLogDateFormat;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -50,6 +56,10 @@ public class Snobot2017 extends ASnobot
     public void robotInit()
     {
         LogManager.getLogManager().getLogger("").getHandlers()[0].setFormatter(new LogFormatter());
+
+        mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
+        String headerDate = mAutoLogDateFormat.format(new Date());
+        mAutoLogger = new AutoLogger(headerDate, Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue());
 
         // Autonomous
         mAutonFactory = new AutonomousFactory(this);
@@ -80,7 +90,8 @@ public class Snobot2017 extends ASnobot
                 driverJoystick, 
                 mLogger,
                 leftDriveEncoder, 
-                rightDriveEncoder);
+                rightDriveEncoder, 
+                mAutoLogger);
         mSubsystems.add(mDriveTrain);
 
         // Climbing
@@ -105,6 +116,26 @@ public class Snobot2017 extends ASnobot
                 Properties2017.sLOG_COUNT.getValue(),
                 Properties2017.sLOG_FILE_PATH.getValue());
         init();
+    }
+
+    public void init()
+    {
+        mAutoLogger.init();
+        super.init();
+        mAutoLogger.endHeader();
+
+    }
+
+    public void updateLog()
+    {
+        super.updateLog();
+        String logDate = mAutoLogDateFormat.format(new Date());
+        if (mAutoLogger.logNow())
+        {
+            mAutoLogger.startLogEntry(logDate);
+
+            mAutoLogger.endLogger();
+        }
     }
 
     @Override
