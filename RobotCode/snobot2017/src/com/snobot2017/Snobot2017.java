@@ -42,10 +42,13 @@ public class Snobot2017 extends ASnobot
     // Vision
     private VisionManager mVisionManager;
 
-    public Snobot2017()
-    {
-        super(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), Properties2017.sLOG_COUNT.getValue(), Properties2017.sLOG_FILE_PATH.getValue());
 
+    /**
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
+     */
+    public void robotInit()
+    {
         LogManager.getLogManager().getLogger("").getHandlers()[0].setFormatter(new LogFormatter());
 
         // Autonomous
@@ -95,6 +98,13 @@ public class Snobot2017 extends ASnobot
         // Vision
         mVisionManager = new VisionManager();
         mSubsystems.add(mVisionManager);
+
+        // Call last
+        mLogger.startLogging(
+                new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), 
+                Properties2017.sLOG_COUNT.getValue(),
+                Properties2017.sLOG_FILE_PATH.getValue());
+        init();
     }
 
     @Override
