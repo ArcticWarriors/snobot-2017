@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
  * @author ayush
  *
  */
-public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
+public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoystick
 {
     private Joystick mJoystick;
     private boolean mClimb;
@@ -21,15 +21,25 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
 
     // Ready for take off
     private double mLiftOffSpeed;
-
+    
+    //App stuff
     private LatchedButton mSwitchAppViewLatcher;
+    private LatchedButton mSwitchToFrontCameraLatcher;
+    private LatchedButton mSwitchToRearCameraLatcher;
+    private LatchedButton mRestartAppLatcher;
     private boolean mSwitchAppView;
+    private boolean mSwitchToFrontCamera;
+    private boolean mSwitchToRearCamera;
+    private boolean mRestartApp;
 
     public SnobotOperatorXbaxJoystick(Joystick aJoystick)
     {
         mJoystick = aJoystick;
 
         mSwitchAppViewLatcher = new LatchedButton();
+        mSwitchToFrontCameraLatcher = new LatchedButton();
+        mSwitchToRearCameraLatcher = new LatchedButton();
+        mRestartAppLatcher = new LatchedButton();
     }
 
     @Override
@@ -64,6 +74,9 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
         
         //App
         mSwitchAppView = mSwitchAppViewLatcher.update(mJoystick.getRawButton(XboxButtonMap.A_BUTTON));
+        mSwitchToFrontCamera = mSwitchToFrontCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.X_BUTTON));
+        mSwitchToRearCamera = mSwitchToRearCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
+        mRestartApp = mRestartAppLatcher.update(mJoystick.getRawButton(XboxButtonMap.B_BUTTON));
     }
 
     @Override
@@ -130,6 +143,24 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     public boolean iterateAppView()
     {
         return mSwitchAppView;
+    }
+
+    @Override
+    public boolean switchToFrontCamera()
+    {
+        return mSwitchToFrontCamera;
+    }
+
+    @Override
+    public boolean switchToRearCamera()
+    {
+        return mSwitchToRearCamera;
+    }
+
+    @Override
+    public boolean restartApp()
+    {
+        return mRestartApp;
     }
 
 }

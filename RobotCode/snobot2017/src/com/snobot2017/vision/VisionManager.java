@@ -5,16 +5,19 @@ import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.joystick.IOperatorJoystick;
+import com.snobot2017.joystick.IVisionJoystick;
+import com.snobot2017.vision.VisionAdbServer.CameraFacingDirection;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionManager implements ISubsystem
 {
     private VisionAdbServer mVisionServer;
     
-    IOperatorJoystick mOperatorJoystick;
+    IVisionJoystick mOperatorJoystick;
     
-    public VisionManager(IOperatorJoystick aOperatorJoystick)
+    public VisionManager(IVisionJoystick aOperatorJoystick)
     {
         if (Properties2017.sENABLE_VISION.getValue())
         {
@@ -45,6 +48,18 @@ public class VisionManager implements ISubsystem
         {
             mVisionServer.iterateShownImage();
         }
+        else if(mOperatorJoystick.switchToFrontCamera())
+        {
+            mVisionServer.setCameraDirection(CameraFacingDirection.Front);
+        }
+        else if (mOperatorJoystick.switchToRearCamera())
+        {
+            mVisionServer.setCameraDirection((CameraFacingDirection.Rear));
+        }
+        else if(mOperatorJoystick.restartApp())
+        {
+            mVisionServer.restartApp();
+        }
     }
 
     @Override
@@ -56,8 +71,7 @@ public class VisionManager implements ISubsystem
     @Override
     public void updateSmartDashboard()
     {
-        // TODO Auto-generated method stub
-
+        SmartDashboard.putBoolean("App Connected", mVisionServer.isConnected());
     }
 
     @Override

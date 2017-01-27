@@ -14,6 +14,7 @@ import com.snobot2017.gearboss.IGearBoss;
 import com.snobot2017.gearboss.SnobotGearBoss;
 import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.joystick.IOperatorJoystick;
+import com.snobot2017.joystick.IVisionJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
 import com.snobot2017.vision.VisionManager;
@@ -60,7 +61,10 @@ public class Snobot2017 extends ASnobot
 
         IOperatorJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw);
         mSubsystems.add(operatorJoystick);
-
+        
+        IVisionJoystick visionJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw);
+        mSubsystems.add(visionJoystick);
+        
         // Drive Train
         SpeedController driveLeftMotorA = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
         SpeedController driveLeftMotorB = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
@@ -93,7 +97,7 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mGearBoss);
 
         // Vision
-        mVisionManager = new VisionManager(operatorJoystick);
+        mVisionManager = new VisionManager(visionJoystick);
         mSubsystems.add(mVisionManager);
     }
 
