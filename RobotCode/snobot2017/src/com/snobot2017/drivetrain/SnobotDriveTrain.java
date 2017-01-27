@@ -2,6 +2,7 @@ package com.snobot2017.drivetrain;
 
 import com.snobot.lib.Logger;
 import com.snobot2017.SmartDashBoardNames;
+import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -22,10 +23,13 @@ public class SnobotDriveTrain implements IDriveTrain
     private final IDriverJoystick mDriverJoystick;
     private final Encoder mLeftDriveEncoder;
     private final Encoder mRightDriveEncoder;
+    private final AutoLogger mAutoLogger;
 
     public SnobotDriveTrain(SpeedController aFrontLeftMotor, SpeedController aRearLeftMotor, SpeedController aFrontRightMotor,
-            SpeedController aRearRightMotor, IDriverJoystick aDriverJoystick, Logger aLogger, Encoder aLeftDriveEncoder, Encoder aRightDriveEncoder)
+            SpeedController aRearRightMotor, IDriverJoystick aDriverJoystick, Logger aLogger, Encoder aLeftDriveEncoder, Encoder aRightDriveEncoder,
+            AutoLogger aAutoLogger)
     {
+        mAutoLogger = aAutoLogger;
         mFrontLeftMotor = aFrontLeftMotor;
         mRearLeftMotor = aRearLeftMotor;
         mFrontRightMotor = aFrontRightMotor;
@@ -46,6 +50,11 @@ public class SnobotDriveTrain implements IDriveTrain
         mLogger.addHeader("RearLeftMotorSpeed");
         mLogger.addHeader("FrontRightMotorSpeed");
         mLogger.addHeader("RearRightMotorSpeed");
+
+        mAutoLogger.addHeader("FrontLeftMotorSpeed");
+        mAutoLogger.addHeader("RearLeftMotorSpeed");
+        mAutoLogger.addHeader("FrontRightMotorSpeed");
+        mAutoLogger.addHeader("RearRightMotorSpeed");
     }
 
     @Override
@@ -59,8 +68,6 @@ public class SnobotDriveTrain implements IDriveTrain
     public void control()
     {
         setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
-        System.out.println(mDriverJoystick.getLeftSpeed());
-        System.out.println(mDriverJoystick.getRightSpeed());
     }
 
     @Override
@@ -85,7 +92,16 @@ public class SnobotDriveTrain implements IDriveTrain
         mLogger.updateLogger(getLeftDistance());
         mLogger.updateLogger(getRightDistance());
         mLogger.updateLogger(mFrontLeftMotor.get());
+        mLogger.updateLogger(mRearLeftMotor.get());
         mLogger.updateLogger(mFrontRightMotor.get());
+        mLogger.updateLogger(mRearRightMotor.get());
+
+        mAutoLogger.updateLogger(mFrontLeftMotor.get());
+        mAutoLogger.updateLogger(mRearLeftMotor.get());
+        mAutoLogger.updateLogger(mFrontRightMotor.get());
+        mAutoLogger.updateLogger(mRearRightMotor.get());
+
+        System.out.println("Updating log");
     }
 
     @Override
