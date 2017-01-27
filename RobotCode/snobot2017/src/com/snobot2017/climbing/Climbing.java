@@ -59,7 +59,7 @@ public class Climbing implements IClimbing
     @Override
     public void rereadPreferences()
     {
-
+        // Nothing
     }
 
     @Override
