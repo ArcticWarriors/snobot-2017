@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.LogManager;
 
+import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
 import com.snobot.lib.LogFormatter;
 import com.snobot2017.autologger.AutoLogger;
@@ -12,6 +13,7 @@ import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
 import com.snobot2017.drivetrain.IDriveTrain;
+import com.snobot2017.drivetrain.SnobotCanDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
 import com.snobot2017.gearboss.IGearBoss;
 import com.snobot2017.gearboss.SnobotGearBoss;
@@ -75,23 +77,39 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(operatorJoystick);
 
         // Drive Train
-        SpeedController driveLeftMotorA = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
-        SpeedController driveLeftMotorB = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
-        SpeedController driveRightMotorA = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
-        SpeedController driveRightMotorB = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
-        Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
-        Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
+        boolean useCan = false;
+        if (useCan)
+        {
+            CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
+            CANTalon driveLeftMotorB = new CANTalon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
+            CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
+            CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
 
-        mDriveTrain = new SnobotDriveTrain(
-                driveLeftMotorA, 
-                driveLeftMotorB, 
-                driveRightMotorA, 
-                driveRightMotorB, 
-                driverJoystick, 
-                mLogger,
-                leftDriveEncoder, 
-                rightDriveEncoder, 
-                mAutoLogger);
+            mDriveTrain = new SnobotCanDriveTrain(
+                    driveLeftMotorA, 
+                    driveLeftMotorB, 
+                    driveRightMotorA, 
+                    driveRightMotorB, 
+                    driverJoystick, 
+                    mLogger,
+                    mAutoLogger);
+        }
+        else
+        {
+            SpeedController driveLeftMotor = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
+            SpeedController driveRightMotor = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
+            Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
+            Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
+    
+            mDriveTrain = new SnobotDriveTrain(
+                    driveLeftMotor, 
+                    driveRightMotor,
+                    leftDriveEncoder, 
+                    rightDriveEncoder, 
+                    driverJoystick, 
+                    mLogger,
+                    mAutoLogger);
+        }
         mSubsystems.add(mDriveTrain);
 
         // Climbing
