@@ -58,6 +58,10 @@ public class Simulator
 
     private void createSimulator() throws InstantiationException, IllegalAccessException, ClassNotFoundException
     {
+        System.out.println("*************************************************************");
+        System.out.println("*                    Starting Robot Code                    *");
+        System.out.println("*************************************************************");
+
         mRobot = (RobotBase) Class.forName(mClassName).newInstance();
     }
 
@@ -70,7 +74,9 @@ public class Simulator
 		NetworkTable.setPersistentFilename(sUSER_CONFIG_DIR + mClassName + ".preferences.ini");
         HAL.setWaitTime(.02);
 
-        Thread robotThread = new Thread(createRobotThread());
+        createSimulator();
+
+        Thread robotThread = new Thread(createRobotThread(), "RobotThread");
         Runnable guiThread = createGuiThread();
 
         robotThread.start();
@@ -150,7 +156,6 @@ public class Simulator
 
                 try
                 {
-                    createSimulator();
                     mRobot.startCompetition();
                 }
                 catch (UnsatisfiedLinkError e)

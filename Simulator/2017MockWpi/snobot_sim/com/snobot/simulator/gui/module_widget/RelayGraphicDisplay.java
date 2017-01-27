@@ -31,7 +31,6 @@ public class RelayGraphicDisplay extends BaseWidgetDisplay<Integer, RelayWrapper
         public void updateDisplay(Value value)
         {
             mValue = value;
-            repaint();
         }
 
         @Override

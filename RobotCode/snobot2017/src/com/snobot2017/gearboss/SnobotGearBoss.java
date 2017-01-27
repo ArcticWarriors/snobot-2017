@@ -1,27 +1,47 @@
 package com.snobot2017.gearboss;
 
+import com.snobot2017.joystick.IOperatorJoystick;
+
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class SnobotGearBoss implements IGearBoss
 {
     private Solenoid mGearSolenoid;
+    private IOperatorJoystick mOperatorJoystick;
 
-    public SnobotGearBoss(Solenoid aGearSolenoid)
+    public SnobotGearBoss(Solenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick)
     {
         mGearSolenoid = aGearSolenoid;
+        mOperatorJoystick = aOperatorJoystick;
     }
+
     @Override
     public void init()
     {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void update()
     {
-        // TODO Auto-generated method stub
-
+        switch (mOperatorJoystick.moveGearBossToPosition())
+        {
+        case UP:
+        {
+            moveGearHigh();
+            break;
+        }
+        case DOWN:
+        {
+            moveGearLow();
+            break;
+        }
+        case NONE:
+        {
+            // Do nothing.
+            break;
+        }
+        }
     }
 
     @Override
@@ -34,7 +54,6 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void rereadPreferences()
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -62,7 +81,7 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void moveGearHigh()
     {
-       mGearSolenoid.set(true);
+        mGearSolenoid.set(true);
     }
 
     @Override
@@ -73,7 +92,7 @@ public class SnobotGearBoss implements IGearBoss
 
     @Override
     public boolean getGearHeight()
-    {  
+    {
         return mGearSolenoid.get();
     }
 

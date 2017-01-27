@@ -18,9 +18,9 @@ public class VisionAdbServer extends RobotConnectionServer
 
     public VisionAdbServer(int bindPort)
     {
-        super(bindPort);
+        super(bindPort, 1.1);
 
-        AdbBridge adb = new AdbBridge(sRESTART_APP_COMMAND, Properties2017.sADB_LOCATION.getValue());
+        AdbBridge adb = new AdbBridge(Properties2017.sADB_LOCATION.getValue(), "snobit.com.cameratester", "SelfieCameraActivity");
         adb.start();
         adb.reversePortForward(bindPort, bindPort);
         adb.portForward(1180, 5800);
@@ -62,6 +62,18 @@ public class VisionAdbServer extends RobotConnectionServer
         String messageText = sTAKE_PICTURE_MESSAGE + "\n";
         ByteBuffer message = ByteBuffer.wrap(messageText.getBytes());
         send(message);
+    }
+
+    @Override
+    public void onConnected()
+    {
+        System.out.println("App Connected");
+    }
+
+    @Override
+    public void onDisconnected()
+    {
+        System.out.println("App Disconnected");
     }
 
 }

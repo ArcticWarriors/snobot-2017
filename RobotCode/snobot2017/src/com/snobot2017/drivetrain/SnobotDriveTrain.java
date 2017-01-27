@@ -35,6 +35,8 @@ public class SnobotDriveTrain implements IDriveTrain
         mDriverJoystick = aDriverJoystick;
         mLeftDriveEncoder = aLeftDriveEncoder;
         mRightDriveEncoder = aRightDriveEncoder;
+        
+        mRobotDrive.setSafetyEnabled(false);
     }
 
     @Override
@@ -59,14 +61,11 @@ public class SnobotDriveTrain implements IDriveTrain
     public void control()
     {
         setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
-        System.out.println(mDriverJoystick.getLeftSpeed());
-        System.out.println(mDriverJoystick.getRightSpeed());
     }
 
     @Override
     public void rereadPreferences()
     {
-        // TODO Auto-generated method stub
 
     }
 

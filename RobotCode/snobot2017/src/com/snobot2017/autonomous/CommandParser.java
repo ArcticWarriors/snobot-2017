@@ -5,6 +5,7 @@ import java.util.List;
 import com.snobot.lib.autonomous.ACommandParser;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
+import com.snobot2017.gearboss.SnobotGearBoss;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class CommandParser extends ACommandParser
 {
     protected Snobot2017 mSnobot;
+    
 
     /**
      * Creates a CommandParser object.
@@ -29,12 +31,11 @@ public class CommandParser extends ACommandParser
      */
     public CommandParser(Snobot2017 aSnobot)
     {
-        super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME),
-              SmartDashBoardNames.sROBOT_COMMAND_TEXT,
-              SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON,
-              " ", "#");
+        super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
+                SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
 
         mSnobot = aSnobot;
+        
     }
 
     /**
@@ -75,7 +76,7 @@ public class CommandParser extends ACommandParser
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
-            }
+        }
         catch (IndexOutOfBoundsException e)
         {
             addError("You have not specified enough aguments for the command: " + commandName + ". " + e.getMessage());
@@ -90,8 +91,8 @@ public class CommandParser extends ACommandParser
 
     private Command parseScoreGearCommand(List<String> args)
     {
-        // TODO Auto-generated method stub
-        return null;
+        double time = Double.parseDouble(args.get(1));        
+        return new ScoreGear(mSnobot.getGearBoss(),time);
     }
 
     private Command parseMoveGearLowCommand(List<String> args)
