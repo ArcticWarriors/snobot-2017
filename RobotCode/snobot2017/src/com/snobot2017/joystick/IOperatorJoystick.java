@@ -38,4 +38,10 @@ public interface IOperatorJoystick extends ISubsystem
      *         do nothing
      */
     GearBossPositions moveGearBossToPosition();
+    
+    
+    /**
+     * @return true if App View should be changed
+     */
+    boolean iterateAppView();
 }

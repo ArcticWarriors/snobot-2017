@@ -15,7 +15,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     private Joystick mJoystick;
     private boolean mClimb;
     private boolean mCatch;
-
+    private boolean mSwitchAppView;
     // Gear Boss
     private GearBossPositions mGearBossPos;
 
@@ -56,6 +56,9 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
         // Climb
         mClimb = mJoystick.getRawButton(XboxButtonMap.RB_BUTTON);
         mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
+        
+        //App
+        mSwitchAppView = mJoystick.getRawButton(XboxButtonMap.A_BUTTON);
     }
 
     @Override
@@ -116,6 +119,12 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     {
 
         return mClimb;
+    }
+
+    @Override
+    public boolean iterateAppView()
+    {
+        return mSwitchAppView;
     }
 
 }

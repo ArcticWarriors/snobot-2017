@@ -82,7 +82,7 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         mView.setCameraTextureListener(mView);
         mView.setVisionAlgorithm(mAlgorithm);
 
-        mAlgorithm.setDisplayType(JavaVisionAlgorithm.DisplayType.OriginalImage);
+        mAlgorithm.setDisplayType(JavaVisionAlgorithm.DisplayType.PostThreshold);
     }
 
     @Override

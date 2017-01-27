@@ -34,6 +34,14 @@ public class JavaVisionAlgorithm
         mDisplayType = aDisplayType;
     }
 
+    public void iterateDisplayType()
+    {
+        int nextIndex = mDisplayType.ordinal() + 1;
+
+        mDisplayType = DisplayType.values()[nextIndex % DisplayType.values().length];
+    }
+
+
     public Mat processImage(Bitmap aBitmap) {
         Mat mat = new Mat();
         Utils.bitmapToMat(aBitmap, mat);

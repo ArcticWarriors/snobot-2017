@@ -20,6 +20,8 @@ public class VisionAdbServer extends RobotConnectionServer
     private static final String sUSE_FRONT_CAMERA_MESSAGE = "usefrontcamera\n";
     private static final String sUSE_BACK_CAMERA_MESSAGE = "usebackcamera\n";
 
+    private static final String sITERATE_SHOWN_IMAGE_MESSAGE = "iterateshownimage\n";
+
     public enum CameraFacingDirection
     {
         Front, Rear
@@ -101,6 +103,11 @@ public class VisionAdbServer extends RobotConnectionServer
             break;
 
         }
+    }
+
+    public void iterateShownImage()
+    {
+        send(ByteBuffer.wrap(sITERATE_SHOWN_IMAGE_MESSAGE.getBytes()));
     }
 
 }

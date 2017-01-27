@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.nio.ByteBuffer;
 
+import com.snobot.vision_app.app2017.java_algorithm.JavaVisionAlgorithm;
 import com.snobot.vision_app.utils.RobotConnection;
 
 import org.opencv.android.CameraBridgeViewBase;
@@ -21,7 +22,11 @@ public class VisionRobotConnection extends RobotConnection {
     private static final String sUSE_FRONT_CAMERA = "usefrontcamera";
     private static final String sUSE_BACK_CAMERA = "usebackcamera";
 
+    private static final String sITERATE_SHOWN_IMAGE_MESSAGE = "iterateshownimage";
+
     private final IVisionActivity mCameraActivity;
+
+    private JavaVisionAlgorithm visionAlgorithm;
 
     public interface IVisionActivity
     {
@@ -53,6 +58,10 @@ public class VisionRobotConnection extends RobotConnection {
         else if(sUSE_BACK_CAMERA.equals(message))
         {
             mCameraActivity.useCamera(CameraBridgeViewBase.CAMERA_ID_BACK);
+        }
+        else if (sITERATE_SHOWN_IMAGE_MESSAGE.equals(message))
+        {
+            visionAlgorithm.iterateDisplayType();
         }
         else
         {

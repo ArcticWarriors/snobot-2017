@@ -93,7 +93,7 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mGearBoss);
 
         // Vision
-        mVisionManager = new VisionManager();
+        mVisionManager = new VisionManager(operatorJoystick);
         mSubsystems.add(mVisionManager);
     }
 
