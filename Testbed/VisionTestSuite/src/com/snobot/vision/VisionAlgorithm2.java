@@ -48,34 +48,18 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
         }
     }
 
-    private static final double sHORIZONTAL_FOV = Math.toRadians(31.5);
-    private static final double sVERTICAL_FOV = Math.toRadians(25.5);
-    private static final double tapeWidth = 2;
-    private static final double tapeHeight = 5;
-    private static final double fovWidthPixels = 640;
-    private static final double fovHeightPixels = 480;
-
     public void processImage(Mat originalImage)
     {
         originalImage = scaleImage(originalImage);
         mPipeline.process(originalImage);
 
-//        Mat postThreshold = new Mat();
-//        originalImage.copyTo(postThreshold);
-//        Core.polylines(postThreshold, pipeline.filterContoursOutput(), true, new Scalar(255, 0, 0));
-        
-        Mat displayImage = mPipeline.cvErode1Output();
+        Mat displayImage = mPipeline.hslThresholdOutput();
 
         for (MatOfPoint contour : mPipeline.filterContoursOutput())
         {
             Rect rect = Imgproc.boundingRect(contour);
             double aspectRatio = rect.width * 1.0 / rect.height;
-
-            double distanceFromHorz = (tapeWidth * fovWidthPixels) / (2 * rect.width * Math.tan(sHORIZONTAL_FOV));
-            double distanceFromVert = (tapeHeight * fovHeightPixels) / (2 * rect.height * Math.tan(sVERTICAL_FOV));
-            
-            System.out.println(distanceFromHorz + ", " + distanceFromVert);
-            // System.out.println(aspectRatio + "," + contour + ", " + rect);
+            System.out.println(aspectRatio + "," + contour + ", " + rect);
         }
 
         for (ProcessedImageListener listener : mUpdateListeners)
