@@ -20,7 +20,7 @@ import com.snobot.vision.VisionAlgorithm;
 
 public class DesktopMain
 {
-    private static final String sDEFAULT_IMAGE_PATH = "config/image_config.yml";
+    private static final String sDEFAULT_IMAGE_PATH = "rope_test/image_config.yml";
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws IOException
@@ -45,7 +45,10 @@ public class DesktopMain
         }
         else if (config.containsKey("images"))
         {
-            files = (List<String>) config.get("images");
+            for (String filepath : (List<String>) config.get("images"))
+            {
+                files.add(new File(filepath).getAbsolutePath());
+            }
         }
 
         for (String file : files)
@@ -64,6 +67,7 @@ public class DesktopMain
                 frame.setModal(true);
                 frame.setLayout(new BorderLayout());
                 frame.add(testPanel, BorderLayout.CENTER);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);
             }
@@ -73,6 +77,7 @@ public class DesktopMain
                 frame.setTitle(file);
                 frame.setLayout(new BorderLayout());
                 frame.add(testPanel, BorderLayout.CENTER);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);
             }
