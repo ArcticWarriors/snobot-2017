@@ -24,6 +24,12 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void update()
     {
+        
+    }
+
+    @Override
+    public void control()
+    {
         switch (mOperatorJoystick.moveGearBossToPosition())
         {
         case UP:
@@ -38,17 +44,9 @@ public class SnobotGearBoss implements IGearBoss
         }
         case NONE:
         {
-            // Do nothing.
             break;
         }
         }
-    }
-
-    @Override
-    public void control()
-    {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
