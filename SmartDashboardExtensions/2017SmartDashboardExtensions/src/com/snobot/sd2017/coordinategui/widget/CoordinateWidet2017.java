@@ -56,6 +56,9 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
         double x = Robot.getTable().getNumber(SmartDashBoardNames.sX_POSITION, 0);
         double y = Robot.getTable().getNumber(SmartDashBoardNames.sY_POSITION,0);
         double angle = Robot.getTable().getNumber(SmartDashBoardNames.sORIENTATION, 0);
-        mCoordinateGui.addCoordinate(new Coordinate(x, y, angle));
+        
+        Coordinate coord = new Coordinate(x, y, angle);
+        //System.out.println(coord);
+        mCoordinateGui.addCoordinate(coord);
     }
 }

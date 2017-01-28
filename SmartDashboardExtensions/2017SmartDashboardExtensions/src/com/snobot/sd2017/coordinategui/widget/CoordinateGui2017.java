@@ -37,8 +37,8 @@ public class CoordinateGui2017 extends BaseCoordinateGui
         mCoordinateLayer = new CoordinateLayer(mCoordinateDataProvider, aCoordinateLayerRenderProps, mConverter);
 
         mLayerManager.addLayer(mFieldLayer);
-        // mLayerManager.addLayer(mRobotLayer);
-        // mLayerManager.addLayer(mCoordinateLayer);
+        mLayerManager.addLayer(mRobotLayer);
+        mLayerManager.addLayer(mCoordinateLayer);
     }
 
 }

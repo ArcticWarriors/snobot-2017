@@ -62,7 +62,7 @@ public class TurnWithDegrees extends Command
             }
         }
         
-        System.out.println("TurnWithDegrees " + mTurnAngle + " " + mPositioner.getOrientationDegrees() + " " + mTurnMeasure);
+        //System.out.println("TurnWithDegrees " + mTurnAngle + " " + mPositioner.getOrientationDegrees() + " " + mTurnMeasure);
 
     }
 
