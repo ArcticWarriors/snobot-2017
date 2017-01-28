@@ -5,7 +5,6 @@ import java.util.List;
 import com.snobot.lib.autonomous.ACommandParser;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
-import com.snobot2017.gearboss.SnobotGearBoss;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -73,6 +72,11 @@ public class CommandParser extends ACommandParser
                 newCommand = parseScoreGearCommand(args);
                 break;
             }
+            case AutonomousCommandNames.sDRIVE_STRAIGHT_A_DISTANCE:
+            {
+                newCommand = parseDriveStraightADistance(args);
+                break;
+            }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
@@ -87,6 +91,13 @@ public class CommandParser extends ACommandParser
             e.printStackTrace();
         }
         return newCommand;
+    }
+
+    private Command parseDriveStraightADistance(List<String> args)
+    {
+        double distance = Double.parseDouble(args.get(1));
+        double speed = Double.parseDouble(args.get(2));
+        return new DriveStraightADistance(distance, speed, mSnobot.getDriveTrain(), mSnobot.getPositioner());
     }
 
     private Command parseScoreGearCommand(List<String> args)

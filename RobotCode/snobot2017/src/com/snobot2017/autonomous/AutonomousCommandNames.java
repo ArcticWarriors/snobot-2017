@@ -7,4 +7,5 @@ public class AutonomousCommandNames
     public static final String sWAIT_COMMAND = "Wait";
     public static final String sSTUPID_DRIVE_STRAIGHT_COMMAND = "StupidDriveStraight";
     public static final String sSCORE_GEAR_COMMAND = "ScoreGear";
+    public static final String sDRIVE_STRAIGHT_A_DISTANCE = "DriveStraightADistance";
 }

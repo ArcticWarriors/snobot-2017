@@ -21,19 +21,24 @@ import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
+import com.snobot2017.positioner.IPositioner;
+import com.snobot2017.positioner.Positioner;
 import com.snobot2017.vision.VisionManager;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class Snobot2017 extends ASnobot
 {
     // Robot Subystems
     private IDriveTrain mDriveTrain;
+    private IPositioner mPositioner;
 
     // Autonomous
     private AutonomousFactory mAutonFactory;
@@ -50,6 +55,7 @@ public class Snobot2017 extends ASnobot
     // Logger
     private AutoLogger mAutoLogger;
     private DateFormat mAutoLogDateFormat;
+
 
     /**
      * This function is run when the robot is first started up and should be
@@ -128,6 +134,11 @@ public class Snobot2017 extends ASnobot
         mVisionManager = new VisionManager();
         mSubsystems.add(mVisionManager);
 
+        // Positioner
+        Gyro gyro = new ADXRS450_Gyro();
+        mPositioner = new Positioner(gyro, mDriveTrain, mLogger);
+        mSubsystems.add(mPositioner);
+
         // Call last
         mLogger.startLogging(
                 new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), 
@@ -175,5 +186,11 @@ public class Snobot2017 extends ASnobot
     public IGearBoss getGearBoss()
     {
         return mGearBoss;
+    }
+
+    public IPositioner getPositioner()
+    {
+        // TODO Auto-generated method stub
+        return mPositioner;
     }
 }
