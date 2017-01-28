@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="2016 Snobot SD Extensions" default="jar">
+<project name="2017 Snobot SD Extensions" default="jar">
   
 	<property file="build.properties"/>
+
+    <path id="CoordinateGui.classpath">
+        <pathelement location="${CoordinateGui.location}/bin"/>
+    </path>
 
     <path id="CoordinateGui.classpath">
         <pathelement location="${CoordinateGui.location}/bin"/>
@@ -16,7 +20,23 @@
 
 	  <!-- Targets -->
 
-	  <target name="compile_extensions" description="Compile the source code.">
+	  <target name="compile_coordinate_library" description="Compile the source code.">
+	    <mkdir dir="${build.dir}"/>
+	    <echo>Compiling ${CoordinateGui.src_dir} to ${build.dir}</echo>
+
+	    <javac srcdir="../CoordinateGui/src"
+	     destdir="${build.dir}"
+	     includeAntRuntime="no"
+	     includeJavaRuntime="no"
+	     target="${ant.java.version}"
+	     source="${ant.java.version}"
+	     compiler="javac${ant.java.version}"
+	     debug="true">
+	        <exclude name="**/com/snobot/coordinate_gui/desktop_app/**"/>
+	    </javac>
+	  </target>
+
+	  <target name="compile_extensions" description="Compile the source code." depends="compile_coordinate_library">
 	    <mkdir dir="${build.dir}"/>
 	    <echo>Compiling ${src.dir} with classpath=${classpath} to ${build.dir}</echo>
 

@@ -1,8 +1,0 @@
-/bin/
-/build/
-/dist/
-
-/logs/
-/user_config
-
-hs_*.log
