@@ -12,10 +12,9 @@ import javax.swing.JPanel;
 
 import org.opencv.core.Mat;
 
-import com.snobot.vision.VisionAlgorithm.ProcessedImageListener;
 import com.snobot.vision.standalone.OpenCvUtilities;
 
-public class ImagePreviewPanel extends JPanel implements ProcessedImageListener
+public class ImagePreviewPanel extends JPanel implements com.snobot.vision.IVisionAlgorithm.ProcessedImageListener
 {
     private JLabel originalImageLabel;
     private JLabel thresholdImageLabel;

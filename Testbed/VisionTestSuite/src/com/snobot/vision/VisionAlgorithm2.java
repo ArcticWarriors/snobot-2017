@@ -12,13 +12,8 @@ import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-public class VisionAlgorithm2 implements com.snobot.vision.standalone.SetThresholdListener
+public class VisionAlgorithm2 implements IVisionAlgorithm
 {
-    public interface ProcessedImageListener
-    {
-        public void onCalculation(Mat original, Mat postThreshold);
-    }
-
     protected List<ProcessedImageListener> mUpdateListeners;
     protected BufferedImage mCurrentImage;
     protected GripPipeline mPipeline;
@@ -98,6 +93,7 @@ public class VisionAlgorithm2 implements com.snobot.vision.standalone.SetThresho
         return dst;
     }
 
+    @Override
     public void addListener(ProcessedImageListener imageListener)
     {
         mUpdateListeners.add(imageListener);
