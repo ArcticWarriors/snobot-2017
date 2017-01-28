@@ -16,12 +16,12 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
 {
     protected List<ProcessedImageListener> mUpdateListeners;
     protected BufferedImage mCurrentImage;
-    protected GripPipeline mPipeline;
+    protected RopeGripPipeline mPipeline;
 
     public VisionAlgorithm2()
     {
         mUpdateListeners = new ArrayList<>();
-        mPipeline = new GripPipeline();
+        mPipeline = new RopeGripPipeline();
     }
 
     public void setThresholds(HslThreshold aMin, HslThreshold aMax)
