@@ -21,7 +21,7 @@ import org.opencv.imgproc.Imgproc;
 *
 * @author GRIP
 */
-public class GripPipeline {
+public class PegGripPipeline {
 
 	//Outputs
 	private Mat hslThresholdOutput = new Mat();
