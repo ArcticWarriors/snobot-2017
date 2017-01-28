@@ -62,7 +62,7 @@ public class SnobotDriveTrain implements IDriveTrain
         mFrontLeftDriveMotorSpeed = mFrontLeftMotor.get();
         mFrontRightDriveMotorSpeed = mFrontRightMotor.get();
         mLeftMotorDistance = mLeftDriveEncoder.getDistance();
-        mRightMotorDistance = mRearRightMotor.get();
+        mRightMotorDistance = mRightDriveEncoder.getDistance();
         mRearLeftDriveMotorSpeed = mRearLeftMotor.get();
         
     }

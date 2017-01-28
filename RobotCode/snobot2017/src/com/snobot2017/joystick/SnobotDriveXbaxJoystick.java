@@ -1,27 +1,31 @@
 package com.snobot2017.joystick;
 
+import com.snobot.lib.Logger;
 import com.snobot.lib.ui.XboxButtonMap;
+import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnobotDriveXbaxJoystick implements IDriverJoystick
 {
     private Joystick mJoystick;
     private double mLeftSpeed;
     private double mRightSpeed;
+    private Logger mLogger;
 
-    public SnobotDriveXbaxJoystick(Joystick aJoystick)
+    public SnobotDriveXbaxJoystick(Joystick aJoystick, Logger aLogger)
     {
 
         mJoystick = aJoystick;
-
+        mLogger = aLogger;
     }
 
     @Override
     public void init()
     {
-        // TODO Auto-generated method stub
-
+        mLogger.addHeader("LeftJoystickSpeed");
+        mLogger.addHeader("RightJoystickSpeed");
     }
 
     @Override
@@ -34,35 +38,32 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public void control()
     {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void rereadPreferences()
     {
-        // TODO Auto-generated method stub
-
+        
     }
 
     @Override
     public void updateSmartDashboard()
     {
-        // TODO Auto-generated method stub
-
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_XBAX_JOYSTICK_SPEED, mLeftSpeed);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_XBAX_JOYSTICK_SPEED, mRightSpeed);
     }
 
     @Override
     public void updateLog()
     {
-        // TODO Auto-generated method stub
-
+        mLogger.updateLogger(mLeftSpeed);
+        mLogger.updateLogger(mRightSpeed);
     }
 
     @Override
     public void stop()
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -83,21 +84,18 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public double getArcadePower()
     {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public double getArcadeTurn()
     {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public boolean isArcadeMode()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 

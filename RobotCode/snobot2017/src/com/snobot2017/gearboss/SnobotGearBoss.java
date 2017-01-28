@@ -1,29 +1,41 @@
 package com.snobot2017.gearboss;
 
+import com.snobot.lib.Logger;
+import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnobotGearBoss implements IGearBoss
 {
     private Solenoid mGearSolenoid;
     private IOperatorJoystick mOperatorJoystick;
+    private Logger mLogger;
+    private boolean mSolenoidInOrOut;
 
-    public SnobotGearBoss(Solenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick)
+    public SnobotGearBoss(Solenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick, Logger aLogger)
     {
         mGearSolenoid = aGearSolenoid;
         mOperatorJoystick = aOperatorJoystick;
+        mLogger = aLogger;
+        
     }
 
     @Override
     public void init()
     {
-        // TODO Auto-generated method stub
-
+        mLogger.addHeader("SolenoidPosition");
     }
 
     @Override
     public void update()
+    {
+        mSolenoidInOrOut = mGearSolenoid.get();
+    }
+
+    @Override
+    public void control()
     {
         switch (mOperatorJoystick.moveGearBossToPosition())
         {
@@ -46,38 +58,27 @@ public class SnobotGearBoss implements IGearBoss
     }
 
     @Override
-    public void control()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void rereadPreferences()
     {
-        // TODO Auto-generated method stub
-
+        
     }
 
     @Override
     public void updateSmartDashboard()
     {
-        // TODO Auto-generated method stub
-
+        SmartDashboard.putBoolean(SmartDashBoardNames.sGEAR_BOSS_SOLENOID, mSolenoidInOrOut);
     }
 
     @Override
     public void updateLog()
     {
-        // TODO Auto-generated method stub
-
+        mLogger.updateLogger(mSolenoidInOrOut);
     }
 
     @Override
     public void stop()
     {
-        // TODO Auto-generated method stub
-
+        mGearSolenoid.set(false);
     }
 
     @Override
@@ -97,5 +98,6 @@ public class SnobotGearBoss implements IGearBoss
     {
         return mGearSolenoid.get();
     }
+
 
 }

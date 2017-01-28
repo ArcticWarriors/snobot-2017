@@ -47,10 +47,10 @@ public class Snobot2017 extends ASnobot
         Joystick driverJostickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
 
-        IDriverJoystick mDriverJoystick = new SnobotDriveXbaxJoystick(driverJostickRaw);
+        IDriverJoystick mDriverJoystick = new SnobotDriveXbaxJoystick(driverJostickRaw, mLogger);
         mSubsystems.add(mDriverJoystick);
 
-        IOperatorJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw);
+        IOperatorJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
         mSubsystems.add(operatorJoystick);
 
         // Drive Train
@@ -81,7 +81,7 @@ public class Snobot2017 extends ASnobot
         Solenoid gearSolonoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL);
        //ToDo Delete this later 
         gearSolonoid.set(true);
-        mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick);
+        mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
     }
 
@@ -103,7 +103,6 @@ public class Snobot2017 extends ASnobot
 
     public IGearBoss getGearBoss()
     {
-        // TODO Auto-generated method stub
         return mGearBoss;
     }
 }
