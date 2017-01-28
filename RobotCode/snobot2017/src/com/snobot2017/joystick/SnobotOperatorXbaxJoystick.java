@@ -69,13 +69,13 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     @Override
     public void control()
     {
-       
+       // Nothing
     }
 
     @Override
     public void rereadPreferences()
     {
-
+        // Nothing
     }
 
     @Override
@@ -98,7 +98,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     @Override
     public void stop()
     {
-
+        // Nothing
     }
 
     @Override

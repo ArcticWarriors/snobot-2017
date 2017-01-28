@@ -60,7 +60,7 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void rereadPreferences()
     {
-        
+        // Nothing
     }
 
     @Override

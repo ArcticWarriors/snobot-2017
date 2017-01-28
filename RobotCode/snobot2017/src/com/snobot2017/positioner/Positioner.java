@@ -147,13 +147,13 @@ public class Positioner implements ISubsystem, IPositioner
     @Override
     public void control()
     {
-
+        // Nothing
     }
 
     @Override
     public void rereadPreferences()
     {
-
+        // Nothing
     }
 
     /**
@@ -185,7 +185,7 @@ public class Positioner implements ISubsystem, IPositioner
     @Override
     public void stop()
     {
-
+        // Nothing
     }
 
 }
