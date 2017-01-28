@@ -2,8 +2,10 @@ package com.snobot.simulator.robot_sim.snobot2017;
 
 import com.snobot.simulator.ASimulator;
 import com.snobot.simulator.SensorActuatorRegistry;
+import com.snobot.simulator.module_wrapper.AnalogWrapper;
 import com.snobot.simulator.module_wrapper.EncoderWrapper;
 import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
+import com.snobot.simulator.module_wrapper.TankDriveGyroSimulator;
 import com.snobot.simulator.motor_sim.DcMotorModel;
 import com.snobot.simulator.motor_sim.StaticLoadDcMotorSim;
 import com.snobot.simulator.motor_sim.motors.MakeTransmission;
@@ -43,7 +45,11 @@ public class Snobot2017Simulator extends ASimulator
         rightSC.setMotorSimulator(new StaticLoadDcMotorSim(rightMotor, load));
         // rightSC.setMotorSimulator(new SimpleMotorSimulator(70));
         rightEncoder.setSpeedController(rightSC);
-
+        
+        AnalogWrapper gyroWrapper = SensorActuatorRegistry.get().getAnalog().get(100);
+        TankDriveGyroSimulator drivetrainSim = new TankDriveGyroSimulator(leftEncoder, rightEncoder, gyroWrapper);
+        mSimulatorComponenets.add(drivetrainSim);
+        
         if (sSIMULATE_CAMERA)
         {
             CameraSimulator cameraSimulator = new CameraSimulator();

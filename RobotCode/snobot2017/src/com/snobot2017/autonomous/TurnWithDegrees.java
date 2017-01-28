@@ -7,55 +7,76 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnWithDegrees extends Command
 {
-private double mSpeed;
-private double mTurnAngle;
-private IDriveTrain mDriveTrain;
-private IPositioner mPositioner;
-private double mTurnMeasure;
-private boolean mDirection;
-public TurnWithDegrees(double aSpeed, double aTurnAngle, IDriveTrain aDriveTrain, IPositioner aPositioner)
-{
-    mTurnAngle=aTurnAngle;
-    mPositioner=aPositioner;
-    mDriveTrain=aDriveTrain;
-    mSpeed=aSpeed;
-}
-private void Turn()
-{
-    mTurnMeasure =(mTurnAngle-mPositioner.getOrientationDegrees()) % 360;
-    if((mTurnMeasure) < 0 )
+    private double mSpeed;
+    private double mTurnAngle;
+    private IDriveTrain mDriveTrain;
+    private IPositioner mPositioner;
+    private double mTurnMeasure;
+    private boolean mDirection;
+    private boolean mFinished;
+
+    public TurnWithDegrees(double aSpeed, double aTurnAngle, IDriveTrain aDriveTrain, IPositioner aPositioner)
     {
-      mTurnMeasure=mTurnMeasure+360;
+        mTurnAngle = aTurnAngle;
+        mPositioner = aPositioner;
+        mDriveTrain = aDriveTrain;
+        mSpeed = aSpeed;
+        mFinished = false;
     }
-    if(mTurnMeasure<=180)
+
+    private void Turn()
     {
-        mDirection=false;
-    }
-    else
-    {
-        mDirection=true;
-    }
-    if (mDirection==true)
-    {
-        mDriveTrain.setLeftRightSpeed(mSpeed,-mSpeed);
-        if (mTurnAngle== mPositioner.getOrientationDegrees())
+        mTurnMeasure = (mTurnAngle - mPositioner.getOrientationDegrees()) % 360;
+        if ((mTurnMeasure) < 0)
         {
-            mDriveTrain.setLeftRightSpeed(0, 0);
+            mTurnMeasure = mTurnMeasure + 360;
         }
+        if (mTurnMeasure <= 180)
+        {
+            mDirection = false;
+        }
+        else
+        {
+            mDirection = true;
+        }
+        
+        
+        
+        if (mDirection == true)
+        {
+            mDriveTrain.setLeftRightSpeed(mSpeed, mSpeed);
+            if (mTurnAngle >= mPositioner.getOrientationDegrees())
+                
+            {
+                mDriveTrain.setLeftRightSpeed(0, 0);
+                mFinished = true;
+            }
+        }
+        else
+        {
+            mDriveTrain.setLeftRightSpeed(-mSpeed, -mSpeed);
+            if (mTurnAngle <= mPositioner.getOrientationDegrees())
+            {
+                mDriveTrain.setLeftRightSpeed(0, 0);
+                mFinished = true;
+            }
+        }
+        
+        System.out.println("TurnWithDegrees " + mTurnAngle + " " + mPositioner.getOrientationDegrees() + " " + mTurnMeasure);
+
     }
-    else
+
+    @Override
+    protected void execute()
     {
-        mDriveTrain.setLeftRightSpeed(-mSpeed, mSpeed);
-    if (mTurnAngle== mPositioner.getOrientationDegrees())
+        super.execute();
+        Turn();
+    }
+
+    @Override
+    protected boolean isFinished()
     {
-        mDriveTrain.setLeftRightSpeed(0, 0);
+        return mFinished;
+        
     }
-    }
-}
-@Override
-protected boolean isFinished()
-{
-    // TODO Auto-generated method stub
-    return false;
-}
 }

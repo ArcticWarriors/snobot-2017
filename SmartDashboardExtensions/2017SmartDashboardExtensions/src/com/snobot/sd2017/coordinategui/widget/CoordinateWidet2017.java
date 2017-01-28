@@ -2,11 +2,14 @@ package com.snobot.sd2017.coordinategui.widget;
 
 import java.awt.BorderLayout;
 
+import com.snobot.coordinate_gui.model.Coordinate;
 import com.snobot.coordinate_gui.ui.renderProps.CoordinateLayerRenderProps;
 import com.snobot.coordinate_gui.ui.renderProps.RobotLayerRenderProps;
 import com.snobot.sd.util.AutoUpdateWidget;
+import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.smartdashboard.properties.Property;
+import edu.wpi.first.smartdashboard.robot.Robot;
 
 public class CoordinateWidet2017 extends AutoUpdateWidget
 {
@@ -50,6 +53,9 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
     @Override
     protected void poll() throws Exception
     {
-
+        double x = Robot.getTable().getNumber(SmartDashBoardNames.sX_POSITION, 0);
+        double y = Robot.getTable().getNumber(SmartDashBoardNames.sY_POSITION,0);
+        double angle = Robot.getTable().getNumber(SmartDashBoardNames.sORIENTATION, 0);
+        mCoordinateGui.addCoordinate(new Coordinate(x, y, angle));
     }
 }

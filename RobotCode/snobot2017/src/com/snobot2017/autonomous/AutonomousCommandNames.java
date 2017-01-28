@@ -8,4 +8,6 @@ public class AutonomousCommandNames
     public static final String sSTUPID_DRIVE_STRAIGHT_COMMAND = "StupidDriveStraight";
     public static final String sSCORE_GEAR_COMMAND = "ScoreGear";
     public static final String sDRIVE_STRAIGHT_A_DISTANCE = "DriveStraightADistance";
+    public static final String sTURN_WITH_DEGREES = "TurnWithDegrees";
+    public static final String sGO_TO_XY = "GoToXY";
 }

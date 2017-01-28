@@ -26,7 +26,6 @@ public class DriveStraightADistance extends Command
     @Override
     protected void initialize()
     {
-        // TODO Auto-generated method stub
         super.initialize();
         mStartDistance = mPositioner.getTotalDistance();
     }

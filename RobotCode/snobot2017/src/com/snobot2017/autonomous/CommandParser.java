@@ -77,6 +77,16 @@ public class CommandParser extends ACommandParser
                 newCommand = parseDriveStraightADistance(args);
                 break;
             }
+            case AutonomousCommandNames.sTURN_WITH_DEGREES:
+            {
+                newCommand = parseTurnWithDegrees(args);
+                break;
+            } 
+            case AutonomousCommandNames.sGO_TO_XY:
+            {
+                newCommand = parseGoToXY(args);
+                break;
+            }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
@@ -91,6 +101,26 @@ public class CommandParser extends ACommandParser
             e.printStackTrace();
         }
         return newCommand;
+    }
+
+    private Command parseGoToXY(List<String> args)
+    {
+        double xcoor = Double.parseDouble(args.get(1));
+        double ycoor = Double.parseDouble(args.get(2));
+        double speed = Double.parseDouble(args.get(3));
+        return new GoToXY(mSnobot.getDriveTrain(), mSnobot.getPositioner(), xcoor, ycoor, speed);
+    }
+    
+    /**
+     * 
+     * @param args
+     * @return
+     */
+    private Command parseTurnWithDegrees(List<String> args)
+    {
+        double speed = Double.parseDouble(args.get(1));
+        double angle = Double.parseDouble(args.get(2));
+        return new TurnWithDegrees(speed, angle, mSnobot.getDriveTrain(), mSnobot.getPositioner());
     }
 
     private Command parseDriveStraightADistance(List<String> args)
