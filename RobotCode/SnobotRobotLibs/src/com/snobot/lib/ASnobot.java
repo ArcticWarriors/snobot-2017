@@ -1,8 +1,6 @@
 package com.snobot.lib;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -15,27 +13,14 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     protected List<ISubsystem> mSubsystems;
 
     protected Logger mLogger;
-    private SimpleDateFormat mLogDateFormat;
 
     // Autonomous
     private CommandGroup mAutonCommand;
 
-    public ASnobot(SimpleDateFormat aLogFormat, int aLogConfigCount, String aLogPath)
+    public ASnobot()
     {
         mSubsystems = new ArrayList<>();
-        mLogDateFormat = aLogFormat;
-
-        String headerDate = mLogDateFormat.format(new Date());
-        mLogger = new Logger(headerDate, aLogConfigCount, aLogPath);
-    }
-
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
-    public void robotInit()
-    {
-        this.init();
+        mLogger = new Logger();
     }
 
     /**
@@ -131,10 +116,9 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     @Override
     public void updateLog()
     {
-        String logDate = mLogDateFormat.format(new Date());
         if (mLogger.logNow())
         {
-            mLogger.startLogEntry(logDate);
+            mLogger.startRow();
 
             for (ISubsystem iSubsystem : mSubsystems)
             {

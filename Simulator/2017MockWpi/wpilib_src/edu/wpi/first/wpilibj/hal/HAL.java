@@ -46,9 +46,6 @@ public class HAL extends JNIWrapper
         synchronized (sPROGRAM_STARTED_LOCK)
         {
             System.out.println("Robot Initialized");
-            System.out.println("*************************************************************");
-            System.out.println("*                    Starting Robot Code                    *");
-            System.out.println("*************************************************************");
             System.out.println("\n\n");
             sPROGRAM_STARTED_LOCK.notify();
             sROBOT_STARTED = true;

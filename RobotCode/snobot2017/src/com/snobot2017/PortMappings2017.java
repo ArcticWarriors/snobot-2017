@@ -22,4 +22,22 @@ public class PortMappings2017
 
     // Solenoid
     public static final int sGEARBOSS_SOLENOID_CHANNEL = 1;
+
+    //////////////////////////////
+    // Vision
+    //////////////////////////////
+    /**
+     * The port that the app sends data (heartbeats, etc) to
+     */
+    public static final int sADB_BIND_PORT = 8254;
+
+    /**
+     * The port in the app that the MJPEG server binds to
+     */
+    public static final int sAPP_MJPEG_PORT = 5800;
+
+    /**
+     * This forwards data coming from the apps MJPEG server to this port
+     */
+    public static final int sAPP_MJPEG_FORWARDED_PORT = 1800;
 }

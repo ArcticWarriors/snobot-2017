@@ -45,7 +45,7 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     @Override
     public void rereadPreferences()
     {
-        
+
     }
 
     @Override

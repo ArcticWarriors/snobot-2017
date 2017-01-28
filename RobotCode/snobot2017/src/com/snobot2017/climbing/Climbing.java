@@ -14,9 +14,10 @@ public class Climbing implements IClimbing
     private IOperatorJoystick mJoystick;
     private Logger mLogger;
     private double mMotorSpeed;
-    
+
     /**
      * This is the constructor
+     * 
      * @param aClimbingMotor
      * @param aLogger
      * @param aJoystick
@@ -67,14 +68,14 @@ public class Climbing implements IClimbing
 
     @Override
     public void rereadPreferences()
-    { 
+    {
         // Nothing
     }
 
     @Override
     public void updateSmartDashboard()
     {
-        SmartDashboard.putNumber(SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, mMotorSpeed);   
+        SmartDashboard.putNumber(SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, mMotorSpeed);
     }
 
     @Override

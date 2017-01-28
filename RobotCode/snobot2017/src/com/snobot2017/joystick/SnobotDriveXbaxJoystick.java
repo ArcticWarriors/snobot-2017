@@ -44,7 +44,7 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public void rereadPreferences()
     {
-        
+
     }
 
     @Override

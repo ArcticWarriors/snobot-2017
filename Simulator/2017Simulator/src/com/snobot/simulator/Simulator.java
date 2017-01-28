@@ -23,7 +23,7 @@ public class Simulator
     private String mSimulatorClassName; // The name of the class that represents the simulator
 
     private RobotBase mRobot; // The robot code to run
-    private ISimulatorUpdater mSimulator; // The robot code to run
+    private ASimulator mSimulator; // The robot code to run
 
 	public Simulator() {
 		File config_dir = new File(sUSER_CONFIG_DIR);
@@ -56,8 +56,12 @@ public class Simulator
         }
     }
 
-    private void createSimulator() throws InstantiationException, IllegalAccessException, ClassNotFoundException
+    private void createRobot() throws InstantiationException, IllegalAccessException, ClassNotFoundException
     {
+        System.out.println("*************************************************************");
+        System.out.println("*                    Starting Robot Code                    *");
+        System.out.println("*************************************************************");
+
         mRobot = (RobotBase) Class.forName(mClassName).newInstance();
     }
 
@@ -69,14 +73,37 @@ public class Simulator
         // Do all of the stuff that
 		NetworkTable.setPersistentFilename(sUSER_CONFIG_DIR + mClassName + ".preferences.ini");
         HAL.setWaitTime(.02);
-        
-        createSimulator();
 
-        Thread robotThread = new Thread(createRobotThread());
+        createSimulator();
+        createRobot();
+
+        Thread robotThread = new Thread(createRobotThread(), "RobotThread");
         Runnable guiThread = createGuiThread();
 
         robotThread.start();
         SwingUtilities.invokeLater(guiThread);
+    }
+
+    private void createSimulator()
+    {
+        try
+        {
+            if (mSimulatorClassName != null && !mSimulatorClassName.isEmpty())
+            {
+                mSimulator = (ASimulator) Class.forName(mSimulatorClassName).newInstance();
+            }
+            else
+            {
+                System.out.println("**********************************************************************************");
+                System.out.println("WARNING: Simulator class name was not set up.  Will use default, simple simulation");
+                System.out.println("**********************************************************************************");
+            }
+
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessError | IllegalAccessException e)
+        {
+            throw new RuntimeException("Could not find simulator class " + mSimulatorClassName);
+        }
     }
 
     private Runnable createGuiThread()
@@ -88,45 +115,25 @@ public class Simulator
             public void run()
             {
 
+                // Even though we don't store it, it will still get
+                // created and hook itself up
                 try
                 {
-                    boolean simulatorLoaded = false;
-                    if (mSimulatorClassName != null && !mSimulatorClassName.isEmpty())
+                    HAL.waitForProgramStart();
+
+                    mSimulator.setRobot(mRobot);
+                    mSimulator.createSimulatorComponents();
+                    System.out.println("Created simulator : " + mSimulatorClassName);
+
+                    RobotStateSingleton.get().addLoopListener(new RobotStateSingleton.LoopListener()
                     {
-                        // Even though we don't store it, it will still get
-                        // created and hook itself up
-                        try
+
+                        @Override
+                        public void looped()
                         {
-                            HAL.waitForProgramStart();
-
-                            mSimulator = (ISimulatorUpdater) Class.forName(mSimulatorClassName).newInstance();
-                            mSimulator.setRobot(mRobot);
-                            System.out.println("Created simulator : " + mSimulatorClassName);
-
-                            RobotStateSingleton.get().addLoopListener(new RobotStateSingleton.LoopListener()
-                            {
-
-                                @Override
-                                public void looped()
-                                {
-                                    mSimulator.update();
-                                }
-                            });
-
-                            simulatorLoaded = true;
+                            mSimulator.update();
                         }
-                        catch (ClassNotFoundException e)
-                        {
-                            System.err.println("Could not find simulator class " + mSimulatorClassName);
-                        }
-                    }
-
-                    if (!simulatorLoaded)
-                    {
-                        System.out.println("**********************************************************************************");
-                        System.out.println("WARNING: Simulator class name was not set up.  Will use default, simple simulation");
-                        System.out.println("**********************************************************************************");
-                    }
+                    });
 
                     SimulatorFrame frame = new SimulatorFrame();
                     frame.pack();
