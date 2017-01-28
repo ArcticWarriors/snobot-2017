@@ -30,8 +30,7 @@ public class SnobotDriveTrain extends ASnobotDrivetrain
     public void update()
     {
         mLeftMotorDistance = mLeftDriveEncoder.getDistance();
-        mRightMotorDistance = mRightDriveEncoder.get();
-
+        mRightMotorDistance = mRightDriveEncoder.getDistance();
     }
 
     @Override

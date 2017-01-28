@@ -76,7 +76,7 @@ public abstract class ASnobotDrivetrain implements IDriveTrain
     @Override
     public void rereadPreferences()
     {
-
+        // Nothing
     }
 
     @Override

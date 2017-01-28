@@ -1,8 +1,11 @@
 package com.snobot2017.joystick;
 
+import com.snobot.lib.Logger;
 import com.snobot.lib.ui.XboxButtonMap;
+import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The operator joystick class
@@ -15,6 +18,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     private Joystick mJoystick;
     private boolean mClimb;
     private boolean mCatch;
+    private Logger mLogger;
 
     // Gear Boss
     private GearBossPositions mGearBossPos;
@@ -22,15 +26,19 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     // Ready for take off
     private double mLiftOffSpeed;
 
-    public SnobotOperatorXbaxJoystick(Joystick aJoystick)
+    public SnobotOperatorXbaxJoystick(Joystick aJoystick, Logger aLogger)
     {
         mJoystick = aJoystick;
+        mLogger = aLogger;
     }
 
     @Override
     public void init()
     {
-
+        mLogger.addHeader("LiftOffSpeed");
+        mLogger.addHeader("Climb");
+        mLogger.addHeader("Catch");
+        mLogger.addHeader("GearBossPosition");
     }
 
     @Override
@@ -57,38 +65,40 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
         mClimb = mJoystick.getRawButton(XboxButtonMap.RB_BUTTON);
         mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
     }
-
+    
     @Override
     public void control()
     {
-        
+       // Nothing
     }
 
     @Override
     public void rereadPreferences()
     {
-
+        // Nothing
     }
 
     @Override
     public void updateSmartDashboard()
     {
-        // TODO Auto-generated method stub
-
-    }
+        SmartDashboard.putBoolean(SmartDashBoardNames.sCLIMBING_OPERATOR_JOYSTICK_SPEED, mClimb);
+        SmartDashboard.putBoolean(SmartDashBoardNames.sCATCHING_OPERATOR_JOYSTICK_SPEED, mCatch);
+        SmartDashboard.putNumber(SmartDashBoardNames.sWE_HAVE_LIFT_OFF, mLiftOffSpeed);
+     }
 
     @Override
     public void updateLog()
     {
-        // TODO Auto-generated method stub
-
+        mLogger.updateLogger(mLiftOffSpeed);
+        mLogger.updateLogger(mClimb);
+        mLogger.updateLogger(mCatch);
+        //mLogger.updateLogger(mGearBossPos);
     }
 
     @Override
     public void stop()
     {
-        // TODO Auto-generated method stub
-
+        // Nothing
     }
 
     @Override

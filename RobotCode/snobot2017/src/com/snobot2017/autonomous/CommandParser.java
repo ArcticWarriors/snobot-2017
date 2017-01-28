@@ -106,12 +106,6 @@ public class CommandParser extends ACommandParser
         return new ScoreGear(mSnobot.getGearBoss(),time);
     }
 
-    private Command parseMoveGearLowCommand(List<String> args)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     private Command parseStupidDriveStraightCommand(List<String> args)
     {
         double time = Double.parseDouble(args.get(1));
