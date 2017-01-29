@@ -58,8 +58,8 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
 
         if (robotTable != null && mCoordinateGui != null)
         {
-            double x = Robot.getTable().getNumber(SmartDashBoardNames.sX_POSITION, 0);
-            double y = Robot.getTable().getNumber(SmartDashBoardNames.sY_POSITION, 0);
+            double x = Robot.getTable().getNumber(SmartDashBoardNames.sX_POSITION, 0) / 12;
+            double y = Robot.getTable().getNumber(SmartDashBoardNames.sY_POSITION, 0) / 12;
             double angle = Robot.getTable().getNumber(SmartDashBoardNames.sORIENTATION, 0);
 
             Coordinate coord = new Coordinate(x, y, angle);

@@ -3,10 +3,16 @@ package com.snobot.simulator.motor_sim;
 public class StaticLoadDcMotorSim extends BaseDcMotorSimulator
 {
     protected double mLoad;
+    protected double mConversionFactor;
 
     public StaticLoadDcMotorSim(DcMotorModel aModel, double aLoad)
     {
-        super(aModel);
+        this(aModel, aLoad, 1);
+    }
+
+    public StaticLoadDcMotorSim(DcMotorModel aModel, double aLoad, double aConversionFactor)
+    {
+        super(aModel, aConversionFactor);
 
         mLoad = aLoad;
     }

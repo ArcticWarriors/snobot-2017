@@ -24,28 +24,28 @@ public class Snobot2017Simulator extends ASimulator
     @Override
     protected void createSimulatorComponents()
     {
-        double load = .1;
+        double drivetrainLoad = .6;
         // double gearReduction = 1;
-        double gearReduction = 10;
+        double drivetrainReduction = 11.43;
+        double drivetrainSpeedLossFactor = .81;
+        double drivetrainWheelDiameter = 6;
 
         EncoderWrapper leftEncoder = SensorActuatorRegistry.get().getEncoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A,
                 PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
         SpeedControllerWrapper leftSC = SensorActuatorRegistry.get().getSpeedControllers().get(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
         DcMotorModel leftMotor = VexMotorFactory.makeCIMMotor();
-        leftMotor = MakeTransmission.makeTransmission(leftMotor, 2, gearReduction, 1.0);
+        leftMotor = MakeTransmission.makeTransmission(leftMotor, 2, drivetrainReduction, 1.0);
         leftMotor.setInverted(false);
-        leftSC.setMotorSimulator(new StaticLoadDcMotorSim(leftMotor, load));
-        // leftSC.setMotorSimulator(new SimpleMotorSimulator(700));
+        leftSC.setMotorSimulator(new StaticLoadDcMotorSim(leftMotor, drivetrainLoad, drivetrainWheelDiameter / 2 * drivetrainSpeedLossFactor));
         leftEncoder.setSpeedController(leftSC);
 
         EncoderWrapper rightEncoder = SensorActuatorRegistry.get().getEncoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A,
                 PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
         SpeedControllerWrapper rightSC = SensorActuatorRegistry.get().getSpeedControllers().get(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
         DcMotorModel rightMotor = VexMotorFactory.makeCIMMotor();
-        rightMotor = MakeTransmission.makeTransmission(rightMotor, 2, gearReduction, 1.0);
+        rightMotor = MakeTransmission.makeTransmission(rightMotor, 2, drivetrainReduction, 1.0);
         rightMotor.setInverted(true);
-        rightSC.setMotorSimulator(new StaticLoadDcMotorSim(rightMotor, load));
-        // rightSC.setMotorSimulator(new SimpleMotorSimulator(700));
+        rightSC.setMotorSimulator(new StaticLoadDcMotorSim(rightMotor, drivetrainLoad, drivetrainWheelDiameter / 2 * drivetrainSpeedLossFactor));
         rightEncoder.setSpeedController(rightSC);
         
         AnalogWrapper gyroWrapper = SensorActuatorRegistry.get().getAnalog().get(100);
