@@ -10,10 +10,11 @@ import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.smartdashboard.properties.Property;
 import edu.wpi.first.smartdashboard.robot.Robot;
+import edu.wpi.first.wpilibj.tables.ITable;
 
 public class CoordinateWidet2017 extends AutoUpdateWidget
 {
-    public static final String NAME = "2016 Coordinate Widget";
+    public static final String NAME = "2017 Coordinate Widget";
     
     private CoordinateGui2017 mCoordinateGui;
 
@@ -53,12 +54,17 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
     @Override
     protected void poll() throws Exception
     {
-        double x = Robot.getTable().getNumber(SmartDashBoardNames.sX_POSITION, 0);
-        double y = Robot.getTable().getNumber(SmartDashBoardNames.sY_POSITION,0);
-        double angle = Robot.getTable().getNumber(SmartDashBoardNames.sORIENTATION, 0);
-        
-        Coordinate coord = new Coordinate(x, y, angle);
-        //System.out.println(coord);
-        mCoordinateGui.addCoordinate(coord);
+        ITable robotTable = Robot.getTable();
+
+        if (robotTable != null && mCoordinateGui != null)
+        {
+            double x = Robot.getTable().getNumber(SmartDashBoardNames.sX_POSITION, 0);
+            double y = Robot.getTable().getNumber(SmartDashBoardNames.sY_POSITION, 0);
+            double angle = Robot.getTable().getNumber(SmartDashBoardNames.sORIENTATION, 0);
+
+            Coordinate coord = new Coordinate(x, y, angle);
+            // System.out.println(coord);
+            mCoordinateGui.addCoordinate(coord);
+        }
     }
 }
