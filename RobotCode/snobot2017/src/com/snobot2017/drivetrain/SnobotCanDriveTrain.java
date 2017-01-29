@@ -5,9 +5,7 @@ import com.snobot.lib.Logger;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
-import edu.wpi.first.wpilibj.Encoder;
-
-public class SnobotCanDriveTrain extends ASnobotDrivetrain
+public class SnobotCanDriveTrain extends ASnobotDrivetrain<CANTalon>
 {
     public SnobotCanDriveTrain(
             CANTalon aLeftMotorA, 
@@ -24,13 +22,15 @@ public class SnobotCanDriveTrain extends ASnobotDrivetrain
     @Override
     public void update()
     {
-        // TODO: PJ - Need to look at least year
+        mRightMotorDistance = mRightMotor.getEncPosition();
+        mLeftMotorDistance = mLeftMotor.getEncPosition();
     }
 
     @Override
     public void resetEncoders()
     {
-        // TODO: PJ - Need to look at least year
+        mRightMotor.setEncPosition(0);
+        mLeftMotor.setEncPosition(0);
     }
 
 }

@@ -7,7 +7,7 @@ import com.snobot2017.joystick.IDriverJoystick;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 
-public class SnobotDriveTrain extends ASnobotDrivetrain
+public class SnobotDriveTrain extends ASnobotDrivetrain<SpeedController>
 {
     private final Encoder mLeftDriveEncoder;
     private final Encoder mRightDriveEncoder;

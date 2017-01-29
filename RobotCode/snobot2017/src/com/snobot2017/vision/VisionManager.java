@@ -3,12 +3,9 @@ package com.snobot2017.vision;
 import com.snobot.lib.ISubsystem;
 import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
-import com.snobot2017.joystick.IDriverJoystick;
-import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.joystick.IVisionJoystick;
 import com.snobot2017.vision.VisionAdbServer.CameraFacingDirection;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionManager implements ISubsystem

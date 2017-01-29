@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.gen.WaypointSequence.Waypoint;
+import com.team254.lib.trajectory.io.TextFileSerializer;
 
 public class GenerateSnobotPaths
 {
