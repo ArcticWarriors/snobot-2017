@@ -1,4 +1,4 @@
-package com.team254.lib.trajectory.gen;
+package com.team254.lib.trajectory.io;
 
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;

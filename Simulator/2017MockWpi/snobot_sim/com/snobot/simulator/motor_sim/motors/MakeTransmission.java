@@ -13,7 +13,8 @@ public class MakeTransmission
                 motor.STALL_TORQUE  * num_motors,
                 motor.STALL_CURRENT * num_motors,
                 motor.mMotorInertia * num_motors * gear_reduction * gear_reduction,
-                motor.mHasBrake
+                motor.mHasBrake,
+                motor.mInverted
                 );
 
 

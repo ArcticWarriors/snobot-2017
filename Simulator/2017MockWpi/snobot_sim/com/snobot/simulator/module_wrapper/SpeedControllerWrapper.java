@@ -2,24 +2,14 @@ package com.snobot.simulator.module_wrapper;
 
 import com.snobot.simulator.motor_sim.IMotorSimulator;
 
-import edu.wpi.first.wpilibj.hal.HAL;
-
 public class SpeedControllerWrapper extends ASensorWrapper
 {
-
-    private final double mWaitTime;
     private IMotorSimulator mMotorSimulator;
 
     public SpeedControllerWrapper(int index)
     {
-        this(index, HAL.getCycleTime());
-    }
-
-    public SpeedControllerWrapper(int index, double aWaitTime)
-    {
         super("Speed Controller " + index);
 
-        mWaitTime = aWaitTime;
         mMotorSimulator = new IMotorSimulator.NullMotorSimulator();
     }
 
@@ -36,7 +26,11 @@ public class SpeedControllerWrapper extends ASensorWrapper
     public void set(double speed)
     {
         mMotorSimulator.setVoltagePercentage(speed);
-        mMotorSimulator.update(mWaitTime);
+    }
+
+    public void update(double aWaitTime)
+    {
+        mMotorSimulator.update(aWaitTime);
     }
 
     public double getPosition()

@@ -1,0 +1,12 @@
+
+one_at_a_time: true
+threshold_config: config/threshold_config.yml
+images: 
+    - ../../Vision/GRIP\CustomImages\2ft.jpg
+    - ../../Vision/GRIP\CustomImages\3ft.jpg
+    
+    
+    - ../../Vision/GRIP\CustomImages\1ft 45deg.jpg
+    - ../../Vision/GRIP\CustomImages\1.5ft 45deg.jpg
+    - ../../Vision/GRIP\CustomImages\2ft 45deg.jpg
+    - ../../Vision/GRIP\CustomImages\3ft 45deg.jpg

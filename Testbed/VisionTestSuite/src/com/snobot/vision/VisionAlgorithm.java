@@ -11,13 +11,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-public class VisionAlgorithm implements com.snobot.vision.standalone.SetThresholdListener
+public class VisionAlgorithm implements IVisionAlgorithm
 {
-    public interface ProcessedImageListener
-    {
-        public void onCalculation(Mat original, Mat postThreshold);
-    }
-
     protected List<ProcessedImageListener> mUpdateListeners;
     protected Scalar minThreshold;
     protected Scalar maxThreshold;
@@ -73,6 +68,7 @@ public class VisionAlgorithm implements com.snobot.vision.standalone.SetThreshol
         }
     }
 
+    @Override
     public void addListener(ProcessedImageListener imageListener)
     {
         mUpdateListeners.add(imageListener);

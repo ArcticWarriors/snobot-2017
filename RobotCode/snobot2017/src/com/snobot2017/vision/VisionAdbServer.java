@@ -3,9 +3,16 @@ package com.snobot2017.vision;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import com.snobot.lib.adb.AdbBridge;
 import com.snobot.lib.external_connection.RobotConnectionServer;
 import com.snobot2017.Properties2017;
+import com.snobot2017.vision.messages.HeartbeatMessage;
+import com.snobot2017.vision.messages.IterateDisplayImageMessage;
+import com.snobot2017.vision.messages.SetCameraDirectionMessage;
+import com.snobot2017.vision.messages.TargetUpdateMessage;
 
 public class VisionAdbServer extends RobotConnectionServer
 {
@@ -16,9 +23,8 @@ public class VisionAdbServer extends RobotConnectionServer
 
     private static final double sTIMEOUT_PERIOD = 1.1; // Based on how often the App sends the heartbeat
 
-    private static final String sHEARTBEAT_MESSAGE = "heartbeat\n";
-    private static final String sUSE_FRONT_CAMERA_MESSAGE = "usefrontcamera\n";
-    private static final String sUSE_BACK_CAMERA_MESSAGE = "usebackcamera\n";
+    private static final String sHEARTBEAT_TYPE = "heartbeat";
+    private static final String sTARGET_UPDATE_MESSAGE = "target_update";
 
     public enum CameraFacingDirection
     {
@@ -26,6 +32,7 @@ public class VisionAdbServer extends RobotConnectionServer
     }
 
     private AdbBridge mAdb;
+    private TargetUpdateMessage mLatestTargetUpdate;
 
     public VisionAdbServer(int aAppBindPort, int aAppMjpegBindPort, int aAppForwardedMjpegBindPort)
     {
@@ -39,24 +46,38 @@ public class VisionAdbServer extends RobotConnectionServer
     }
 
     @Override
-    public void handleMessage(String message, double timestamp)
+    public void handleMessage(String aMessage, double aTimestamp)
     {
         Level logLevel = Level.INFO;
-        if ("heartbeat".equals(message))
-        {
-            String outMessage = sHEARTBEAT_MESSAGE;
-            ByteBuffer buffer = ByteBuffer.wrap(outMessage.getBytes());
-            send(buffer);
 
-            logLevel = Level.FINE;
-        }
-        else
+        try
         {
-            System.err.println("Unknown message " + message);
-            logLevel = Level.SEVERE;
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(aMessage);
+
+            String type = (String) jsonObject.get("type");
+
+            if (sHEARTBEAT_TYPE.equals(type))
+            {
+                logLevel = Level.FINE;
+                send(new HeartbeatMessage().getJson());
+            }
+            else if (sTARGET_UPDATE_MESSAGE.equals(type))
+            {
+                mLatestTargetUpdate = new TargetUpdateMessage(jsonObject);
+            }
+            else
+            {
+                System.err.println("Unknown message " + aMessage);
+                logLevel = Level.SEVERE;
+            }
+        }
+        catch (Exception e)
+        {
+            sLOGGER.severe("Error parsing message, incoming='" + aMessage + "' - " + e);
         }
 
-        sLOGGER.log(logLevel, message);
+        sLOGGER.log(logLevel, aMessage);
     }
 
     @Override
@@ -82,25 +103,20 @@ public class VisionAdbServer extends RobotConnectionServer
         mAdb.restartApp();
     }
 
+    protected void send(JSONObject aObject)
+    {
+        String message = aObject.toJSONString() + "\n";
+        send(ByteBuffer.wrap(message.getBytes()));
+    }
+
     public void setCameraDirection(CameraFacingDirection aDirection)
     {
-        switch (aDirection)
-        {
-        case Front:
-        {
-            send(ByteBuffer.wrap(sUSE_FRONT_CAMERA_MESSAGE.getBytes()));
-            break;
-        }
-        case Rear:
-        {
-            send(ByteBuffer.wrap(sUSE_BACK_CAMERA_MESSAGE.getBytes()));
-            break;
-        }
-        default:
-            sLOGGER.severe("Unknown camera direction " + aDirection);
-            break;
+        send(new SetCameraDirectionMessage(aDirection).getJson());
+    }
 
-        }
+    public void iterateShownImage()
+    {
+        send(new IterateDisplayImageMessage().getJson());
     }
 
 }

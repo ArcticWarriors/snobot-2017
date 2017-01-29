@@ -18,7 +18,6 @@ import com.snobot2017.drivetrain.SnobotDriveTrain;
 import com.snobot2017.gearboss.IGearBoss;
 import com.snobot2017.gearboss.SnobotGearBoss;
 import com.snobot2017.joystick.IDriverJoystick;
-import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
 import com.snobot2017.positioner.IPositioner;
@@ -79,9 +78,9 @@ public class Snobot2017 extends ASnobot
         IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJostickRaw, mLogger);
         mSubsystems.add(driverJoystick);
 
-        IOperatorJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
+        SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
         mSubsystems.add(operatorJoystick);
-
+        
         // Drive Train
         boolean useCan = false;
         if (useCan)
@@ -131,8 +130,8 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mGearBoss);
 
         // Vision
-        mVisionManager = new VisionManager();
-        mSubsystems.add(mVisionManager);
+        // mVisionManager = new VisionManager(operatorJoystick);
+        // mSubsystems.add(mVisionManager);
 
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();

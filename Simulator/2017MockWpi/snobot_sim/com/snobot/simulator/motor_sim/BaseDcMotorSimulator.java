@@ -4,11 +4,18 @@ public abstract class BaseDcMotorSimulator implements IMotorSimulator
 {
 
     protected final DcMotorModel mMotorModel;
+    protected final double mConversionFactor;
     protected double mVoltagePercentage;
 
     public BaseDcMotorSimulator(DcMotorModel aMotorModel)
     {
+        this(aMotorModel, 1);
+    }
+
+    public BaseDcMotorSimulator(DcMotorModel aMotorModel, double aConversionFactor)
+    {
         mMotorModel = aMotorModel;
+        mConversionFactor = aConversionFactor;
     }
 
     @Override
@@ -26,18 +33,18 @@ public abstract class BaseDcMotorSimulator implements IMotorSimulator
     @Override
     public double getVelocity()
     {
-        return mMotorModel.getVelocity();
+        return mMotorModel.getVelocity() * mConversionFactor;
     }
 
     @Override
     public double getPosition()
     {
-        return mMotorModel.getPosition();
+        return mMotorModel.getPosition() * mConversionFactor;
     }
 
     public double getAcceleration()
     {
-        return mMotorModel.getAcceleration();
+        return mMotorModel.getAcceleration() * mConversionFactor;
     }
 
     @Override

@@ -21,7 +21,7 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.vision.HslThreshold;
-import com.snobot.vision.VisionAlgorithm;
+import com.snobot.vision.IVisionAlgorithm;
 import com.snobot.vision.standalone.panels.HslTuningPanel;
 import com.snobot.vision.standalone.panels.ImagePreviewPanel;
 
@@ -29,12 +29,12 @@ public class VisionTestPanel extends JPanel
 {
     // private JLabel originalImageLabel;
     // private JLabel thresholdImageLabel;
-    private VisionAlgorithm algorithm = new VisionAlgorithm();
+    private IVisionAlgorithm algorithm;
     private ImagePreviewPanel imagePreview;
     private HslTuningPanel tuningPanel;
 
     @SuppressWarnings("unchecked")
-    public VisionTestPanel(VisionAlgorithm aAlgorithm, String thresholdConfigFile)
+    public VisionTestPanel(IVisionAlgorithm aAlgorithm, String thresholdConfigFile)
     {
         algorithm = aAlgorithm;
 

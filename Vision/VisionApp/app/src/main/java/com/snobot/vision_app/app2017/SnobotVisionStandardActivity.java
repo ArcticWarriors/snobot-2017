@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
@@ -101,6 +102,26 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
         }
     };
 
+    //Attempt at using Volume Buttons to take pictures.
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int action = event.getAction();
+        int keyCode = event.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                if (action == KeyEvent.ACTION_DOWN) {
+                    takePicture();
+                }
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                if (action == KeyEvent.ACTION_DOWN) {
+                    takePicture();
+                }
+                return true;
+            default:
+                return super.dispatchKeyEvent(event);
+        }
+    }
+
     protected void takePicture() {
 
         cameraRenderer.runSingleCapture();
@@ -148,6 +169,11 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
     @Override
     public void useCamera(int aCameraId) {
         Toast.makeText(SnobotVisionStandardActivity.this, "Switching camera is not supported!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void iterateDisplayType() {
+        visionAlgorithm.iterateDisplayType();
     }
 
     @Override

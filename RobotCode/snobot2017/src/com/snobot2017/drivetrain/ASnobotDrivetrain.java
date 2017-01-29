@@ -9,28 +9,28 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public abstract class ASnobotDrivetrain implements IDriveTrain
+public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedController> implements IDriveTrain
 {
-    private final SpeedController mLeftMotor;
-    private final SpeedController mRightMotor;
-    private final IDriverJoystick mDriverJoystick;
+    protected final SpeedControllerType mLeftMotor;
+    protected final SpeedControllerType mRightMotor;
+    protected final IDriverJoystick mDriverJoystick;
 
-    private final Logger mLogger;
-    private final AutoLogger mAutoLogger;
+    protected final Logger mLogger;
+    protected final AutoLogger mAutoLogger;
 
-    private final RobotDrive mRobotDrive;
+    protected final RobotDrive mRobotDrive;
 
-    private double mLeftMotorSpeed;
-    private double mRightMotorSpeed;
+    protected double mLeftMotorSpeed;
+    protected double mRightMotorSpeed;
 
     protected double mRightMotorDistance;
     protected double mLeftMotorDistance;
 
     public ASnobotDrivetrain(
-            SpeedController aFrontLeftMotor, 
-            SpeedController aRearLeftMotor, 
-            SpeedController aFrontRightMotor,
-            SpeedController aRearRightMotor, 
+            SpeedControllerType aFrontLeftMotor, 
+            SpeedControllerType aRearLeftMotor, 
+            SpeedControllerType aFrontRightMotor,
+            SpeedControllerType aRearRightMotor, 
             IDriverJoystick aDriverJoystick, 
             Logger aLogger, 
             AutoLogger aAutoLogger)
