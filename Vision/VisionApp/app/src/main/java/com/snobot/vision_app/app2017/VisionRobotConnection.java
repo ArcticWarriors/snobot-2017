@@ -3,10 +3,14 @@ package com.snobot.vision_app.app2017;
 import android.util.Log;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 
-import com.snobot.vision_app.app2017.java_algorithm.JavaVisionAlgorithm;
+import com.snobot.vision_app.app2017.messages.HeartbeatMessage;
+import com.snobot.vision_app.app2017.messages.TargetUpdateMessage;
 import com.snobot.vision_app.utils.RobotConnection;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.core.Mat;
 
@@ -18,11 +22,10 @@ public class VisionRobotConnection extends RobotConnection {
 
     private static final String sTAG = "RobotConnection";
 
-    private static final String sHEARTBEAT_MESSAGE = "heartbeat";
-    private static final String sUSE_FRONT_CAMERA = "usefrontcamera";
-    private static final String sUSE_BACK_CAMERA = "usebackcamera";
-
-    private static final String sITERATE_SHOWN_IMAGE_MESSAGE = "iterateshownimage";
+    // Incoming Messages
+    private static final String sHEARTBEAT_MESSAGE_TYPE = "heartbeat";
+    private static final String sITERATE_SHOWN_IMAGE_MESSAGE_TYPE = "iterate_display_image";
+    private static final String sCAMERA_DETECTION_MESSAGE_TYPE = "camera_direction";
 
     private final IVisionActivity mCameraActivity;
 
@@ -46,26 +49,42 @@ public class VisionRobotConnection extends RobotConnection {
 
     @Override
     public void handleMessage(String message) {
-        Log.i(sTAG, message);
-        if(sHEARTBEAT_MESSAGE.equals(message))
+
+        try
         {
-            mLastHeartbeatReceiveTime = System.currentTimeMillis();
+            JSONObject jsonObject = new JSONObject(message);
+            String type = (String) jsonObject.get("type");
+
+            if(sHEARTBEAT_MESSAGE_TYPE.equals(type))
+            {
+                mLastHeartbeatReceiveTime = System.currentTimeMillis();
+            }
+            else if(sCAMERA_DETECTION_MESSAGE_TYPE.equals(type))
+            {
+                Log.i(sTAG, message);
+                String direction = (String) jsonObject.get("direction");
+                if("Front".equals(direction))
+                {
+                    mCameraActivity.useCamera(CameraBridgeViewBase.CAMERA_ID_FRONT);
+                }
+                else
+                {
+                    mCameraActivity.useCamera(CameraBridgeViewBase.CAMERA_ID_BACK);
+                }
+            }
+            else if (sITERATE_SHOWN_IMAGE_MESSAGE_TYPE.equals(type))
+            {
+                Log.i(sTAG, message);
+                mCameraActivity.iterateDisplayType();
+            }
+            else
+            {
+                Log.e(sTAG, "Parsing unknown messages: " + message);
+            }
         }
-        else if(sUSE_FRONT_CAMERA.equals(message))
+        catch(Exception e)
         {
-            mCameraActivity.useCamera(CameraBridgeViewBase.CAMERA_ID_FRONT);
-        }
-        else if(sUSE_BACK_CAMERA.equals(message))
-        {
-            mCameraActivity.useCamera(CameraBridgeViewBase.CAMERA_ID_BACK);
-        }
-        else if (sITERATE_SHOWN_IMAGE_MESSAGE.equals(message))
-        {
-            mCameraActivity.iterateDisplayType();
-        }
-        else
-        {
-            Log.e(sTAG, "Parsing unknown messages: " + message);
+            Log.e(sTAG, "Couldn't parse message" + message, e);
         }
     }
 
@@ -81,8 +100,33 @@ public class VisionRobotConnection extends RobotConnection {
     }
 
     @Override
-    protected void sendHeartbeatMessage() {
-        String message  = sHEARTBEAT_MESSAGE + "\n";
+    public void sendHeartbeatMessage()
+    {
+        try
+        {
+            send(new HeartbeatMessage().getJson());
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    protected void send(JSONObject aJson)
+    {
+        String message = aJson.toString() + "\n";
         send(ByteBuffer.wrap(message.getBytes()));
+    }
+
+    public void sendVisionUpdate(List<TargetUpdateMessage.TargetInfo> aTargets, int aTimestamp)
+    {
+        try
+        {
+            send(new TargetUpdateMessage(aTargets, aTimestamp).getJson());
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
