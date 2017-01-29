@@ -1,7 +1,6 @@
 
 package com.snobot2012;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import com.snobot.lib.ASnobot;
@@ -48,11 +47,6 @@ public class Snobot2012 extends ASnobot
     private Joystick mDriveJoystick;
     private DriverJoystick mDriverController;
     private OperatorJoystick mOperatorController;
-
-    public Snobot2012()
-    {
-        super(new SimpleDateFormat(), 0, "");
-    }
 
     /**
      * This function is run when the robot is first started up and should be used for any initialization code.
