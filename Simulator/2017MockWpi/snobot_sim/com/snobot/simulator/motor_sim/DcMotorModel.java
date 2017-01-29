@@ -19,6 +19,7 @@ public class DcMotorModel
     public double mKV;
     public double mResistance;
     public double mMotorInertia;
+    public boolean mInverted;
 
     // Current motor state
     protected double mPosition;
@@ -35,7 +36,7 @@ public class DcMotorModel
             double aStallCurrent,
             double aMotorInertia)
     {
-        this(aNominalVoltage, aFreeSpeedRpm, aFreeCurrent, aStallTorque, aStallCurrent, aMotorInertia, false);
+        this(aNominalVoltage, aFreeSpeedRpm, aFreeCurrent, aStallTorque, aStallCurrent, aMotorInertia, false, false);
     }
     
     public DcMotorModel(
@@ -45,7 +46,7 @@ public class DcMotorModel
             double aStallTorque, 
             double aStallCurrent,
             double aMotorInertia,
-            boolean aHasBrake)
+            boolean aHasBrake, boolean aInverted)
     {
         NOMINAL_VOLTAGE = aNominalVoltage;
         FREE_SPEED_RPM = aFreeSpeedRpm;
@@ -54,11 +55,17 @@ public class DcMotorModel
         STALL_CURRENT = aStallCurrent;
         
         mHasBrake = aHasBrake;
+        mInverted = aInverted;
 
         mKT = aStallTorque / aStallCurrent;
         mKV = (aFreeSpeedRpm / aNominalVoltage) * (Math.PI * 2.0) / 60.0;
         mResistance = aNominalVoltage / aStallCurrent;
         mMotorInertia = aMotorInertia;
+    }
+
+    public void setInverted(boolean aInverted)
+    {
+        mInverted = aInverted;
     }
 
     public void setHasBrake(boolean aHasBrake)
@@ -93,6 +100,11 @@ public class DcMotorModel
      */
     public void step(double applied_voltage, double load, double external_torque, double timestep)
     {
+        if (mInverted)
+        {
+            applied_voltage *= -1;
+        }
+
         /*
          * Using the 971-style first order system model. V = I * R + Kv * w
          * torque = Kt * I

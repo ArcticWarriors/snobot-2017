@@ -1,6 +1,7 @@
 package com.snobot2017.drivetrain;
 
 import com.snobot.lib.Logger;
+import com.snobot2017.Properties2017;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
@@ -24,6 +25,9 @@ public class SnobotDriveTrain extends ASnobotDrivetrain<SpeedController>
         super(aLeftMotor, null, aRightMotor, null, aDriverJoystick, aLogger, aAutoLogger);
         mLeftDriveEncoder = aLeftDriveEncoder;
         mRightDriveEncoder = aRightDriveEncoder;
+
+        mLeftDriveEncoder.setDistancePerPulse(Properties2017.sLEFT_ENCODER_DIST_PER_PULSE.getValue());
+        mRightDriveEncoder.setDistancePerPulse(Properties2017.sRIGHT_ENCODER_DIST_PER_PULSE.getValue());
     }
 
     @Override
