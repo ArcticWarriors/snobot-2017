@@ -5,7 +5,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
-public class ASimulator implements ISimulatorUpdater
+public abstract class ASimulator implements ISimulatorUpdater
 {
     protected List<ISimulatorUpdater> mSimulatorComponenets;
 
@@ -13,6 +13,8 @@ public class ASimulator implements ISimulatorUpdater
     {
         mSimulatorComponenets = new ArrayList<>();
     }
+
+    protected abstract void createSimulatorComponents();
 
     @Override
     public void update()

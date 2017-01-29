@@ -3,6 +3,8 @@ package com.snobot.lib;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Class for logger
@@ -13,9 +15,6 @@ import java.io.IOException;
 
 public class Logger
 {
-    // Current Date and Time
-    private String mLogDate;
-
     // File Writer
     private FileWriter mLogWriter;
 
@@ -27,13 +26,21 @@ public class Logger
 
     // File Path set by preferences
     private String mLogFilePath;
+    private SimpleDateFormat mLogDateFormat;
 
-    public Logger(String aLogDate, int aLogConfigCount, String aLogPath)
+    private boolean mRunning;
+
+    public Logger()
     {
-        mLogDate = aLogDate;
+        mRunning = false;
+    }
+
+    public void startLogging(SimpleDateFormat aLogFormat, int aLogConfigCount, String aLogPath)
+    {
+        mRunning = true;
+        mLogDateFormat = aLogFormat;
         mConfigLogCount = aLogConfigCount;
         mLogFilePath = aLogPath;
-
     }
 
     /**
@@ -43,23 +50,28 @@ public class Logger
      */
     public void init()
     {
-        mCurrentLogCount = 0;
-
-        try
+        if (mRunning)
         {
-            File dir = new File(mLogFilePath);
-            if (!dir.exists())
+            mCurrentLogCount = 0;
+
+            try
             {
-                dir.mkdirs();
+                File dir = new File(mLogFilePath);
+                if (!dir.exists())
+                {
+                    dir.mkdirs();
+                }
+
+                String timeString = mLogDateFormat.format(new Date());
+                mLogWriter = new FileWriter(mLogFilePath + "RobotLog_" + timeString + "_log.csv");
+
+                mLogWriter.write("Date and Time");
+
             }
-            mLogWriter = new FileWriter(mLogFilePath + "RobotLog_" + mLogDate + "_log.csv");
-
-            mLogWriter.write("Date and Time");
-
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -112,14 +124,15 @@ public class Logger
     /**
      * Begins accepting new log entries
      */
-    public void startLogEntry(String mLogDate)
+    public void startRow()
     {
 
         try
         {
             if (mLogWriter != null)
             {
-                mLogWriter.write(mLogDate);
+                String timeString = mLogDateFormat.format(new Date());
+                mLogWriter.write(timeString);
             }
         }
         catch (IOException e)
