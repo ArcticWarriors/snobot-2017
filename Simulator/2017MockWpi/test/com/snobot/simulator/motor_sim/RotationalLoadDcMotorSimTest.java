@@ -22,7 +22,7 @@ public class RotationalLoadDcMotorSimTest
         double constantAssistTorque = 0.0;  // N*m
         double overCenterAssistTorque = 0.0;  // N*m
 
-        SpeedControllerWrapper wrapper = new SpeedControllerWrapper(0, dt);
+        SpeedControllerWrapper wrapper = new SpeedControllerWrapper(0);
 
         DcMotorModel motor = MakeTransmission.makeTransmission(PublishedMotorFactory.makeRS775(), 2, 77.0, .8);
         IMotorSimulator motorSim = new RotationalLoadDcMotorSim(motor, wrapper, armCenterOfMass, armMass, constantAssistTorque, overCenterAssistTorque);
