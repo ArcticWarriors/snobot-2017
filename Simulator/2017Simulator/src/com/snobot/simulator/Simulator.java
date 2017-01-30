@@ -121,8 +121,8 @@ public class Simulator
                 {
                     HAL.waitForProgramStart();
 
-                    mSimulator.setRobot(mRobot);
                     mSimulator.createSimulatorComponents();
+                    mSimulator.setRobot(mRobot);
                     System.out.println("Created simulator : " + mSimulatorClassName);
 
                     RobotStateSingleton.get().addLoopListener(new RobotStateSingleton.LoopListener()

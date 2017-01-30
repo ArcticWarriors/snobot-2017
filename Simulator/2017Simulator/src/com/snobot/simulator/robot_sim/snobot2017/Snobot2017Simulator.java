@@ -14,7 +14,7 @@ import com.snobot2017.PortMappings2017;
 
 public class Snobot2017Simulator extends ASimulator
 {
-    private static final boolean sSIMULATE_CAMERA = false;
+    private static final boolean sSIMULATE_CAMERA = true;
 
     public Snobot2017Simulator()
     {
@@ -50,6 +50,7 @@ public class Snobot2017Simulator extends ASimulator
         
         AnalogWrapper gyroWrapper = SensorActuatorRegistry.get().getAnalog().get(100);
         TankDriveGyroSimulator drivetrainSim = new TankDriveGyroSimulator(leftEncoder, rightEncoder, gyroWrapper);
+        drivetrainSim.setTurnKp(400 / 12.0);
         mSimulatorComponenets.add(drivetrainSim);
         
         if (sSIMULATE_CAMERA)

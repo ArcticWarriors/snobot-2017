@@ -48,7 +48,7 @@ public class VisionAdbServer extends RobotConnectionServer
     @Override
     public void handleMessage(String aMessage, double aTimestamp)
     {
-        Level logLevel = Level.INFO;
+        Level logLevel = Level.FINE;
 
         try
         {
@@ -59,7 +59,6 @@ public class VisionAdbServer extends RobotConnectionServer
 
             if (sHEARTBEAT_TYPE.equals(type))
             {
-                logLevel = Level.FINE;
                 send(new HeartbeatMessage().getJson());
             }
             else if (sTARGET_UPDATE_MESSAGE.equals(type))
@@ -117,6 +116,11 @@ public class VisionAdbServer extends RobotConnectionServer
     public void iterateShownImage()
     {
         send(new IterateDisplayImageMessage().getJson());
+    }
+
+    public TargetUpdateMessage getLatestTargetUpdate()
+    {
+        return mLatestTargetUpdate;
     }
 
 }

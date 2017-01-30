@@ -1,11 +1,14 @@
 package com.snobot.sd2017.coordinategui.widget;
 
+import java.util.List;
+
 import com.snobot.coordinate_gui.BaseCoordinateGui;
 import com.snobot.coordinate_gui.ui.layers.CoordinateLayer;
 import com.snobot.coordinate_gui.ui.layers.FieldImageLayer;
 import com.snobot.coordinate_gui.ui.layers.RobotLayer;
 import com.snobot.coordinate_gui.ui.renderProps.CoordinateLayerRenderProps;
 import com.snobot.coordinate_gui.ui.renderProps.RobotLayerRenderProps;
+import com.snobot.sd2017.coordinategui.widget.RayLayer.Ray;
 
 public class CoordinateGui2017 extends BaseCoordinateGui
 {
@@ -22,6 +25,7 @@ public class CoordinateGui2017 extends BaseCoordinateGui
 
     protected FieldImageLayer mFieldLayer;
     protected CoordinateLayer mCoordinateLayer;
+    protected RayLayer mRayLayer;
 
     protected RobotLayer mRobotLayer;
 
@@ -35,10 +39,17 @@ public class CoordinateGui2017 extends BaseCoordinateGui
         mRobotLayer = new RobotLayer(mCoordinateDataProvider, aRobotLayerRenderProps, mConverter, ROBOT_WIDTH,
                 ROBOT_HEIGHT);
         mCoordinateLayer = new CoordinateLayer(mCoordinateDataProvider, aCoordinateLayerRenderProps, mConverter);
+        mRayLayer = new RayLayer(mConverter);
 
         mLayerManager.addLayer(mFieldLayer);
         mLayerManager.addLayer(mRobotLayer);
         mLayerManager.addLayer(mCoordinateLayer);
+        mLayerManager.addLayer(mRayLayer);
+    }
+
+    public void setRays(List<Ray> aRays)
+    {
+        mRayLayer.setRays(aRays);
     }
 
 }

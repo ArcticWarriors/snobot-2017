@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
+import org.json.simple.JSONObject;
+
 /**
  * Created by PJ on 11/24/2016.
  */
@@ -22,6 +24,11 @@ public class MockAppConnection
     private Socket mSocket;
 
     public MockAppConnection()
+    {
+
+    }
+
+    public void start()
     {
         try
         {
@@ -77,7 +84,13 @@ public class MockAppConnection
 
     protected void sendHeartbeatMessage()
     {
-        String message = "heartbeat\n";
+        String message = "{\"type\": \"heartbeat\"}\n";
+        sendToWire(ByteBuffer.wrap(message.getBytes()));
+    }
+
+    public void send(JSONObject aObject)
+    {
+        String message = aObject.toJSONString() + "\n";
         sendToWire(ByteBuffer.wrap(message.getBytes()));
     }
 

@@ -35,8 +35,8 @@ public class TargetUpdateMessage
 
         public TargetInfo(JSONObject aJson)
         {
-            mAngle = Integer.parseInt(aJson.get("angle").toString());
-            mDistance = Integer.parseInt(aJson.get("distance").toString());
+            mAngle = Double.parseDouble(aJson.get("angle").toString());
+            mDistance = Double.parseDouble(aJson.get("distance").toString());
         }
 
         /**
@@ -61,8 +61,9 @@ public class TargetUpdateMessage
 
     }
     
+    private JSONObject mJson;
     private List<TargetInfo> mTargets;
-    private int mTimestamp;
+    private double mTimestamp;
 
     public TargetUpdateMessage()
     {
@@ -71,9 +72,10 @@ public class TargetUpdateMessage
 
     public TargetUpdateMessage(JSONObject aJson)
     {
+        mJson = aJson;
         mTargets = new ArrayList<>();
 
-        mTimestamp = Integer.parseInt(aJson.get("timestamp").toString());
+        mTimestamp = Double.parseDouble(aJson.get("timestamp").toString());
 
         JSONArray targets = (JSONArray) aJson.get("targets");
 
@@ -85,12 +87,17 @@ public class TargetUpdateMessage
         }
     }
 
+    public String toJsonString()
+    {
+        return mJson.toJSONString();
+    }
+
     /**
      * Gets the timestamp of when the image was captured
      * 
      * @return The timestamp in seconds
      */
-    public int getTimestamp()
+    public double getTimestamp()
     {
         return mTimestamp;
     }

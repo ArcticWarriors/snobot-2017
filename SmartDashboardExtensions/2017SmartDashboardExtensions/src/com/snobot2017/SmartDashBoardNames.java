@@ -29,6 +29,7 @@ public class SmartDashBoardNames
     public static String sCATCHING_OPERATOR_JOYSTICK_SPEED = "Catching Operator Joystick Speed";
     public static String sWE_HAVE_LIFT_OFF = "Lift Off Speed";
 
+
     // Drivetrain
     public static final String sLEFT_DRIVE_MOTOR_ENCODER = "Left Drive Motor Encoder";
     public static final String sRIGHT_DRIVE_MOTOR_ENCODER = "Right Drive Motor Encoder";
@@ -40,5 +41,9 @@ public class SmartDashBoardNames
     public static final String sY_POSITION = "Y Position";
     public static final String sORIENTATION = "Orientation";
     public static final String sSPEED = "Speed";
+
+    // Camera
+    public static final String sVISION_APP_CONNECTED = "App Connected";
+    public static final String sVISION_TARGETS = "Targets";
 
 }

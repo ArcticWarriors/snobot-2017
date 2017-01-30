@@ -42,6 +42,10 @@ public class SmartDashBoardNames
     public static final String sY_POSITION = "Y Position";
     public static final String sORIENTATION = "Orientation";
     public static final String sSPEED = "Speed";
+
+    // Camera
+    public static final String sVISION_APP_CONNECTED = "App Connected";
+    public static final String sVISION_TARGETS = "Targets";
    
     
   
