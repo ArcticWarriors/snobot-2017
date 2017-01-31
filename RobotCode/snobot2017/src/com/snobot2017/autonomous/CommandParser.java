@@ -1,5 +1,6 @@
 package com.snobot2017.autonomous;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.snobot.lib.autonomous.ACommandParser;
@@ -29,10 +30,8 @@ public class CommandParser extends ACommandParser
      */
     public CommandParser(Snobot2017 aSnobot)
     {
-        super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME),
-              SmartDashBoardNames.sROBOT_COMMAND_TEXT,
-              SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON,
-              " ", "#");
+        super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
+                SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
 
         mSnobot = aSnobot;
     }
@@ -72,10 +71,14 @@ public class CommandParser extends ACommandParser
                 newCommand = parseScoreGearCommand(args);
                 break;
             }
+            case AutonomousCommandNames.sAUTON_COPY:
+            {
+                newCommand = parseAutonCopyCommand();
+            }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
-            }
+        }
         catch (IndexOutOfBoundsException e)
         {
             addError("You have not specified enough aguments for the command: " + commandName + ". " + e.getMessage());
@@ -105,6 +108,11 @@ public class CommandParser extends ACommandParser
         double time = Double.parseDouble(args.get(1));
         double speed = Double.parseDouble(args.get(2));
         return new StupidDriveStraight(mSnobot.getDriveTrain(), time, speed);
+    }
+
+    private Command parseAutonCopyCommand() throws IOException
+    {
+        return new AutonCopy(mSnobot.getDriveTrain());
     }
 
     protected Command parseWaitCommand(List<String> args)

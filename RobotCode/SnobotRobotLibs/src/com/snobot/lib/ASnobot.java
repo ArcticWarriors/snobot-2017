@@ -132,17 +132,17 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     public void updateLog()
     {
         String logDate = mLogDateFormat.format(new Date());
-        if (mLogger.logNow())
+        // if (mLogger.logNow())
+        // {
+        mLogger.startLogEntry(logDate);
+
+        for (ISubsystem iSubsystem : mSubsystems)
         {
-            mLogger.startLogEntry(logDate);
-
-            for (ISubsystem iSubsystem : mSubsystems)
-            {
-                iSubsystem.updateLog();
-            }
-
-            mLogger.endLogger();
+            iSubsystem.updateLog();
         }
+
+        mLogger.endLogger();
+        // }
 
     }
 
