@@ -2,7 +2,6 @@ package com.snobot2017.autonomous;
 
 import com.snobot2017.gearboss.IGearBoss;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 public class ScoreGear extends TimedCommand

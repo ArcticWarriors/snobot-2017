@@ -16,6 +16,12 @@ public class TeachingRobotSimulator extends ASimulator
 
     public TeachingRobotSimulator()
     {
+
+    }
+
+    @Override
+    protected void createSimulatorComponents()
+    {
         double load = .1;
         // double gearReduction = 1;
         double gearReduction = 10;

@@ -88,11 +88,12 @@ public class Positioner implements ISubsystem, IPositioner
         double orientationRadians = Math.toRadians(mOrientation);
 
         // ChangeInDistance and X/Y
-        mTotalDistance = (mDriveTrain.getRightDistance() + mDriveTrain.getLeftDistance()) / 2;
+        mTotalDistance = mDriveTrain.getRightDistance() + mDriveTrain.getLeftDistance() / 2.0f;
         double deltaDistance = mTotalDistance - mLastDistance;
         mXPosition += deltaDistance * Math.sin(orientationRadians);
         mYPosition += deltaDistance * Math.cos(orientationRadians);
-
+        //System.out.println("Positioner " + mTotalDistance + " " + mDriveTrain.getRightDistance() + " " + mDriveTrain.getLeftDistance());
+        
         // Update
         mSpeed = (deltaDistance) / (mTimer.get() - mLastTime);
         mLastTime = mTimer.get();
@@ -147,13 +148,13 @@ public class Positioner implements ISubsystem, IPositioner
     @Override
     public void control()
     {
-
+        // Nothing
     }
 
     @Override
     public void rereadPreferences()
     {
-
+        // Nothing
     }
 
     /**
@@ -185,7 +186,7 @@ public class Positioner implements ISubsystem, IPositioner
     @Override
     public void stop()
     {
-
+        // Nothing
     }
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import com.snobot.lib.autonomous.ACommandParser;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
-import com.snobot2017.gearboss.SnobotGearBoss;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -73,6 +72,21 @@ public class CommandParser extends ACommandParser
                 newCommand = parseScoreGearCommand(args);
                 break;
             }
+            case AutonomousCommandNames.sDRIVE_STRAIGHT_A_DISTANCE:
+            {
+                newCommand = parseDriveStraightADistance(args);
+                break;
+            }
+            case AutonomousCommandNames.sTURN_WITH_DEGREES:
+            {
+                newCommand = parseTurnWithDegrees(args);
+                break;
+            } 
+            case AutonomousCommandNames.sGO_TO_XY:
+            {
+                newCommand = parseGoToXY(args);
+                break;
+            }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
@@ -89,16 +103,37 @@ public class CommandParser extends ACommandParser
         return newCommand;
     }
 
+    private Command parseGoToXY(List<String> args)
+    {
+        double xcoor = Double.parseDouble(args.get(1));
+        double ycoor = Double.parseDouble(args.get(2));
+        double speed = Double.parseDouble(args.get(3));
+        return new GoToXY(mSnobot.getDriveTrain(), mSnobot.getPositioner(), xcoor, ycoor, speed);
+    }
+    
+    /**
+     * 
+     * @param args
+     * @return
+     */
+    private Command parseTurnWithDegrees(List<String> args)
+    {
+        double speed = Double.parseDouble(args.get(1));
+        double angle = Double.parseDouble(args.get(2));
+        return new TurnWithDegrees(speed, angle, mSnobot.getDriveTrain(), mSnobot.getPositioner());
+    }
+
+    private Command parseDriveStraightADistance(List<String> args)
+    {
+        double distance = Double.parseDouble(args.get(1));
+        double speed = Double.parseDouble(args.get(2));
+        return new DriveStraightADistance(distance, speed, mSnobot.getDriveTrain(), mSnobot.getPositioner());
+    }
+
     private Command parseScoreGearCommand(List<String> args)
     {
         double time = Double.parseDouble(args.get(1));        
         return new ScoreGear(mSnobot.getGearBoss(),time);
-    }
-
-    private Command parseMoveGearLowCommand(List<String> args)
-    {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     private Command parseStupidDriveStraightCommand(List<String> args)

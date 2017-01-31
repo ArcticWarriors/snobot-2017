@@ -1,9 +1,12 @@
 package com.snobot2017.joystick;
 
+import com.snobot.lib.Logger;
 import com.snobot.lib.ui.LatchedButton;
 import com.snobot.lib.ui.XboxButtonMap;
+import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The operator joystick class
@@ -16,6 +19,8 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     private Joystick mJoystick;
     private boolean mClimb;
     private boolean mCatch;
+    private Logger mLogger;
+
     // Gear Boss
     private GearBossPositions mGearBossPos;
 
@@ -32,7 +37,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     private boolean mSwitchToRearCamera;
     private boolean mRestartApp;
 
-    public SnobotOperatorXbaxJoystick(Joystick aJoystick)
+    public SnobotOperatorXbaxJoystick(Joystick aJoystick, Logger aLogger)
     {
         mJoystick = aJoystick;
 
@@ -40,23 +45,27 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         mSwitchToFrontCameraLatcher = new LatchedButton();
         mSwitchToRearCameraLatcher = new LatchedButton();
         mRestartAppLatcher = new LatchedButton();
+        mLogger = aLogger;
     }
 
     @Override
     public void init()
     {
-
+        mLogger.addHeader("LiftOffSpeed");
+        mLogger.addHeader("Climb");
+        mLogger.addHeader("Catch");
+        mLogger.addHeader("GearBossPosition");
     }
 
     @Override
     public void update()
     {
         // Gear Boss
-        if (mJoystick.getPOV() == (XboxButtonMap.D_PAD_UP))
+        if (mJoystick.getRawButton(XboxButtonMap.A_BUTTON))
         {
             mGearBossPos = GearBossPositions.UP;
         }
-        else if (mJoystick.getPOV() == (XboxButtonMap.D_PAD_DOWN))
+        else if (mJoystick.getRawButton(XboxButtonMap.B_BUTTON))
         {
             mGearBossPos = GearBossPositions.DOWN;
         }
@@ -78,39 +87,40 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         mSwitchToRearCamera = mSwitchToRearCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
         mRestartApp = mRestartAppLatcher.update(mJoystick.getRawButton(XboxButtonMap.B_BUTTON));
     }
-
+    
     @Override
     public void control()
     {
-        // TODO Auto-generated method stub
-
+       // Nothing
     }
 
     @Override
     public void rereadPreferences()
     {
-
+        // Nothing
     }
 
     @Override
     public void updateSmartDashboard()
     {
-        // TODO Auto-generated method stub
-
-    }
+        SmartDashboard.putBoolean(SmartDashBoardNames.sCLIMBING_OPERATOR_JOYSTICK_SPEED, mClimb);
+        SmartDashboard.putBoolean(SmartDashBoardNames.sCATCHING_OPERATOR_JOYSTICK_SPEED, mCatch);
+        SmartDashboard.putNumber(SmartDashBoardNames.sWE_HAVE_LIFT_OFF, mLiftOffSpeed);
+     }
 
     @Override
     public void updateLog()
     {
-        // TODO Auto-generated method stub
-
+        mLogger.updateLogger(mLiftOffSpeed);
+        mLogger.updateLogger(mClimb);
+        mLogger.updateLogger(mCatch);
+        //mLogger.updateLogger(mGearBossPos);
     }
 
     @Override
     public void stop()
     {
-        // TODO Auto-generated method stub
-
+        // Nothing
     }
 
     @Override

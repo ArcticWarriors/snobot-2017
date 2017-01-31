@@ -1,55 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="2016 Snobot SD Extensions" default="jar">
+<project name="2017 Snobot SD Extensions" default="jar">
   
-	<property file="build.properties"/>
+    <property file="build.properties"/>
 
     <path id="CoordinateGui.classpath">
         <pathelement location="${CoordinateGui.location}/bin"/>
     </path>
 
-	  <target name="clean" description="Clean up all build and distribution artifacts.">
-	    <echo>Cleaning "${build.dir}" and "${dist.dir}"</echo>
-	    <delete dir="${build.dir}"/>
-	    <delete dir="${dist.dir}"/>
-	  </target>
+    <path id="3rdParty.classpath">
+        <pathelement location="${CoordinateGui.location}/bin"/>
+    </path>
 
-	  <!-- Targets -->
+    <path id="ThirdParty.classpath">
+          <fileset dir="${3rd_party_libs}">
+              <include name="**/*.jar" />
+          </fileset>
+    </path>
 
-	  <target name="compile_extensions" description="Compile the source code.">
-	    <mkdir dir="${build.dir}"/>
-	    <echo>Compiling ${src.dir} with classpath=${classpath} to ${build.dir}</echo>
+    <path id="CoordinateGui.classpath">
+        <pathelement location="${CoordinateGui.location}/bin"/>
+    </path>
 
-	    <javac srcdir="${src.dir}"
-	     destdir="${build.dir}"
-	     includeAntRuntime="no"
-	     includeJavaRuntime="no"
-	     target="${ant.java.version}"
-	     source="${ant.java.version}"
-	     compiler="javac${ant.java.version}"
-	     debug="true">
-	    	<classpath path="${build.dir}"/>
-	    	<classpath path="${classpath}"/>
-	    </javac>
-	  </target>
+    <property name="CoordinateGui.src_dir"  value="../CoordinateGui/src"/>
 
-	  <target name="jar" depends="compile_extensions">
-	    <echo>Making jar ${dist.jar}.</echo>
-	    <mkdir dir="${dist.dir}" />
-	    <mkdir dir="${build.jars}" />
+    <!-- Targets -->
+    <target name="clean" description="Clean up all build and distribution artifacts.">
+      <echo>Cleaning "${build.dir}" and "${dist.dir}"</echo>
+      <delete dir="${build.dir}"/>
+      <delete dir="${dist.dir}"/>
+    </target>
 
-	    <echo>Copying jars from ${classpath} to ${build.jars}.</echo>
-	    <copy todir="${build.jars}" flatten="true">
-	      <path>
-	      <pathelement path="${classpath}"/>
-	      </path>
-	    </copy>
 
-	    <jar destfile="${dist.jar}" update="false">
-	        <fileset dir="${build.dir}" includes="**/*.class"/>
-	        <fileset dir="${src.dir}" includes="**/*.png **/*.jpg"/>
-	    </jar>
-	  </target>
+    <target name="compile_coordinate_library" description="Compile the source code.">
+      <mkdir dir="${build.dir}"/>
+      <echo>Compiling ${CoordinateGui.src_dir} to ${build.dir}</echo>
+
+      <javac srcdir="${CoordinateGui.src_dir}"
+       destdir="${build.dir}"
+       includeAntRuntime="no"
+       includeJavaRuntime="no"
+       target="${ant.java.version}"
+       source="${ant.java.version}"
+       compiler="javac${ant.java.version}"
+       debug="true">
+          <exclude name="**/com/snobot/coordinate_gui/desktop_app/**"/>
+      </javac>
+    </target>
+    
+    <target name="copy_3rd_party_libs">
+        <echo>Copying 3rd party libraries to ${dist.dir} and ${build.dir}</echo>
+        <copy todir="${dist.dir}">
+            <fileset dir="${3rd_party_libs}"/>
+        </copy>
+        <copy todir="${dist.dir}">
+            <fileset dir="${3rd_party_libs}"/>
+        </copy>
+    </target>
+
+    <target name="compile_extensions" description="Compile the source code." depends="compile_coordinate_library, copy_3rd_party_libs">
+      <mkdir dir="${build.dir}"/>
+      <echo>Compiling ${src.dir} with classpath=${classpath} to ${build.dir}</echo>
+    	
+    	<echo>"${3rd_party_libs}"</echo>
+
+      <javac srcdir="${src.dir}"
+       destdir="${build.dir}"
+       includeAntRuntime="no"
+       includeJavaRuntime="no"
+       target="${ant.java.version}"
+       source="${ant.java.version}"
+       compiler="javac${ant.java.version}"
+       debug="true">
+          <classpath path="${build.dir}"/>
+          <classpath path="${classpath}"/> 
+          <classpath refid="ThirdParty.classpath"/> 
+      </javac>
+    </target>
+
+    <target name="jar" depends="compile_extensions">
+      <echo>Making jar ${dist.jar}.</echo>
+      <mkdir dir="${dist.dir}" />
+      <mkdir dir="${build.jars}" />
+
+
+      <echo>Copying jars from ${classpath} to ${build.jars}.</echo>
+      <copy todir="${build.jars}" flatten="true">
+        <path>
+        <pathelement path="${classpath}"/>
+        </path>
+      </copy>
+        
+      <jar destfile="${dist.jar}" update="false">
+          <fileset dir="${build.dir}" includes="**/*.class"/>
+          <fileset dir="${src.dir}" includes="**/*.png **/*.jpg"/>
+      </jar>
+    </target>
 
 
 </project> 

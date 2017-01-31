@@ -1,67 +1,70 @@
 package com.snobot2017.joystick;
 
+import com.snobot.lib.Logger;
 import com.snobot.lib.ui.XboxButtonMap;
+import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnobotDriveXbaxJoystick implements IDriverJoystick
 {
     private Joystick mJoystick;
     private double mLeftSpeed;
     private double mRightSpeed;
+    private Logger mLogger;
 
-    public SnobotDriveXbaxJoystick(Joystick aJoystick)
+    public SnobotDriveXbaxJoystick(Joystick aJoystick, Logger aLogger)
     {
 
         mJoystick = aJoystick;
-
+        mLogger = aLogger;
     }
 
     @Override
     public void init()
     {
-
+        mLogger.addHeader("LeftJoystickSpeed");
+        mLogger.addHeader("RightJoystickSpeed");
     }
 
     @Override
     public void update()
     {
-        mLeftSpeed = mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS);
-        mRightSpeed = mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
+        mLeftSpeed = -mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS);
+        mRightSpeed = -mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
     }
 
     @Override
     public void control()
     {
-        // TODO Auto-generated method stub
-
+        // Nothing
     }
 
     @Override
     public void rereadPreferences()
     {
-
+        // Nothing
     }
 
     @Override
     public void updateSmartDashboard()
     {
-        // TODO Auto-generated method stub
-
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_XBAX_JOYSTICK_SPEED, mLeftSpeed);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_XBAX_JOYSTICK_SPEED, mRightSpeed);
     }
 
     @Override
     public void updateLog()
     {
-        // TODO Auto-generated method stub
-
+        mLogger.updateLogger(mLeftSpeed);
+        mLogger.updateLogger(mRightSpeed);
     }
 
     @Override
     public void stop()
     {
-        // TODO Auto-generated method stub
-
+        // Nothing
     }
 
     @Override

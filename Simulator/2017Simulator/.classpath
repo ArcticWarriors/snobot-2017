@@ -10,5 +10,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/snobot2017"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SnobotRobotLibs"/>
+	<classpathentry kind="lib" path="/2017MockWpi/3rdParyLibraries/simple-json/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
