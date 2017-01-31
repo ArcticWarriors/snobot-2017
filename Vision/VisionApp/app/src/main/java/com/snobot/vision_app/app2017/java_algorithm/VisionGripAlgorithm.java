@@ -34,16 +34,16 @@ public class VisionGripAlgorithm {
     public void process(Mat source0) {
         // Step HSL_Threshold0:
         Mat hslThresholdInput = source0;
-        double[] hslThresholdHue = {61.51079136690648, 92.45733788395903};
-        double[] hslThresholdSaturation = {89.43345323741005, 255.0};
-        double[] hslThresholdLuminance = {80.26079136690647, 255.0};
+        double[] hslThresholdHue = {50.179856115107924, 92.45733788395903};
+        double[] hslThresholdSaturation = {130.71043165467623, 255.0};
+        double[] hslThresholdLuminance = {87.14028776978417, 255.0};
         hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
         // Step CV_erode0:
         Mat cvErode0Src = hslThresholdOutput;
         Mat cvErode0Kernel = new Mat();
         Point cvErode0Anchor = new Point(-1, -1);
-        double cvErode0Iterations = 0.0;
+        double cvErode0Iterations = 4.0;
         int cvErode0Bordertype = Core.BORDER_CONSTANT;
         Scalar cvErode0Bordervalue = new Scalar(-1);
         cvErode(cvErode0Src, cvErode0Kernel, cvErode0Anchor, cvErode0Iterations, cvErode0Bordertype, cvErode0Bordervalue, cvErode0Output);
@@ -52,7 +52,7 @@ public class VisionGripAlgorithm {
         Mat cvDilateSrc = cvErode0Output;
         Mat cvDilateKernel = new Mat();
         Point cvDilateAnchor = new Point(-1, -1);
-        double cvDilateIterations = 0.0;
+        double cvDilateIterations = 30.0;
         int cvDilateBordertype = Core.BORDER_CONSTANT;
         Scalar cvDilateBordervalue = new Scalar(-1);
         cvDilate(cvDilateSrc, cvDilateKernel, cvDilateAnchor, cvDilateIterations, cvDilateBordertype, cvDilateBordervalue, cvDilateOutput);
@@ -61,7 +61,7 @@ public class VisionGripAlgorithm {
         Mat cvErode1Src = cvDilateOutput;
         Mat cvErode1Kernel = new Mat();
         Point cvErode1Anchor = new Point(-1, -1);
-        double cvErode1Iterations = 0.0;
+        double cvErode1Iterations = 26.0;
         int cvErode1Bordertype = Core.BORDER_CONSTANT;
         Scalar cvErode1Bordervalue = new Scalar(-1);
         cvErode(cvErode1Src, cvErode1Kernel, cvErode1Anchor, cvErode1Iterations, cvErode1Bordertype, cvErode1Bordervalue, cvErode1Output);

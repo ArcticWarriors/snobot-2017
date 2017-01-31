@@ -20,7 +20,7 @@ import com.snobot.vision.VisionAlgorithm;
 
 public class DesktopMain
 {
-    private static final String sDEFAULT_IMAGE_PATH = "rope_test/image_config.yml";
+    private static final String sDEFAULT_IMAGE_PATH = "first_try_config/image_config.yml";
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws IOException

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.snobot.vision_app.app2017.java_algorithm.JavaVisionAlgorithm;
 import com.snobot.vision_app.opengl_renderer.VisionTrackerGLSurfaceView;
@@ -93,5 +94,21 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
     @Override
     public void iterateDisplayType() {
         mAlgorithm.iterateDisplayType();
+    }
+
+    //Attempt at using Volume Buttons to take pictures.
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                Log.i("Debug1", "Reading the volume UP button");
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                Log.i("Debug3", "Reading the volume DOWN button");
+                return true;
+            default:
+                return super.dispatchKeyEvent(event);
+        }
     }
 }
