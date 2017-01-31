@@ -156,14 +156,14 @@ public class Snobot2017 extends ASnobot
 
     public void updateLog()
     {
-        super.updateLog();
         String logDate = mAutoLogDateFormat.format(new Date());
         if (mAutoLogger.logNow())
         {
             mAutoLogger.startLogEntry(logDate);
-
+            super.updateLog();
             mAutoLogger.endLogger();
         }
+
     }
 
     @Override
