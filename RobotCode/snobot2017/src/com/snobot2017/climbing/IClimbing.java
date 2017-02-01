@@ -4,6 +4,7 @@ import com.snobot.lib.ISubsystem;
 
 /**
  * Interface used for controling the climber
+ * 
  * @author jbnol
  *
  */

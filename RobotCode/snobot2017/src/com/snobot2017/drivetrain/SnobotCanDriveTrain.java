@@ -8,6 +8,7 @@ import com.snobot2017.joystick.IDriverJoystick;
 
 /**
  * Drivetrain using CAN controllers
+ * 
  * @author jbnol
  *
  */

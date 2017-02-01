@@ -76,7 +76,7 @@ public class Snobot2017 extends ASnobot
 
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
         mSubsystems.add(operatorJoystick);
-        
+
         // Drive Train
         boolean useCan = false;
         if (useCan)
@@ -101,10 +101,10 @@ public class Snobot2017 extends ASnobot
             SpeedController driveRightMotor = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
             Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
             Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
-    
+
             mDriveTrain = new SnobotDriveTrain(
                     driveLeftMotor, 
-                    driveRightMotor,
+                    driveRightMotor, 
                     leftDriveEncoder, 
                     rightDriveEncoder, 
                     driverJoystick, 
@@ -135,7 +135,7 @@ public class Snobot2017 extends ASnobot
                 Properties2017.sLOG_FILE_PATH.getValue());
         init();
     }
-    
+
     @Override
     public void init()
     {
@@ -143,7 +143,7 @@ public class Snobot2017 extends ASnobot
         super.init();
         mAutoLogger.endHeader();
     }
-    
+
     @Override
     public void updateLog()
     {
@@ -172,7 +172,7 @@ public class Snobot2017 extends ASnobot
     {
         return this.mDriveTrain;
     }
-    
+
     /**
      * Returns the IGearBoss for the robot
      * 
