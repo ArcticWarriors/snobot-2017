@@ -35,7 +35,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class Snobot2017 extends ASnobot
 {
-    // Robot Subystems
+    // Robot Subsystems
     private IDriveTrain mDriveTrain;
     private IPositioner mPositioner;
 
@@ -48,13 +48,9 @@ public class Snobot2017 extends ASnobot
     // GearBoss
     private IGearBoss mGearBoss;
 
-    // Vision
-    private VisionManager mVisionManager;
-
     // Logger
     private AutoLogger mAutoLogger;
     private DateFormat mAutoLogDateFormat;
-
 
     /**
      * This function is run when the robot is first started up and should be
@@ -124,14 +120,8 @@ public class Snobot2017 extends ASnobot
 
         // GearBoss
         Solenoid gearSolonoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL);
-       //ToDo Delete this later 
-        gearSolonoid.set(true);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
-
-        // Vision
-        // mVisionManager = new VisionManager(operatorJoystick);
-        // mSubsystems.add(mVisionManager);
 
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();
@@ -145,15 +135,16 @@ public class Snobot2017 extends ASnobot
                 Properties2017.sLOG_FILE_PATH.getValue());
         init();
     }
-
+    
+    @Override
     public void init()
     {
         mAutoLogger.init();
         super.init();
         mAutoLogger.endHeader();
-
     }
-
+    
+    @Override
     public void updateLog()
     {
         super.updateLog();
@@ -181,15 +172,24 @@ public class Snobot2017 extends ASnobot
     {
         return this.mDriveTrain;
     }
-
+    
+    /**
+     * Returns the IGearBoss for the robot
+     * 
+     * @return IGearBoss
+     */
     public IGearBoss getGearBoss()
     {
         return mGearBoss;
     }
 
+    /**
+     * Returns the Robots position
+     * 
+     * @return IPositioner
+     */
     public IPositioner getPositioner()
     {
-        // TODO Auto-generated method stub
         return mPositioner;
     }
 }

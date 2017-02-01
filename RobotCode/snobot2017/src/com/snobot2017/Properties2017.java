@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 public class Properties2017
 {
     // **************************************************************
-    // Configuration Contants
+    // Configuration Constants
     // **************************************************************
 
     // Vision
@@ -54,7 +54,6 @@ public class Properties2017
             resourcesDir = "/home/lvuser/2016Resources/";
 
             System.out.println("Using tactical constants");
-
         }
 
         sLOG_FILE_PATH = new StringProperty("LogFilePath", logPath);
@@ -75,7 +74,6 @@ public class Properties2017
             resourcesDir = "/home/lvuser/2016Resources/";
 
             System.out.println("Using tactical constants");
-
         }
 
         sAUTO_LOG_FILE_PATH = new StringProperty("AutoLogFilePath", autoLogPath);
