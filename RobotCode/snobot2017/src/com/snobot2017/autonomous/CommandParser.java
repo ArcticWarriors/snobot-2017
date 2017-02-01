@@ -1,5 +1,6 @@
 package com.snobot2017.autonomous;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.snobot.lib.autonomous.ACommandParser;
@@ -19,7 +20,6 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class CommandParser extends ACommandParser
 {
     protected Snobot2017 mSnobot;
-    
 
     /**
      * Creates a CommandParser object.
@@ -34,7 +34,7 @@ public class CommandParser extends ACommandParser
                 SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
 
         mSnobot = aSnobot;
-        
+
     }
 
     /**
@@ -81,10 +81,15 @@ public class CommandParser extends ACommandParser
             {
                 newCommand = parseTurnWithDegrees(args);
                 break;
-            } 
+            }
             case AutonomousCommandNames.sGO_TO_XY:
             {
                 newCommand = parseGoToXY(args);
+                break;
+            }
+            case AutonomousCommandNames.sAUTON_COPY:
+            {
+                newCommand = parseAutonCopyCommand();
                 break;
             }
             default:
@@ -110,7 +115,7 @@ public class CommandParser extends ACommandParser
         double speed = Double.parseDouble(args.get(3));
         return new GoToXY(mSnobot.getDriveTrain(), mSnobot.getPositioner(), xcoor, ycoor, speed);
     }
-    
+
     /**
      * 
      * @param args
@@ -132,8 +137,8 @@ public class CommandParser extends ACommandParser
 
     private Command parseScoreGearCommand(List<String> args)
     {
-        double time = Double.parseDouble(args.get(1));        
-        return new ScoreGear(mSnobot.getGearBoss(),time);
+        double time = Double.parseDouble(args.get(1));
+        return new ScoreGear(mSnobot.getGearBoss(), time);
     }
 
     private Command parseStupidDriveStraightCommand(List<String> args)
@@ -141,6 +146,11 @@ public class CommandParser extends ACommandParser
         double time = Double.parseDouble(args.get(1));
         double speed = Double.parseDouble(args.get(2));
         return new StupidDriveStraight(mSnobot.getDriveTrain(), time, speed);
+    }
+
+    private Command parseAutonCopyCommand() throws IOException
+    {
+        return new AutonCopy(mSnobot.getDriveTrain());
     }
 
     protected Command parseWaitCommand(List<String> args)

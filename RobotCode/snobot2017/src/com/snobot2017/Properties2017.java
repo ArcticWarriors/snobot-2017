@@ -25,6 +25,7 @@ public class Properties2017
     // AutoLogger
     public static final IntegerProperty sAUTO_LOG_COUNT = new IntegerProperty("AutoLogCount", 25);
     public static final StringProperty sAUTO_LOG_FILE_PATH;
+    public static final StringProperty sAUTO_LOG_RUN_PATH = new StringProperty("autologs/" + Properties2017.class.getCanonicalName() + "/");
 
     // Drivetrain
     public static final DoubleProperty sLEFT_ENCODER_DIST_PER_PULSE = new DoubleProperty("DriveEncoderLeftDPP", -0.00564998);
