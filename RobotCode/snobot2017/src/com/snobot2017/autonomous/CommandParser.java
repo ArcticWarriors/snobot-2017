@@ -150,7 +150,7 @@ public class CommandParser extends ACommandParser
 
     private Command parseAutonCopyCommand() throws IOException
     {
-        return new AutonCopy(mSnobot.getDriveTrain());
+        return new Replay(mSnobot.getDriveTrain());
     }
 
     protected Command parseWaitCommand(List<String> args)
