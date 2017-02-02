@@ -37,7 +37,7 @@ public class Logger
 
     public void startLogging(SimpleDateFormat aLogFormat, int aLogConfigCount, String aLogPath)
     {
-        mRunning = true;
+        mRunning = false;
         mLogDateFormat = aLogFormat;
         mConfigLogCount = aLogConfigCount;
         mLogFilePath = aLogPath;
