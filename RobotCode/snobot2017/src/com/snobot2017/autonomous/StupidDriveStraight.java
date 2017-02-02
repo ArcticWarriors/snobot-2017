@@ -35,6 +35,7 @@ public class StupidDriveStraight extends TimedCommand
     /**
      * Sets the speed for both motors to drive straight
      */
+    @Override
     public void execute()
     {
         mDriveTrain.setLeftRightSpeed(mSpeed, mSpeed);
@@ -44,6 +45,7 @@ public class StupidDriveStraight extends TimedCommand
      * This method is called when the time runs out when the time runs out and
      * the timer is stopped
      */
+    @Override
     public void end()
     {
         mDriveTrain.setLeftRightSpeed(0, 0);

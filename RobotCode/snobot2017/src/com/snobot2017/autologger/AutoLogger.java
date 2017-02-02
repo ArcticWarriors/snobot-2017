@@ -28,12 +28,12 @@ public class AutoLogger
     // File Path set by preferences
     private String mLogFilePath;
 
+    // Constructor
     public AutoLogger(String aLogDate, int aLogConfigCount, String aLogPath)
     {
         mLogDate = aLogDate;
         mConfigLogCount = aLogConfigCount;
         mLogFilePath = aLogPath;
-
     }
 
     /**
@@ -61,7 +61,6 @@ public class AutoLogger
         {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -71,7 +70,6 @@ public class AutoLogger
      */
     public void addHeader(String aHeader)
     {
-
         try
         {
             if (mLogWriter != null)
@@ -112,14 +110,13 @@ public class AutoLogger
     /**
      * Begins accepting new log entries
      */
-    public void startLogEntry(String mLogDate)
+    public void startLogEntry(String aLogDate)
     {
-
         try
         {
             if (mLogWriter != null)
             {
-                mLogWriter.write(mLogDate);
+                mLogWriter.write(aLogDate);
             }
         }
         catch (IOException e)
@@ -128,7 +125,6 @@ public class AutoLogger
             this.stop();
             mLogWriter = null;
         }
-
     }
 
     /**
@@ -183,7 +179,6 @@ public class AutoLogger
     {
         // Convert boolean to a number, then log
         updateLogger(aEntry ? 1 : 0);
-
     }
 
     /**
@@ -198,7 +193,6 @@ public class AutoLogger
                 mLogWriter.write("\n");
                 mLogWriter.flush();
             }
-
         }
         catch (IOException e)
         {
@@ -245,6 +239,9 @@ public class AutoLogger
         }
     }
 
+    /**
+     * flushes the file
+     */
     public void flush()
     {
         try

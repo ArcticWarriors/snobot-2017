@@ -124,7 +124,6 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
             {
                 iSubsystem.updateLog();
             }
-
             mLogger.endLogger();
         }
 

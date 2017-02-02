@@ -2,6 +2,12 @@ package com.snobot2017.joystick;
 
 import com.snobot.lib.ISubsystem;
 
+/**
+ * Joystick for interacting with the drivetrain
+ * 
+ * @author jbnol
+ *
+ */
 public interface IDriverJoystick extends ISubsystem
 {
 

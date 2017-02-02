@@ -6,6 +6,12 @@ import com.snobot2017.Properties2017;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
+/**
+ * Drivetrain using CAN controllers
+ * 
+ * @author jbnol
+ *
+ */
 public class SnobotCanDriveTrain extends ASnobotDrivetrain<CANTalon>
 {
     public SnobotCanDriveTrain(

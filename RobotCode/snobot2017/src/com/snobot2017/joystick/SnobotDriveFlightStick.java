@@ -6,6 +6,12 @@ import com.snobot2017.SmartDashBoardNames;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * Implementation for the drive
+ * 
+ * @author jbnol
+ *
+ */
 public class SnobotDriveFlightStick implements IDriverJoystick
 {
 
@@ -25,8 +31,8 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     @Override
     public void init()
     {
-        mLogger.addHeader("RightDriveJoystickSpeed");
         mLogger.addHeader("LeftDriveJoystickSpeed");
+        mLogger.addHeader("RightDriveJoystickSpeed");
     }
 
     @Override
@@ -39,7 +45,7 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     @Override
     public void control()
     {
-       // Nothing
+        // Nothing
     }
 
     @Override
