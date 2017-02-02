@@ -1,4 +1,4 @@
-package com.snobot.vision;
+package com.snobot.vision_app.app2017.java_algorithm;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -7,6 +7,8 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import com.snobot.vision.HslThreshold;
+
 /**
 * GripPipeline class.
 *
@@ -14,7 +16,7 @@ import org.opencv.imgproc.Imgproc;
 *
 * @author GRIP
 */
-public class RopeGripPipeline
+public class GripRopeAlgorithm
 {
 
 	//Outputs

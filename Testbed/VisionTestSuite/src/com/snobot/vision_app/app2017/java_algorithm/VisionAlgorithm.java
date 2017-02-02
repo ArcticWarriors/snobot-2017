@@ -1,4 +1,4 @@
-package com.snobot.vision;
+package com.snobot.vision_app.app2017.java_algorithm;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -12,6 +12,9 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+
+import com.snobot.vision.HslThreshold;
+import com.snobot.vision.IVisionAlgorithm;
 
 public class VisionAlgorithm implements IVisionAlgorithm
 {
@@ -54,7 +57,7 @@ public class VisionAlgorithm implements IVisionAlgorithm
     }
     
     private Scalar contourColor = new Scalar(255, 0, 0);
-    private PegGripPipeline mGripAlgorithm = new PegGripPipeline();
+    private GripPegAlgorithm mGripAlgorithm = new GripPegAlgorithm();
     private double coord_plane_distance_of_robot_from_target;
     public void processImage(Mat originalImage)
     {
