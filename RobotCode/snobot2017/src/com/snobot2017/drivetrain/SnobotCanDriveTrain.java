@@ -8,7 +8,8 @@ import com.snobot2017.joystick.IDriverJoystick;
 
 /**
  * Drivetrain using CAN controllers
- * @author jbnol
+ * @author Jeff
+ * 
  *
  */
 public class SnobotCanDriveTrain extends ASnobotDrivetrain<CANTalon>
@@ -24,6 +25,12 @@ public class SnobotCanDriveTrain extends ASnobotDrivetrain<CANTalon>
     {
         super(aLeftMotorA, aLeftMotorB, aRightMotorA, aRightMotorB, aDriverJoystick, aLogger, aAutoLogger);
     }
+    
+    public void updateAutoLog()
+    {
+        mAutoLogger.updateLogger(mLeftMotorSpeed);
+        mAutoLogger.updateLogger(mRightMotorSpeed);
+    }
 
     @Override
     public void update()
@@ -38,5 +45,4 @@ public class SnobotCanDriveTrain extends ASnobotDrivetrain<CANTalon>
         mRightMotor.setEncPosition(0);
         mLeftMotor.setEncPosition(0);
     }
-
 }

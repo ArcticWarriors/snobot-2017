@@ -7,6 +7,7 @@ import java.util.logging.LogManager;
 
 import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
+import com.snobot.lib.ISubsystem;
 import com.snobot.lib.LogFormatter;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
@@ -144,14 +145,17 @@ public class Snobot2017 extends ASnobot
         mAutoLogger.endHeader();
     }
     
-    @Override
-    public void updateLog()
+
+    public void updateAutoLog()
     {
         String logDate = mAutoLogDateFormat.format(new Date());
         if (mAutoLogger.logNow())
         {
             mAutoLogger.startLogEntry(logDate);
-            super.updateLog();
+            for (ISubsystem iSubsystem : mSubsystems)
+            {
+                iSubsystem.updateLog();
+            }
             mAutoLogger.endLogger();
         }
 
