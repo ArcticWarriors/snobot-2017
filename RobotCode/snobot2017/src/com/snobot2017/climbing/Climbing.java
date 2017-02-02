@@ -86,8 +86,7 @@ public class Climbing implements IClimbing
     @Override
     public void updateLog()
     {
-        // TODO - Noll.  SHould probably log something
-        mLogger.updateLogger(0);
+        mLogger.updateLogger(mMotorSpeed);
     }
 
     @Override
