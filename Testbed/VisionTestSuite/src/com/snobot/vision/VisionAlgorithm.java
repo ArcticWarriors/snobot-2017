@@ -55,7 +55,6 @@ public class VisionAlgorithm implements IVisionAlgorithm
     
     private Scalar contourColor = new Scalar(255, 0, 0);
     private PegGripPipeline mGripAlgorithm = new PegGripPipeline();
-    private double coord_plane_distance_of_robot_from_target;
     public void processImage(Mat originalImage)
     {
         mGripAlgorithm.process(originalImage);
@@ -64,51 +63,42 @@ public class VisionAlgorithm implements IVisionAlgorithm
         originalImage.copyTo(outputImage);
         Core.polylines(outputImage, mGripAlgorithm.filterContoursOutput(), true, contourColor);
         
-        List<Double> distance_heights = new ArrayList<>();
-        List<Double> distance_widths = new ArrayList<>();
-        List<Double> distance_between_centroid_and_image_center = new ArrayList<>();
+        List<Double> distance_vertical = new ArrayList<>();
+        List<Double> distance_horizontal = new ArrayList<>();
+        List<Integer> centroid_of_bounding_box_X = new ArrayList<>();
         double pixel_height = originalImage.size().height;
         double height_ANGLE = 49.48/2;
         double pixel_width = originalImage.size().width;
         double width_ANGLE = 62.69/2;
-        double height_of_the_target_point_from_camera = 0; //TODO Based on the placement of camera on the robot
+        double centroid_of_image_X = pixel_width/2;
+        
+        //Based on receiving 2 contours only.
         for(MatOfPoint contour : mGripAlgorithm.filterContoursOutput())
         {
-            //TODO Use rotated rectangle for more accuracy?
             Rect trial = Imgproc.boundingRect(contour);
             
-            //Calculate distance between the centroid of the bounding box and the center of the image
-            double centroid_of_bounding_box_X = trial.x + (trial.width/2);
-            double centroid_of_image_X = pixel_width/2;
-            
-            if(centroid_of_image_X>centroid_of_bounding_box_X)
-            {
-                distance_between_centroid_and_image_center.add(centroid_of_image_X-centroid_of_bounding_box_X);
-            }
-            else 
-            {
-                distance_between_centroid_and_image_center.add(centroid_of_bounding_box_X-centroid_of_image_X);
-            }
-            //TODO Calculate angle based on distance between centroid and the distance from the robot to the thing.
+            //Get the X-Value of the contours.
+            centroid_of_bounding_box_X.add(trial.x + (trial.width/2));
             
             //Calculate distance from the camera to the target based on height and width
-            double distance_temporary = (5*pixel_height)/(2*trial.height*Math.tan(Math.toRadians(height_ANGLE)));
-            distance_heights.add(distance_temporary);
-            
+            double distance_temporary;
+            distance_temporary = (5*pixel_height)/(2*trial.height*Math.tan(Math.toRadians(height_ANGLE)));
+            distance_vertical.add(distance_temporary);
             distance_temporary = (2*pixel_width)/(2*trial.width*Math.tan(Math.toRadians(width_ANGLE)));
-            distance_widths.add(distance_temporary);
+            distance_horizontal.add(distance_temporary);
         }
         
-        System.out.println(distance_between_centroid_and_image_center);
+        //Angle to the peg
+        double peg_X = (centroid_of_bounding_box_X.get(0) + centroid_of_bounding_box_X.get(1))/2;
+        double peg_to_center_of_image_pixels = centroid_of_image_X - peg_X;
+        double angle_to_the_peg = -Math.toDegrees(Math.atan((peg_to_center_of_image_pixels/centroid_of_image_X)*Math.tan(Math.toRadians(width_ANGLE))));
         
-        double distance_from_camera_to_target;
+        System.out.println("Contour 0" + "\n\tAngle Peg\t\t: " + angle_to_the_peg + "\n\tDistance from Horz.\t: " + distance_horizontal.get(0) + "\n\tDistance from Vert.\t: " + distance_vertical.get(0));
+        System.out.println("Contour 1" + "\n\tAngle Peg\t\t: " + angle_to_the_peg + "\n\tDistance from Horz.\t: " + distance_horizontal.get(1) + "\n\tDistance from Vert.\t: " + distance_vertical.get(1));
         
-        //TODO use the best contour based on aspect ratio, or rightmost.
-        
-        //Average distance from the camera to the target
-        //TODO Use some other way becasue this may not be accurate
-        distance_from_camera_to_target = ((distance_heights.get(1)+distance_widths.get(1))/2);
-        coord_plane_distance_of_robot_from_target = Math.sqrt(Math.pow(distance_from_camera_to_target, 2)-Math.pow(height_of_the_target_point_from_camera, 2));
+        //Average distance from the camera to the target (right target width/height average distance)
+        double distance_from_camera_to_target = (distance_vertical.get(1) + distance_horizontal.get(1))/2;
+//        System.out.println("Distance: " + distance_from_camera_to_target);
         
         for(ProcessedImageListener listener : mUpdateListeners)
         {
