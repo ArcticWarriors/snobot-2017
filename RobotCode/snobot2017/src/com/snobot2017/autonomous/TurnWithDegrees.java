@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Turns N degrees
  * 
- * @author jbnol
+ * @author Jeff
  *
  */
 public class TurnWithDegrees extends Command
@@ -21,6 +21,8 @@ public class TurnWithDegrees extends Command
     private double mTurnMeasure;
     private boolean mDirection;
     private boolean mFinished;
+
+    private InDeadbandHelper mInDeadbandHelper = new InDeadbandHelper(10);
 
     /**
      * Constructor
@@ -50,14 +52,12 @@ public class TurnWithDegrees extends Command
         }
         if (mTurnMeasure <= 180)
         {
-            mDriveTrain.setLeftRightSpeed(-mSpeed, -mSpeed);
+            mDriveTrain.setLeftRightSpeed(mSpeed, -mSpeed);
         }
         else
         {
-            mDriveTrain.setLeftRightSpeed(mSpeed, mSpeed);
+            mDriveTrain.setLeftRightSpeed(-mSpeed, mSpeed);
         }
-
-        InDeadbandHelper mInDeadbandHelper = new InDeadbandHelper(10);
 
         if (mInDeadbandHelper.isFinished(Math.abs(mTurnAngle - mPositioner.getOrientationDegrees()) < 5))
         {
