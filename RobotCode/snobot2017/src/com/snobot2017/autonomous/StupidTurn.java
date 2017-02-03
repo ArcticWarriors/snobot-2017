@@ -27,27 +27,17 @@ public class StupidTurn extends TimedCommand
      *            The time to turn, in seconds
      * @param aDirection
      */
-    public StupidTurn(double aSpeed, IDriveTrain aDriveTrain, double aTimeout, boolean aDirection)
+    public StupidTurn(double aSpeed, IDriveTrain aDriveTrain, double aTimeout)
     {
         super(aTimeout);
-
-        // TODO: andrew - remove direction
         mSpeed = aSpeed;
         mDriveTrain = aDriveTrain;
-        mDirection = aDirection;
     }
 
     @Override
     public void execute()
     {
-        if (mDirection == true)
-        {
-            mDriveTrain.setLeftRightSpeed(mSpeed, -mSpeed);
-        }
-        else
-        {
-            mDriveTrain.setLeftRightSpeed(-mSpeed, mSpeed);
-        }
+        mDriveTrain.setLeftRightSpeed(mSpeed, mSpeed);
     }
 
 }
