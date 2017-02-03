@@ -145,21 +145,20 @@ public class Snobot2017 extends ASnobot
         mAutoLogger.endHeader();
     }
 
-    
-
     public void updateAutoLog()
     {
-    String logDate = mAutoLogDateFormat.format(new Date());
-    if (mAutoLogger.logNow())
-    {
-        mAutoLogger.startLogEntry(logDate);
-        for (ISubsystem iSubsystem : mSubsystems)
+        String logDate = mAutoLogDateFormat.format(new Date());
+        if (mAutoLogger.logNow())
         {
-            iSubsystem.updateLog();
+            mAutoLogger.startLogEntry(logDate);
+            for (ISubsystem iSubsystem : mSubsystems)
+            {
+                iSubsystem.updateLog();
+            }
+            mAutoLogger.endLogger();
         }
-        mAutoLogger.endLogger();
     }
-    }
+    
 
     @Override
     protected CommandGroup createAutonomousCommand()

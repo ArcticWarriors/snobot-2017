@@ -8,14 +8,7 @@ import com.snobot2017.joystick.IDriverJoystick;
 
 /**
  * Drivetrain using CAN controllers
-<<<<<<< HEAD
  * @author Jeff
- * 
-=======
- * 
- * @author jbnol
->>>>>>> refs/heads/snobot2017
- *
  */
 public class SnobotCanDriveTrain extends ASnobotDrivetrain<CANTalon>
 {
