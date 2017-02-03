@@ -5,10 +5,10 @@ import java.util.logging.Level;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.spectrum3847.RIOdroid.RIOadb;
-import org.spectrum3847.RIOdroid.RIOdroid;
 
+import com.snobot.lib.adb.AdbBridge;
 import com.snobot.lib.external_connection.RobotConnectionServer;
+import com.snobot2017.Properties2017;
 import com.snobot2017.vision.messages.HeartbeatMessage;
 import com.snobot2017.vision.messages.IterateDisplayImageMessage;
 import com.snobot2017.vision.messages.SetCameraDirectionMessage;
@@ -31,24 +31,18 @@ public class VisionAdbServer extends RobotConnectionServer
         Front, Rear
     }
 
-    // private AdbBridge mAdb;
+    private AdbBridge mAdb;
     private TargetUpdateMessage mLatestTargetUpdate;
 
     public VisionAdbServer(int aAppBindPort, int aAppMjpegBindPort, int aAppForwardedMjpegBindPort)
     {
         super(aAppBindPort, sTIMEOUT_PERIOD);
 
-        RIOadb.init();
-        executeAdbCommand("adb reverse tcp:" + aAppBindPort + " tcp:" + aAppBindPort);
-        // RIOdroid.executeCommand("adb forward tcp:" +
-        // aAppForwardedMjpegBindPort + " tcp:" + aAppMjpegBindPort);
-        executeAdbCommand("adb forward tcp:" + aAppMjpegBindPort + " tcp:" + aAppForwardedMjpegBindPort);
-    }
-
-    private void executeAdbCommand(String aCommand)
-    {
-        System.out.println("Executing '" + aCommand + "'");
-        RIOdroid.executeCommand(aCommand);
+        mAdb = new AdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY);
+        mAdb.start();
+        mAdb.reversePortForward(aAppBindPort, aAppBindPort);
+        // mAdb.portForward(aAppBindPort, aAppBindPort);
+        mAdb.portForward(aAppForwardedMjpegBindPort, aAppMjpegBindPort);
     }
 
     @Override
@@ -105,10 +99,7 @@ public class VisionAdbServer extends RobotConnectionServer
 
     public void restartApp()
     {
-        sLOGGER.log(Level.INFO, "Restarting App");
-
-        executeAdbCommand("shell am force-stop " + sAPP_PACKAGE);
-        executeAdbCommand("shell am start -n \"" + sAPP_PACKAGE + "/" + sAPP_MAIN_ACTIVITY);
+        mAdb.restartApp();
     }
 
     protected void send(JSONObject aObject)
