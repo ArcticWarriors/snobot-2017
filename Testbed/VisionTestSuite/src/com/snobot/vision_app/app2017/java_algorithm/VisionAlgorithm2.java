@@ -14,7 +14,6 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import com.snobot.vision.HslThreshold;
@@ -126,11 +125,13 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
 
     private Mat scaleImage(Mat input)
     {
-        Size size = new Size(500, 500);// the dst image size,e.g.100x100
-        Mat dst = new Mat();
-        Imgproc.resize(input, dst, size);
+        // Size size = new Size(500, 500);// the dst image size,e.g.100x100
+        // Mat dst = new Mat();
+        // Imgproc.resize(input, dst, size);
+        //
+        // return dst;
 
-        return dst;
+        return input;
     }
 
     @Override
