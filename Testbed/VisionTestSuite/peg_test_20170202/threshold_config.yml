@@ -1,8 +1,8 @@
 thresholds:
   min: !!com.snobot.vision.HslThreshold
-    hue: 50
-    lum: 87
-    sat: 131
+    hue: 27
+    lum: 44
+    sat: 172
   max: !!com.snobot.vision.HslThreshold
     hue: 92
     lum: 255
