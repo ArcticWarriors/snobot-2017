@@ -17,7 +17,8 @@ public class JavaVisionAlgorithm
     public enum DisplayType
     {
         OriginalImage,
-        PostThreshold
+        PostThreshold,
+        PostContour
     }
 
     private GripPegAlgorithm mPegGripAlgorithm;
@@ -85,6 +86,12 @@ public class JavaVisionAlgorithm
                 Imgproc.cvtColor(mPegGripAlgorithm.hslThresholdOutput(), output, 9); //TODO magic number, should be CV_GRAY2RGBA but I can't find it
                 break;
             }
+//            case PostContour:
+//            {
+//                output = new Mat();
+//                Imgproc.cvtColor(mGrip.findContoursOutput().get(0), output, 9); //TODO magic number, should be CV_GRAY2RGBA but I can't find it
+//                break;
+//            }
             case OriginalImage:
             default: // Intentional fallthrough
             {

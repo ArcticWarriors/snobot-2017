@@ -1,4 +1,4 @@
-package com.snobot.vision;
+package com.snobot.vision_app.app2017.java_algorithm;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -16,7 +16,6 @@ import org.opencv.imgproc.Imgproc;
 import com.snobot.vision.HslThreshold;
 import com.snobot.vision.IVisionAlgorithm;
 import com.snobot.vision.IVisionAlgorithm.ProcessedImageListener;
-import com.snobot.vision_app.app2017.java_algorithm.GripPegAlgorithm;
 
 public class VisionAlgorithm implements IVisionAlgorithm
 {

@@ -1,4 +1,4 @@
-package com.snobot.vision;
+package com.snobot.vision_app.app2017.java_algorithm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,8 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import com.snobot.vision.HslThreshold;
+
 /**
 * GripPipeline class.
 *
@@ -21,7 +23,7 @@ import org.opencv.imgproc.Imgproc;
 *
 * @author GRIP
 */
-public class PegGripPipeline {
+public class GripPegAlgorithm {
 
 	//Outputs
 	private Mat hslThresholdOutput = new Mat();

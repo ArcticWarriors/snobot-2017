@@ -26,8 +26,8 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
 
     // Ready for take off
     private double mLiftOffSpeed;
-    
-    //App stuff
+
+    // App stuff
     private LatchedButton mSwitchAppViewLatcher;
     private LatchedButton mSwitchToFrontCameraLatcher;
     private LatchedButton mSwitchToRearCameraLatcher;
@@ -80,18 +80,18 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         // Climb
         mClimb = mJoystick.getRawButton(XboxButtonMap.RB_BUTTON);
         mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
-        
-        //App
+
+        // App
         mSwitchAppView = mSwitchAppViewLatcher.update(mJoystick.getRawButton(XboxButtonMap.A_BUTTON));
         mSwitchToFrontCamera = mSwitchToFrontCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.X_BUTTON));
         mSwitchToRearCamera = mSwitchToRearCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
         mRestartApp = mRestartAppLatcher.update(mJoystick.getRawButton(XboxButtonMap.B_BUTTON));
     }
-    
+
     @Override
     public void control()
     {
-       // Nothing
+        // Nothing
     }
 
     @Override
@@ -106,7 +106,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         SmartDashboard.putBoolean(SmartDashBoardNames.sCLIMBING_OPERATOR_JOYSTICK_SPEED, mClimb);
         SmartDashboard.putBoolean(SmartDashBoardNames.sCATCHING_OPERATOR_JOYSTICK_SPEED, mCatch);
         SmartDashboard.putNumber(SmartDashBoardNames.sWE_HAVE_LIFT_OFF, mLiftOffSpeed);
-     }
+    }
 
     @Override
     public void updateLog()

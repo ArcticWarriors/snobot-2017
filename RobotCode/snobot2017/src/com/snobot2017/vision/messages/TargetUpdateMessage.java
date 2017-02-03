@@ -60,7 +60,7 @@ public class TargetUpdateMessage
         }
 
     }
-    
+
     private JSONObject mJson;
     private List<TargetInfo> mTargets;
     private double mTimestamp;

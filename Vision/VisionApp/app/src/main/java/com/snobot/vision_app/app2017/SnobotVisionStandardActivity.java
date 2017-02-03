@@ -27,6 +27,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,26 +102,6 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         }
     };
-
-    //Attempt at using Volume Buttons to take pictures.
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        int action = event.getAction();
-        int keyCode = event.getKeyCode();
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                if (action == KeyEvent.ACTION_DOWN) {
-                    takePicture();
-                }
-                return true;
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                if (action == KeyEvent.ACTION_DOWN) {
-                    takePicture();
-                }
-                return true;
-            default:
-                return super.dispatchKeyEvent(event);
-        }
-    }
 
     protected void takePicture() {
 

@@ -13,7 +13,7 @@ import org.opencv.core.Core;
 
 import com.snobot.lib.vision.MjpegReceiver;
 import com.snobot.lib.vision.MjpegReceiver.ImageReceiver;
-import com.snobot.vision.VisionAlgorithm;
+import com.snobot.vision_app.app2017.java_algorithm.VisionAlgorithm;
 
 public class MjpegRecevierMain
 {
