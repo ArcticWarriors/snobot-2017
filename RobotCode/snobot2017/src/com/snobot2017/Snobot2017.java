@@ -7,6 +7,7 @@ import java.util.logging.LogManager;
 
 import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
+import com.snobot.lib.ISubsystem;
 import com.snobot.lib.LogFormatter;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
@@ -47,6 +48,9 @@ public class Snobot2017 extends ASnobot
 
     // GearBoss
     private IGearBoss mGearBoss;
+
+    // Vision
+    private VisionManager mVisionManager;
 
     // Logger
     private AutoLogger mAutoLogger;
@@ -123,6 +127,10 @@ public class Snobot2017 extends ASnobot
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
 
+        // Vision
+        mVisionManager = new VisionManager(operatorJoystick);
+        mSubsystems.add(mVisionManager);
+
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();
         mPositioner = new Positioner(gyro, mDriveTrain, mLogger);
@@ -144,18 +152,20 @@ public class Snobot2017 extends ASnobot
         mAutoLogger.endHeader();
     }
 
-    @Override
-    public void updateLog()
+    public void updateAutoLog()
     {
         String logDate = mAutoLogDateFormat.format(new Date());
         if (mAutoLogger.logNow())
         {
             mAutoLogger.startLogEntry(logDate);
-            super.updateLog();
+            for (ISubsystem iSubsystem : mSubsystems)
+            {
+                iSubsystem.updateLog();
+            }
             mAutoLogger.endLogger();
         }
-
     }
+    
 
     @Override
     protected CommandGroup createAutonomousCommand()
