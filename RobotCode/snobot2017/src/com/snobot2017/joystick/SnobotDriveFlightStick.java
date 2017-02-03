@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Implementation for the drive
- * 
+ * Implementation for the drive 
  * @author jbnol
  *
  */
@@ -45,7 +44,7 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     @Override
     public void control()
     {
-        // Nothing
+       // Nothing
     }
 
     @Override

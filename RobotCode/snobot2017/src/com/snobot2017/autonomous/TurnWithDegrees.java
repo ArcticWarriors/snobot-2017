@@ -22,10 +22,9 @@ public class TurnWithDegrees extends Command
     private boolean mFinished;
 
     /**
-     * Constructor
+     * Constructor 
      * 
-     * @param aSpeed
-     *            The speed to drive
+     * @param aSpeed The speed to drive
      * @param aTurnAngle
      * @param aDriveTrain
      * @param aPositioner
@@ -54,14 +53,14 @@ public class TurnWithDegrees extends Command
         {
             mDirection = true;
         }
-
-        // TODO andrew - remove unnecessary direction and add bufferonis
-
+        
+        // TODO  andrew - remove unnecessary direction and add bufferonis
+        
         if (mDirection == true)
         {
             mDriveTrain.setLeftRightSpeed(mSpeed, mSpeed);
             if (mTurnAngle >= mPositioner.getOrientationDegrees())
-
+                
             {
                 mDriveTrain.setLeftRightSpeed(0, 0);
                 mFinished = true;
@@ -76,9 +75,8 @@ public class TurnWithDegrees extends Command
                 mFinished = true;
             }
         }
-
-        // System.out.println("TurnWithDegrees " + mTurnAngle + " " +
-        // mPositioner.getOrientationDegrees() + " " + mTurnMeasure);
+        
+        //System.out.println("TurnWithDegrees " + mTurnAngle + " " + mPositioner.getOrientationDegrees() + " " + mTurnMeasure);
 
     }
 
@@ -93,5 +91,6 @@ public class TurnWithDegrees extends Command
     protected boolean isFinished()
     {
         return mFinished;
+        
     }
 }

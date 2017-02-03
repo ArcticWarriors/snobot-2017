@@ -17,26 +17,22 @@ public class StupidTurn extends TimedCommand
     private IDriveTrain mDriveTrain;
 
     /**
-     * Constructor
-     * 
-     * @param aSpeed
-     *            The speed to turn (positive for clockwise)
-     * @param aDriveTrain
-     *            The drivetrain to turn
-     * @param aTimeout
-     *            The time to turn, in seconds
-     * @param aDirection
+     * Constructor 
+     * @param aSpeed  The speed to turn (positive for clockwise)
+     * @param aDriveTrain The drivetrain to turn 
+     * @param aTimeout The time to turn, in seconds
+     * @param aDirection 
      */
     public StupidTurn(double aSpeed, IDriveTrain aDriveTrain, double aTimeout, boolean aDirection)
     {
         super(aTimeout);
-
+        
         // TODO: andrew - remove direction
         mSpeed = aSpeed;
         mDriveTrain = aDriveTrain;
         mDirection = aDirection;
     }
-
+    
     @Override
     public void execute()
     {

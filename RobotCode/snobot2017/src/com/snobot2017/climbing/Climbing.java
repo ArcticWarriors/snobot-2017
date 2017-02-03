@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Controls the climber
- * 
  * @author jbnol
  *
  */
@@ -87,7 +86,7 @@ public class Climbing implements IClimbing
     @Override
     public void updateLog()
     {
-        // TODO - Noll. SHould probably log something
+        // TODO - Noll.  SHould probably log something
         mLogger.updateLogger(0);
     }
 

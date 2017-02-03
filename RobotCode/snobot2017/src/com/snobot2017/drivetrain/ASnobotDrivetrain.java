@@ -10,8 +10,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Base class for drivetrains. Handles most of the interaction with drivetrain
- * 
+ * Base class for drivetrains.  Handles most of the interaction with drivetrain
  * @author PJ
  *
  * @param <SpeedControllerType>
@@ -46,7 +45,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
 
         mLeftMotor = aFrontLeftMotor;
         mRightMotor = aFrontRightMotor;
-
+        
         mDriverJoystick = aDriverJoystick;
         mLogger = aLogger;
 

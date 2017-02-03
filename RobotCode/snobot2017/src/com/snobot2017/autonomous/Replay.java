@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * reads a log file and makes the motor replay
- * 
  * @author Andrew
  *
  */
@@ -26,7 +25,6 @@ public class Replay extends Command
 
     /**
      * Constructor
-     * 
      * @param aDriveTrain
      * @throws IOException
      */
@@ -53,7 +51,6 @@ public class Replay extends Command
 
     /**
      * reads log file and sets motors in same timeframe
-     * 
      * @throws IOException
      */
     private void setMotors() throws IOException
