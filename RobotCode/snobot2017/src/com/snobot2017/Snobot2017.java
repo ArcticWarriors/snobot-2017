@@ -49,6 +49,9 @@ public class Snobot2017 extends ASnobot
     // GearBoss
     private IGearBoss mGearBoss;
 
+    // Vision
+    private VisionManager mVisionManager;
+
     // Logger
     private AutoLogger mAutoLogger;
     private DateFormat mAutoLogDateFormat;
@@ -123,6 +126,10 @@ public class Snobot2017 extends ASnobot
         Solenoid gearSolonoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
+
+        // Vision
+        mVisionManager = new VisionManager(operatorJoystick);
+        mSubsystems.add(mVisionManager);
 
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();
