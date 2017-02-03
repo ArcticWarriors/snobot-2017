@@ -1,9 +1,0 @@
-
-one_at_a_time: true
-threshold_config: rope_test/threshold_config.yml
-images: 
-    - ../../Vision/GRIP\rope_images\20170126_194739.jpg
-    - ../../Vision/GRIP\rope_images\20170126_194741.jpg
-    - ../../Vision/GRIP\rope_images\20170126_194742.jpg
-    - ../../Vision/GRIP\rope_images\20170126_194743.jpg
-    - ../../Vision/GRIP\rope_images\20170126_194744.jpg
