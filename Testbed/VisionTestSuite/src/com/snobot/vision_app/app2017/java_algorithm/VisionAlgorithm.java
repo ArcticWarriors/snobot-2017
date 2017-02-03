@@ -15,7 +15,6 @@ import org.opencv.imgproc.Imgproc;
 
 import com.snobot.vision.HslThreshold;
 import com.snobot.vision.IVisionAlgorithm;
-import com.snobot.vision.IVisionAlgorithm.ProcessedImageListener;
 
 public class VisionAlgorithm implements IVisionAlgorithm
 {

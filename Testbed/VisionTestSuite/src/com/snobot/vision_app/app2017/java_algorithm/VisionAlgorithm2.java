@@ -33,9 +33,12 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
     private static final Point sCENTER_LINE_END = new Point(sIMAGE_WIDTH / 2, sIMAGE_HEIGHT);
 
     private static final Scalar sCENTER_LINE_COLOR = new Scalar(0, 255, 0);
+    private static final Scalar sBLACK_COLOR = new Scalar(0, 0, 0);
+    
+    private static final DecimalFormat sDF = new DecimalFormat("0.0000");
 
     private static final List<Scalar> sCONTOUR_COLORS = Arrays.asList(new Scalar[] { 
-            new Scalar(0,   0,   0), 
+            new Scalar(0,   0,   255), 
             new Scalar(255, 0,   0), 
             new Scalar(0,   255, 255) 
     });
@@ -86,13 +89,10 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
 
         Core.line(displayImage, sCENTER_LINE_START, sCENTER_LINE_END, sCENTER_LINE_COLOR, 1);
 
-        DecimalFormat df = new DecimalFormat("0.0000");
 
         ArrayList<MatOfPoint> contours = mPipeline.filterContoursOutput();
         for (int i = 0; i < contours.size(); ++i)
         {
-            Imgproc.drawContours(displayImage, contours, i, sCONTOUR_COLORS.get(i % sCONTOUR_COLORS.size()), 3);
-
             MatOfPoint contour = contours.get(i);
             Rect rect = Imgproc.boundingRect(contour);
             double aspectRatio = rect.width * 1.0 / rect.height;
@@ -110,11 +110,23 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
             double percentOffCenter = distanceFromCenterPixel / sIMAGE_WIDTH * 100;
             double yawAngle = percentOffCenter * sHORIZONTAL_FOV_ANGLE;
 
+
             System.out.println("Contour " + i);
-            System.out.println("  Aspect Ratio         : " + df.format(aspectRatio));
-            System.out.println("  Angle                : " + df.format(yawAngle));
-            System.out.println("  Distance From Horz.  : Dist=" + df.format(distanceFromHorz));
-            System.out.println("  Distance From Vert.  : Dist=" + df.format(distanceFromVert));
+            System.out.println("  Aspect Ratio         : " + sDF.format(aspectRatio));
+            System.out.println("  Angle                : " + sDF.format(yawAngle));
+            System.out.println("  Distance From Horz.  : Dist=" + sDF.format(distanceFromHorz));
+            System.out.println("  Distance From Vert.  : Dist=" + sDF.format(distanceFromVert));
+
+            Scalar contourColor = sCONTOUR_COLORS.get(i % sCONTOUR_COLORS.size());
+            String textToDisplay = "Dist. " + sDF.format(distanceFromVert) + " Angle: " + sDF.format(yawAngle);
+
+            Imgproc.drawContours(displayImage, contours, i, contourColor, 3);
+            Core.putText(displayImage, textToDisplay, new Point(20, 20 * i + 50), Core.FONT_HERSHEY_COMPLEX, .6, contourColor);
+        }
+
+        if (contours.isEmpty())
+        {
+            Core.putText(displayImage, "No image detected", new Point(20, 50), Core.FONT_HERSHEY_COMPLEX, .6, sBLACK_COLOR);
         }
 
         for (ProcessedImageListener listener : mUpdateListeners)
