@@ -65,14 +65,14 @@ public class JavaVisionAlgorithm
     }
 
     private GripPegAlgorithm mPegGripAlgorithm;
-    private GripPegAlgorithm mRopeGripAlgorithm;
+    private GripRopeAlgorithm mRopeGripAlgorithm;
     private DisplayType mDisplayType;
     private int cameraDirection;
 
     public JavaVisionAlgorithm()
     {
         mPegGripAlgorithm = new GripPegAlgorithm();
-        mRopeGripAlgorithm = new GripPegAlgorithm();
+        mRopeGripAlgorithm = new GripRopeAlgorithm();
         mDisplayType = DisplayType.OriginalImage;
         cameraDirection = CameraBridgeViewBase.CAMERA_ID_FRONT;
     }
@@ -156,7 +156,7 @@ public class JavaVisionAlgorithm
             }
             case MarkedUpImage:
             {
-                displayImage = drawImageMarkup(aOriginal, mPegGripAlgorithm.filterContoursOutput(), targetInfos);
+                displayImage = getMarkedUpImage(aOriginal, mPegGripAlgorithm.filterContoursOutput(), targetInfos);
                 break;
             }
             case OriginalImage:
@@ -171,7 +171,7 @@ public class JavaVisionAlgorithm
         return displayImage;
     }
 
-    private Mat drawImageMarkup(Mat aOriginal, ArrayList<MatOfPoint> aContours, List<TapeLocation> targetInfos)
+    private Mat getMarkedUpImage(Mat aOriginal, ArrayList<MatOfPoint> aContours, List<TapeLocation> targetInfos)
     {
         Mat displayImage = new Mat();
         aOriginal.copyTo(displayImage);

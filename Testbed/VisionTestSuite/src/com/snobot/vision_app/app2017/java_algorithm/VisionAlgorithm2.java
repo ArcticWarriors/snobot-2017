@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.opencv.core.Core;
@@ -34,28 +33,55 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
 
     private static final Scalar sCENTER_LINE_COLOR = new Scalar(0, 255, 0);
     private static final Scalar sBLACK_COLOR = new Scalar(0, 0, 0);
-    
+
+    private static final Scalar[] sCONTOUR_COLORS = new Scalar[]{
+            new Scalar(0, 0, 255),
+            new Scalar(255, 0, 0),
+            new Scalar(0, 255, 255)
+    };
+
     private static final DecimalFormat sDF = new DecimalFormat("0.0000");
 
-    private static final List<Scalar> sCONTOUR_COLORS = Arrays.asList(new Scalar[] { 
-            new Scalar(0,   0,   255), 
-            new Scalar(255, 0,   0), 
-            new Scalar(0,   255, 255) 
-    });
+    public enum DisplayType
+    {
+        OriginalImage, PostThreshold, MarkedUpImage
+    }
+
+    public static class TapeLocation
+    {
+        private double mAngle;
+        private double mDistanceFromHoriz;
+        private double mDistanceFromVert;
+
+        public TapeLocation(double aAngle, double aDistanceFromHoriz, double aDistanceFromVert)
+        {
+            mAngle = aAngle;
+            mDistanceFromHoriz = aDistanceFromHoriz;
+            mDistanceFromVert = aDistanceFromVert;
+        }
+    }
 
     protected List<ProcessedImageListener> mUpdateListeners;
     protected BufferedImage mCurrentImage;
-    protected GripPegAlgorithm mPipeline;
+    protected GripPegAlgorithm mPegGripAlgorithm;
+    protected GripPegAlgorithm mRopeGripAlgorithm;
+    protected DisplayType mDisplayType;
 
     public VisionAlgorithm2()
     {
         mUpdateListeners = new ArrayList<>();
-        mPipeline = new GripPegAlgorithm();
+        mPegGripAlgorithm = new GripPegAlgorithm();
+        mDisplayType = DisplayType.PostThreshold;
+    }
+
+    public void setDisplayType(DisplayType aDisplayType)
+    {
+        mDisplayType = aDisplayType;
     }
 
     public void setThresholds(HslThreshold aMin, HslThreshold aMax)
     {
-        mPipeline.setThreshold(aMin, aMax);
+        mPegGripAlgorithm.setThreshold(aMin, aMax);
 
         if (mCurrentImage != null)
         {
@@ -77,20 +103,23 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
         }
     }
 
-    public void processImage(Mat originalImage)
+    public void processImage(Mat aOriginalImage)
     {
-        mPipeline.process(originalImage);
+        Mat displayImage = processPegImage(aOriginalImage);
 
-//        Mat displayImage = new Mat();
-//        Imgproc.cvtColor(mPipeline.hslThresholdOutput(), displayImage, Imgproc.COLOR_GRAY2BGR);
+        for (ProcessedImageListener listener : mUpdateListeners)
+        {
+            listener.onCalculation(scaleImage(aOriginalImage), scaleImage(displayImage));
+        }
+    }
 
-        Mat displayImage = new Mat();
-        originalImage.copyTo(displayImage);
+    protected Mat processPegImage(Mat aOriginalImage)
+    {
+        mPegGripAlgorithm.process(aOriginalImage);
 
-        Core.line(displayImage, sCENTER_LINE_START, sCENTER_LINE_END, sCENTER_LINE_COLOR, 1);
+        ArrayList<MatOfPoint> contours = mPegGripAlgorithm.filterContoursOutput();
+        List<TapeLocation> targetInfos = new ArrayList<>(contours.size());
 
-
-        ArrayList<MatOfPoint> contours = mPipeline.filterContoursOutput();
         for (int i = 0; i < contours.size(); ++i)
         {
             MatOfPoint contour = contours.get(i);
@@ -117,22 +146,58 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
             System.out.println("  Distance From Horz.  : Dist=" + sDF.format(distanceFromHorz));
             System.out.println("  Distance From Vert.  : Dist=" + sDF.format(distanceFromVert));
 
-            Scalar contourColor = sCONTOUR_COLORS.get(i % sCONTOUR_COLORS.size());
-            String textToDisplay = "Dist. " + sDF.format(distanceFromVert) + " Angle: " + sDF.format(yawAngle);
+            targetInfos.add(new TapeLocation(yawAngle, distanceFromHorz, distanceFromVert));
+        }
 
-            Imgproc.drawContours(displayImage, contours, i, contourColor, 3);
+        Mat displayImage;
+
+        switch (mDisplayType)
+        {
+            case PostThreshold:
+            {
+                displayImage = new Mat();
+                Imgproc.cvtColor(mPegGripAlgorithm.hslThresholdOutput(), displayImage, Imgproc.COLOR_GRAY2RGB);
+                break;
+            }
+            case MarkedUpImage:
+            {
+                displayImage = getMarkedUpImage(aOriginalImage, mPegGripAlgorithm.filterContoursOutput(), targetInfos);
+                break;
+            }
+            case OriginalImage:
+            default: // Intentional fallthrough
+            {
+                displayImage = aOriginalImage;
+                break;
+            }
+        }
+        
+        return displayImage;
+    }
+
+    private Mat getMarkedUpImage(Mat aOriginal, ArrayList<MatOfPoint> aContours, List<TapeLocation> targetInfos)
+    {
+        Mat displayImage = new Mat();
+        aOriginal.copyTo(displayImage);
+
+        Core.line(displayImage, sCENTER_LINE_START, sCENTER_LINE_END, sCENTER_LINE_COLOR, 1);
+
+        for (int i = 0; i < aContours.size(); ++i)
+        {
+            TapeLocation targetInfo = targetInfos.get(i);
+            String textToDisplay = "Dist. " + sDF.format(targetInfo.mDistanceFromVert) + " Angle: " + sDF.format(targetInfo.mAngle);
+
+            Scalar contourColor = sCONTOUR_COLORS[i % sCONTOUR_COLORS.length];
+            Imgproc.drawContours(displayImage, aContours, i, contourColor, 3);
             Core.putText(displayImage, textToDisplay, new Point(20, 20 * i + 50), Core.FONT_HERSHEY_COMPLEX, .6, contourColor);
         }
 
-        if (contours.isEmpty())
+        if (aContours.isEmpty())
         {
             Core.putText(displayImage, "No image detected", new Point(20, 50), Core.FONT_HERSHEY_COMPLEX, .6, sBLACK_COLOR);
         }
 
-        for (ProcessedImageListener listener : mUpdateListeners)
-        {
-            listener.onCalculation(scaleImage(originalImage), scaleImage(displayImage));
-        }
+        return displayImage;
     }
 
     private Mat scaleImage(Mat input)
