@@ -143,9 +143,14 @@ public class Snobot2017 extends ASnobot
         super.init();
         mAutoLogger.endHeader();
     }
+<<<<<<< HEAD
     
     @Override
     public void updateLog()
+=======
+
+    public void updateAutoLog()
+>>>>>>> refs/remotes/origin/LoggerTesting
     {
         String logDate = mAutoLogDateFormat.format(new Date());
         if (mAutoLogger.logNow())
@@ -154,8 +159,8 @@ public class Snobot2017 extends ASnobot
             super.updateLog();
             mAutoLogger.endLogger();
         }
-
     }
+    
 
     @Override
     protected CommandGroup createAutonomousCommand()
