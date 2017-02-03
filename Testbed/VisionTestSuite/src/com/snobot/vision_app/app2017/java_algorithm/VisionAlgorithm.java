@@ -5,7 +5,6 @@ import java.awt.image.DataBufferByte;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -64,7 +63,7 @@ public class VisionAlgorithm implements IVisionAlgorithm
 
         Mat outputImage = new Mat();
         originalImage.copyTo(outputImage);
-        Core.polylines(outputImage, mGripAlgorithm.filterContoursOutput(), true, contourColor);
+        Imgproc.polylines(outputImage, mGripAlgorithm.filterContoursOutput(), true, contourColor);
         
         List<Double> distance_vertical = new ArrayList<>();
         List<Double> distance_horizontal = new ArrayList<>();

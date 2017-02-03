@@ -22,8 +22,8 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
 {
     private static final double sIMAGE_WIDTH = 640;
     private static final double sIMAGE_HEIGHT = 480;
-    private static final double sHORIZONTAL_FOV_ANGLE = Math.toRadians(31.5);
-    private static final double sVERTICAL_FOV_ANGLE = Math.toRadians(25.5);
+    private static final double sHORIZONTAL_FOV_ANGLE = Math.toRadians(62.69 / 2);
+    private static final double sVERTICAL_FOV_ANGLE = Math.toRadians(49.48 / 2);
 
     private static final double sTARGET_WIDTH = 2;
     private static final double sTARGET_HEIGHT = 5;
@@ -71,7 +71,7 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
     {
         mUpdateListeners = new ArrayList<>();
         mPegGripAlgorithm = new GripPegAlgorithm();
-        mDisplayType = DisplayType.PostThreshold;
+        mDisplayType = DisplayType.MarkedUpImage;
     }
 
     public void setDisplayType(DisplayType aDisplayType)
@@ -180,7 +180,7 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
         Mat displayImage = new Mat();
         aOriginal.copyTo(displayImage);
 
-        Core.line(displayImage, sCENTER_LINE_START, sCENTER_LINE_END, sCENTER_LINE_COLOR, 1);
+        Imgproc.line(displayImage, sCENTER_LINE_START, sCENTER_LINE_END, sCENTER_LINE_COLOR, 1);
 
         for (int i = 0; i < aContours.size(); ++i)
         {
@@ -189,12 +189,12 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
 
             Scalar contourColor = sCONTOUR_COLORS[i % sCONTOUR_COLORS.length];
             Imgproc.drawContours(displayImage, aContours, i, contourColor, 3);
-            Core.putText(displayImage, textToDisplay, new Point(20, 20 * i + 50), Core.FONT_HERSHEY_COMPLEX, .6, contourColor);
+            Imgproc.putText(displayImage, textToDisplay, new Point(20, 20 * i + 50), Core.FONT_HERSHEY_COMPLEX, .6, contourColor);
         }
 
         if (aContours.isEmpty())
         {
-            Core.putText(displayImage, "No image detected", new Point(20, 50), Core.FONT_HERSHEY_COMPLEX, .6, sBLACK_COLOR);
+            Imgproc.putText(displayImage, "No image detected", new Point(20, 50), Core.FONT_HERSHEY_COMPLEX, .6, sBLACK_COLOR);
         }
 
         return displayImage;
