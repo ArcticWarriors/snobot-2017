@@ -63,10 +63,10 @@ public class GenerateSnobotPaths
         }
     }
 
-    private static void getTestPath(String directory, double kWheelbaseWidth)
+    private static void getRedRightToHopperOne(String directory, double kWheelbaseWidth)
     {
         TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-        final String path_name = "Test";
+        final String path_name = "RedRightToHopperOne";
 
         config.dt = .02;
         config.max_acc = 120;
@@ -74,15 +74,88 @@ public class GenerateSnobotPaths
         config.max_vel = 50;
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(75, -324, 0));
-        p.addWaypoint(new Waypoint(75, -270, 0));
-        p.addWaypoint(new Waypoint(162, -200, 89));
-        // p.addWaypoint(new Waypoint(-260, 50, 45));
-        // p.addWaypoint(new Waypoint(-260, 0, 0));
+        p.addWaypoint(new Waypoint(42.9, -356.97, 0));
+        p.addWaypoint(new Waypoint(102.23, -262.26, 45));
+        p.addWaypoint(new Waypoint(163.13, -200.7, 45));
 
         generate(config, p, directory, path_name, kWheelbaseWidth);
     }
+    
+    private static void getRedRightToHopperTwo(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedRightToHopperTwo";
 
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(42.9, -356.97, 0));
+        p.addWaypoint(new Waypoint(105.3, -205.99, 0));
+        p.addWaypoint(new Waypoint(160.23, -10, 45)); 
+        p.addWaypoint(new Waypoint(163.13, 0, 45));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getRedMiddleToHopperOne(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedMiddleToHoppeOne";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, -356.97, 0));
+        p.addWaypoint(new Waypoint(102.23, -262.26, 45));
+        p.addWaypoint(new Waypoint(163.13, -200.7, 45));
+        
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getRedMiddleToHopperTwo(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedMiddleToHopperTwo";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, -356.97, 0));
+        p.addWaypoint(new Waypoint(105.3, -205.99, 0));
+        p.addWaypoint(new Waypoint(160.23, -10, 45)); 
+        p.addWaypoint(new Waypoint(163.13, 0, 45));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getRedMiddleToHopperFive(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedMiddleToHopperFive";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, -356.97, 0));
+        p.addWaypoint(new Waypoint(-112.12, -185.87, 0));
+        p.addWaypoint(new Waypoint(-162.23, -119.16, -45)); 
+        
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
     public static void main(String[] args)
     {
         String directory = "../snobot2017/resources/traj/";
@@ -96,6 +169,10 @@ public class GenerateSnobotPaths
 
         final double kWheelbaseWidth = 25.5 / 12;
 
-        getTestPath(directory, kWheelbaseWidth);
+        getRedRightToHopperOne(directory, kWheelbaseWidth);
+        getRedRightToHopperTwo(directory, kWheelbaseWidth);
+        getRedMiddleToHopperOne(directory, kWheelbaseWidth);
+        getRedMiddleToHopperTwo(directory, kWheelbaseWidth);
+        getRedMiddleToHopperFive(directory, kWheelbaseWidth);
     }
 }
