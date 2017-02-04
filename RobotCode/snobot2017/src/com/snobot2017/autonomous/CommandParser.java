@@ -10,11 +10,11 @@ import com.snobot.lib.motion_profile.PathGenerator;
 import com.snobot.lib.motion_profile.PathSetpoint;
 import com.snobot.lib.motion_profile.StaticSetpointIterator;
 import com.snobot2017.Properties2017;
-import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
 import com.snobot2017.autonomous.path.DriveStraightPath;
 import com.snobot2017.autonomous.path.DriveTurnPath;
+import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.io.TextFileDeserializer;
 
@@ -110,12 +110,11 @@ public class CommandParser extends ACommandParser
                 newCommand = createTurnPathCommand(args);
                 break;
             }
-            // TODO implement
-//            case Properties2017.sDRIVE_TRAJECTORY:
-//            {
-//                newCommand = createTrajectoryCommand(args.get(1));
-//                break;
-//            }
+            case AutonomousCommandNames.sDRIVE_TRAJECTORY:
+            {
+                newCommand = createTrajectoryCommand(args.get(1));
+                break;
+            }
             case AutonomousCommandNames.sAUTON_COPY:
             {
                 newCommand = parseAutonCopyCommand();
@@ -188,8 +187,7 @@ public class CommandParser extends ACommandParser
         }
         else
         {
-            // TODO implement
-//            output = new TrajectoryPathCommand(mSnobot.getDriveTrain(), mSnobot.getPositioner(), p);
+            output = new TrajectoryPathCommand(mSnobot.getDriveTrain(), mSnobot.getPositioner(), p);
         }
 
         return output;
