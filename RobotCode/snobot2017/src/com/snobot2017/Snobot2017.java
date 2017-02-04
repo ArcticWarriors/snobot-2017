@@ -85,10 +85,10 @@ public class Snobot2017 extends ASnobot
         boolean useCan = false;
         if (useCan)
         {
-            CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
-            CANTalon driveLeftMotorB = new CANTalon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
-            CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
-            CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
+            CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
+            CANTalon driveLeftMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_B_PORT);
+            CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
+            CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
 
             mDriveTrain = new SnobotCanDriveTrain(
                     driveLeftMotorA, 
