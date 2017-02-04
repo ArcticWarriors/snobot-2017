@@ -28,6 +28,8 @@ public interface IDriveTrain extends ISubsystem
      */
     void setLeftRightSpeed(double aLeftSpeed, double aRightSpeed);
 
+    /**
+     * Sets the encoders to zero
+     */
     void resetEncoders();
-
 }

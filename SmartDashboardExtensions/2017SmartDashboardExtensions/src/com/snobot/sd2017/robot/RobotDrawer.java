@@ -1,6 +1,7 @@
 package com.snobot.sd2017.robot;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
@@ -14,7 +15,7 @@ import com.snobot.sd.util.Util;
 
 public class RobotDrawer extends JPanel
 {
-    // Chassis dimensions (CHANGE AT SOME POINT)
+    // Chassis dimensions (CHANGE AT SOME POINT) in inches
     private static final double sROBOT_WIDTH = 75;
     private static final double sROBOT_HEIGHT = 12;
     private static final double sSPOOL_RADIUS = 12;
@@ -23,7 +24,7 @@ public class RobotDrawer extends JPanel
     private static final double sGEAR_BOSS_WIDTH = 10;
     private static final double sGEAR_BOSS_HEIGHT = 15;
 
-    // Drawing Locations
+    // Drawing Locations in pixels
     private static final double sCHASSIS_X_START = 10;
     private static final double sCHASSIS_Y_START = 65;
     private static final double sSPOOL_X_START = 40;
@@ -51,16 +52,10 @@ public class RobotDrawer extends JPanel
     private double mSpoolSpeed;
     private boolean mGearBossPos;
 
-    // Comment out for real code
-    // public static void main(String[] args)
-    // {
-    // new RobotDrawer();
-    // }
-
     public RobotDrawer()
     {
         updateSize();
-        // setPreferredSize(new Dimension(600, 600));
+        setPreferredSize(new Dimension(600, 600));
         setVisible(true);
         setSize(400, 300);
         addComponentListener(new ComponentAdapter()
@@ -114,12 +109,14 @@ public class RobotDrawer extends JPanel
     private void drawGearBoss(Graphics2D g2d)
     {
         double mGear_Boss_Y_Start = sGEAR_BOSS_Y_START;
-        if (is_Gear_Boss_Up())
+        if (isGearBossUp())
         {
+            // in pixels
             mGear_Boss_Y_Start = 50;
         }
         else
         {
+            // in pixels
             mGear_Boss_Y_Start = 62;
         }
         Rectangle2D gearBoss = new Rectangle2D.Double(sGEAR_BOSS_X_START * mScaleFactor, mGear_Boss_Y_Start * mScaleFactor,
@@ -159,12 +156,12 @@ public class RobotDrawer extends JPanel
         return mSpoolSpeed;
     }
 
-    public void setSpoolMotorSpeed(double mRopeMotorSpeed)
+    public void setSpoolMotorSpeed(double aRopeMotorSpeed)
     {
-        this.mSpoolSpeed = mRopeMotorSpeed;
+        this.mSpoolSpeed = aRopeMotorSpeed;
     }
 
-    public boolean is_Gear_Boss_Up()
+    public boolean isGearBossUp()
     {
         return mGearBossPos;
     }
