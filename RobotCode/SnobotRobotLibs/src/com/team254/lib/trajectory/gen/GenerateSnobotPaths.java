@@ -266,6 +266,126 @@ public class GenerateSnobotPaths
         generate(config, p, directory, path_name, kWheelbaseWidth);
     }
     
+    private static void getBlueLeftToHopperFour(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueLeftToHopperFour";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(-79.52, 334.81, 0));
+        p.addWaypoint(new Waypoint(-80.01, 240.82, 45));
+        p.addWaypoint(new Waypoint(-163.11, 117.58, 45)); 
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueMiddleScoreGear(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueMiddleScoreGear";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 334.81, 0));
+        p.addWaypoint(new Waypoint(0, 217, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueLeftScoreGear(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueLeftScoreGear";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(-79.52, 334.81, 0));
+        p.addWaypoint(new Waypoint(-34, 197.5, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueRightScoreGear(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueRightScoreGear";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(43.02, 334.81, 0));
+        p.addWaypoint(new Waypoint(34, 197.5, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getRedRightScoreGear(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedRightScoreGear";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(43.02, -334.81, 0));
+        p.addWaypoint(new Waypoint(34, -197.5, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getRedMiddleScoreGear(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedMiddleScoreGear";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, -334.81, 0));
+        p.addWaypoint(new Waypoint(0, -217, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getRedLeftScoreGear(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedLeftScoreGear";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(-79.53, -334.81, 0));
+        p.addWaypoint(new Waypoint(-34, -217, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
     public static void main(String[] args)
     {
         String directory = "../snobot2017/resources/traj/";
@@ -290,5 +410,12 @@ public class GenerateSnobotPaths
         getBlueMiddleToHopperThree(directory, kWheelbaseWidth);
         getBlueMiddleToHopperTwo(directory, kWheelbaseWidth);
         getBlueMiddleToHopperFour(directory, kWheelbaseWidth);
+        getBlueLeftToHopperFour(directory, kWheelbaseWidth);
+        getBlueMiddleScoreGear(directory, kWheelbaseWidth);
+        getBlueLeftScoreGear(directory, kWheelbaseWidth);
+        getBlueRightScoreGear(directory, kWheelbaseWidth);
+        getRedRightScoreGear(directory, kWheelbaseWidth);
+        getRedMiddleScoreGear(directory, kWheelbaseWidth);
+        getRedLeftScoreGear(directory, kWheelbaseWidth);
     }
 }
