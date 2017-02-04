@@ -33,7 +33,23 @@ public class Properties2017
 
     // Autonomous
     public static final StringProperty sAUTON_DIRECTORY;
+    public static final StringProperty sAUTON_PATH_DIRECTORY;
+ 
+    // Drive path
+    public static final DoubleProperty sDRIVE_PATH_KP = new DoubleProperty("DrivePathKP", 0.001);
+    public static final DoubleProperty sDRIVE_PATH_KD = new DoubleProperty("DrivePathKD", 0);
+    public static final DoubleProperty sDRIVE_PATH_KV = new DoubleProperty("DrivePathKVel", 0.0063);
+    public static final DoubleProperty sDRIVE_PATH_KA = new DoubleProperty("DrivePathKAccel", 0.002);
 
+    // Turn Path
+    public static final DoubleProperty sTURN_PATH_KP = new DoubleProperty("TurnPathKP", 0.005);
+    public static final DoubleProperty sTURN_PATH_KD = new DoubleProperty("TurnPathKD", 0);
+    public static final DoubleProperty sTURN_PATH_KV = new DoubleProperty("TurnPathKVel", 0.0053);
+    public static final DoubleProperty sTURN_PATH_KA = new DoubleProperty("TurnPathKAccel", 0);
+
+    // Trajectory Driving
+    public static final DoubleProperty sSPLINE_TURN_FACTOR = new DoubleProperty("SplineTurnFactor", 0.1);
+    
     static
     {
         String logPath;
@@ -80,5 +96,6 @@ public class Properties2017
         sAUTO_LOG_FILE_PATH = new StringProperty("AutoLogFilePath", autoLogPath);
 
         sAUTON_DIRECTORY = new StringProperty("AutonDir", resourcesDir + "autonomous/");
+        sAUTON_PATH_DIRECTORY = new StringProperty("AutonDirPaths", resourcesDir + "traj");
     }
 }

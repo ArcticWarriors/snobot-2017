@@ -69,9 +69,8 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         mLogger.addHeader("RightEncoderDistance");
         mLogger.addHeader("LeftMotorSpeed");
         mLogger.addHeader("RightMotorSpeed");
+        
 
-        mAutoLogger.addHeader("LeftMotorSpeed");
-        mAutoLogger.addHeader("RightMotorSpeed");
     }
 
     @Override
@@ -104,6 +103,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         mLogger.updateLogger(mRightMotorSpeed);
     }
 
+    
     @Override
     public double getRightDistance()
     {

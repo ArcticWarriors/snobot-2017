@@ -114,7 +114,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         mLogger.updateLogger(mLiftOffSpeed);
         mLogger.updateLogger(mClimb);
         mLogger.updateLogger(mCatch);
-        // mLogger.updateLogger(mGearBossPos);
+        mLogger.updateLogger(mGearBossPos.toString());
     }
 
     @Override
