@@ -12,5 +12,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/snobot2017"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SnobotRobotLibs"/>
 	<classpathentry kind="lib" path="/2017MockWpi/3rdParyLibraries/simple-json/json-simple-1.1.1.jar"/>
+	<classpathentry kind="var" path="ntcore"/>
+	<classpathentry kind="lib" path="/home/calabria/git/snobot-2017/Simulator/2017MockWpi/3rdParyLibraries/jinput/jinput-platform-2.0.5-natives-linux.jar"/>
+	<classpathentry kind="lib" path="/home/calabria/git/snobot-2017/Simulator/2017MockWpi/3rdParyLibraries/jinput/jinput.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
