@@ -156,6 +156,116 @@ public class GenerateSnobotPaths
         generate(config, p, directory, path_name, kWheelbaseWidth);
     }
     
+    private static void getRedLeftToHopperFive(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedLeftToHopperFive";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(-79.52, -324.81, 0));
+        p.addWaypoint(new Waypoint(-79.88, -356.97, 0));
+        p.addWaypoint(new Waypoint(-100.12, -185.87, -45));
+        p.addWaypoint(new Waypoint(-162.23, -119.16, -45)); 
+        
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueLeftToHopperThree(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueLeftToHopperThree";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(43.02, 334.81, 0));
+        p.addWaypoint(new Waypoint(102.25, 270.82, -45));
+        p.addWaypoint(new Waypoint(163.11, 203.79, -45)); 
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueLeftToHopperTwo(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueLeftToHopperTwo";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(43.02, 334.81, 0));
+        p.addWaypoint(new Waypoint(60.27, 270.82, -45));
+        p.addWaypoint(new Waypoint(163.11, 0, -45)); 
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueMiddleToHopperThree(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueMiddleToHopperThree";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 334.81, 0));
+        p.addWaypoint(new Waypoint(60.27, 270.82, -45));
+        p.addWaypoint(new Waypoint(163.11, 203.79, -45)); 
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueMiddleToHopperTwo(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueMiddleToHopperTwo";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 334.81, 0));
+        p.addWaypoint(new Waypoint(60.27, 270.82, -45));
+        p.addWaypoint(new Waypoint(163.11, 0, -45)); 
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueMiddleToHopperFour(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueMiddleToHopperFour";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 334.81, 0));
+        p.addWaypoint(new Waypoint(-80.01, 240.82, 45));
+        p.addWaypoint(new Waypoint(-163.11, 117.58, 45)); 
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
     public static void main(String[] args)
     {
         String directory = "../snobot2017/resources/traj/";
@@ -174,5 +284,11 @@ public class GenerateSnobotPaths
         getRedMiddleToHopperOne(directory, kWheelbaseWidth);
         getRedMiddleToHopperTwo(directory, kWheelbaseWidth);
         getRedMiddleToHopperFive(directory, kWheelbaseWidth);
+        getRedLeftToHopperFive(directory, kWheelbaseWidth);
+        getBlueLeftToHopperThree(directory, kWheelbaseWidth);
+        getBlueLeftToHopperTwo(directory, kWheelbaseWidth);
+        getBlueMiddleToHopperThree(directory, kWheelbaseWidth);
+        getBlueMiddleToHopperTwo(directory, kWheelbaseWidth);
+        getBlueMiddleToHopperFour(directory, kWheelbaseWidth);
     }
 }
