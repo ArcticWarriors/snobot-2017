@@ -38,16 +38,33 @@ public class VisionAdbServer extends RobotConnectionServer
     {
         super(aAppBindPort, sTIMEOUT_PERIOD);
 
-        RIOadb.init();
-        executeAdbCommand("adb reverse tcp:" + aAppBindPort + " tcp:" + aAppBindPort);
-        // RIOdroid.executeCommand("adb forward tcp:" +
-        // aAppForwardedMjpegBindPort + " tcp:" + aAppMjpegBindPort);
-        executeAdbCommand("adb forward tcp:" + aAppMjpegBindPort + " tcp:" + aAppForwardedMjpegBindPort);
+        try
+        {
+            RIOadb.init();
+        }
+        catch (Exception e)
+        {
+            System.out.println("AHHHH " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        try
+        {
+            executeCommand("adb reverse tcp:" + aAppBindPort + " tcp:" + aAppBindPort);
+            // RIOdroid.executeCommand("adb forward tcp:" +
+            // aAppForwardedMjpegBindPort + " tcp:" + aAppMjpegBindPort);
+            executeCommand("adb reverse tcp:" + aAppMjpegBindPort + " tcp:" + aAppForwardedMjpegBindPort);
+        }
+        catch (Exception e)
+        {
+            System.out.println("AHHHH " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    private void executeAdbCommand(String aCommand)
+    private void executeCommand(String aCommand)
     {
-        System.out.println("Executing '" + aCommand + "'");
+        System.out.println(aCommand);
         RIOdroid.executeCommand(aCommand);
     }
 
@@ -105,10 +122,12 @@ public class VisionAdbServer extends RobotConnectionServer
 
     public void restartApp()
     {
-        sLOGGER.log(Level.INFO, "Restarting App");
+        // mAdb.restartApp();
+    }
 
-        executeAdbCommand("shell am force-stop " + sAPP_PACKAGE);
-        executeAdbCommand("shell am start -n \"" + sAPP_PACKAGE + "/" + sAPP_MAIN_ACTIVITY);
+    public void restartAdb()
+    {
+        // mAdb.restartAdb();
     }
 
     protected void send(JSONObject aObject)
