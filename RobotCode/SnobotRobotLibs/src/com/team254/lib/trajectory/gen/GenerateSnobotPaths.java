@@ -11,8 +11,6 @@ import com.team254.lib.trajectory.io.TextFileSerializer;
 
 public class GenerateSnobotPaths
 {
-    private static double mYPosForDefenses = 140;
-
     public static String joinPath(String path1, String path2)
     {
         File file1 = new File(path1);
@@ -47,17 +45,13 @@ public class GenerateSnobotPaths
 
     private static void generate(TrajectoryGenerator.Config config, WaypointSequence p, String directory, String path_name, double kWheelbaseWidth)
     {
-        // WaypointSequence waypoints,
-        // TrajectoryGenerator.Config config, double wheelbase_width,
-        // String name
-
         Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
 
         // Outputs to the directory supplied as the first argument.
         TextFileSerializer js = new TextFileSerializer();
         String serialized = js.serialize(path);
         // System.out.print(serialized);
-        String fullpath = joinPath(directory, path_name + ".csv");
+        String fullpath = new File(joinPath(directory, path_name + ".csv")).getAbsolutePath();
         if (!writeFile(fullpath, serialized))
         {
             System.err.println(fullpath + " could not be written!!!!");
@@ -69,10 +63,10 @@ public class GenerateSnobotPaths
         }
     }
 
-    private static void genLowBarToLowGoal(String directory, double kWheelbaseWidth)
+    private static void getTestPath(String directory, double kWheelbaseWidth)
     {
         TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-        final String path_name = "LowBarToLowGoal";
+        final String path_name = "Test";
 
         config.dt = .02;
         config.max_acc = 120;
@@ -80,84 +74,18 @@ public class GenerateSnobotPaths
         config.max_vel = 50;
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(-135, 30, 0));
-        p.addWaypoint(new Waypoint(-135, 200, 0));
-        p.addWaypoint(new Waypoint(-50, 305, 45));
+        p.addWaypoint(new Waypoint(75, -324, 0));
+        p.addWaypoint(new Waypoint(75, -270, 0));
+        p.addWaypoint(new Waypoint(162, -200, 89));
+        // p.addWaypoint(new Waypoint(-260, 50, 45));
+        // p.addWaypoint(new Waypoint(-260, 0, 0));
 
         generate(config, p, directory, path_name, kWheelbaseWidth);
     }
 
-    private static void genPos2ToLowGoal(String Directory, double kWheelbaseWidth)
-    {
-        TrajectoryGenerator.Config dudeConfig = new TrajectoryGenerator.Config();
-        final String dudePathName = "Position2ToLowGoal";
-        dudeConfig.dt = .02;
-        dudeConfig.max_acc = 120;
-        dudeConfig.max_jerk = 480;
-        dudeConfig.max_vel = 50;
-
-        WaypointSequence dudeP = new WaypointSequence(10000);
-        dudeP.addWaypoint(new Waypoint(-82.875, mYPosForDefenses, 0));
-        dudeP.addWaypoint(new Waypoint(-82.875, mYPosForDefenses + 200, 0));
-        dudeP.addWaypoint(new Waypoint(-50, 305, 45));
-
-        generate(dudeConfig, dudeP, Directory, dudePathName, kWheelbaseWidth);
-    }
-
-    private static void genPos3ToLowGoal(String Directory, double kWheelbaseWidth)
-    {
-        TrajectoryGenerator.Config dudeConfig = new TrajectoryGenerator.Config();
-        final String dudePathName = "Position3ToLowGoal";
-        dudeConfig.dt = .02;
-        dudeConfig.max_acc = 120;
-        dudeConfig.max_jerk = 480;
-        dudeConfig.max_vel = 50;
-
-        WaypointSequence dudeP = new WaypointSequence(10000);
-        dudeP.addWaypoint(new Waypoint(-30, mYPosForDefenses, 0));
-        dudeP.addWaypoint(new Waypoint(-30, mYPosForDefenses + 170, 0));
-        dudeP.addWaypoint(new Waypoint(-50, 305, 45));
-
-        generate(dudeConfig, dudeP, Directory, dudePathName, kWheelbaseWidth);
-    }
-
-    private static void genPos4ToLowGoal(String Directory, double kWheelbaseWidth)
-    {
-        TrajectoryGenerator.Config dudeConfig = new TrajectoryGenerator.Config();
-        final String dudePathName = "Position4ToLowGoal";
-        dudeConfig.dt = .02;
-        dudeConfig.max_acc = 120;
-        dudeConfig.max_jerk = 480;
-        dudeConfig.max_vel = 50;
-
-        WaypointSequence dudeP = new WaypointSequence(10000);
-        dudeP.addWaypoint(new Waypoint(22.875, mYPosForDefenses, 0));
-        dudeP.addWaypoint(new Waypoint(22.875, mYPosForDefenses + 170, 0));
-        dudeP.addWaypoint(new Waypoint(50, 305, -45));
-
-        generate(dudeConfig, dudeP, Directory, dudePathName, kWheelbaseWidth);
-    }
-
-    private static void genPos5ToLowGoal(String Directory, double kWheelbaseWidth)
-    {
-        TrajectoryGenerator.Config dudeConfig = new TrajectoryGenerator.Config();
-        final String dudePathName = "Position5ToLowGoal";
-        dudeConfig.dt = .02;
-        dudeConfig.max_acc = 120;
-        dudeConfig.max_jerk = 480;
-        dudeConfig.max_vel = 50;
-
-        WaypointSequence dudeP = new WaypointSequence(10000);
-        dudeP.addWaypoint(new Waypoint(75.75, mYPosForDefenses, 0));
-        dudeP.addWaypoint(new Waypoint(75.75, mYPosForDefenses + 170, 0));
-        dudeP.addWaypoint(new Waypoint(50, 305, -45));
-
-        generate(dudeConfig, dudeP, Directory, dudePathName, kWheelbaseWidth);
-    }
-
     public static void main(String[] args)
     {
-        String directory = "../../RobotCode/snobot2016/resources/traj/";
+        String directory = "../snobot2017/resources/traj/";
         File f = new File(directory);
         System.out.println(f.getAbsolutePath());
 
@@ -168,10 +96,6 @@ public class GenerateSnobotPaths
 
         final double kWheelbaseWidth = 25.5 / 12;
 
-        genLowBarToLowGoal(directory, kWheelbaseWidth);
-        genPos2ToLowGoal(directory, kWheelbaseWidth);
-        genPos3ToLowGoal(directory, kWheelbaseWidth);
-        genPos4ToLowGoal(directory, kWheelbaseWidth);
-        genPos5ToLowGoal(directory, kWheelbaseWidth);
+        getTestPath(directory, kWheelbaseWidth);
     }
 }

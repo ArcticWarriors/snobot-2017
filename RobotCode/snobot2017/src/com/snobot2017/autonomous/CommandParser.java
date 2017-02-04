@@ -95,11 +95,6 @@ public class CommandParser extends ACommandParser
                 newCommand = parseTurnWithDegrees(args);
                 break;
             }
-            case AutonomousCommandNames.sGO_TO_XY:
-            {
-                newCommand = parseGoToXY(args);
-                break;
-            }
             case AutonomousCommandNames.sDRIVE_STRAIGHT_PATH:
             {
                 newCommand = createDrivePathCommand(args);
@@ -191,14 +186,6 @@ public class CommandParser extends ACommandParser
         }
 
         return output;
-    }
-
-    private Command parseGoToXY(List<String> args)
-    {
-        double xcoor = Double.parseDouble(args.get(1));
-        double ycoor = Double.parseDouble(args.get(2));
-        double speed = Double.parseDouble(args.get(3));
-        return new GoToXY(mSnobot.getDriveTrain(), mSnobot.getPositioner(), xcoor, ycoor, speed);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.snobot.sd2017.coordinategui.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,12 +12,15 @@ import com.snobot.coordinate_gui.model.Coordinate;
 import com.snobot.coordinate_gui.ui.renderProps.CoordinateLayerRenderProps;
 import com.snobot.coordinate_gui.ui.renderProps.RobotLayerRenderProps;
 import com.snobot.sd.util.AutoUpdateWidget;
+import com.snobot.sd2016.spline_plotter.IdealSplineSerializer;
 import com.snobot.sd2017.coordinategui.widget.RayLayer.Ray;
 import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.smartdashboard.properties.Property;
 import edu.wpi.first.smartdashboard.robot.Robot;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.tables.ITable;
+import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class CoordinateWidet2017 extends AutoUpdateWidget
 {
@@ -33,15 +37,23 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
     {
         super(aDebug, 20);
 
+        CoordinateLayerRenderProps trajectoryLayerRenderProps = new CoordinateLayerRenderProps();
         CoordinateLayerRenderProps coordinateLayerRenderProps = new CoordinateLayerRenderProps();
         RobotLayerRenderProps robotLayerRenderProps = new RobotLayerRenderProps();
 
-        mCoordinateGui = new CoordinateGui2017(coordinateLayerRenderProps, robotLayerRenderProps);
+        trajectoryLayerRenderProps.setFadeOverTime(false);
+        trajectoryLayerRenderProps.setPointSize(5);
+        trajectoryLayerRenderProps.setPointMemory(-1);
+        trajectoryLayerRenderProps.setPointColor(Color.red);
+
+        mCoordinateGui = new CoordinateGui2017(trajectoryLayerRenderProps, coordinateLayerRenderProps, robotLayerRenderProps);
 
         setLayout(new BorderLayout());
         add(mCoordinateGui.getComponent(), BorderLayout.CENTER);
 
         setSize(100, 100);
+
+        initializeTrajectoryListener();
     }
 
     @Override
@@ -55,6 +67,22 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
     public void propertyChanged(Property property)
     {
 
+    }
+
+    private void initializeTrajectoryListener()
+    {
+
+        ITable mTable = NetworkTable.getTable(SmartDashBoardNames.sSPLINE_NAMESPACE);
+        ITableListener idealSplineListener = new ITableListener()
+        {
+
+            @Override
+            public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
+            {
+                mCoordinateGui.setPath(IdealSplineSerializer.deserializePath(arg2.toString()));
+            }
+        };
+        mTable.addTableListener(SmartDashBoardNames.sSPLINE_IDEAL_POINTS, idealSplineListener, true);
     }
 
     @Override

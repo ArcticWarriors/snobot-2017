@@ -142,6 +142,8 @@ public class Snobot2017 extends ASnobot
                 Properties2017.sLOG_COUNT.getValue(),
                 Properties2017.sLOG_FILE_PATH.getValue());
         init();
+
+        mPositioner.setPosition(75, -324, 0);
     }
 
     @Override
