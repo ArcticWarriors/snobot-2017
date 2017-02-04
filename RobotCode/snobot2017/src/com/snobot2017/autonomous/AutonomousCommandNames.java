@@ -11,4 +11,7 @@ public class AutonomousCommandNames
     public static final String sTURN_WITH_DEGREES = "TurnWithDegrees";
     public static final String sGO_TO_XY = "GoToXY";
     public static final String sAUTON_COPY = "AutoCopy";
+    public static final String sDRIVE_STRAIGHT_PATH = "DriveStraightPath";
+    public static final String sDRIVE_TURN_PATH = "DriveTurnPath";
+    public static final String sDRIVE_TRAJECTORY = "DriveTrajectory";
 }

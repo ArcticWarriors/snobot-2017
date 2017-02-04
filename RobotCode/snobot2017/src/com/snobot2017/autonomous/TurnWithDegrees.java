@@ -1,5 +1,6 @@
 package com.snobot2017.autonomous;
 
+import com.snobot.lib.InDeadbandHelper;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.positioner.IPositioner;
 
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Turns N degrees
  * 
- * @author jbnol
+ * @author Jeff
  *
  */
 public class TurnWithDegrees extends Command
@@ -20,6 +21,8 @@ public class TurnWithDegrees extends Command
     private double mTurnMeasure;
     private boolean mDirection;
     private boolean mFinished;
+
+    private InDeadbandHelper mInDeadbandHelper = new InDeadbandHelper(10);
 
     /**
      * Constructor
@@ -39,7 +42,8 @@ public class TurnWithDegrees extends Command
         mFinished = false;
     }
 
-    private void Turn()
+    @Override
+    protected void execute()
     {
         mTurnMeasure = (mTurnAngle - mPositioner.getOrientationDegrees()) % 360;
         if ((mTurnMeasure) < 0)
@@ -48,45 +52,18 @@ public class TurnWithDegrees extends Command
         }
         if (mTurnMeasure <= 180)
         {
-            mDirection = false;
+            mDriveTrain.setLeftRightSpeed(mSpeed, -mSpeed);
         }
         else
         {
-            mDirection = true;
+            mDriveTrain.setLeftRightSpeed(-mSpeed, mSpeed);
         }
 
-        // TODO andrew - remove unnecessary direction and add bufferonis
-
-        if (mDirection == true)
+        if (mInDeadbandHelper.isFinished(Math.abs(mTurnAngle - mPositioner.getOrientationDegrees()) < 5))
         {
-            mDriveTrain.setLeftRightSpeed(mSpeed, mSpeed);
-            if (mTurnAngle >= mPositioner.getOrientationDegrees())
-
-            {
-                mDriveTrain.setLeftRightSpeed(0, 0);
-                mFinished = true;
-            }
+            mDriveTrain.setLeftRightSpeed(0, 0);
+            mFinished = true;
         }
-        else
-        {
-            mDriveTrain.setLeftRightSpeed(-mSpeed, -mSpeed);
-            if (mTurnAngle <= mPositioner.getOrientationDegrees())
-            {
-                mDriveTrain.setLeftRightSpeed(0, 0);
-                mFinished = true;
-            }
-        }
-
-        // System.out.println("TurnWithDegrees " + mTurnAngle + " " +
-        // mPositioner.getOrientationDegrees() + " " + mTurnMeasure);
-
-    }
-
-    @Override
-    protected void execute()
-    {
-        super.execute();
-        Turn();
     }
 
     @Override

@@ -71,13 +71,14 @@ public class GoToXY extends Command
         mCommandGroup.addSequential(mTurnWithDegrees);
         mCommandGroup.addSequential(mDriveStraightADistance);
         mCommandGroup.start();
+        System.out.println(mTurnDegrees);
 
     }
 
     @Override
     protected void execute()
     {
-
+        
     }
 
     /**
@@ -88,6 +89,8 @@ public class GoToXY extends Command
     {
         if (!mCommandGroup.isRunning())
         {
+            System.out.print(mCommandGroup.isRunning() + ", " + mTurnWithDegrees.isRunning() + ", " + mDriveStraightADistance.isRunning());
+            
             return true;
         }
         else

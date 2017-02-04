@@ -21,7 +21,8 @@ import com.snobot.vision_app.app2017.java_algorithm.VisionAlgorithm2;
 
 public class DesktopMain
 {
-    private static final String sDEFAULT_IMAGE_PATH = "first_test/image_config.yml";
+//    private static final String sDEFAULT_IMAGE_PATH = "peg_test_20170126/image_config.yml";
+    private static final String sDEFAULT_IMAGE_PATH = "peg_test_20170202/image_config.yml";
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws IOException
@@ -41,6 +42,7 @@ public class DesktopMain
             File[] filesList = new File(dir).listFiles();
             for (File file : filesList)
             {
+                System.out.println(file);
                 files.add(file.getAbsolutePath());
             }
         }

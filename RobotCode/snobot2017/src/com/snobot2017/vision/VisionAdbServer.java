@@ -8,6 +8,7 @@ import org.json.simple.parser.JSONParser;
 import org.spectrum3847.RIOdroid.RIOadb;
 import org.spectrum3847.RIOdroid.RIOdroid;
 
+import com.snobot.lib.adb.AdbBridge;
 import com.snobot.lib.external_connection.RobotConnectionServer;
 import com.snobot2017.vision.messages.HeartbeatMessage;
 import com.snobot2017.vision.messages.IterateDisplayImageMessage;
@@ -31,7 +32,7 @@ public class VisionAdbServer extends RobotConnectionServer
         Front, Rear
     }
 
-    // private AdbBridge mAdb;
+    private AdbBridge mAdb;
     private TargetUpdateMessage mLatestTargetUpdate;
 
     public VisionAdbServer(int aAppBindPort, int aAppMjpegBindPort, int aAppForwardedMjpegBindPort)
