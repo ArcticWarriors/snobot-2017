@@ -73,6 +73,7 @@ public class MjpegReceiver
 
     private BufferedImage parseImage(InputStream stream, ByteArrayOutputStream imageBuffer) throws IOException
     {
+        System.out.println("Buffer size : " + stream.available());
         imageBuffer.reset();
         for (int i = 0; i < START_BYTES.length;)
         {

@@ -24,8 +24,8 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public void init()
     {
-        mLogger.addHeader("LeftJoystickSpeed");
-        mLogger.addHeader("RightJoystickSpeed");
+        mLogger.addHeader("XbaxLeftJoystickSpeed");
+        mLogger.addHeader("XbaxRightJoystickSpeed");
     }
 
     @Override

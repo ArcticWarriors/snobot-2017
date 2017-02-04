@@ -13,13 +13,13 @@ import org.opencv.core.Core;
 
 import com.snobot.lib.vision.MjpegReceiver;
 import com.snobot.lib.vision.MjpegReceiver.ImageReceiver;
-import com.snobot.vision.VisionAlgorithm;
+import com.snobot.vision_app.app2017.java_algorithm.VisionAlgorithm2;
 
 public class MjpegRecevierMain
 {
     private MjpegReceiver reciever;
     private VisionTestPanel visionPanel;
-    private VisionAlgorithm visionAlgorithm;
+    private VisionAlgorithm2 visionAlgorithm;
 
     private MjpegReceiver.ImageReceiver imageReciver = new ImageReceiver()
     {
@@ -45,7 +45,7 @@ public class MjpegRecevierMain
     public MjpegRecevierMain(String urlAddress, String thresholdConfigFile) throws FileNotFoundException
     {
 
-        visionAlgorithm = new VisionAlgorithm();
+        visionAlgorithm = new VisionAlgorithm2();
         reciever = new MjpegReceiver();
         visionPanel = new VisionTestPanel(visionAlgorithm, thresholdConfigFile);
 

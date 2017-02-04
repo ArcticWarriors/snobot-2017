@@ -7,6 +7,12 @@ import com.snobot2017.joystick.IOperatorJoystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * Controls the climber
+ * 
+ * @author Jeff
+ *
+ */
 public class Climbing implements IClimbing
 {
 
@@ -81,19 +87,19 @@ public class Climbing implements IClimbing
     @Override
     public void updateLog()
     {
-        mLogger.updateLogger(0);
+        mLogger.updateLogger(mMotorSpeed);
     }
 
     @Override
     public void stop()
     {
         mClimbingMotor.set(0);
-        mLogger.updateLogger(0);
     }
 
     @Override
     public void catchRope()
     {
+        // TODO noll - make a property instead
         double speed = SmartDashboard.getNumber(SmartDashBoardNames.sROBOT_CATCHING_ROPE_SPEED, 0.5);
         mClimbingMotor.set(speed);
         mLogger.updateLogger(speed);
@@ -102,6 +108,7 @@ public class Climbing implements IClimbing
     @Override
     public void climbRope()
     {
+        // TODO noll - make a property instead
         double speed = SmartDashboard.getNumber(SmartDashBoardNames.sROBOT_CLIMBING_ROPE_SPEED, 1.0);
         mClimbingMotor.set(speed);
         mLogger.updateLogger(speed);

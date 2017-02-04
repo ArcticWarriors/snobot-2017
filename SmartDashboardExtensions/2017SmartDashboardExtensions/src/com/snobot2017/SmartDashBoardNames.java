@@ -29,6 +29,15 @@ public class SmartDashBoardNames
     public static String sCATCHING_OPERATOR_JOYSTICK_SPEED = "Catching Operator Joystick Speed";
     public static String sWE_HAVE_LIFT_OFF = "Lift Off Speed";
 
+    //Path Plotting
+    public static final String sPATH_NAMESPACE = "PathPlotting"; //Namespace that driving motion profiling paths will go into
+    public static final String sPATH_IDEAL_POINTS = "PlanedPath"; //The name for the planned path (the auto-generated one)
+    public static final String sPATH_POINT = "PathPoint"; //The name for the real point for a path motion profile
+    
+ // Spline Plotting
+    public static final String sSPLINE_NAMESPACE = "SplinePlotting"; //Namespace that driving motion profiling splines will go into
+    public static final String sSPLINE_IDEAL_POINTS = "PlanedSpline"; //The name for the planned splines (the auto-generated one)
+    public static final String sSPLINE_REAL_POINT = "SplinePoint"; //The name for the real point for a spline motion profile
 
     // Drivetrain
     public static final String sLEFT_DRIVE_MOTOR_ENCODER = "Left Drive Motor Encoder";

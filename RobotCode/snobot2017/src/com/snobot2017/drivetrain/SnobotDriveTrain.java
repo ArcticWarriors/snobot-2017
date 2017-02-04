@@ -8,6 +8,12 @@ import com.snobot2017.joystick.IDriverJoystick;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 
+/**
+ * Drivetrain using normal speed controllers and encoders
+ * 
+ * @author jbnol
+ *
+ */
 public class SnobotDriveTrain extends ASnobotDrivetrain<SpeedController>
 {
     private final Encoder mLeftDriveEncoder;
@@ -28,6 +34,20 @@ public class SnobotDriveTrain extends ASnobotDrivetrain<SpeedController>
 
         mLeftDriveEncoder.setDistancePerPulse(Properties2017.sLEFT_ENCODER_DIST_PER_PULSE.getValue());
         mRightDriveEncoder.setDistancePerPulse(Properties2017.sRIGHT_ENCODER_DIST_PER_PULSE.getValue());
+    }
+    
+    @Override
+    public void init()
+    {
+        super.init();
+        mAutoLogger.addHeader("LeftMotorSpeed");
+        mAutoLogger.addHeader("RightMotorSpeed");
+    }
+    
+    public void updateAutoLog()
+    {
+        mAutoLogger.updateLogger(mLeftMotorSpeed);
+        mAutoLogger.updateLogger(mRightMotorSpeed);
     }
 
     @Override

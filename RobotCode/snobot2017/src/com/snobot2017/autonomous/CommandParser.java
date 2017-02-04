@@ -1,10 +1,22 @@
 package com.snobot2017.autonomous;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.snobot.lib.autonomous.ACommandParser;
+import com.snobot.lib.motion_profile.ISetpointIterator;
+import com.snobot.lib.motion_profile.PathConfig;
+import com.snobot.lib.motion_profile.PathGenerator;
+import com.snobot.lib.motion_profile.PathSetpoint;
+import com.snobot.lib.motion_profile.StaticSetpointIterator;
+import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
+import com.snobot2017.autonomous.path.DriveStraightPath;
+import com.snobot2017.autonomous.path.DriveTurnPath;
+import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
+import com.team254.lib.trajectory.Path;
+import com.team254.lib.trajectory.io.TextFileDeserializer;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -18,8 +30,9 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  */
 public class CommandParser extends ACommandParser
 {
+    private static final double sEXPECTED_DT = .02;
+
     protected Snobot2017 mSnobot;
-    
 
     /**
      * Creates a CommandParser object.
@@ -34,7 +47,7 @@ public class CommandParser extends ACommandParser
                 SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
 
         mSnobot = aSnobot;
-        
+
     }
 
     /**
@@ -81,10 +94,25 @@ public class CommandParser extends ACommandParser
             {
                 newCommand = parseTurnWithDegrees(args);
                 break;
-            } 
-            case AutonomousCommandNames.sGO_TO_XY:
+            }
+            case AutonomousCommandNames.sDRIVE_STRAIGHT_PATH:
             {
-                newCommand = parseGoToXY(args);
+                newCommand = createDrivePathCommand(args);
+                break;
+            }
+            case AutonomousCommandNames.sDRIVE_TURN_PATH:
+            {
+                newCommand = createTurnPathCommand(args);
+                break;
+            }
+            case AutonomousCommandNames.sDRIVE_TRAJECTORY:
+            {
+                newCommand = createTrajectoryCommand(args.get(1));
+                break;
+            }
+            case AutonomousCommandNames.sAUTON_COPY:
+            {
+                newCommand = parseAutonCopyCommand();
                 break;
             }
             default:
@@ -103,14 +131,63 @@ public class CommandParser extends ACommandParser
         return newCommand;
     }
 
-    private Command parseGoToXY(List<String> args)
+    private Command createTurnPathCommand(List<String> args)
     {
-        double xcoor = Double.parseDouble(args.get(1));
-        double ycoor = Double.parseDouble(args.get(2));
-        double speed = Double.parseDouble(args.get(3));
-        return new GoToXY(mSnobot.getDriveTrain(), mSnobot.getPositioner(), xcoor, ycoor, speed);
+        PathConfig dudePathConfig = new PathConfig(Double.parseDouble(args.get(1)), // Endpoint
+                Double.parseDouble(args.get(2)), // Max Velocity
+                Double.parseDouble(args.get(3)), // Max Acceleration
+                sEXPECTED_DT);
+
+        ISetpointIterator dudeSetpointIterator;
+
+        // TODO create dynamic iterator, way to switch
+        if (true)
+        {
+            dudeSetpointIterator = new StaticSetpointIterator(dudePathConfig);
+        }
+
+        return new DriveTurnPath(mSnobot.getDriveTrain(), mSnobot.getPositioner(), dudeSetpointIterator);
     }
-    
+
+    private Command createDrivePathCommand(List<String> args)
+    {
+        PathConfig dudePathConfig = new PathConfig(Double.parseDouble(args.get(1)), // Endpoint
+                Double.parseDouble(args.get(2)), // Max Velocity
+                Double.parseDouble(args.get(3)), // Max Acceleration
+                sEXPECTED_DT);
+
+        ISetpointIterator dudeSetpointIterator;
+
+        // TODO create dynamic iterator, way to switch
+        if (true)
+        {
+            PathGenerator dudePathGenerator = new PathGenerator();
+            List<PathSetpoint> dudeList = dudePathGenerator.generate(dudePathConfig);
+            dudeSetpointIterator = new StaticSetpointIterator(dudeList);
+        }
+
+        return new DriveStraightPath(mSnobot.getDriveTrain(), mSnobot.getPositioner(), dudeSetpointIterator);
+    }
+
+    private Command createTrajectoryCommand(String aFile)
+    {
+        String pathFile = Properties2017.sAUTON_PATH_DIRECTORY.getValue() + "/" + aFile.trim();
+        TextFileDeserializer deserializer = new TextFileDeserializer();
+        Path p = deserializer.deserializeFromFile(pathFile);
+
+        Command output = null;
+        if (p == null)
+        {
+            addError("Could not read path file " + pathFile);
+        }
+        else
+        {
+            output = new TrajectoryPathCommand(mSnobot.getDriveTrain(), mSnobot.getPositioner(), p);
+        }
+
+        return output;
+    }
+
     /**
      * 
      * @param args
@@ -132,8 +209,8 @@ public class CommandParser extends ACommandParser
 
     private Command parseScoreGearCommand(List<String> args)
     {
-        double time = Double.parseDouble(args.get(1));        
-        return new ScoreGear(mSnobot.getGearBoss(),time);
+        double time = Double.parseDouble(args.get(1));
+        return new ScoreGear(mSnobot.getGearBoss(), time);
     }
 
     private Command parseStupidDriveStraightCommand(List<String> args)
@@ -141,6 +218,11 @@ public class CommandParser extends ACommandParser
         double time = Double.parseDouble(args.get(1));
         double speed = Double.parseDouble(args.get(2));
         return new StupidDriveStraight(mSnobot.getDriveTrain(), time, speed);
+    }
+
+    private Command parseAutonCopyCommand() throws IOException
+    {
+        return new Replay(mSnobot.getDriveTrain());
     }
 
     protected Command parseWaitCommand(List<String> args)

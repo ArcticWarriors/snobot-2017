@@ -7,6 +7,7 @@ import java.util.logging.LogManager;
 
 import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
+import com.snobot.lib.ISubsystem;
 import com.snobot.lib.LogFormatter;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
@@ -35,7 +36,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class Snobot2017 extends ASnobot
 {
-    // Robot Subystems
+    // Robot Subsystems
     private IDriveTrain mDriveTrain;
     private IPositioner mPositioner;
 
@@ -54,7 +55,6 @@ public class Snobot2017 extends ASnobot
     // Logger
     private AutoLogger mAutoLogger;
     private DateFormat mAutoLogDateFormat;
-
 
     /**
      * This function is run when the robot is first started up and should be
@@ -80,7 +80,7 @@ public class Snobot2017 extends ASnobot
 
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
         mSubsystems.add(operatorJoystick);
-        
+
         // Drive Train
         boolean useCan = false;
         if (useCan)
@@ -105,10 +105,10 @@ public class Snobot2017 extends ASnobot
             SpeedController driveRightMotor = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
             Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
             Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
-    
+
             mDriveTrain = new SnobotDriveTrain(
                     driveLeftMotor, 
-                    driveRightMotor,
+                    driveRightMotor, 
                     leftDriveEncoder, 
                     rightDriveEncoder, 
                     driverJoystick, 
@@ -124,14 +124,12 @@ public class Snobot2017 extends ASnobot
 
         // GearBoss
         Solenoid gearSolonoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL);
-       //ToDo Delete this later 
-        gearSolonoid.set(true);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
 
         // Vision
-        // mVisionManager = new VisionManager(operatorJoystick);
-        // mSubsystems.add(mVisionManager);
+        mVisionManager = new VisionManager(operatorJoystick);
+        mSubsystems.add(mVisionManager);
 
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();
@@ -144,27 +142,32 @@ public class Snobot2017 extends ASnobot
                 Properties2017.sLOG_COUNT.getValue(),
                 Properties2017.sLOG_FILE_PATH.getValue());
         init();
+
+        mPositioner.setPosition(75, -324, 0);
     }
 
+    @Override
     public void init()
     {
         mAutoLogger.init();
         super.init();
         mAutoLogger.endHeader();
-
     }
 
-    public void updateLog()
+    public void updateAutoLog()
     {
-        super.updateLog();
         String logDate = mAutoLogDateFormat.format(new Date());
         if (mAutoLogger.logNow())
         {
             mAutoLogger.startLogEntry(logDate);
-
+            for (ISubsystem iSubsystem : mSubsystems)
+            {
+                iSubsystem.updateLog();
+            }
             mAutoLogger.endLogger();
         }
     }
+    
 
     @Override
     protected CommandGroup createAutonomousCommand()
@@ -182,14 +185,23 @@ public class Snobot2017 extends ASnobot
         return this.mDriveTrain;
     }
 
+    /**
+     * Returns the IGearBoss for the robot
+     * 
+     * @return IGearBoss
+     */
     public IGearBoss getGearBoss()
     {
         return mGearBoss;
     }
 
+    /**
+     * Returns the Robots position
+     * 
+     * @return IPositioner
+     */
     public IPositioner getPositioner()
     {
-        // TODO Auto-generated method stub
         return mPositioner;
     }
 }

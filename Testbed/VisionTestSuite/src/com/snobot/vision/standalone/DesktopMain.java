@@ -16,11 +16,13 @@ import javax.swing.JFrame;
 import org.opencv.core.Core;
 import org.yaml.snakeyaml.Yaml;
 
-import com.snobot.vision.VisionAlgorithm;
+import com.snobot.vision.IVisionAlgorithm;
+import com.snobot.vision_app.app2017.java_algorithm.VisionAlgorithm2;
 
 public class DesktopMain
 {
-    private static final String sDEFAULT_IMAGE_PATH = "rope_test/image_config.yml";
+//    private static final String sDEFAULT_IMAGE_PATH = "peg_test_20170126/image_config.yml";
+    private static final String sDEFAULT_IMAGE_PATH = "peg_test_20170202/image_config.yml";
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws IOException
@@ -40,6 +42,7 @@ public class DesktopMain
             File[] filesList = new File(dir).listFiles();
             for (File file : filesList)
             {
+                System.out.println(file);
                 files.add(file.getAbsolutePath());
             }
         }
@@ -56,7 +59,7 @@ public class DesktopMain
             System.out.println(file);
             BufferedImage image = ImageIO.read(new File(file));
 
-            VisionAlgorithm algorithm = new VisionAlgorithm();
+            IVisionAlgorithm algorithm = new VisionAlgorithm2();
             VisionTestPanel testPanel = new VisionTestPanel(algorithm, thresholdsFile);
             testPanel.setOriginalImage(image);
 
