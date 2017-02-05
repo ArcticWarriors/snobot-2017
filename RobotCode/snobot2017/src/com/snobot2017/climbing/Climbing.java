@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Controls the climber
- * @author jbnol
+ *
+ * @author Jeff
  *
  */
 public class Climbing implements IClimbing
@@ -86,12 +87,7 @@ public class Climbing implements IClimbing
     @Override
     public void updateLog()
     {
-<<<<<<< HEAD
-        // TODO - Noll.  SHould probably log something
-        mLogger.updateLogger(0);
-=======
         mLogger.updateLogger(mMotorSpeed);
->>>>>>> refs/remotes/origin/LoggerTesting
     }
 
     @Override

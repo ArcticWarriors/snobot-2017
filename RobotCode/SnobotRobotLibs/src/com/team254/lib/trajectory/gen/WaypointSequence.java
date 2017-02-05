@@ -13,10 +13,11 @@ public class WaypointSequence
     public static class Waypoint
     {
 
-        public Waypoint(double y, double x, double theta)
+        public Waypoint(double x, double y, double theta)
         {
-            this.x = x;
-            this.y = y;
+            // Switched on purpose, poofs code wants it this way
+            this.x = y;
+            this.y = x;
             this.theta = theta;
         }
 

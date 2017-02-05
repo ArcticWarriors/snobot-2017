@@ -48,6 +48,9 @@ public class Snobot2017 extends ASnobot
     // GearBoss
     private IGearBoss mGearBoss;
 
+    // Vision
+    private VisionManager mVisionManager;
+
     // Logger
     private AutoLogger mAutoLogger;
     private DateFormat mAutoLogDateFormat;
@@ -81,10 +84,10 @@ public class Snobot2017 extends ASnobot
         boolean useCan = false;
         if (useCan)
         {
-            CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
-            CANTalon driveLeftMotorB = new CANTalon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
-            CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
-            CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
+            CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
+            CANTalon driveLeftMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_B_PORT);
+            CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
+            CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
 
             mDriveTrain = new SnobotCanDriveTrain(
                     driveLeftMotorA, 
@@ -123,6 +126,10 @@ public class Snobot2017 extends ASnobot
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
 
+        // Vision
+        mVisionManager = new VisionManager(operatorJoystick);
+        mSubsystems.add(mVisionManager);
+
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();
         mPositioner = new Positioner(gyro, mDriveTrain, mLogger);
@@ -134,6 +141,8 @@ public class Snobot2017 extends ASnobot
                 Properties2017.sLOG_COUNT.getValue(),
                 Properties2017.sLOG_FILE_PATH.getValue());
         init();
+
+        mPositioner.setPosition(75, -324, 0);
     }
     
     @Override
@@ -143,14 +152,8 @@ public class Snobot2017 extends ASnobot
         super.init();
         mAutoLogger.endHeader();
     }
-<<<<<<< HEAD
-    
-    @Override
-    public void updateLog()
-=======
 
     public void updateAutoLog()
->>>>>>> refs/remotes/origin/LoggerTesting
     {
         String logDate = mAutoLogDateFormat.format(new Date());
         if (mAutoLogger.logNow())

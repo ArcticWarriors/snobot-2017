@@ -12,12 +12,14 @@ public class XboxJoystick extends BaseJoystick
 
     private static final Identifier[] sAXIS = new Identifier[]
     { 
-            Identifier.Axis.X, // Left x
             Identifier.Axis.Y, // Left Y
-            Identifier.Axis.Z, // Left Trigger
-            Identifier.Axis.RZ, // Right Trigger
-            Identifier.Axis.RX, // Right x
+            Identifier.Axis.Y, // Left Y
+            Identifier.Axis.Y, // Left Y
             Identifier.Axis.RY, // Right y
+            Identifier.Axis.RY, // Right y
+            Identifier.Axis.RY, // Right y
+            Identifier.Axis.RY, // Right y
+            Identifier.Axis.X, // Left x
     };
 
     private static final Identifier[] sBUTTONS = new Identifier[]
