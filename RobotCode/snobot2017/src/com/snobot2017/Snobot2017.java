@@ -67,9 +67,6 @@ public class Snobot2017 extends ASnobot
         String headerDate = mAutoLogDateFormat.format(new Date());
         mAutoLogger = new AutoLogger(headerDate, Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue());
 
-        // Autonomous
-        mAutonFactory = new AutonomousFactory(this);
-
         // Joystick
         Joystick driverJostickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
@@ -143,6 +140,9 @@ public class Snobot2017 extends ASnobot
         init();
 
         mPositioner.setPosition(75, -324, 0);
+        
+        // Autonomous
+        mAutonFactory = new AutonomousFactory(this);
     }
     
     @Override

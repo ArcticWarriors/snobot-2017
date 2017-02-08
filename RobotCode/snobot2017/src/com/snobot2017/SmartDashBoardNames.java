@@ -49,6 +49,7 @@ public class SmartDashBoardNames
     public static final String sPATH_NAMESPACE = "PathPlotting"; //Namespace that driving motion profiling paths will go into
     public static final String sPATH_IDEAL_POINTS = "PlanedPath"; //The name for the planned path (the auto-generated one)
     public static final String sPATH_POINT = "PathPoint"; //The name for the real point for a path motion profile
+    public static final String sPOSITION_CHOOSER = "Position Chooser"; //Chooses the starting position for the red and blue side
 
     // Spline Plotting
     public static final String sSPLINE_NAMESPACE = "SplinePlotting"; //Namespace that driving motion profiling splines will go into
