@@ -13,4 +13,5 @@ public class AutonomousCommandNames
     public static final String sDRIVE_STRAIGHT_PATH = "DriveStraightPath";
     public static final String sDRIVE_TURN_PATH = "DriveTurnPath";
     public static final String sDRIVE_TRAJECTORY = "DriveTrajectory";
+    public static final String sREPLAY = "Replay";
 }
