@@ -31,7 +31,14 @@ public class AutonomousFactory
 
     public CommandGroup createAutonMode()
     {
-        return mCommandParser.readFile(mSendableChooser.getSelected().toString());
+        File selectedFile = mSendableChooser.getSelected();
+        if (selectedFile != null)
+        {
+            return mCommandParser.readFile(selectedFile.toString());
+        }
+
+        return null;
+
     }
 
     private void addListeners()
