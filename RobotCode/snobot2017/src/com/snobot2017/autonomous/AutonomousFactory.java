@@ -27,7 +27,32 @@ public class AutonomousFactory
     
     public enum StartingPositions
     {
-        Red_Left, Red_Middle, Red_Right, Blue_Left, Blue_Middle, Blue_Right;
+        RedLeft("Red Left", -79.53, -334.81, 0), 
+        RedMiddle("Red Middle", 0, -334.81, 0), 
+        RedRight("Red Right", 43.02, -334.81, 0), 
+        BlueLeft("Blue Left", 43.02, 334.81, 180), 
+        BlueMiddle("Blue Middle", 0, 334.81, 180), 
+        BlueRight("Blue Right", -79.53, 334.81, 180), 
+        Origin("Origin", 0, 0, 0);
+
+        public final String mDisplayName;
+        public final double mX;
+        public final double mY;
+        public final double mAngle;
+
+        private StartingPositions(String aDisplayName, double aX, double aY, double aAngle)
+        {
+            mDisplayName = aDisplayName;
+            mX = aX;
+            mY = aY;
+            mAngle = aAngle;
+        }
+
+        @Override
+        public String toString()
+        {
+            return mDisplayName;
+        }
     }
     
     public AutonomousFactory(Snobot2017 aSnobot)
@@ -42,12 +67,11 @@ public class AutonomousFactory
         SmartDashboard.putData(SmartDashBoardNames.sAUTON_CHOOSER, mAutonModeChooser);
         
         mPositionChooser = new SendableChooser<StartingPositions>();
-        mPositionChooser.addObject("Red Left", StartingPositions.Red_Left);
-        mPositionChooser.addObject("Red Middle", StartingPositions.Red_Middle);
-        mPositionChooser.addObject("Red Right", StartingPositions.Red_Right);
-        mPositionChooser.addObject("Blue Left", StartingPositions.Blue_Left);
-        mPositionChooser.addObject("Blue Middle", StartingPositions.Blue_Middle);
-        mPositionChooser.addObject("Blue Right", StartingPositions.Blue_Right);
+
+        for (StartingPositions pos : StartingPositions.values())
+        {
+            mPositionChooser.addObject(pos.toString(), pos);
+        }
         
         SmartDashboard.putData(SmartDashBoardNames.sPOSITION_CHOOSER, mPositionChooser);
         addListeners();    
@@ -111,32 +135,7 @@ public class AutonomousFactory
 
         if (startingPosition != null)
         {
-            switch (startingPosition)
-            {
-            case Red_Left:
-                mPositioner.setPosition(-79.53, -334.81, 0);
-                break;
-
-            case Red_Middle:
-                mPositioner.setPosition(0, -334.81, 0);
-                break;
-
-            case Red_Right:
-                mPositioner.setPosition(43.02, -334.81, 0);
-                break;
-
-            case Blue_Left:
-                mPositioner.setPosition(43.02, 334.81, 180);
-                break;
-
-            case Blue_Middle:
-                mPositioner.setPosition(0, 334.81, 180);
-                break;
-
-            case Blue_Right:
-                mPositioner.setPosition(-79.53, 334.81, 180);
-                break;
-            }
+            mPositioner.setPosition(startingPosition.mX, startingPosition.mY, startingPosition.mAngle);
         }
     }
 }

@@ -19,7 +19,6 @@ public class TurnWithDegrees extends Command
     private IDriveTrain mDriveTrain;
     private IPositioner mPositioner;
     private double mTurnMeasure;
-    private boolean mDirection;
     private boolean mFinished;
 
     private InDeadbandHelper mInDeadbandHelper = new InDeadbandHelper(10);
@@ -65,12 +64,7 @@ public class TurnWithDegrees extends Command
         }
         else
         {
-            mDriveTrain.setLeftRightSpeed(-mSpeed, -mSpeed);
-            if (mTurnAngle <= mPositioner.getOrientationDegrees())
-            {
-                mDriveTrain.setLeftRightSpeed(0, 0);
-                mFinished = true;
-            }
+            mFinished = false;
         }
         
         //System.out.println("TurnWithDegrees " + mTurnAngle + " " + mPositioner.getOrientationDegrees() + " " + mTurnMeasure);

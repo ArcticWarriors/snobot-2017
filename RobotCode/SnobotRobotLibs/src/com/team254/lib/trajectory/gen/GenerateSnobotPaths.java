@@ -386,6 +386,111 @@ public class GenerateSnobotPaths
         generate(config, p, directory, path_name, kWheelbaseWidth);
     }
     
+    //////////////////////////////////////////////////////////////
+    // Test Trajectories
+    //////////////////////////////////////////////////////////////
+    private static void genTestStraightSlow(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "test/TestStraightSlow.csv";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 36;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 0, 0));
+        p.addWaypoint(new Waypoint(0, 96, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+
+    private static void genTestStraightFast(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "test/TestStraightFast.csv";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 84;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 0, 0));
+        p.addWaypoint(new Waypoint(0, 96, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+
+    private static void genTestMoveRightSlow(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "test/TestMoveRightSlow.csv";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 36;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 0, 0));
+        p.addWaypoint(new Waypoint(48, 96, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+
+    private static void genTestMoveLeftSlow(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "test/TestMoveLeftSlow.csv";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 36;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 0, 0));
+        p.addWaypoint(new Waypoint(-48, 96, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+
+    private static void genTestMoveRightFast(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "test/TestMoveRightFast.csv";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 84;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 0, 0));
+        p.addWaypoint(new Waypoint(48, 96, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+
+    private static void genTestMoveLeftFast(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "test/TestMoveLeftFast.csv";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 84;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 0, 0));
+        p.addWaypoint(new Waypoint(-48, 96, 0));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+
     public static void main(String[] args)
     {
         String directory = "../snobot2017/resources/traj/";
@@ -398,6 +503,13 @@ public class GenerateSnobotPaths
         }
 
         final double kWheelbaseWidth = 25.5 / 12;
+
+        genTestStraightSlow(directory, kWheelbaseWidth);
+        genTestStraightFast(directory, kWheelbaseWidth);
+        genTestMoveRightSlow(directory, kWheelbaseWidth);
+        genTestMoveLeftSlow(directory, kWheelbaseWidth);
+        genTestMoveRightFast(directory, kWheelbaseWidth);
+        genTestMoveLeftFast(directory, kWheelbaseWidth);
 
         getRedRightToHopperOne(directory, kWheelbaseWidth);
         getRedRightToHopperTwo(directory, kWheelbaseWidth);

@@ -99,12 +99,12 @@ public class CommandParser extends ACommandParser
                 newCommand = parseTurnWithDegrees(args);
                 break;
             }
-            case AutonomousCommandNames.sDRIVE_STRAIGHT_PATH:
+            case AutonomousCommandNames.sDRIVE_PATH_STRAIGHT:
             {
                 newCommand = createDrivePathCommand(args);
                 break;
             }
-            case AutonomousCommandNames.sDRIVE_TURN_PATH:
+            case AutonomousCommandNames.sDRIVE_PATH_TURN:
             {
                 newCommand = createTurnPathCommand(args);
                 break;
