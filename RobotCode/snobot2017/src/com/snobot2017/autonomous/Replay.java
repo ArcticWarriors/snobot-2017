@@ -28,10 +28,10 @@ public class Replay extends Command
      * @param aDriveTrain
      * @throws IOException
      */
-    public Replay(IDriveTrain aDriveTrain) throws IOException
+    public Replay(IDriveTrain aDriveTrain, String aFilePath) throws IOException
     {
         mBufferedReader = new BufferedReader(new FileReader(new File(mFilePath)));
-        mFilePath = Properties2017.sAUTO_LOG_RUN_PATH.getValue();
+        mFilePath = aFilePath;
         mDriveTrain = aDriveTrain;
     }
 

@@ -78,6 +78,12 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     {
         setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
     }
+    
+    public void updateAutoLog()
+    {
+    	mAutoLogger.updateLogger(mLeftMotor.get());
+    	mAutoLogger.updateLogger(mRightMotor.get());
+    }
 
     @Override
     public void rereadPreferences()

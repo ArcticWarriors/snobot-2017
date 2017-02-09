@@ -7,6 +7,7 @@ import java.util.logging.LogManager;
 
 import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
+import com.snobot.lib.ISubsystem;
 import com.snobot.lib.LogFormatter;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
@@ -144,7 +145,7 @@ public class Snobot2017 extends ASnobot
         // Autonomous
         mAutonFactory = new AutonomousFactory(this);
     }
-    
+    		
     @Override
     public void init()
     {
@@ -152,16 +153,19 @@ public class Snobot2017 extends ASnobot
         super.init();
         mAutoLogger.endHeader();
     }
-
+    
+    @Override
+    public void update()
+    {
+    	super.update();
+    	this.updateAutoLog();
+    }
     public void updateAutoLog()
     {
         String logDate = mAutoLogDateFormat.format(new Date());
-        if (mAutoLogger.logNow())
-        {
             mAutoLogger.startLogEntry(logDate);
-            super.updateLog();
+            mDriveTrain.updateAutoLog();
             mAutoLogger.endLogger();
-        }
     }
     
 
