@@ -1,4 +1,4 @@
-package com.snobot.sd2016.spline_plotter;
+package com.snobot.sd.spline_plotter;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

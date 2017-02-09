@@ -1,8 +1,11 @@
-package com.snobot.sd2016.spline_plotter;
+package com.snobot.sd2017.spline_plotter;
 
 import java.awt.BorderLayout;
 import java.util.StringTokenizer;
 
+import com.snobot.sd.spline_plotter.IdealSplineSerializer;
+import com.snobot.sd.spline_plotter.SplinePlotterPanel;
+import com.snobot.sd.spline_plotter.SplineSegment;
 import com.snobot.sd.util.AutoUpdateWidget;
 import com.snobot2017.SmartDashBoardNames;
 
@@ -19,7 +22,7 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
  */
 public class SplinePlannerWidget extends AutoUpdateWidget
 {
-    public static final String NAME = "2016 SplinePlanning";
+    public static final String NAME = "2017 SplinePlanning";
     private SplinePlotterPanel mPanel;
     private int mLastIndex;
 

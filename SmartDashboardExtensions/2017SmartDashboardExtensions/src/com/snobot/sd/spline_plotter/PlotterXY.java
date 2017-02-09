@@ -1,4 +1,4 @@
-package com.snobot.sd2016.spline_plotter;
+package com.snobot.sd.spline_plotter;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

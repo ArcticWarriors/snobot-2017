@@ -1,4 +1,4 @@
-package com.snobot.sd2016.spline_plotter;
+package com.snobot.sd.spline_plotter;
 
 /**
  * Container for the information on a single trajectory point

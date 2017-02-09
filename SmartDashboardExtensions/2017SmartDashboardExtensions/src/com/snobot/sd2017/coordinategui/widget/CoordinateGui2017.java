@@ -10,7 +10,7 @@ import com.snobot.coordinate_gui.ui.layers.FieldImageLayer;
 import com.snobot.coordinate_gui.ui.layers.RobotLayer;
 import com.snobot.coordinate_gui.ui.renderProps.CoordinateLayerRenderProps;
 import com.snobot.coordinate_gui.ui.renderProps.RobotLayerRenderProps;
-import com.snobot.sd2016.spline_plotter.SplineSegment;
+import com.snobot.sd.spline_plotter.SplineSegment;
 import com.snobot.sd2017.coordinategui.widget.RayLayer.Ray;
 
 public class CoordinateGui2017 extends BaseCoordinateGui
