@@ -2,6 +2,7 @@ package com.snobot.simulator.robot_sim.snobot2017;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,6 +14,7 @@ import com.snobot2017.positioner.IPositioner;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.hal.HAL;
 
 public class CameraSimulator implements ISimulatorUpdater
 {
@@ -49,20 +51,55 @@ public class CameraSimulator implements ISimulatorUpdater
 
     }
 
+    private static class RobotState
+    {
+        double mX;
+        double mY;
+        double mAngle;
+
+        public RobotState(double aX, double aY, double aAngle)
+        {
+            mX = aX;
+            mY = aY;
+            mAngle = aAngle;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "RobotState [mX=" + mX + ", mY=" + mY + ", mAngle=" + mAngle + "]";
+        }
+
+    }
+
     private static final double sMAX_VIEWABLE_ANGLE = 60;
+    private static final double sFRAMES_PER_SECOND = 50;
+    private static final double sLATENCY_MS = 0;
+
+    private int mLoopsBetweenUpdates;
+    private int mLoopsStale;
+    private int mLoopCtr;
+
+    private TreeMap<Integer, RobotState> mRobotPositionHistory;
+    private List<PegCoordinate> mPegs;
 
     private IPositioner mPositioner;
     private MockAppConnection mMockAppConnection;
 
-    private PegCoordinate mLoadingPeg;
-    private PegCoordinate mCenterPeg;
-    private PegCoordinate mBoilerPeg;
-
     public CameraSimulator()
     {
-        mLoadingPeg = new PegCoordinate("Loading", -45, -200,  60 + 180, -1000, -1000,  -42, -125);
-        mCenterPeg  = new PegCoordinate("Center",    0, -230,   0 + 180,  -100, -1000,  100, -240);
-        mBoilerPeg  = new PegCoordinate("Boiler",   45, -200, -60 + 180,    42, -1000, 1000, -125);
+        mLoopsBetweenUpdates = (int) Math.ceil((1.0 / sFRAMES_PER_SECOND) / HAL.getCycleTime());
+        mLoopsStale = (int) Math.ceil((sLATENCY_MS * 1e-3) / HAL.getCycleTime());
+        mRobotPositionHistory = new TreeMap<>();
+        mLoopCtr = 0;
+
+        mPegs = new ArrayList<>();
+        mPegs.add(new PegCoordinate("Red Loading", -45, -200, 60 + 180, -1000, -1000, -42, -125));
+        mPegs.add(new PegCoordinate("Red Center", 0, -230, 0 + 180, -100, -1000, 100, -240));
+        mPegs.add(new PegCoordinate("Red Boiler", 45, -200, -60 + 180, 42, -1000, 1000, -125));
+        mPegs.add(new PegCoordinate("Blue Loading", -45, 200, 60, -1000, 125, -42, 1000));
+        mPegs.add(new PegCoordinate("Blue Center", 0, 230, 0, -1000, 230, 240, 1000));
+        mPegs.add(new PegCoordinate("Blue Boiler", 45, 200, -60, 42, 125, 1000, 1000));
 
         mMockAppConnection = new MockAppConnection();
         mMockAppConnection.start();
@@ -79,61 +116,57 @@ public class CameraSimulator implements ISimulatorUpdater
             return "TargetInfo [mDistance=" + mDistance + ", mAngle=" + mAngle + "]";
         }
     }
-
+ 
     @SuppressWarnings("unchecked")
     @Override
     public void update()
     {
-
-        if (mPositioner != null)
+        if (mPositioner == null)
         {
-            double robotX = mPositioner.getXPosition();
-            double robotY = mPositioner.getYPosition();
-            double robotAngle = mPositioner.getOrientationDegrees();
+            return;
+        }
 
-            List<TargetInfo> targets = getVisiblePeg(robotX, robotY, robotAngle);
 
-            JSONArray targetJson = new JSONArray();
+        RobotState currentState = new RobotState(mPositioner.getXPosition(), mPositioner.getYPosition(), mPositioner.getOrientationDegrees());
+        mRobotPositionHistory.put(mLoopCtr, currentState);
+        RobotState stateAtLatency = mRobotPositionHistory.getOrDefault(mLoopCtr - mLoopsStale, currentState);
 
-            for (TargetInfo targetInfo : targets)
-            {
-                JSONObject targetInfoJson = new JSONObject();
-                targetInfoJson.put("angle", targetInfo.mAngle);
-                targetInfoJson.put("distance", targetInfo.mDistance);
-                targetJson.add(targetInfoJson);
-            }
+        List<TargetInfo> targets = getVisiblePeg(stateAtLatency.mX, stateAtLatency.mY, stateAtLatency.mAngle);
 
-            JSONObject jsonMessage = new JSONObject();
-            jsonMessage.put("timestamp", Timer.getFPGATimestamp());
-            jsonMessage.put("targets", targetJson);
-            jsonMessage.put("type", "target_update");
+        JSONArray targetJson = new JSONArray();
 
+        for (TargetInfo targetInfo : targets)
+        {
+            JSONObject targetInfoJson = new JSONObject();
+            targetInfoJson.put("angle", targetInfo.mAngle);
+            targetInfoJson.put("distance", targetInfo.mDistance);
+            targetJson.add(targetInfoJson);
+        }
+
+        JSONObject jsonMessage = new JSONObject();
+        jsonMessage.put("timestamp", Timer.getFPGATimestamp());
+        jsonMessage.put("targets", targetJson);
+        jsonMessage.put("type", "target_update");
+
+        if (mLoopCtr % mLoopsBetweenUpdates == 0)
+        {
+//            System.out.println("Sending message: LoopCtr: " + mLoopCtr + ", Delay " + mLoopsBetweenUpdates + ", Loops Stale: " + mLoopsStale);
             mMockAppConnection.send(jsonMessage);
         }
+        ++mLoopCtr;
     }
 
     private List<TargetInfo> getVisiblePeg(double aRobotX, double aRobotY, double aRobotAngle)
     {
         List<TargetInfo> output = new ArrayList<>();
 
-        TargetInfo targetInfo;
-
-        targetInfo = calculateTargetInfo(aRobotX, aRobotY, aRobotAngle, mLoadingPeg);
-        if (isTargetValid(targetInfo, aRobotX, aRobotY, aRobotAngle, mLoadingPeg))
+        for (PegCoordinate peg : mPegs)
         {
-            output.add(targetInfo);
-        }
-
-        targetInfo = calculateTargetInfo(aRobotX, aRobotY, aRobotAngle, mBoilerPeg);
-        if (isTargetValid(targetInfo, aRobotX, aRobotY, aRobotAngle, mBoilerPeg))
-        {
-            output.add(targetInfo);
-        }
-
-        targetInfo = calculateTargetInfo(aRobotX, aRobotY, aRobotAngle, mCenterPeg);
-        if (isTargetValid(targetInfo, aRobotX, aRobotY, aRobotAngle, mCenterPeg))
-        {
-            output.add(targetInfo);
+            TargetInfo targetInfo = calculateTargetInfo(aRobotX, aRobotY, aRobotAngle, peg);
+            if (isTargetValid(targetInfo, aRobotX, aRobotY, aRobotAngle, peg))
+            {
+                output.add(targetInfo);
+            }
         }
 
         return output;
@@ -160,19 +193,19 @@ public class CameraSimulator implements ISimulatorUpdater
 
         if (aRobotX > aPeg.mMaxX || aRobotX < aPeg.mMinX)
         {
-//            System.out.println("Ditching " + aPeg.mName + " because of X " + aRobotX);
+//            System.out.println("Ditching " + aPeg.mName + " because of X " + aRobotX + "[" + aPeg.mMinX + ", " + aPeg.mMaxX + "]");
             return false;
         }
 
         if (aRobotY > aPeg.mMaxY || aRobotY < aPeg.mMinY)
         {
-//            System.out.println("Ditching " + aPeg.mName + " because of Y " + aRobotY);
+//            System.out.println("Ditching " + aPeg.mName + " because of Y " + aRobotY + "[" + aPeg.mMinY + ", " + aPeg.mMaxY + "]");
             return false;
         }
 
         if (Math.abs(aTargetInfo.mAngle) > sMAX_VIEWABLE_ANGLE)
         {
-//            System.out.println("Ditching " + aPeg.mName + " because of Angle " + aTargetInfo.mAngle);
+//            System.out.println("Ditching " + aPeg.mName + " because of Angle" + aTargetInfo.mAngle + "[" + sMAX_VIEWABLE_ANGLE + "]");
             return false;
         }
 

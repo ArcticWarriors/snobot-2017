@@ -11,8 +11,8 @@ import org.yaml.snakeyaml.Yaml;
 import com.snobot.coordinate_gui.model.Coordinate;
 import com.snobot.coordinate_gui.ui.renderProps.CoordinateLayerRenderProps;
 import com.snobot.coordinate_gui.ui.renderProps.RobotLayerRenderProps;
+import com.snobot.sd.spline_plotter.IdealSplineSerializer;
 import com.snobot.sd.util.AutoUpdateWidget;
-import com.snobot.sd2016.spline_plotter.IdealSplineSerializer;
 import com.snobot.sd2017.coordinategui.widget.RayLayer.Ray;
 import com.snobot2017.SmartDashBoardNames;
 

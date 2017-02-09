@@ -45,28 +45,32 @@ public class VisionAdbServer extends RobotConnectionServer
         }
         catch (Exception e)
         {
-            System.out.println("AHHHH " + e.getMessage());
-            e.printStackTrace();
+            sLOGGER.log(Level.SEVERE, "Failed to initialize ADB", e);
         }
 
-        try
-        {
-            executeCommand("adb reverse tcp:" + aAppBindPort + " tcp:" + aAppBindPort);
-            // RIOdroid.executeCommand("adb forward tcp:" +
-            // aAppForwardedMjpegBindPort + " tcp:" + aAppMjpegBindPort);
-            executeCommand("adb reverse tcp:" + aAppMjpegBindPort + " tcp:" + aAppForwardedMjpegBindPort);
-        }
-        catch (Exception e)
-        {
-            System.out.println("AHHHH " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeCommand("adb reverse tcp:" + aAppBindPort + " tcp:" + aAppBindPort);
+        // RIOdroid.executeCommand("adb forward tcp:" + aAppForwardedMjpegBindPort + " tcp:" + aAppMjpegBindPort);
+        executeCommand("adb reverse tcp:" + aAppMjpegBindPort + " tcp:" + aAppForwardedMjpegBindPort);
+        
+
+        // MjpegReceiver receiver = new MjpegReceiver();
+        // MjpegForwarder forwarder = new MjpegForwarder(aAppMjpegBindPort);
+        // receiver.addImageReceiver(forwarder);
+        //
+        // receiver.start("127.0.0.1:" + aAppForwardedMjpegBindPort);
     }
 
     private void executeCommand(String aCommand)
     {
-        System.out.println(aCommand);
-        RIOdroid.executeCommand(aCommand);
+        try
+        {
+            System.out.println(aCommand);
+            RIOdroid.executeCommand(aCommand);
+        }
+        catch (Exception e)
+        {
+            sLOGGER.log(Level.SEVERE, "Failed to send command '" + aCommand + "'", e);
+        }
     }
 
     @Override

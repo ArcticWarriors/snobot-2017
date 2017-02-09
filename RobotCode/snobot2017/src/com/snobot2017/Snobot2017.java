@@ -7,7 +7,6 @@ import java.util.logging.LogManager;
 
 import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
-import com.snobot.lib.ISubsystem;
 import com.snobot.lib.LogFormatter;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
@@ -67,9 +66,6 @@ public class Snobot2017 extends ASnobot
         mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
         String headerDate = mAutoLogDateFormat.format(new Date());
         mAutoLogger = new AutoLogger(headerDate, Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue());
-
-        // Autonomous
-        mAutonFactory = new AutonomousFactory(this);
 
         // Joystick
         Joystick driverJostickRaw = new Joystick(0);
@@ -136,14 +132,15 @@ public class Snobot2017 extends ASnobot
         mPositioner = new Positioner(gyro, mDriveTrain, mLogger);
         mSubsystems.add(mPositioner);
 
+        // Autonomous
+        mAutonFactory = new AutonomousFactory(this);
+
         // Call last
         mLogger.startLogging(
                 new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), 
                 Properties2017.sLOG_COUNT.getValue(),
                 Properties2017.sLOG_FILE_PATH.getValue());
         init();
-
-        mPositioner.setPosition(75, -324, 0);
     }
     		
     @Override

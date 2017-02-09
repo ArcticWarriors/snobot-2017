@@ -88,7 +88,7 @@ public class Properties2017
         else
         {
             autoLogPath = "/u/autologs/";
-            resourcesDir = "/home/lvuser/2016Resources/";
+            resourcesDir = "/home/lvuser/2017Resources/";
 
             System.out.println("Using tactical constants");
         }

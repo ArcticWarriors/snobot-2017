@@ -12,7 +12,7 @@ import edu.wpi.first.smartdashboard.robot.Robot;
 
 public class RobotWidget extends AutoUpdateWidget
 {
-    public static final String NAME = "2016 Robot Widget";
+    public static final String NAME = "2017 Robot Widget";
 
     private RobotDrawer mDrawer;
 

@@ -1,10 +1,11 @@
-package com.snobot.sd2017.path_plotter;
+package com.snobot.sd2017.spline_plotter;
 
 import java.awt.BorderLayout;
 import java.util.StringTokenizer;
 
-import com.snobot.sd.path_plotter.IdealPlotSerializer;
-import com.snobot.sd.path_plotter.PathPlotterPanel;
+import com.snobot.sd.spline_plotter.IdealSplineSerializer;
+import com.snobot.sd.spline_plotter.SplinePlotterPanel;
+import com.snobot.sd.spline_plotter.SplineSegment;
 import com.snobot.sd.util.AutoUpdateWidget;
 import com.snobot2017.SmartDashBoardNames;
 
@@ -13,31 +14,36 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 
-public class PlotPlannerWidget extends AutoUpdateWidget
+/**
+ * Widget used to plot information on driving a cubic spline, pre-planned path
+ * 
+ * @author PJ
+ *
+ */
+public class SplinePlannerWidget extends AutoUpdateWidget
 {
-    public static final String NAME = "2017 PathPlanning";
-    private PathPlotterPanel mPanel;
-    private ITable mTable;
+    public static final String NAME = "2017 SplinePlanning";
+    private SplinePlotterPanel mPanel;
     private int mLastIndex;
 
-    private String mTableNamespace;
-    private String mSDIdealPathName;
-    private String mSDRealPathname;
+    private ITable mTable; // The network table used to send trajectory data
+    private String mIdealSplineName; // The SD name used to convey the ideal spline points
+    private String mRealSplineName;  // The SD name of the real points
 
-    public PlotPlannerWidget()
+
+    public SplinePlannerWidget()
     {
         super(false, 10);
         setLayout(new BorderLayout());
-        mPanel = new PathPlotterPanel();
+        mPanel = new SplinePlotterPanel();
         add(mPanel);
+
+        mTable = NetworkTable.getTable(SmartDashBoardNames.sSPLINE_NAMESPACE);
 
         mLastIndex = 0;
 
-        mTableNamespace = SmartDashBoardNames.sPATH_NAMESPACE;
-        mSDIdealPathName = SmartDashBoardNames.sPATH_IDEAL_POINTS;
-        mSDRealPathname = SmartDashBoardNames.sPATH_POINT;
-
-        mTable = NetworkTable.getTable(mTableNamespace);
+        mIdealSplineName = SmartDashBoardNames.sSPLINE_IDEAL_POINTS;
+        mRealSplineName = SmartDashBoardNames.sSPLINE_REAL_POINT;
 
         addPathListener();
     }
@@ -45,27 +51,27 @@ public class PlotPlannerWidget extends AutoUpdateWidget
     private void addPathListener()
     {
 
-        ITableListener plannedPathListener = new ITableListener()
+        ITableListener idealSplineListener = new ITableListener()
         {
 
             @Override
             public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
             {
-                mPanel.setPath(IdealPlotSerializer.deserializePath(arg2.toString()));
+                mPanel.setPath(IdealSplineSerializer.deserializePath(arg2.toString()));
                 mLastIndex = 0;
                 revalidate();
                 repaint();
             }
         };
-        mTable.addTableListener(mSDIdealPathName, plannedPathListener, true);
+        mTable.addTableListener(mIdealSplineName, idealSplineListener, true);
 
-        ITableListener realPointListener = new ITableListener()
+        ITableListener realSplineListener = new ITableListener()
         {
 
             @Override
             public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
             {
-                String point_info = mTable.getString(mSDRealPathname, "");
+                String point_info = mTable.getString(mRealSplineName, "");
 
                 StringTokenizer tokenizer = new StringTokenizer(point_info, ",");
 
@@ -80,22 +86,21 @@ public class PlotPlannerWidget extends AutoUpdateWidget
 
                     if (index > mLastIndex)
                     {
-                        mPanel.setPoint(index, IdealPlotSerializer.deserializePathPoint(tokenizer));
+                        SplineSegment segment = IdealSplineSerializer.deserializePathPoint(tokenizer);
+                        mPanel.setPoint(index, segment);
                     }
 
                     mLastIndex = index;
                 }
-
-                revalidate();
-                repaint();
             }
         };
-        mTable.addTableListener(mSDRealPathname, realPointListener, true);
+        mTable.addTableListener(mRealSplineName, realSplineListener, true);
     }
 
     @Override
     public void propertyChanged(Property arg0)
     {
+
     }
 
     @Override
