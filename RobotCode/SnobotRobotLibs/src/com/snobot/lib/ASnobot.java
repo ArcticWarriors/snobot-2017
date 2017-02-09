@@ -92,6 +92,7 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
             iSubsystem.init();
         }
         mLogger.endHeader();
+        mAutonCommand = createAutonomousCommand();
     }
 
     @Override
