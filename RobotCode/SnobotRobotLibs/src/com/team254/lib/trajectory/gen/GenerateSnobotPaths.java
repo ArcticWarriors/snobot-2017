@@ -392,7 +392,7 @@ public class GenerateSnobotPaths
     private static void genTestStraightSlow(String directory, double kWheelbaseWidth)
     {
         TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-        final String path_name = "test/TestStraightSlow.csv";
+        final String path_name = "test/TestStraightSlow";
 
         config.dt = .02;
         config.max_acc = 120;
@@ -409,7 +409,7 @@ public class GenerateSnobotPaths
     private static void genTestStraightFast(String directory, double kWheelbaseWidth)
     {
         TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-        final String path_name = "test/TestStraightFast.csv";
+        final String path_name = "test/TestStraightFast";
 
         config.dt = .02;
         config.max_acc = 120;
@@ -426,7 +426,7 @@ public class GenerateSnobotPaths
     private static void genTestMoveRightSlow(String directory, double kWheelbaseWidth)
     {
         TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-        final String path_name = "test/TestMoveRightSlow.csv";
+        final String path_name = "test/TestMoveRightSlow";
 
         config.dt = .02;
         config.max_acc = 120;
@@ -443,7 +443,7 @@ public class GenerateSnobotPaths
     private static void genTestMoveLeftSlow(String directory, double kWheelbaseWidth)
     {
         TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-        final String path_name = "test/TestMoveLeftSlow.csv";
+        final String path_name = "test/TestMoveLeftSlow";
 
         config.dt = .02;
         config.max_acc = 120;
@@ -460,7 +460,7 @@ public class GenerateSnobotPaths
     private static void genTestMoveRightFast(String directory, double kWheelbaseWidth)
     {
         TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-        final String path_name = "test/TestMoveRightFast.csv";
+        final String path_name = "test/TestMoveRightFast";
 
         config.dt = .02;
         config.max_acc = 120;
@@ -477,7 +477,7 @@ public class GenerateSnobotPaths
     private static void genTestMoveLeftFast(String directory, double kWheelbaseWidth)
     {
         TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-        final String path_name = "test/TestMoveLeftFast.csv";
+        final String path_name = "test/TestMoveLeftFast";
 
         config.dt = .02;
         config.max_acc = 120;
