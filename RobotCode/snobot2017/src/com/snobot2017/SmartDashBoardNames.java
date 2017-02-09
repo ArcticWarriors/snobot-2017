@@ -7,6 +7,8 @@ public class SmartDashBoardNames
     public static final String sSUCCESFULLY_PARSED_AUTON = "Parsed Command";
     public static final String sAUTON_TABLE_NAME = "AutonTable";
     public static final String sAUTON_CHOOSER = "Autonomous Selection";
+    public static final String sAUTON_FILENAME = "Auton Filename";
+    public static final String sSAVE_AUTON = "Save Auton";
 
     // Climbing
     public static final String sROBOT_CLIMBING_ROPE_SPEED = "Climbing Rope";
