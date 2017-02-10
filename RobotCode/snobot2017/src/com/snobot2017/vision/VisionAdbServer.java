@@ -52,7 +52,7 @@ public class VisionAdbServer extends RobotConnectionServer
         }
 
         mAdb.reversePortForward(aAppBindPort, aAppBindPort);
-        mAdb.reversePortForward(aAppMjpegBindPort, aAppForwardedMjpegBindPort);
+        mAdb.portForward(aAppMjpegBindPort, aAppForwardedMjpegBindPort);
 
         // MjpegReceiver receiver = new MjpegReceiver();
         // MjpegForwarder forwarder = new MjpegForwarder(aAppMjpegBindPort);
