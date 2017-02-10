@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * reads a log file and makes the motor replay
- * 
  * @author Andrew
  *
  */
@@ -26,14 +25,13 @@ public class Replay extends Command
 
     /**
      * Constructor
-     * 
      * @param aDriveTrain
      * @throws IOException
      */
-    public Replay(IDriveTrain aDriveTrain) throws IOException
+    public Replay(IDriveTrain aDriveTrain, String aFilePath) throws IOException
     {
         mBufferedReader = new BufferedReader(new FileReader(new File(mFilePath)));
-        mFilePath = Properties2017.sAUTO_LOG_RUN_PATH.getValue();
+        mFilePath = aFilePath;
         mDriveTrain = aDriveTrain;
     }
 
@@ -53,7 +51,6 @@ public class Replay extends Command
 
     /**
      * reads log file and sets motors in same timeframe
-     * 
      * @throws IOException
      */
     private void setMotors() throws IOException

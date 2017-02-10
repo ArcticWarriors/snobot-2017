@@ -3,6 +3,8 @@ package com.snobot.sd2017.path_plotter;
 import java.awt.BorderLayout;
 import java.util.StringTokenizer;
 
+import com.snobot.sd.path_plotter.IdealPlotSerializer;
+import com.snobot.sd.path_plotter.PathPlotterPanel;
 import com.snobot.sd.util.AutoUpdateWidget;
 import com.snobot2017.SmartDashBoardNames;
 
@@ -13,7 +15,7 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class PlotPlannerWidget extends AutoUpdateWidget
 {
-    public static final String NAME = "2016 PathPlanning";
+    public static final String NAME = "2017 PathPlanning";
     private PathPlotterPanel mPanel;
     private ITable mTable;
     private int mLastIndex;

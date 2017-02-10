@@ -7,7 +7,6 @@ import java.util.logging.LogManager;
 
 import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
-import com.snobot.lib.ISubsystem;
 import com.snobot.lib.LogFormatter;
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.SnobotActor.SnobotActor;
@@ -73,9 +72,6 @@ public class Snobot2017 extends ASnobot
         String headerDate = mAutoLogDateFormat.format(new Date());
         mAutoLogger = new AutoLogger(headerDate, Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue());
 
-        // Autonomous
-        mAutonFactory = new AutonomousFactory(this);
-
         // Joystick
         Joystick driverJostickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
@@ -85,15 +81,15 @@ public class Snobot2017 extends ASnobot
 
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
         mSubsystems.add(operatorJoystick);
-
+        
         // Drive Train
         boolean useCan = false;
         if (useCan)
         {
-            CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
-            CANTalon driveLeftMotorB = new CANTalon(PortMappings2017.sDRIVE_PWM_LEFT_B_PORT);
-            CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
-            CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_PWM_RIGHT_B_PORT);
+            CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
+            CANTalon driveLeftMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_B_PORT);
+            CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
+            CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
 
             mDriveTrain = new SnobotCanDriveTrain(
                     driveLeftMotorA, 
@@ -110,10 +106,10 @@ public class Snobot2017 extends ASnobot
             SpeedController driveRightMotor = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
             Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
             Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
-
+    
             mDriveTrain = new SnobotDriveTrain(
                     driveLeftMotor, 
-                    driveRightMotor, 
+                    driveRightMotor,
                     leftDriveEncoder, 
                     rightDriveEncoder, 
                     driverJoystick, 
@@ -141,21 +137,21 @@ public class Snobot2017 extends ASnobot
         mPositioner = new Positioner(gyro, mDriveTrain, mLogger);
         mSubsystems.add(mPositioner);
 
+        // Autonomous
+        mAutonFactory = new AutonomousFactory(this);
+
+        // SnobotActor
+        mSnobotActor = new SnobotActor(mDriveTrain, mPositioner);
+        mSubsystems.add(mSnobotActor);
+
         // Call last
         mLogger.startLogging(
                 new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), 
                 Properties2017.sLOG_COUNT.getValue(),
                 Properties2017.sLOG_FILE_PATH.getValue());
         init();
-
-        mPositioner.setPosition(75, -324, 0);
-
-        // SnobotActor
-        mSnobotActor = new SnobotActor(mDriveTrain, mPositioner);
-        mSubsystems.add(mSnobotActor);
-
     }
-
+    		
     @Override
     public void init()
     {
@@ -163,19 +159,19 @@ public class Snobot2017 extends ASnobot
         super.init();
         mAutoLogger.endHeader();
     }
-
+    
+    @Override
+    public void update()
+    {
+    	super.update();
+    	this.updateAutoLog();
+    }
     public void updateAutoLog()
     {
         String logDate = mAutoLogDateFormat.format(new Date());
-        if (mAutoLogger.logNow())
-        {
             mAutoLogger.startLogEntry(logDate);
-            for (ISubsystem iSubsystem : mSubsystems)
-            {
-                iSubsystem.updateLog();
-            }
+            mDriveTrain.updateAutoLog();
             mAutoLogger.endLogger();
-        }
     }
     
 
@@ -194,7 +190,7 @@ public class Snobot2017 extends ASnobot
     {
         return this.mDriveTrain;
     }
-
+    
     /**
      * Returns the IGearBoss for the robot
      * 

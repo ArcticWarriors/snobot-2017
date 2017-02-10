@@ -1,5 +1,8 @@
 package com.snobot2017.autonomous;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,6 +22,7 @@ import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.io.TextFileDeserializer;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
@@ -95,12 +99,12 @@ public class CommandParser extends ACommandParser
                 newCommand = parseTurnWithDegrees(args);
                 break;
             }
-            case AutonomousCommandNames.sDRIVE_STRAIGHT_PATH:
+            case AutonomousCommandNames.sDRIVE_PATH_STRAIGHT:
             {
                 newCommand = createDrivePathCommand(args);
                 break;
             }
-            case AutonomousCommandNames.sDRIVE_TURN_PATH:
+            case AutonomousCommandNames.sDRIVE_PATH_TURN:
             {
                 newCommand = createTurnPathCommand(args);
                 break;
@@ -110,10 +114,10 @@ public class CommandParser extends ACommandParser
                 newCommand = createTrajectoryCommand(args.get(1));
                 break;
             }
-            case AutonomousCommandNames.sAUTON_COPY:
+            case AutonomousCommandNames.sREPLAY:
             {
-                newCommand = parseAutonCopyCommand();
-                break;
+            	newCommand = parseReplayCommand(args);
+            	break;
             }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
@@ -220,14 +224,49 @@ public class CommandParser extends ACommandParser
         return new StupidDriveStraight(mSnobot.getDriveTrain(), time, speed);
     }
 
-    private Command parseAutonCopyCommand() throws IOException
+    private Command parseReplayCommand(List<String> args) throws IOException
     {
-        return new Replay(mSnobot.getDriveTrain());
+    	String autoPath = "../../snobot2017/autonomous/replays/" + args.get(1);
+        return new Replay(mSnobot.getDriveTrain(), autoPath);
     }
 
     protected Command parseWaitCommand(List<String> args)
     {
         double time = Double.parseDouble(args.get(1));
         return new WaitCommand(time);
+    }
+
+    @Override
+    public CommandGroup readFile(String aFilePath)
+    {
+        if (aFilePath == null)
+        {
+            aFilePath = "NOT FOUND!";
+        }
+
+        mAutonTable.putString(SmartDashBoardNames.sAUTON_FILENAME, aFilePath);
+        return super.readFile(aFilePath);
+    }
+
+    public void saveAutonMode()
+    {
+        String new_text = mAutonTable.getString(SmartDashBoardNames.sROBOT_COMMAND_TEXT, "");
+        String filename = mAutonTable.getString(SmartDashBoardNames.sAUTON_FILENAME, "auton_file.txt");
+
+        System.out.println("*****************************************");
+        System.out.println("Saving auton mode to " + filename);
+        System.out.println("*****************************************");
+
+        try
+        {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(filename)));
+            bw.write(new_text);
+            bw.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        mAutonTable.putBoolean(SmartDashBoardNames.sSAVE_AUTON, false);
     }
 }

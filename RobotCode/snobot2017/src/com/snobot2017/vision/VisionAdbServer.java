@@ -5,10 +5,11 @@ import java.util.logging.Level;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.spectrum3847.RIOdroid.RIOadb;
+import org.spectrum3847.RIOdroid.RIOdroid;
 
 import com.snobot.lib.adb.AdbBridge;
 import com.snobot.lib.external_connection.RobotConnectionServer;
-import com.snobot2017.Properties2017;
 import com.snobot2017.vision.messages.HeartbeatMessage;
 import com.snobot2017.vision.messages.IterateDisplayImageMessage;
 import com.snobot2017.vision.messages.SetCameraDirectionMessage;
@@ -38,11 +39,38 @@ public class VisionAdbServer extends RobotConnectionServer
     {
         super(aAppBindPort, sTIMEOUT_PERIOD);
 
-        mAdb = new AdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY);
-        mAdb.start();
-        mAdb.reversePortForward(aAppBindPort, aAppBindPort);
-        // mAdb.portForward(aAppBindPort, aAppBindPort);
-        mAdb.portForward(aAppForwardedMjpegBindPort, aAppMjpegBindPort);
+        try
+        {
+            RIOadb.init();
+        }
+        catch (Exception e)
+        {
+            sLOGGER.log(Level.SEVERE, "Failed to initialize ADB", e);
+        }
+
+        executeCommand("adb reverse tcp:" + aAppBindPort + " tcp:" + aAppBindPort);
+        // RIOdroid.executeCommand("adb forward tcp:" + aAppForwardedMjpegBindPort + " tcp:" + aAppMjpegBindPort);
+        executeCommand("adb reverse tcp:" + aAppMjpegBindPort + " tcp:" + aAppForwardedMjpegBindPort);
+        
+
+        // MjpegReceiver receiver = new MjpegReceiver();
+        // MjpegForwarder forwarder = new MjpegForwarder(aAppMjpegBindPort);
+        // receiver.addImageReceiver(forwarder);
+        //
+        // receiver.start("127.0.0.1:" + aAppForwardedMjpegBindPort);
+    }
+
+    private void executeCommand(String aCommand)
+    {
+        try
+        {
+            System.out.println(aCommand);
+            RIOdroid.executeCommand(aCommand);
+        }
+        catch (Exception e)
+        {
+            sLOGGER.log(Level.SEVERE, "Failed to send command '" + aCommand + "'", e);
+        }
     }
 
     @Override
@@ -99,7 +127,12 @@ public class VisionAdbServer extends RobotConnectionServer
 
     public void restartApp()
     {
-        mAdb.restartApp();
+        // mAdb.restartApp();
+    }
+
+    public void restartAdb()
+    {
+        // mAdb.restartAdb();
     }
 
     protected void send(JSONObject aObject)
