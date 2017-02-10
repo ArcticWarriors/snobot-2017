@@ -312,8 +312,8 @@ public class GenerateSnobotPaths
         config.max_vel = 50;
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(-79.52, 334.81, 0));
-        p.addWaypoint(new Waypoint(-34, 197.5, 0));
+        p.addWaypoint(new Waypoint(43.02, 334.81, 0));
+        p.addWaypoint(new Waypoint(34, 197.5, 0));
 
         generate(config, p, directory, path_name, kWheelbaseWidth);
     }
@@ -329,8 +329,8 @@ public class GenerateSnobotPaths
         config.max_vel = 50;
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(43.02, 334.81, 0));
-        p.addWaypoint(new Waypoint(34, 197.5, 0));
+        p.addWaypoint(new Waypoint(-79.52, 334.81, 0));
+        p.addWaypoint(new Waypoint(-34, 197.5, 0));
 
         generate(config, p, directory, path_name, kWheelbaseWidth);
     }
