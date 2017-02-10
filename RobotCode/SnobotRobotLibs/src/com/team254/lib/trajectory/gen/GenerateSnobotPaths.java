@@ -482,11 +482,11 @@ public class GenerateSnobotPaths
         config.dt = .02;
         config.max_acc = 120;
         config.max_jerk = 480;
-        config.max_vel = 84;
+        config.max_vel = 36;
 
         WaypointSequence p = new WaypointSequence(10000);
         p.addWaypoint(new Waypoint(0, 0, 0));
-        p.addWaypoint(new Waypoint(-48, 96, 0));
+        p.addWaypoint(new Waypoint(0, 96, 0));
 
         generate(config, p, directory, path_name, kWheelbaseWidth);
     }
