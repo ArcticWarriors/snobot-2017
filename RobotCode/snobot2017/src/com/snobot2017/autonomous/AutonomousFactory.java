@@ -57,7 +57,8 @@ public class AutonomousFactory
     
     public AutonomousFactory(Snobot2017 aSnobot)
     {
-        mCommandParser = new CommandParser(aSnobot);
+        mPositionChooser = new SendableChooser<StartingPositions>();
+        mCommandParser = new CommandParser(aSnobot, mPositionChooser);
         mAutoModeTable = NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME);
         
         mPositioner = aSnobot.getPositioner();
@@ -66,7 +67,6 @@ public class AutonomousFactory
 
         SmartDashboard.putData(SmartDashBoardNames.sAUTON_CHOOSER, mAutonModeChooser);
         
-        mPositionChooser = new SendableChooser<StartingPositions>();
 
         for (StartingPositions pos : StartingPositions.values())
         {

@@ -15,6 +15,7 @@ import com.snobot.lib.motion_profile.StaticSetpointIterator;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
+import com.snobot2017.autonomous.AutonomousFactory.StartingPositions;
 import com.snobot2017.autonomous.path.DriveStraightPath;
 import com.snobot2017.autonomous.path.DriveTurnPath;
 import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
  * Creates commands from a file path and adds them to a CommandGroup.
@@ -37,20 +39,23 @@ public class CommandParser extends ACommandParser
     private static final double sEXPECTED_DT = .02;
 
     protected Snobot2017 mSnobot;
+    protected SendableChooser<StartingPositions> mPositionChooser;
 
     /**
      * Creates a CommandParser object.
      * 
      * @param aSnobot
      *            The robot using the CommandParser.
+     * @param aPositionChooser 
      * @param aStartPosition
      */
-    public CommandParser(Snobot2017 aSnobot)
+    public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser)
     {
         super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
                 SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
 
         mSnobot = aSnobot;
+        mPositionChooser = aPositionChooser;
 
     }
 
@@ -118,6 +123,16 @@ public class CommandParser extends ACommandParser
             {
             	newCommand = parseReplayCommand(args);
             	break;
+            }
+            case AutonomousCommandNames.sSTART_POSI_GEAR_TRAJ:
+            {
+                newCommand = createScoreGearWithTrajectoryCommand();
+                break;
+            }
+            case AutonomousCommandNames.START_HOPPER_TRAJ:
+            {
+                newCommand = createGetHoppersWithTrajectoryCommand();
+                break;
             }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
@@ -192,6 +207,84 @@ public class CommandParser extends ACommandParser
         return output;
     }
 
+    private Command createScoreGearWithTrajectoryCommand()
+    {
+        StartingPositions startPosition = mPositionChooser.getSelected();
+        
+        String fileName = null;
+        
+        switch (startPosition)
+        {
+        case RedLeft:
+            fileName = "RedLeftScoreGear.csv";
+            break;
+        case RedMiddle:
+            fileName = "RedMiddleScoreGear.csv";
+            break;
+        case RedRight:
+            fileName = "RedRightScoregear.csv";
+            break;
+        case BlueRight:
+            fileName = "BlueRightScoreGear.csv";
+            break;
+        case BlueMiddle:
+            fileName = "BlueMiddleScoreGear.csv";
+            break;
+        case BlueLeft:
+            fileName = "BlueLeftScoreGear.csv";
+            break;   
+        }
+       
+        if (fileName != null)
+        {
+            return createTrajectoryCommand(fileName);
+        }
+        else
+        {
+            addError("Invalid start selection for the current robot start position command : " + startPosition);
+            return null;
+        }
+    }
+    
+    private Command createGetHoppersWithTrajectoryCommand()
+    {
+        StartingPositions startPosition = mPositionChooser.getSelected();
+        
+        String fileName = null;
+        
+        switch (startPosition)
+        {
+        case RedLeft:
+            fileName = "RedLeftToHopperFive.csv";
+            break;
+        case RedMiddle:
+            fileName = "RedMiddleToHopperFive.csv";
+            break;
+        case RedRight:
+            fileName = "RedRightToHopperOne.csv";
+            break;
+        case BlueRight:
+            fileName = "BlueRightToHopperFour.csv";
+            break;
+        case BlueMiddle:
+            fileName = "BlueMiddleToHopperFour.csv";
+            break;
+        case BlueLeft:
+            fileName = "BlueLeftToHopperThree.csv";
+            break;   
+        }
+       
+        if (fileName != null)
+        {
+            return createTrajectoryCommand(fileName);
+        }
+        else
+        {
+            addError("Invalid start selection for the current robot start position command : " + startPosition);
+            return null;
+        }
+    }
+    
     /**
      * 
      * @param args
