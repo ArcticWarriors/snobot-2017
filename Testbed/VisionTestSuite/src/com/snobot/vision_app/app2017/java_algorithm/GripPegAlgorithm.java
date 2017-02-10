@@ -37,9 +37,9 @@ public class GripPegAlgorithm {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    double[] hslThresholdHue = {64.74820143884892, 87.84982935153582};
-    double[] hslThresholdSaturation = {20.63848920863308, 226.71501706484642};
-    double[] hslThresholdLuminance = {71.08812949640287, 150.5631399317406};
+    double[] hslThresholdHue = {64.74820143884892, 98.87445018342426};
+    double[] hslThresholdSaturation = {123.29111287241389, 255.0};
+    double[] hslThresholdLuminance = {69.36069788237208, 255.0};
     
     public void setThreshold(HslThreshold aMin, HslThreshold aMax)
     {
@@ -60,7 +60,7 @@ public class GripPegAlgorithm {
         Mat cvErode0Src = hslThresholdOutput;
         Mat cvErode0Kernel = new Mat();
         Point cvErode0Anchor = new Point(-1, -1);
-        double cvErode0Iterations = 4.0;
+        double cvErode0Iterations = 2.0;
         int cvErode0Bordertype = Core.BORDER_CONSTANT;
         Scalar cvErode0Bordervalue = new Scalar(-1);
         cvErode(cvErode0Src, cvErode0Kernel, cvErode0Anchor, cvErode0Iterations, cvErode0Bordertype, cvErode0Bordervalue, cvErode0Output);
@@ -69,7 +69,7 @@ public class GripPegAlgorithm {
         Mat cvDilateSrc = cvErode0Output;
         Mat cvDilateKernel = new Mat();
         Point cvDilateAnchor = new Point(-1, -1);
-        double cvDilateIterations = 11.0;
+        double cvDilateIterations = 9.0;
         int cvDilateBordertype = Core.BORDER_CONSTANT;
         Scalar cvDilateBordervalue = new Scalar(-1);
         cvDilate(cvDilateSrc, cvDilateKernel, cvDilateAnchor, cvDilateIterations, cvDilateBordertype, cvDilateBordervalue, cvDilateOutput);
@@ -90,13 +90,13 @@ public class GripPegAlgorithm {
 
         // Step Filter_Contours0:
         ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-        double filterContoursMinArea = 125.0;
+        double filterContoursMinArea = 75.0;
         double filterContoursMinPerimeter = 0.0;
         double filterContoursMinWidth = 0.0;
         double filterContoursMaxWidth = 1000.0;
         double filterContoursMinHeight = 0.0;
         double filterContoursMaxHeight = 1000.0;
-        double[] filterContoursSolidity = {0, 100};
+        double[] filterContoursSolidity = {0.0, 100};
         double filterContoursMaxVertices = 1000000.0;
         double filterContoursMinVertices = 0.0;
         double filterContoursMinRatio = 0.0;
