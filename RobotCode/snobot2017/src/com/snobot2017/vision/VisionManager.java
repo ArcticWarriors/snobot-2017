@@ -39,7 +39,6 @@ public class VisionManager implements ISubsystem
     public void update()
     {
         mLatestUpdate = mVisionServer.getLatestTargetUpdate();
-        mLatestUpdate.getTargets().get(0).getAngle();
     }
 
     @Override

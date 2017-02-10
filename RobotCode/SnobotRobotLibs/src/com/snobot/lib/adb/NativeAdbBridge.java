@@ -55,7 +55,7 @@ public class NativeAdbBridge extends BaseAdbBridge
 
         try
         {
-            sLOGGER.log(Level.FINE, "Running ADB Command: " + cmd);
+            sLOGGER.log(Level.INFO, "Running ADB Command: " + cmd);
 
             Process p = r.exec(cmd);
             success = p.waitFor(10, TimeUnit.SECONDS);

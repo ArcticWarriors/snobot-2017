@@ -66,7 +66,7 @@ public class MjpegRecevierMain
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         String urlAddress = "http://127.0.0.1:1800";
-        String thresholdConfig = "config/threshold_config.yml";
+        String thresholdConfig = "peg_test_20170202/threshold_config.yml";
         if (args.length == 1)
         {
             urlAddress = args[0];
