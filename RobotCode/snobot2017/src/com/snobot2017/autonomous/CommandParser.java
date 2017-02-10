@@ -197,14 +197,14 @@ public class CommandParser extends ACommandParser
     {
         double speed = Double.parseDouble(args.get(1));
         double angle = Double.parseDouble(args.get(2));
-        return new TurnWithDegrees(speed, angle, mSnobot.getDriveTrain(), mSnobot.getPositioner());
+        return new TurnWithDegrees(speed, angle, mSnobot.getSnobotActor());
     }
 
     private Command parseDriveStraightADistance(List<String> args)
     {
         double distance = Double.parseDouble(args.get(1));
         double speed = Double.parseDouble(args.get(2));
-        return new DriveStraightADistance(distance, speed, mSnobot.getDriveTrain(), mSnobot.getPositioner());
+        return new DriveStraightADistance(distance, speed, mSnobot.getSnobotActor());
     }
 
     private Command parseScoreGearCommand(List<String> args)

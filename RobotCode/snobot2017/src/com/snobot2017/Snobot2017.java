@@ -9,6 +9,8 @@ import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
 import com.snobot.lib.ISubsystem;
 import com.snobot.lib.LogFormatter;
+import com.snobot2017.SnobotActor.ISnobotActor;
+import com.snobot2017.SnobotActor.SnobotActor;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.climbing.Climbing;
@@ -55,6 +57,9 @@ public class Snobot2017 extends ASnobot
     // Logger
     private AutoLogger mAutoLogger;
     private DateFormat mAutoLogDateFormat;
+
+    // SnobotActor
+    private ISnobotActor mSnobotActor;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -144,6 +149,11 @@ public class Snobot2017 extends ASnobot
         init();
 
         mPositioner.setPosition(75, -324, 0);
+
+        // SnobotActor
+        mSnobotActor = new SnobotActor(mDriveTrain, mPositioner);
+        mSubsystems.add(mSnobotActor);
+
     }
 
     @Override
@@ -203,5 +213,15 @@ public class Snobot2017 extends ASnobot
     public IPositioner getPositioner()
     {
         return mPositioner;
+    }
+
+    /**
+     * Returns the SnobotActor
+     * 
+     * @return ISnobotActor
+     */
+    public ISnobotActor getSnobotActor()
+    {
+        return mSnobotActor;
     }
 }

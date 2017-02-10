@@ -1,8 +1,7 @@
 package com.snobot2017.autonomous;
 
-import com.snobot.lib.InDeadbandHelper;
-import com.snobot2017.drivetrain.IDriveTrain;
-import com.snobot2017.positioner.IPositioner;
+import com.snobot2017.SnobotActor.ISnobotActor;
+import com.snobot2017.SnobotActor.SnobotActor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -14,15 +13,10 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TurnWithDegrees extends Command
 {
+    private SnobotActor mSnobotActor;
     private double mSpeed;
     private double mTurnAngle;
-    private IDriveTrain mDriveTrain;
-    private IPositioner mPositioner;
-    private double mTurnMeasure;
-    private boolean mDirection;
     private boolean mFinished;
-
-    private InDeadbandHelper mInDeadbandHelper = new InDeadbandHelper(10);
 
     /**
      * Constructor
@@ -33,11 +27,9 @@ public class TurnWithDegrees extends Command
      * @param aDriveTrain
      * @param aPositioner
      */
-    public TurnWithDegrees(double aSpeed, double aTurnAngle, IDriveTrain aDriveTrain, IPositioner aPositioner)
+    public TurnWithDegrees(double aSpeed, double aTurnAngle, ISnobotActor aSnobotActor)
     {
         mTurnAngle = aTurnAngle;
-        mPositioner = aPositioner;
-        mDriveTrain = aDriveTrain;
         mSpeed = aSpeed;
         mFinished = false;
     }
@@ -45,25 +37,7 @@ public class TurnWithDegrees extends Command
     @Override
     protected void execute()
     {
-        mTurnMeasure = (mTurnAngle - mPositioner.getOrientationDegrees()) % 360;
-        if ((mTurnMeasure) < 0)
-        {
-            mTurnMeasure = mTurnMeasure + 360;
-        }
-        if (mTurnMeasure <= 180)
-        {
-            mDriveTrain.setLeftRightSpeed(mSpeed, -mSpeed);
-        }
-        else
-        {
-            mDriveTrain.setLeftRightSpeed(-mSpeed, mSpeed);
-        }
-
-        if (mInDeadbandHelper.isFinished(Math.abs(mTurnAngle - mPositioner.getOrientationDegrees()) < 5))
-        {
-            mDriveTrain.setLeftRightSpeed(0, 0);
-            mFinished = true;
-        }
+        mFinished = mSnobotActor.turnToAngle(mTurnAngle, mSpeed);
     }
 
     @Override
