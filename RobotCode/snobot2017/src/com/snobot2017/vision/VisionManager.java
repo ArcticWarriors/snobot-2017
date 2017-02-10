@@ -14,9 +14,9 @@ public class VisionManager implements ISubsystem
 {
     private VisionAdbServer mVisionServer;
     private IVisionJoystick mOperatorJoystick;
-
+    
     private TargetUpdateMessage mLatestUpdate;
-
+    
     public VisionManager(IVisionJoystick aOperatorJoystick)
     {
         if (Properties2017.sENABLE_VISION.getValue())
@@ -44,11 +44,11 @@ public class VisionManager implements ISubsystem
     @Override
     public void control()
     {
-        if (mOperatorJoystick.iterateAppView())
+        if(mOperatorJoystick.iterateAppView())
         {
             mVisionServer.iterateShownImage();
         }
-        else if (mOperatorJoystick.switchToFrontCamera())
+        else if(mOperatorJoystick.switchToFrontCamera())
         {
             mVisionServer.setCameraDirection(CameraFacingDirection.Front);
         }
@@ -56,7 +56,7 @@ public class VisionManager implements ISubsystem
         {
             mVisionServer.setCameraDirection((CameraFacingDirection.Rear));
         }
-        else if (mOperatorJoystick.restartApp())
+        else if(mOperatorJoystick.restartApp())
         {
             mVisionServer.restartApp();
         }

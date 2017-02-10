@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Controls the climber
- * 
- * @author jbnol
+ *
+ * @author Jeff
  *
  */
 public class Climbing implements IClimbing

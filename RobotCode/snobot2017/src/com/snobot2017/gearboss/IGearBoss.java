@@ -27,5 +27,5 @@ public interface IGearBoss extends ISubsystem
      * @return true for gear high and false for gear low
      */
     boolean getGearHeight();
-
+    
 }

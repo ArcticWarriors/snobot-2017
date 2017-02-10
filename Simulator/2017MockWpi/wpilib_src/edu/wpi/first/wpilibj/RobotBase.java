@@ -61,14 +61,6 @@ public abstract class RobotBase {
     // Resource.RestartProgram();
 
     NetworkTable.setNetworkIdentity("Robot");
-    try
-    {
-        NetworkTable.setPersistentFilename("/home/lvuser/networktables.ini");
-    }
-    catch(IllegalStateException e)
-    {
-        //Ignore
-    }
     NetworkTable.setServerMode();// must be before b
     m_ds = DriverStation.getInstance();
     NetworkTable.getTable(""); // forces network tables to initialize

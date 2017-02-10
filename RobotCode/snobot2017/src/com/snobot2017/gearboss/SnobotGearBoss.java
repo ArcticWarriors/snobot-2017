@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Controls the gear boss
- * 
  * @author Owner/Nora
  *
  */
@@ -25,7 +24,7 @@ public class SnobotGearBoss implements IGearBoss
         mGearSolenoid = aGearSolenoid;
         mOperatorJoystick = aOperatorJoystick;
         mLogger = aLogger;
-
+        
     }
 
     @Override
@@ -103,5 +102,6 @@ public class SnobotGearBoss implements IGearBoss
     {
         return mGearSolenoid.get();
     }
+
 
 }
