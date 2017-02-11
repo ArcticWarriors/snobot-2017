@@ -2,6 +2,7 @@ package com.snobot2017.joystick;
 
 import com.snobot.lib.Logger;
 import com.snobot.lib.ui.LatchedButton;
+import com.snobot.lib.ui.ToggleButton;
 import com.snobot.lib.ui.XboxButtonMap;
 import com.snobot2017.SmartDashBoardNames;
 
@@ -37,6 +38,10 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     private boolean mSwitchToRearCamera;
     private boolean mRestartApp;
 
+    // Snobot Actor Stuff
+    private boolean mDriveToPeg;
+    private ToggleButton mDriveToPegToggleButton;
+
     public SnobotOperatorXbaxJoystick(Joystick aJoystick, Logger aLogger)
     {
         mJoystick = aJoystick;
@@ -46,6 +51,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         mSwitchToRearCameraLatcher = new LatchedButton();
         mRestartAppLatcher = new LatchedButton();
         mLogger = aLogger;
+        mDriveToPegToggleButton = new ToggleButton();
     }
 
     @Override
@@ -86,6 +92,9 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         mSwitchToFrontCamera = mSwitchToFrontCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.X_BUTTON));
         mSwitchToRearCamera = mSwitchToRearCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
         mRestartApp = mRestartAppLatcher.update(mJoystick.getRawButton(XboxButtonMap.B_BUTTON));
+
+        // SnobotActor Stuff
+        mDriveToPeg = mDriveToPegToggleButton.update(mJoystick.getRawButton(XboxButtonMap.START_BUTTON));
     }
     
     @Override
@@ -171,6 +180,12 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     public boolean restartApp()
     {
         return mRestartApp;
+    }
+
+    @Override
+    public boolean driveToPeg()
+    {
+        return mDriveToPeg;
     }
 
 }

@@ -141,7 +141,7 @@ public class Snobot2017 extends ASnobot
         mAutonFactory = new AutonomousFactory(this);
 
         // SnobotActor
-        mSnobotActor = new SnobotActor(mDriveTrain, mPositioner);
+        mSnobotActor = new SnobotActor(mDriveTrain, mPositioner, operatorJoystick);
         mSubsystems.add(mSnobotActor);
 
         // Call last

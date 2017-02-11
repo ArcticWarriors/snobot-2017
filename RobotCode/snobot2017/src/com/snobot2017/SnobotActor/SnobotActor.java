@@ -2,6 +2,7 @@ package com.snobot2017.SnobotActor;
 
 import com.snobot.lib.InDeadbandHelper;
 import com.snobot2017.drivetrain.IDriveTrain;
+import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.positioner.IPositioner;
 
 public class SnobotActor implements ISnobotActor
@@ -14,17 +15,21 @@ public class SnobotActor implements ISnobotActor
     private double mDesiredDistance;
     private double mCurrentDistance;
     private double mGoalSpeed;
-    
+    private IOperatorJoystick mOperatorJoystick;
+    private boolean mInAction;
+    private double mAngle;
+    private double mSpeed;
     /**
      * Constructor
      * 
      * @param aDriveTrain
      * @param aPositioner
      */
-    public SnobotActor(IDriveTrain aDriveTrain, IPositioner aPositioner)
+    public SnobotActor(IDriveTrain aDriveTrain, IPositioner aPositioner, IOperatorJoystick aOperatorJoystick)
     {
         mDriveTrain = aDriveTrain;
         mPositioner = aPositioner;
+        mOperatorJoystick = aOperatorJoystick;
     }
     
     /**
@@ -40,10 +45,20 @@ public class SnobotActor implements ISnobotActor
 
     }
 
-    
-    public void DriveToGoal()
+    public void driveToPeg()
     {
-        
+        if (!mInAction)
+        {
+            // temporary until vision manager is working
+            setGoal(45, .5, 100);
+            mInAction = true;            
+        }
+
+        if (turnToAngle(mAngle, mGoalSpeed))
+        {
+            driveDistance();
+        }
+
     }
     
     public boolean turnToAngle(double aAngle, double aSpeed)
@@ -115,7 +130,15 @@ public class SnobotActor implements ISnobotActor
     @Override
     public void control()
     {
-        // TODO Auto-generated method stub
+        if (mOperatorJoystick.driveToPeg())
+        {
+            driveToPeg();
+        }
+
+        else
+        {
+            mInAction = false;
+        }
 
     }
 
@@ -145,5 +168,13 @@ public class SnobotActor implements ISnobotActor
     {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void setGoal(double aAngle, double aGoalSpeed, double aDistance)
+    {
+        mAngle = aAngle;
+        mGoalSpeed = aGoalSpeed;
+        mDesiredDistance = mPositioner.getTotalDistance() + aDistance;
     }
 }
