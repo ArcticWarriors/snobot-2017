@@ -10,8 +10,6 @@ public interface IDriveTrain extends ISubsystem
      * @return distance in inches
      */
     double getRightDistance();
-    
-    void updateAutoLog();
 
     /**
      * Request left encoder distance
@@ -29,6 +27,9 @@ public interface IDriveTrain extends ISubsystem
      *            Set motor speed between -1 and 1
      */
     void setLeftRightSpeed(double aLeftSpeed, double aRightSpeed);
+
+    double getLeftMotorSpeed();
+    double getRightMotorSpeed();
 
     /**
      * Sets the encoders to zero

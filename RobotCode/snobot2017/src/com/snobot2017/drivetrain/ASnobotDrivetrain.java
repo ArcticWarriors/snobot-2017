@@ -23,7 +23,6 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     protected final IDriverJoystick mDriverJoystick;
 
     protected final Logger mLogger;
-    protected final AutoLogger mAutoLogger;
 
     protected final RobotDrive mRobotDrive;
 
@@ -40,11 +39,8 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
             SpeedControllerType aFrontRightMotor,
             SpeedControllerType aRearRightMotor, 
             IDriverJoystick aDriverJoystick, 
-            Logger aLogger, 
-            AutoLogger aAutoLogger)
+            Logger aLogger)
     {
-        mAutoLogger = aAutoLogger;
-
         mLeftMotor = aFrontLeftMotor;
         mRightMotor = aFrontRightMotor;
         
@@ -70,9 +66,6 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         mLogger.addHeader("RightEncoderDistance");
         mLogger.addHeader("LeftMotorSpeed");
         mLogger.addHeader("RightMotorSpeed");
-
-        mAutoLogger.addHeader("LeftMotorSpeed");
-        mAutoLogger.addHeader("RightMotorSpeed");
     }
 
     @Override
@@ -83,12 +76,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
             setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
         }
     }
-    public void updateAutoLog()
-    {
-    	mAutoLogger.updateLogger(mLeftMotor.get());
-    	mAutoLogger.updateLogger(mRightMotor.get());
-    }
-
+    
     @Override
     public void rereadPreferences()
     {
@@ -131,6 +119,19 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         mLeftMotorSpeed = aLeftSpeed;
         mRightMotorSpeed = aRightSpeed;
         mRobotDrive.setLeftRightMotorOutputs(mLeftMotorSpeed, mRightMotorSpeed);
+    }
+
+    @Override
+    public double getLeftMotorSpeed()
+    {
+        return mLeftMotorSpeed;
+    }
+    
+    @Override
+    public double getRightMotorSpeed()
+    {
+        return mRightMotorSpeed;
+        
     }
 
     @Override

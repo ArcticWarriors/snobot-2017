@@ -82,11 +82,7 @@ public class Snobot2017 extends ASnobot
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
         mSubsystems.add(operatorJoystick);
         
-        //autolog
-        mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
-        String headerDate = mAutoLogDateFormat.format(new Date());
-        mAutoLogger = new AutoLogger(headerDate, Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystickRaw, mDriveTrain);
-        mSubsystems.add(mAutoLogger);
+        
         
         // Drive Train
         boolean useCan = false;
@@ -103,8 +99,7 @@ public class Snobot2017 extends ASnobot
                     driveRightMotorA, 
                     driveRightMotorB, 
                     driverJoystick, 
-                    mLogger,
-                    mAutoLogger);
+                    mLogger);
         }
         else
         {
@@ -119,10 +114,11 @@ public class Snobot2017 extends ASnobot
                     leftDriveEncoder, 
                     rightDriveEncoder, 
                     driverJoystick, 
-                    mLogger,
-                    mAutoLogger);
+                    mLogger);
         }
         mSubsystems.add(mDriveTrain);
+        
+
 
         // Climbing
         SpeedController climbingMotor = new VictorSP(PortMappings2017.sCLIMB_PWM_PORT);
@@ -156,6 +152,10 @@ public class Snobot2017 extends ASnobot
                 new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), 
                 Properties2017.sLOG_COUNT.getValue(),
                 Properties2017.sLOG_FILE_PATH.getValue());
+        //autolog
+        mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
+        mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystickRaw, mDriveTrain);
+        mSubsystems.add(mAutoLogger);
         init();
     }
     		
