@@ -22,6 +22,7 @@ public class SnobotActor implements ISnobotActor
     private boolean mInAction;
     private double mAngle;
     private double mSpeed;
+    private String mActionName;
 
     private enum DriveToPegStates
     {
@@ -41,8 +42,9 @@ public class SnobotActor implements ISnobotActor
         mDriveTrain = aDriveTrain;
         mPositioner = aPositioner;
         mOperatorJoystick = aOperatorJoystick;
+        mActionName = "";
     }
-    
+
     /**
      * Setting the goal for the driveDistance command
      * 
@@ -100,7 +102,7 @@ public class SnobotActor implements ISnobotActor
         }
         }
     }
-    
+
     public boolean turnToAngle(double aAngle, double aSpeed)
     {
         double error = aAngle - mPositioner.getOrientationDegrees();
@@ -172,12 +174,14 @@ public class SnobotActor implements ISnobotActor
     {
         if (mOperatorJoystick.driveToPeg())
         {
+            mActionName = "Drive To Peg";
             driveToPeg();
         }
 
         else
         {
             mInAction = false;
+            mActionName = "";
         }
 
     }
@@ -194,6 +198,7 @@ public class SnobotActor implements ISnobotActor
     {
         SmartDashboard.putString(SmartDashBoardNames.sSNOBOT_ACTION, mDriveToPegStates.toString());
         SmartDashboard.putBoolean(SmartDashBoardNames.sIN_ACTION, mInAction);
+        SmartDashboard.putString(SmartDashBoardNames.sSNOBOT_ACTION_NAME, mActionName);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.snobot.sd2017.robot;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
@@ -39,9 +40,10 @@ public class RobotDrawer extends JPanel
     private static final Color sROBOT_GEARBOX_COLOR = Color.blue;
     private static final Color sROBOT_SPOOL_COLOR = Color.gray;
     private static final Color sROBOT_GEARFUNNEL_COLOR = Color.cyan;
-    private static final Color sROBOT_NOACTION_COLOR = Color.green;
-    private static final Color sROBOT_INACTION1_COLOR = Color.red;
-    private static final Color sROBOT_INACTION2_COLOR = Color.pink;
+    private static final Color sROBOT_NOACTION_COLOR = Color.white;
+    private static final Color sROBOT_INACTION1_COLOR = Color.orange;
+    private static final Color sROBOT_INACTION2_COLOR = new Color(0xD79B24);
+    private static final Color sROBOT_STATE_TEXT_COLOR = Color.black;
 
     /**
      * The scaling factor used for drawing. For example, 1 would mean draw every
@@ -54,6 +56,9 @@ public class RobotDrawer extends JPanel
     private boolean mGearBossPos;
     private boolean mInAction;
     private boolean mCycleFlash = false;
+    private String mActorStateName;
+    private String mActorActionName;
+    private Font mFont = new Font("SansSerif", Font.BOLD, 14);
 
     public RobotDrawer()
     {
@@ -128,6 +133,39 @@ public class RobotDrawer extends JPanel
         g2d.fill(gearBoss);
     }
 
+    protected void drawActorState(Graphics2D g2d)
+    {
+        if (mInAction)
+        {
+            if (mCycleFlash)
+            {
+                g2d.setColor(sROBOT_INACTION1_COLOR);
+            }
+            else
+            {
+                g2d.setColor(sROBOT_INACTION2_COLOR);
+            }
+            mCycleFlash = !mCycleFlash;
+        }
+        else
+        {
+            g2d.setColor(sROBOT_NOACTION_COLOR);
+        }
+        g2d.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize().getHeight());
+
+        // Write State on Image
+        String nameString = "";
+        if (!mActorActionName.isEmpty())
+        {
+            nameString = mActorActionName + ": ";
+        }
+        nameString = nameString + mActorStateName;
+
+        g2d.setColor(sROBOT_STATE_TEXT_COLOR);
+        g2d.setFont(mFont);
+        g2d.drawString(nameString, 10, 20);
+    }
+
     public void updateSize()
     {
         double horizontalScaleFactor = (getWidth() / sROBOT_WIDTH);
@@ -145,25 +183,9 @@ public class RobotDrawer extends JPanel
         Graphics2D g2d = (Graphics2D) g;
 
         g.clearRect(0, 0, (int) getSize().getWidth(), (int) getSize().getHeight());
-        if (mInAction)
-        {
-            if (mCycleFlash)
-            {
-                g.setColor(sROBOT_INACTION1_COLOR);
-            }
-            else
-            {
-                g.setColor(sROBOT_INACTION2_COLOR);
-            }
-            mCycleFlash = !mCycleFlash;
-        }
-        else
-        {
-            g.setColor(sROBOT_NOACTION_COLOR);
-        }
-        g2d.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize().getHeight());
 
         // Draw Robot Parts
+        drawActorState(g2d);
         drawRobotBase(g2d);
         drawSpool(g2d);
         drawGearFunnel(g2d);
@@ -193,5 +215,16 @@ public class RobotDrawer extends JPanel
     public void setInAction(boolean inAction)
     {
         mInAction = inAction;
+    }
+
+    public void setActorState(String actorStateName)
+    {
+        mActorStateName = actorStateName;
+    }
+
+    public void setActionName(String actorActionName)
+    {
+        mActorActionName = actorActionName;
+
     }
 }
