@@ -30,14 +30,15 @@ public class Replay extends Command
      */
     public Replay(IDriveTrain aDriveTrain, String aFilePath) throws IOException
     {
-        mBufferedReader = new BufferedReader(new FileReader(new File(mFilePath)));
         mFilePath = aFilePath;
+        mBufferedReader = new BufferedReader(new FileReader(new File(mFilePath)));
         mDriveTrain = aDriveTrain;
     }
     
-    public void init()
+    @Override
+    public void initialize()
     {
-    	super.initialize();
+    	System.out.println("\n ************\n ************\n ************\n HERE IT IS FILE PATH IS:  " + mFilePath + "HERE IT IS \n ************\n ************\n ************");
     	try {
 			mBufferedReader.readLine();
 		} catch (IOException e) {
@@ -54,12 +55,14 @@ public class Replay extends Command
     {
     	try {
 			String line = mBufferedReader.readLine();
+			if(line != null)
+			{			
 			System.out.println("\n" + line);
 
             String[] Split = line.split(mDelim);
             Double[] nums = new Double[Split.length - 1];
 
-            for (int x = 1; x <= Split.length; x++)
+            for (int x = 1; x < Split.length; x++)
             {
                 nums[x - 1] = Double.parseDouble(Split[x]);
             }
@@ -67,6 +70,13 @@ public class Replay extends Command
             double mLeftSpeed = (nums[0]);
             double mRightSpeed = (nums[1]);
             mDriveTrain.setLeftRightSpeed(mLeftSpeed, mRightSpeed);
+			}
+			else
+			{
+				mFinished = true;
+				mDriveTrain.setLeftRightSpeed(0, 0);
+			}
+            
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

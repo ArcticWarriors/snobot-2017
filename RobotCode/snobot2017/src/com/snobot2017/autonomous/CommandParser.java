@@ -361,7 +361,7 @@ public class CommandParser extends ACommandParser
 
     private Command parseReplayCommand(List<String> args) throws IOException
     {
-    	String autoPath = "../../snobot2017/autonomous/replays/" + args.get(1);
+    	String autoPath = Properties2017.sREPLAY_PATH.getValue() + args.get(1);
         return new Replay(mSnobot.getDriveTrain(), autoPath);
     }
 
