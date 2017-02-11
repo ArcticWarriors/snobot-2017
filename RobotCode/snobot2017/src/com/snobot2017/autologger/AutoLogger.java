@@ -9,7 +9,7 @@ import java.util.Date;
 import com.snobot.lib.ISubsystem;
 import com.snobot.lib.ui.LatchedButton;
 import com.snobot.lib.ui.ToggleButton;
-import com.snobot.lib.ui.XbaxButtonMap;
+import com.snobot.lib.ui.XboxButtonMap;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.joystick.IDriverJoystick;
 
@@ -285,7 +285,7 @@ public class AutoLogger implements ISubsystem
 	@Override
 	public void update() 
 	{
-		if(mDriverYButton.update(mDriverJoystick.getRawButton(XbaxButtonMap.Y_BUTTON)))
+		if(mDriverYButton.update(mDriverJoystick.getRawButton(XboxButtonMap.Y_BUTTON)))
 		{
 			if(mLogNow)
 			{

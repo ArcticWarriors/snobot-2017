@@ -7,7 +7,7 @@ package com.snobot.lib.ui;
  * @author ayush_000
  *
  */
-public class XbaxButtonMap
+public class XboxButtonMap
 {
 
     // Axis

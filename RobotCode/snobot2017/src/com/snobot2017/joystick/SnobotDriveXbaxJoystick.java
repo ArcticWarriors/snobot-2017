@@ -1,7 +1,7 @@
 package com.snobot2017.joystick;
 
 import com.snobot.lib.Logger;
-import com.snobot.lib.ui.XbaxButtonMap;
+import com.snobot.lib.ui.XboxButtonMap;
 import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,8 +31,8 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public void update()
     {
-        mLeftSpeed = -mJoystick.getRawAxis(XbaxButtonMap.LEFT_Y_AXIS);
-        mRightSpeed = -mJoystick.getRawAxis(XbaxButtonMap.RIGHT_Y_AXIS);
+        mLeftSpeed = -mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS);
+        mRightSpeed = -mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
     }
 
     @Override
