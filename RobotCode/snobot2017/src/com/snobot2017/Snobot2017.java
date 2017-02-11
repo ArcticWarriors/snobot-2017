@@ -14,6 +14,7 @@ import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
+import com.snobot2017.drivetrain.ASnobotDrivetrain;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.drivetrain.SnobotCanDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
@@ -143,6 +144,7 @@ public class Snobot2017 extends ASnobot
         // SnobotActor
         mSnobotActor = new SnobotActor(mDriveTrain, mPositioner, operatorJoystick);
         mSubsystems.add(mSnobotActor);
+        ((ASnobotDrivetrain) mDriveTrain).setSnobotActor(mSnobotActor);
 
         // Call last
         mLogger.startLogging(

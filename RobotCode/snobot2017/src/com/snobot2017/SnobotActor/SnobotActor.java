@@ -19,6 +19,14 @@ public class SnobotActor implements ISnobotActor
     private boolean mInAction;
     private double mAngle;
     private double mSpeed;
+
+    private enum DriveToPegStates
+    {
+        NoAction, Turning, Driving
+    }
+
+    private DriveToPegStates mDriveToPegStates = DriveToPegStates.NoAction;
+
     /**
      * Constructor
      * 
@@ -45,20 +53,49 @@ public class SnobotActor implements ISnobotActor
 
     }
 
+    @Override
+    public void setGoal(double aAngle, double aGoalSpeed, double aDistance)
+    {
+        mAngle = aAngle;
+        mGoalSpeed = aGoalSpeed;
+        mDesiredDistance = mPositioner.getTotalDistance() + aDistance;
+    }
+
     public void driveToPeg()
     {
         if (!mInAction)
         {
             // temporary until vision manager is working
             setGoal(45, .5, 100);
-            mInAction = true;            
+            mInAction = true;
+            mDriveToPegStates = DriveToPegStates.Turning;
         }
 
-        if (turnToAngle(mAngle, mGoalSpeed))
+        switch (mDriveToPegStates)
         {
-            driveDistance();
+        case Turning:
+        {
+            boolean done = turnToAngle(mAngle, mGoalSpeed);
+            if (done)
+            {
+                mDriveToPegStates = DriveToPegStates.Driving;
+            }
+            break;
         }
-
+        case Driving:
+        {
+            boolean done = driveDistance();
+            if (done)
+            {
+                mDriveToPegStates = DriveToPegStates.NoAction;
+            }
+            break;
+        }
+        case NoAction:
+        {
+            break;
+        }
+        }
     }
     
     public boolean turnToAngle(double aAngle, double aSpeed)
@@ -171,10 +208,8 @@ public class SnobotActor implements ISnobotActor
     }
 
     @Override
-    public void setGoal(double aAngle, double aGoalSpeed, double aDistance)
+    public boolean InAction()
     {
-        mAngle = aAngle;
-        mGoalSpeed = aGoalSpeed;
-        mDesiredDistance = mPositioner.getTotalDistance() + aDistance;
+        return mInAction;
     }
 }

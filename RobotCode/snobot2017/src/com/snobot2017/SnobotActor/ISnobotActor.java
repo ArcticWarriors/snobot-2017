@@ -36,4 +36,11 @@ public interface ISnobotActor extends ISubsystem
      * @param aDistance
      */
     void setGoal(double aAngle, double aSpeed, double aDistance);
+
+    /**
+     * Asking the SnobotActor if its in an action
+     * 
+     * @return If in an Action or not
+     */
+    boolean InAction();
 }
