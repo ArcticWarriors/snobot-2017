@@ -21,6 +21,15 @@ public class GenerateSnobotPaths
     private static final double CENTER_GEAR_Y = FIELD_LENGTH_Y - 7 * 12 + ROBOT_LENGTH;
     private static final double NON_CENTER_CENTER_GEAR_Y = 197.5 + ROBOT_LENGTH;
 
+    private static final double HOPPER_ONE_Y = -200.7 + ROBOT_LENGTH;
+    private static final double HOPPER_TWO_Y = -163.11 + ROBOT_LENGTH;
+    private static final double HOPPER_THREE_Y = 163.11 + ROBOT_LENGTH;
+    private static final double HOPPER_FOUR_Y = -200.7 + ROBOT_LENGTH;
+    private static final double HOPPER_FIVE_Y = -200.7 + ROBOT_LENGTH;
+
+    private static final double LEFT_HOPPERS_X = -13.5 * 12;
+    private static final double RIGHT_HOPPERS_X = 13.5 * 12;
+
     private static final TrajectoryGenerator.Config RED_SCORE_GEAR_CONFIG = new TrajectoryGenerator.Config();
     private static final TrajectoryGenerator.Config BLUE_SCORE_GEAR_CONFIG = new TrajectoryGenerator.Config();
     
@@ -96,9 +105,8 @@ public class GenerateSnobotPaths
         final String path_name = "RedRightToHopperOne";
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(42.9, FIELD_LENGTH_Y, 0));
-        p.addWaypoint(new Waypoint(102.23, -262.26, 45));
-        p.addWaypoint(new Waypoint(163.13, -200.7, 45));
+        p.addWaypoint(new Waypoint(BOILER_LINE_OFFSET, -FIELD_LENGTH_Y, 0));
+        p.addWaypoint(new Waypoint(RIGHT_HOPPERS_X, HOPPER_ONE_Y, 89));
 
         generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -108,10 +116,10 @@ public class GenerateSnobotPaths
         final String path_name = "RedRightToHopperTwo";
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(42.9, FIELD_LENGTH_Y, 0));
+        p.addWaypoint(new Waypoint(BOILER_LINE_OFFSET, FIELD_LENGTH_Y, 0));
         p.addWaypoint(new Waypoint(105.3, -205.99, 0));
         p.addWaypoint(new Waypoint(160.23, -10, 45)); 
-        p.addWaypoint(new Waypoint(163.13, 0, 45));
+        p.addWaypoint(new Waypoint(RIGHT_HOPPERS_X, HOPPER_TWO_Y, 89));
 
         generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -123,7 +131,7 @@ public class GenerateSnobotPaths
         WaypointSequence p = new WaypointSequence(10000);
         p.addWaypoint(new Waypoint(0, FIELD_LENGTH_Y, 0));
         p.addWaypoint(new Waypoint(102.23, -262.26, 45));
-        p.addWaypoint(new Waypoint(163.13, -200.7, 45));
+        p.addWaypoint(new Waypoint(RIGHT_HOPPERS_X, HOPPER_ONE_Y, 45));
         
         generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -136,7 +144,7 @@ public class GenerateSnobotPaths
         p.addWaypoint(new Waypoint(0, FIELD_LENGTH_Y, 0));
         p.addWaypoint(new Waypoint(105.3, -205.99, 0));
         p.addWaypoint(new Waypoint(160.23, -10, 45)); 
-        p.addWaypoint(new Waypoint(163.13, 0, 45));
+        p.addWaypoint(new Waypoint(RIGHT_HOPPERS_X, HOPPER_TWO_Y, 45));
 
         generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -148,7 +156,7 @@ public class GenerateSnobotPaths
         WaypointSequence p = new WaypointSequence(10000);
         p.addWaypoint(new Waypoint(0, FIELD_LENGTH_Y, 0));
         p.addWaypoint(new Waypoint(-112.12, -185.87, 0));
-        p.addWaypoint(new Waypoint(-162.23, -119.16, -45)); 
+        p.addWaypoint(new Waypoint(LEFT_HOPPERS_X, HOPPER_FIVE_Y, -45)); 
         
 
         generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
@@ -159,10 +167,9 @@ public class GenerateSnobotPaths
         final String path_name = "RedLeftToHopperFive";
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(-79.52, -324.81, 0));
-        p.addWaypoint(new Waypoint(-79.88, FIELD_LENGTH_Y, 0));
-        p.addWaypoint(new Waypoint(-100.12, -185.87, -45));
-        p.addWaypoint(new Waypoint(-162.23, -119.16, -45)); 
+        p.addWaypoint(new Waypoint(LOADING_X_OFFSET, -FIELD_LENGTH_Y, 0));
+//        p.addWaypoint(new Waypoint(-100.12, -185.87, -45));
+        p.addWaypoint(new Waypoint(LEFT_HOPPERS_X, HOPPER_FIVE_Y, -45)); 
         
 
         generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
@@ -484,14 +491,14 @@ public class GenerateSnobotPaths
 //        getRedMiddleToHopperOne(directory, kWheelbaseWidth);
 //        getRedMiddleToHopperTwo(directory, kWheelbaseWidth);
 //        getRedMiddleToHopperFive(directory, kWheelbaseWidth);
-//        getRedLeftToHopperFive(directory, kWheelbaseWidth);
+        getRedLeftToHopperFive(directory, kWheelbaseWidth);
 //        getBlueLeftToHopperThree(directory, kWheelbaseWidth);
 //        getBlueLeftToHopperTwo(directory, kWheelbaseWidth);
 //        getBlueMiddleToHopperThree(directory, kWheelbaseWidth);
 //        getBlueMiddleToHopperTwo(directory, kWheelbaseWidth);
 //        getBlueMiddleToHopperFour(directory, kWheelbaseWidth);
 //        getBlueLeftToHopperFour(directory, kWheelbaseWidth);
-        getBlueMiddleScoreGear(directory, kWheelbaseWidth);
+//        getBlueMiddleScoreGear(directory, kWheelbaseWidth);
 //        getBlueLeftScoreGear(directory, kWheelbaseWidth);
 //        getBlueRightScoreGear(directory, kWheelbaseWidth);
 //        getRedRightScoreGear(directory, kWheelbaseWidth);
