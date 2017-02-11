@@ -24,7 +24,6 @@ public class StandaloneMain
         p = new SplineSegment();
         path_points.add(p);
 
-        double angle = Math.PI / 2;
         double radius = 1.7;
         double angle_mult = .1;
 

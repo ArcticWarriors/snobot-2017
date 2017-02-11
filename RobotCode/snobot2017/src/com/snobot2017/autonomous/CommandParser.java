@@ -237,6 +237,8 @@ public class CommandParser extends ACommandParser
             break;
         case BlueLeft:
             fileName = "BlueLeftScoreGear.csv";
+            break;
+        default:
             break;   
         }
        
@@ -276,6 +278,8 @@ public class CommandParser extends ACommandParser
             break;
         case BlueLeft:
             fileName = "BlueLeftToHopperThree.csv";
+            break;
+        default:
             break;   
         }
        
@@ -292,38 +296,48 @@ public class CommandParser extends ACommandParser
     
     private Command createGetHoppersAndGetGearWithTrajectoryCommand()
     {
-        CommandGroup output = new CommandGroup();
         StartingPositions startPosition = mPositionChooser.getSelected();
+
+        if (startPosition == null)
+        {
+            return null;
+        }
+
+        CommandGroup output = new CommandGroup();
         
         switch (startPosition)
         {
         case RedLeft:
             output.addSequential(createTrajectoryCommand("RedLeftScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("RedLeftToHopperFive.csv"));
+            output.addSequential(createTrajectoryCommand("RedLeftScoreGearGetHopper.csv"));
             break;
         case RedMiddle:
             output.addSequential(createTrajectoryCommand("RedMiddleScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("RedMiddleToHopperFive.csv"));         
+            output.addSequential(createTrajectoryCommand("RedMiddleScoreGearGetHopper.csv"));         
             break;
         case RedRight:
             output.addSequential(createTrajectoryCommand("RedRightScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("RedRightToHopperFive.csv"));           
+            output.addSequential(createTrajectoryCommand("RedRightScoreGearGetHopper.csv"));           
             break;
         case BlueRight:
             output.addSequential(createTrajectoryCommand("BlueRightScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("BlueRightToHopperFour.csv"));
+            output.addSequential(createTrajectoryCommand("BlueRightScoreGearGetHopper.csv"));
             break;
         case BlueMiddle:
             output.addSequential(createTrajectoryCommand("BlueMiddleScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("BlueMiddleToHopperFour.csv"));   
+            output.addSequential(createTrajectoryCommand("BlueMiddleScoreGearGetHopper.csv"));   
             break;
         case BlueLeft:
             output.addSequential(createTrajectoryCommand("BlueLeftScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("BlueLeftToHopperThree.csv"));   
+            output.addSequential(createTrajectoryCommand("BlueLeftScoreGearGetHopper.csv"));   
+            break;
+
+        // Intentional fall through, nothing to do
+        case Origin:
+        default:
             break;   
         }
        
-        addError("Invalid start selection for the current robot start position command : " + startPosition);
         return output;
     }
     
@@ -361,7 +375,7 @@ public class CommandParser extends ACommandParser
 
     private Command parseReplayCommand(List<String> args) throws IOException
     {
-    	String autoPath = "../../snobot2017/autonomous/replays/" + args.get(1);
+    	String autoPath = Properties2017.sREPLAY_PATH.getValue() + args.get(1);
         return new Replay(mSnobot.getDriveTrain(), autoPath);
     }
 

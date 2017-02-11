@@ -39,8 +39,6 @@ public class RobotDrawer extends JPanel
     private static final Color sROBOT_GEARBOX_COLOR = Color.blue;
     private static final Color sROBOT_SPOOL_COLOR = Color.gray;
     private static final Color sROBOT_GEARFUNNEL_COLOR = Color.cyan;
-    private static final Color sROBOT_SPOOL_SPEED_ONE_COLOR = Color.yellow;
-    private static final Color sROBOT_SPOOL_SPEED_TWO_COLOR = Color.green;
 
     /**
      * The scaling factor used for drawing. For example, 1 would mean draw every
