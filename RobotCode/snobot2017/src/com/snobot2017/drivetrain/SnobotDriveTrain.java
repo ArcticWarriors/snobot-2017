@@ -42,6 +42,8 @@ public class SnobotDriveTrain extends ASnobotDrivetrain<SpeedController>
     {
         mLeftMotorDistance = mLeftDriveEncoder.getDistance();
         mRightMotorDistance = mRightDriveEncoder.getDistance();
+        mRightEncoderRaw = mRightDriveEncoder.getRaw();
+        mLeftEncoderRaw = mLeftDriveEncoder.getRaw();
     }
 
 

@@ -227,7 +227,7 @@ public class CommandParser extends ACommandParser
             fileName = "RedMiddleScoreGear.csv";
             break;
         case RedRight:
-            fileName = "RedRightScoregear.csv";
+            fileName = "RedRightScoreGear.csv";
             break;
         case BlueRight:
             fileName = "BlueRightScoreGear.csv";
