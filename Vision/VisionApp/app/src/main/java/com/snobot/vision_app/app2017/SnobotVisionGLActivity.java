@@ -77,7 +77,7 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
             return;
         }
 
-        mAlgorithm = new JavaVisionAlgorithm();
+        mAlgorithm = new JavaVisionAlgorithm(sRobotConnection);
 
         mView = (SnobotVisionGLSurfaceView) findViewById(R.id.texture);
         mView.setCameraTextureListener(mView);
