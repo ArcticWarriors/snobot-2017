@@ -57,4 +57,12 @@ public class SmartDashBoardNames
     public static final String sSPLINE_NAMESPACE = "SplinePlotting"; //Namespace that driving motion profiling splines will go into
     public static final String sSPLINE_IDEAL_POINTS = "PlanedSpline"; //The name for the planned splines (the auto-generated one)
     public static final String sSPLINE_REAL_POINT = "SplinePoint"; //The name for the real point for a spline motion profile
+
+    // Snobot Actor names
+    public static final String sSNOBOT_ACTION = "SnobotAction"; // The name of
+                                                                // the current
+                                                                // snobotActor
+                                                                // action
+    public static final String sIN_ACTION = "InAction";
+
 }

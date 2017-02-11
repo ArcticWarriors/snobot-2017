@@ -39,6 +39,8 @@ public class RobotDrawer extends JPanel
     private static final Color sROBOT_GEARBOX_COLOR = Color.blue;
     private static final Color sROBOT_SPOOL_COLOR = Color.gray;
     private static final Color sROBOT_GEARFUNNEL_COLOR = Color.cyan;
+    private static final Color sROBOT_NOACTION_COLOR = Color.red;
+    private static final Color sROBOT_INACTION_COLOR = Color.green;
 
     /**
      * The scaling factor used for drawing. For example, 1 would mean draw every
@@ -49,6 +51,7 @@ public class RobotDrawer extends JPanel
     // Robot State
     private double mSpoolSpeed;
     private boolean mGearBossPos;
+    private boolean mInAction;
 
     public RobotDrawer()
     {
@@ -56,6 +59,7 @@ public class RobotDrawer extends JPanel
         setPreferredSize(new Dimension(600, 600));
         setVisible(true);
         setSize(400, 300);
+        mInAction = false;
         addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -141,6 +145,17 @@ public class RobotDrawer extends JPanel
         Graphics2D g2d = (Graphics2D) g;
 
         g.clearRect(0, 0, (int) getSize().getWidth(), (int) getSize().getHeight());
+        System.out.println(mInAction);
+        if (mInAction)
+        {
+            g.setColor(sROBOT_INACTION_COLOR);
+        }
+        else
+        {
+            g.setColor(sROBOT_NOACTION_COLOR);
+        }
+        g2d.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize().getHeight());
+
 
         // Draw Robot Parts
         drawRobotBase(g2d);
@@ -166,5 +181,10 @@ public class RobotDrawer extends JPanel
     public void setGearBossPos(boolean mGearBossPos)
     {
         this.mGearBossPos = mGearBossPos;
+    }
+
+    public void setInAction(boolean inAction)
+    {
+        mInAction = inAction;
     }
 }

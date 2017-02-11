@@ -1,9 +1,12 @@
 package com.snobot2017.SnobotActor;
 
 import com.snobot.lib.InDeadbandHelper;
+import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.positioner.IPositioner;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnobotActor implements ISnobotActor
 {
@@ -189,8 +192,8 @@ public class SnobotActor implements ISnobotActor
     @Override
     public void updateSmartDashboard()
     {
-        // TODO Auto-generated method stub
-
+        SmartDashboard.putString(SmartDashBoardNames.sSNOBOT_ACTION, mDriveToPegStates.toString());
+        SmartDashboard.putBoolean(SmartDashBoardNames.sIN_ACTION, mInAction);
     }
 
     @Override
