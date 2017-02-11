@@ -129,9 +129,14 @@ public class CommandParser extends ACommandParser
                 newCommand = createScoreGearWithTrajectoryCommand();
                 break;
             }
-            case AutonomousCommandNames.START_HOPPER_TRAJ:
+            case AutonomousCommandNames.sSTART_HOPPER_TRAJ:
             {
                 newCommand = createGetHoppersWithTrajectoryCommand();
+                break;
+            }
+            case AutonomousCommandNames.sGET_HOPPER_AND_GEAR:
+            {
+                newCommand = createGetHoppersAndGetGearWithTrajectoryCommand();
                 break;
             }
             default:
@@ -283,6 +288,43 @@ public class CommandParser extends ACommandParser
             addError("Invalid start selection for the current robot start position command : " + startPosition);
             return null;
         }
+    }
+    
+    private Command createGetHoppersAndGetGearWithTrajectoryCommand()
+    {
+        CommandGroup output = new CommandGroup();
+        StartingPositions startPosition = mPositionChooser.getSelected();
+        
+        switch (startPosition)
+        {
+        case RedLeft:
+            output.addSequential(createTrajectoryCommand("RedLeftScoreGear.csv"));
+            output.addSequential(createTrajectoryCommand("RedLeftToHopperFive.csv"));
+            break;
+        case RedMiddle:
+            output.addSequential(createTrajectoryCommand("RedMiddleScoreGear.csv"));
+            output.addSequential(createTrajectoryCommand("RedMiddleToHopperFive.csv"));         
+            break;
+        case RedRight:
+            output.addSequential(createTrajectoryCommand("RedRightScoreGear.csv"));
+            output.addSequential(createTrajectoryCommand("RedRightToHopperFive.csv"));           
+            break;
+        case BlueRight:
+            output.addSequential(createTrajectoryCommand("BlueRightScoreGear.csv"));
+            output.addSequential(createTrajectoryCommand("BlueRightToHopperFour.csv"));
+            break;
+        case BlueMiddle:
+            output.addSequential(createTrajectoryCommand("BlueMiddleScoreGear.csv"));
+            output.addSequential(createTrajectoryCommand("BlueMiddleToHopperFour.csv"));   
+            break;
+        case BlueLeft:
+            output.addSequential(createTrajectoryCommand("BlueLeftScoreGear.csv"));
+            output.addSequential(createTrajectoryCommand("BlueLeftToHopperThree.csv"));   
+            break;   
+        }
+       
+        addError("Invalid start selection for the current robot start position command : " + startPosition);
+        return output;
     }
     
     /**

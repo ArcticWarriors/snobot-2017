@@ -381,7 +381,75 @@ public class GenerateSnobotPaths
 
         WaypointSequence p = new WaypointSequence(10000);
         p.addWaypoint(new Waypoint(-79.53, -334.81, 0));
-        p.addWaypoint(new Waypoint(-34, -217, 0));
+        p.addWaypoint(new Waypoint(-34, -217, 45));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getRedLeftScoreGearGetHopper(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedLeftScoreGearGetHopper";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(-34, -197.5, 45));
+        p.addWaypoint(new Waypoint(-163.11, -119.16, 45));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getRedRightScoreGearGetHopper(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedRightScoreGearGetHopper";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(34, -197.5, -45));
+        p.addWaypoint(new Waypoint(163.11, -205.71, -90));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueRightScoreGearGetHopper(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueRightScoreGearGetHopper";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(-34, 197.5, -45));
+        p.addWaypoint(new Waypoint(-163.11, 203.71, -90));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueLeftScoreGearGetHopper(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueLeftScoreGearGetHopper";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(34, 197.5, -45));
+        p.addWaypoint(new Waypoint(163.11, 203.71, -90));
 
         generate(config, p, directory, path_name, kWheelbaseWidth);
     }
@@ -504,30 +572,34 @@ public class GenerateSnobotPaths
 
         final double kWheelbaseWidth = 25.5 / 12;
 
-        genTestStraightSlow(directory, kWheelbaseWidth);
-        genTestStraightFast(directory, kWheelbaseWidth);
-        genTestMoveRightSlow(directory, kWheelbaseWidth);
-        genTestMoveLeftSlow(directory, kWheelbaseWidth);
-        genTestMoveRightFast(directory, kWheelbaseWidth);
-        genTestMoveLeftFast(directory, kWheelbaseWidth);
-
-        getRedRightToHopperOne(directory, kWheelbaseWidth);
-        getRedRightToHopperTwo(directory, kWheelbaseWidth);
-        getRedMiddleToHopperOne(directory, kWheelbaseWidth);
-        getRedMiddleToHopperTwo(directory, kWheelbaseWidth);
-        getRedMiddleToHopperFive(directory, kWheelbaseWidth);
-        getRedLeftToHopperFive(directory, kWheelbaseWidth);
-        getBlueLeftToHopperThree(directory, kWheelbaseWidth);
-        getBlueLeftToHopperTwo(directory, kWheelbaseWidth);
-        getBlueMiddleToHopperThree(directory, kWheelbaseWidth);
-        getBlueMiddleToHopperTwo(directory, kWheelbaseWidth);
-        getBlueMiddleToHopperFour(directory, kWheelbaseWidth);
-        getBlueLeftToHopperFour(directory, kWheelbaseWidth);
-        getBlueMiddleScoreGear(directory, kWheelbaseWidth);
-        getBlueLeftScoreGear(directory, kWheelbaseWidth);
-        getBlueRightScoreGear(directory, kWheelbaseWidth);
-        getRedRightScoreGear(directory, kWheelbaseWidth);
-        getRedMiddleScoreGear(directory, kWheelbaseWidth);
-        getRedLeftScoreGear(directory, kWheelbaseWidth);
+//        genTestStraightSlow(directory, kWheelbaseWidth);
+//        genTestStraightFast(directory, kWheelbaseWidth);
+//        genTestMoveRightSlow(directory, kWheelbaseWidth);
+//        genTestMoveLeftSlow(directory, kWheelbaseWidth);
+//        genTestMoveRightFast(directory, kWheelbaseWidth);
+//        genTestMoveLeftFast(directory, kWheelbaseWidth);
+//
+//        getRedRightToHopperOne(directory, kWheelbaseWidth);
+//        getRedRightToHopperTwo(directory, kWheelbaseWidth);
+//        getRedMiddleToHopperOne(directory, kWheelbaseWidth);
+//        getRedMiddleToHopperTwo(directory, kWheelbaseWidth);
+//        getRedMiddleToHopperFive(directory, kWheelbaseWidth);
+//        getRedLeftToHopperFive(directory, kWheelbaseWidth);
+//        getBlueLeftToHopperThree(directory, kWheelbaseWidth);
+//        getBlueLeftToHopperTwo(directory, kWheelbaseWidth);
+//        getBlueMiddleToHopperThree(directory, kWheelbaseWidth);
+//        getBlueMiddleToHopperTwo(directory, kWheelbaseWidth);
+//        getBlueMiddleToHopperFour(directory, kWheelbaseWidth);
+//        getBlueLeftToHopperFour(directory, kWheelbaseWidth);
+//        getBlueMiddleScoreGear(directory, kWheelbaseWidth);
+//        getBlueLeftScoreGear(directory, kWheelbaseWidth);
+//        getBlueRightScoreGear(directory, kWheelbaseWidth);
+//        getRedRightScoreGear(directory, kWheelbaseWidth);
+//        getRedMiddleScoreGear(directory, kWheelbaseWidth);
+//        getRedLeftScoreGear(directory, kWheelbaseWidth);
+        getRedLeftScoreGearGetHopper( directory, kWheelbaseWidth);
+        getRedRightScoreGearGetHopper(directory, kWheelbaseWidth);
+        getBlueRightScoreGearGetHopper( directory, kWheelbaseWidth);
+        getBlueLeftScoreGearGetHopper(directory, kWheelbaseWidth);
     }
 }
