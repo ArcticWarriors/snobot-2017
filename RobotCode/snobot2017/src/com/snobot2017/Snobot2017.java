@@ -14,6 +14,7 @@ import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
+import com.snobot2017.drivetrain.ASnobotDrivetrain;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.drivetrain.SnobotCanDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
@@ -70,8 +71,6 @@ public class Snobot2017 extends ASnobot
     public void robotInit()
     {
         LogManager.getLogManager().getLogger("").getHandlers()[0].setFormatter(new LogFormatter());
-
-
 
         // Joystick
         Joystick driverJoystickRaw = new Joystick(0);
@@ -146,6 +145,7 @@ public class Snobot2017 extends ASnobot
         // SnobotActor
         mSnobotActor = new SnobotActor(mDriveTrain, mPositioner, operatorJoystick);
         mSubsystems.add(mSnobotActor);
+        ((ASnobotDrivetrain) mDriveTrain).setSnobotActor(mSnobotActor);
 
         // Call last
         mLogger.startLogging(
@@ -171,7 +171,7 @@ public class Snobot2017 extends ASnobot
     public void update()
     {
     	super.update();
-    	System.out.println(pdp.getCurrent(13));
+    	// System.out.println(pdp.getCurrent(13));
     }    
 
     @Override
@@ -183,7 +183,7 @@ public class Snobot2017 extends ASnobot
     /**
      * Returns the class that controls the robots drivetrain
      * 
-     * @return The robots drivetrain
+     * @return The robots drive train
      */
     public IDriveTrain getDriveTrain()
     {

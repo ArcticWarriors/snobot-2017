@@ -1,9 +1,12 @@
 package com.snobot2017.SnobotActor;
 
 import com.snobot.lib.InDeadbandHelper;
+import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.positioner.IPositioner;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnobotActor implements ISnobotActor
 {
@@ -19,6 +22,15 @@ public class SnobotActor implements ISnobotActor
     private boolean mInAction;
     private double mAngle;
     private double mSpeed;
+    private String mActionName;
+
+    private enum DriveToPegStates
+    {
+        NoAction, Turning, Driving
+    }
+
+    private DriveToPegStates mDriveToPegStates = DriveToPegStates.NoAction;
+
     /**
      * Constructor
      * 
@@ -30,8 +42,9 @@ public class SnobotActor implements ISnobotActor
         mDriveTrain = aDriveTrain;
         mPositioner = aPositioner;
         mOperatorJoystick = aOperatorJoystick;
+        mActionName = "";
     }
-    
+
     /**
      * Setting the goal for the driveDistance command
      * 
@@ -45,22 +58,52 @@ public class SnobotActor implements ISnobotActor
 
     }
 
+    @Override
+    public void setGoal(double aAngle, double aGoalSpeed, double aDistance)
+    {
+        mAngle = aAngle;
+        mGoalSpeed = aGoalSpeed;
+        mDesiredDistance = mPositioner.getTotalDistance() + aDistance;
+    }
+
     public void driveToPeg()
     {
         if (!mInAction)
         {
             // temporary until vision manager is working
             setGoal(45, .5, 100);
-            mInAction = true;            
+            mInAction = true;
+            mDriveToPegStates = DriveToPegStates.Turning;
         }
 
-        if (turnToAngle(mAngle, mGoalSpeed))
+        switch (mDriveToPegStates)
         {
-            driveDistance();
+        case Turning:
+        {
+            boolean done = turnToAngle(mAngle, mGoalSpeed);
+            if (done)
+            {
+                mDriveToPegStates = DriveToPegStates.Driving;
+            }
+            break;
         }
-
+        case Driving:
+        {
+            boolean done = driveDistance();
+            if (done)
+            {
+                mDriveToPegStates = DriveToPegStates.NoAction;
+                mOperatorJoystick.turnOffActions();
+            }
+            break;
+        }
+        case NoAction:
+        {
+            break;
+        }
+        }
     }
-    
+
     public boolean turnToAngle(double aAngle, double aSpeed)
     {
         double error = aAngle - mPositioner.getOrientationDegrees();
@@ -95,7 +138,7 @@ public class SnobotActor implements ISnobotActor
         double error = mDesiredDistance - mCurrentDistance;
         boolean isFinished = false;
 
-        System.out.println(error);
+        // System.out.println(error);
 
         if (mInDeadbandHelper.isFinished(Math.abs(error) < 6))
         {
@@ -132,12 +175,15 @@ public class SnobotActor implements ISnobotActor
     {
         if (mOperatorJoystick.driveToPeg())
         {
+            mActionName = "Drive To Peg";
             driveToPeg();
         }
 
         else
         {
             mInAction = false;
+            mActionName = "";
+            mDriveToPegStates = DriveToPegStates.NoAction;
         }
 
     }
@@ -152,8 +198,9 @@ public class SnobotActor implements ISnobotActor
     @Override
     public void updateSmartDashboard()
     {
-        // TODO Auto-generated method stub
-
+        SmartDashboard.putString(SmartDashBoardNames.sSNOBOT_ACTION, mDriveToPegStates.toString());
+        SmartDashboard.putBoolean(SmartDashBoardNames.sIN_ACTION, mInAction);
+        SmartDashboard.putString(SmartDashBoardNames.sSNOBOT_ACTION_NAME, mActionName);
     }
 
     @Override
@@ -171,10 +218,8 @@ public class SnobotActor implements ISnobotActor
     }
 
     @Override
-    public void setGoal(double aAngle, double aGoalSpeed, double aDistance)
+    public boolean InAction()
     {
-        mAngle = aAngle;
-        mGoalSpeed = aGoalSpeed;
-        mDesiredDistance = mPositioner.getTotalDistance() + aDistance;
+        return mInAction;
     }
 }

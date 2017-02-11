@@ -2,6 +2,7 @@ package com.snobot2017.drivetrain;
 
 import com.snobot.lib.Logger;
 import com.snobot2017.SmartDashBoardNames;
+import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
@@ -30,6 +31,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
 
     protected double mRightMotorDistance;
     protected double mLeftMotorDistance;
+    private ISnobotActor mSnobotActor;
 
     public ASnobotDrivetrain(
             SpeedControllerType aFrontLeftMotor, 
@@ -69,7 +71,10 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     @Override
     public void control()
     {
-        setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
+        if (!mSnobotActor.InAction())
+        {
+            setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
+        }
     }
     
     @Override
@@ -133,6 +138,16 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     public void stop()
     {
         setLeftRightSpeed(0, 0);
+    }
+
+    /**
+     * Setting the SnobotActor in the drive train so that the drive train knows
+     * what it is because we can't do it in the constructor.
+     */
+    public void setSnobotActor(ISnobotActor aSnobotActor)
+    {
+        mSnobotActor = aSnobotActor;
+
     }
 
 }
