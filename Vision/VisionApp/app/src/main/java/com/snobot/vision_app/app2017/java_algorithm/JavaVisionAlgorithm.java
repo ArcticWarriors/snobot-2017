@@ -2,6 +2,9 @@ package com.snobot.vision_app.app2017.java_algorithm;
 
 import android.graphics.Bitmap;
 
+import com.snobot.vision_app.app2017.VisionRobotConnection;
+import com.snobot.vision_app.app2017.messages.TargetUpdateMessage;
+
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -132,8 +135,9 @@ public class JavaVisionAlgorithm
     private GripRopeAlgorithm mRopeGripAlgorithm;
     private DisplayType mDisplayType;
 
-    public JavaVisionAlgorithm()
+    public JavaVisionAlgorithm(VisionRobotConnection aRobotConnection)
     {
+        mRobotConnection = aRobotConnection;
         mPegGripAlgorithm = new GripPegAlgorithm();
         mRopeGripAlgorithm = new GripRopeAlgorithm();
         mDisplayType = DisplayType.OriginalImage;
@@ -178,7 +182,8 @@ public class JavaVisionAlgorithm
 
         ArrayList<MatOfPoint> contours = mPegGripAlgorithm.filterContoursOutput();
         Set<TapeLocation> targetInfos = new TreeSet<>(new AspectRatioComparator());
-        
+
+        double distance = 0;
         for (int i = 0; i < contours.size(); ++i)
         {
             MatOfPoint contour = contours.get(i);
@@ -197,6 +202,8 @@ public class JavaVisionAlgorithm
             double yawAngle = percentOffCenter * sHORIZONTAL_FOV_ANGLE;
 
             targetInfos.add(new TapeLocation(contours.get(i), yawAngle, distanceFromHorz, distanceFromVert, aspectRatio));
+
+            distance = distanceFromVert;
         }
 
         double angle_to_the_peg = Double.NaN;
@@ -234,6 +241,9 @@ public class JavaVisionAlgorithm
                 break;
             }
         }
+
+
+        sendTargetInformation(targetInfos, distance, angle_to_the_peg, 0);
 
         return displayImage;
     }
@@ -304,6 +314,7 @@ public class JavaVisionAlgorithm
     // App Specific Stuff
     ////////////////////////
     private int cameraDirection;
+    private VisionRobotConnection mRobotConnection;
 
     public Mat processImage(Bitmap aBitmap) {
         Mat mat = new Mat();
@@ -333,5 +344,18 @@ public class JavaVisionAlgorithm
 
     public void setCameraDirection(int cameraDirection) {
         this.cameraDirection = cameraDirection;
+    }
+
+    private void sendTargetInformation(Collection<TapeLocation> targetInfos, double aDistance, double aAngleToPeg, int aTimestamp)
+    {
+        List<TargetUpdateMessage.TargetInfo> targets = new ArrayList<>();
+
+        if(!targetInfos.isEmpty())
+        {
+            aAngleToPeg = Double.isNaN(aAngleToPeg) ? 0 : aAngleToPeg;
+            targets.add(new TargetUpdateMessage.TargetInfo(aDistance, aAngleToPeg));
+        }
+
+        mRobotConnection.sendVisionUpdate(targets, aTimestamp);
     }
 }
