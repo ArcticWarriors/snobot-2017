@@ -23,7 +23,7 @@ public class Properties2017
     public static final StringProperty sLOG_FILE_PATH;
 
     // AutoLogger
-    public static final IntegerProperty sAUTO_LOG_COUNT = new IntegerProperty("AutoLogCount", 25);
+    public static final IntegerProperty sAUTO_LOG_COUNT = new IntegerProperty("AutoLogCount", 1);
     public static final StringProperty sAUTO_LOG_FILE_PATH;
     public static final StringProperty sAUTO_LOG_RUN_PATH = new StringProperty("autologs/" + Properties2017.class.getCanonicalName() + "/");
     public static final StringProperty sREPLAY_PATH;

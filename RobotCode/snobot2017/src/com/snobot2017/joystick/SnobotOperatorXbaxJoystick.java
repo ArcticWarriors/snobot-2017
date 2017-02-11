@@ -2,7 +2,7 @@ package com.snobot2017.joystick;
 
 import com.snobot.lib.Logger;
 import com.snobot.lib.ui.LatchedButton;
-import com.snobot.lib.ui.XboxButtonMap;
+import com.snobot.lib.ui.XbaxButtonMap;
 import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -61,11 +61,11 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     public void update()
     {
         // Gear Boss
-        if (mJoystick.getRawButton(XboxButtonMap.A_BUTTON))
+        if (mJoystick.getRawButton(XbaxButtonMap.A_BUTTON))
         {
             mGearBossPos = GearBossPositions.UP;
         }
-        else if (mJoystick.getRawButton(XboxButtonMap.B_BUTTON))
+        else if (mJoystick.getRawButton(XbaxButtonMap.B_BUTTON))
         {
             mGearBossPos = GearBossPositions.DOWN;
         }
@@ -75,17 +75,17 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         }
 
         // Ready for take off
-        mLiftOffSpeed = mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
+        mLiftOffSpeed = mJoystick.getRawAxis(XbaxButtonMap.RIGHT_Y_AXIS);
 
         // Climb
-        mClimb = mJoystick.getRawButton(XboxButtonMap.RB_BUTTON);
-        mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
+        mClimb = mJoystick.getRawButton(XbaxButtonMap.RB_BUTTON);
+        mCatch = mJoystick.getRawButton(XbaxButtonMap.LB_BUTTON);
         
         //App
-        mSwitchAppView = mSwitchAppViewLatcher.update(mJoystick.getRawButton(XboxButtonMap.A_BUTTON));
-        mSwitchToFrontCamera = mSwitchToFrontCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.X_BUTTON));
-        mSwitchToRearCamera = mSwitchToRearCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
-        mRestartApp = mRestartAppLatcher.update(mJoystick.getRawButton(XboxButtonMap.B_BUTTON));
+        mSwitchAppView = mSwitchAppViewLatcher.update(mJoystick.getRawButton(XbaxButtonMap.A_BUTTON));
+        mSwitchToFrontCamera = mSwitchToFrontCameraLatcher.update(mJoystick.getRawButton(XbaxButtonMap.X_BUTTON));
+        mSwitchToRearCamera = mSwitchToRearCameraLatcher.update(mJoystick.getRawButton(XbaxButtonMap.Y_BUTTON));
+        mRestartApp = mRestartAppLatcher.update(mJoystick.getRawButton(XbaxButtonMap.B_BUTTON));
     }
     
     @Override

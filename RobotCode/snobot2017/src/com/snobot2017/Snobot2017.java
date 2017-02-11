@@ -66,19 +66,23 @@ public class Snobot2017 extends ASnobot
     {
         LogManager.getLogManager().getLogger("").getHandlers()[0].setFormatter(new LogFormatter());
 
-        mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
-        String headerDate = mAutoLogDateFormat.format(new Date());
-        mAutoLogger = new AutoLogger(headerDate, Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), null);
+
 
         // Joystick
-        Joystick driverJostickRaw = new Joystick(0);
+        Joystick driverJoystickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
 
-        IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJostickRaw, mLogger);
+        IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, mLogger);
         mSubsystems.add(driverJoystick);
 
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
         mSubsystems.add(operatorJoystick);
+        
+        //autolog
+        mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
+        String headerDate = mAutoLogDateFormat.format(new Date());
+        mAutoLogger = new AutoLogger(headerDate, Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystickRaw, mDriveTrain);
+        mSubsystems.add(mAutoLogger);
         
         // Drive Train
         boolean useCan = false;
@@ -149,9 +153,7 @@ public class Snobot2017 extends ASnobot
     @Override
     public void init()
     {
-        mAutoLogger.init();
         super.init();
-        mAutoLogger.endHeader();
     }
     
     PowerDistributionPanel pdp = new PowerDistributionPanel();
@@ -160,17 +162,8 @@ public class Snobot2017 extends ASnobot
     public void update()
     {
     	super.update();
-    	this.updateAutoLog();
     	System.out.println(pdp.getCurrent(13));
-    }
-    public void updateAutoLog()
-    {
-        String logDate = mAutoLogDateFormat.format(new Date());
-            mAutoLogger.startLogEntry(logDate);
-            mDriveTrain.updateAutoLog();
-            mAutoLogger.endLogger();
-    }
-    
+    }    
 
     @Override
     protected CommandGroup createAutonomousCommand()

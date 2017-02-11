@@ -3,9 +3,18 @@ package com.snobot2017.autologger;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Date;
 
 import com.snobot.lib.ISubsystem;
+import com.snobot.lib.ui.LatchedButton;
+import com.snobot.lib.ui.ToggleButton;
+import com.snobot.lib.ui.XbaxButtonMap;
+import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.joystick.IDriverJoystick;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * Class for logger
@@ -24,19 +33,30 @@ public class AutoLogger implements ISubsystem
 
     // A count that increases every teleop cycle
     private int mCurrentLogCount;
+    private boolean mLogNow;
+    private DateFormat mDateFormat;
+    private IDriveTrain mDriveTrain;
+    
+    private LatchedButton mDriverYButton;
 
     // A count that is used to indicate when to log (set by preferences)
     private int mConfigLogCount;
 
     // File Path set by preferences
     private String mLogFilePath;
+    
+    private Joystick mDriverJoystick;
 
     // Constructor
-    public AutoLogger(String aLogDate, int aLogConfigCount, String aLogPath, IDriverJoystick xx)
+    public AutoLogger(String aLogDate, int aLogConfigCount, String aLogPath, Joystick aDriverJoystick, IDriveTrain aDriveTrain)
     {
         mLogDate = aLogDate;
         mConfigLogCount = aLogConfigCount;
         mLogFilePath = aLogPath;
+        mDriverJoystick = aDriverJoystick;
+        mDriveTrain = aDriveTrain;
+        mDriverYButton = new LatchedButton();
+        
     }
 
     /**
@@ -263,8 +283,29 @@ public class AutoLogger implements ISubsystem
     }
 
 	@Override
-	public void update() {
-//		if
+	public void update() 
+	{
+		if(mDriverYButton.update(mDriverJoystick.getRawButton(XbaxButtonMap.Y_BUTTON)))
+		{
+			if(mLogNow)
+			{
+				mLogNow = false;
+				this.endLogger();
+			}
+			else
+			{
+			mLogNow = true;
+			this.init();
+			this.endHeader();
+			}
+		}
+		if(mLogNow)
+		{
+			String logDate = mDateFormat.format(new Date());
+            this.startLogEntry(logDate);
+            mDriveTrain.updateAutoLog();
+            this.endLogger();
+		}
 		
 	}
 
