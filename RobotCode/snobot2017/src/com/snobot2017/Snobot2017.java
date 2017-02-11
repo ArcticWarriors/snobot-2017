@@ -25,11 +25,14 @@ import com.snobot2017.positioner.Positioner;
 import com.snobot2017.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
@@ -65,7 +68,7 @@ public class Snobot2017 extends ASnobot
 
         mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
         String headerDate = mAutoLogDateFormat.format(new Date());
-        mAutoLogger = new AutoLogger(headerDate, Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue());
+        mAutoLogger = new AutoLogger(headerDate, Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), null);
 
         // Joystick
         Joystick driverJostickRaw = new Joystick(0);
@@ -97,8 +100,8 @@ public class Snobot2017 extends ASnobot
         }
         else
         {
-            SpeedController driveLeftMotor = new Talon(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
-            SpeedController driveRightMotor = new Talon(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
+            SpeedController driveLeftMotor = new VictorSP(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
+            SpeedController driveRightMotor = new VictorSP(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
             Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
             Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
     
@@ -114,12 +117,12 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mDriveTrain);
 
         // Climbing
-        SpeedController climbingMotor = new Talon(PortMappings2017.sCLIMB_PWM_PORT);
+        SpeedController climbingMotor = new VictorSP(PortMappings2017.sCLIMB_PWM_PORT);
         mClimber = new Climbing(climbingMotor, mLogger, operatorJoystick);
         mSubsystems.add(mClimber);
 
         // GearBoss
-        Solenoid gearSolonoid = new Solenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL);
+        DoubleSolenoid gearSolonoid = new DoubleSolenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A, PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
 
@@ -151,11 +154,14 @@ public class Snobot2017 extends ASnobot
         mAutoLogger.endHeader();
     }
     
+    PowerDistributionPanel pdp = new PowerDistributionPanel();
+    
     @Override
     public void update()
     {
     	super.update();
     	this.updateAutoLog();
+    	System.out.println(pdp.getCurrent(13));
     }
     public void updateAutoLog()
     {

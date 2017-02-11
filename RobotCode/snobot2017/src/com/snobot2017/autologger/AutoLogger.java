@@ -4,14 +4,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.snobot.lib.ISubsystem;
+import com.snobot2017.joystick.IDriverJoystick;
+
 /**
  * Class for logger
  * 
- * @author Calvin Do
+ * @author Andrew Johnson
  *
  */
 
-public class AutoLogger
+public class AutoLogger implements ISubsystem
 {
     // Current Date and Time
     private String mLogDate;
@@ -29,7 +32,7 @@ public class AutoLogger
     private String mLogFilePath;
 
     // Constructor
-    public AutoLogger(String aLogDate, int aLogConfigCount, String aLogPath)
+    public AutoLogger(String aLogDate, int aLogConfigCount, String aLogPath, IDriverJoystick xx)
     {
         mLogDate = aLogDate;
         mConfigLogCount = aLogConfigCount;
@@ -258,4 +261,34 @@ public class AutoLogger
             mLogWriter = null;
         }
     }
+
+	@Override
+	public void update() {
+//		if
+		
+	}
+
+	@Override
+	public void control() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rereadPreferences() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateSmartDashboard() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateLog() {
+		// TODO Auto-generated method stub
+		
+	}
 }
