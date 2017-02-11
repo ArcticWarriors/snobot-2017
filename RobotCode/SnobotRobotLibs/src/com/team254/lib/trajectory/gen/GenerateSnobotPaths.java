@@ -343,7 +343,7 @@ public class GenerateSnobotPaths
 
         WaypointSequence p = new WaypointSequence(10000);
         p.addWaypoint(new Waypoint(-34, 197.5, -45));
-        p.addWaypoint(new Waypoint(-163.11, 203.71, -90));
+        p.addWaypoint(new Waypoint(-163.11, 117.58, -90));
 
         generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -356,6 +356,41 @@ public class GenerateSnobotPaths
         WaypointSequence p = new WaypointSequence(10000);
         p.addWaypoint(new Waypoint(34, 197.5, -45));
         p.addWaypoint(new Waypoint(163.11, 203.71, -90));
+
+        generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getBlueMiddleScoreGearGetHopper(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "BlueMiddleScoreGearGetHopper";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, 217, -45));
+        p.addWaypoint(new Waypoint(-163.11, 117.58, -90));
+
+        generate(config, p, directory, path_name, kWheelbaseWidth);
+    }
+    
+    private static void getRedMiddleScoreGearGetHopper(String directory, double kWheelbaseWidth)
+    {
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        final String path_name = "RedMiddleScoreGearGetHopper";
+
+        config.dt = .02;
+        config.max_acc = 120;
+        config.max_jerk = 480;
+        config.max_vel = 50;
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(new Waypoint(0, -217, 45));
+        p.addWaypoint(new Waypoint(-5, -240, 45));
+        p.addWaypoint(new Waypoint(-162.11, -205.58, 90));
 
         generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -501,5 +536,11 @@ public class GenerateSnobotPaths
 //        getRedRightScoreGearGetHopper(directory, kWheelbaseWidth);
 //        getBlueRightScoreGearGetHopper( directory, kWheelbaseWidth);
 //        getBlueLeftScoreGearGetHopper(directory, kWheelbaseWidth);
+        getRedLeftScoreGearGetHopper( directory, kWheelbaseWidth);
+        getRedRightScoreGearGetHopper(directory, kWheelbaseWidth);
+        getBlueRightScoreGearGetHopper( directory, kWheelbaseWidth);
+        getBlueLeftScoreGearGetHopper(directory, kWheelbaseWidth);
+        getBlueMiddleScoreGearGetHopper(directory, kWheelbaseWidth);
+        getRedMiddleScoreGearGetHopper(directory, kWheelbaseWidth);
     }
 }
