@@ -86,6 +86,26 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         mSwitchToFrontCamera = mSwitchToFrontCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.X_BUTTON));
         mSwitchToRearCamera = mSwitchToRearCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
         mRestartApp = mRestartAppLatcher.update(mJoystick.getRawButton(XboxButtonMap.B_BUTTON));
+
+//        System.out.println("A BTN " + mJoystick.getRawButton(XboxButtonMap.A_BUTTON));
+//        System.out.println("B BTN " + mJoystick.getRawButton(XboxButtonMap.B_BUTTON));
+//        System.out.println("X BTN " + mJoystick.getRawButton(XboxButtonMap.X_BUTTON));
+//        System.out.println("Y BTN " + mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
+//        System.out.println("LB BTN " + mJoystick.getRawButton(XboxButtonMap.LB_BUTTON));
+//        System.out.println("RB BTN " + mJoystick.getRawButton(XboxButtonMap.RB_BUTTON));
+//        System.out.println("L3 BTN " + mJoystick.getRawButton(XboxButtonMap.L3_BUTTON));
+//        System.out.println("R3 BTN " + mJoystick.getRawButton(XboxButtonMap.R3_BUTTON));
+//        System.out.println("Start " + mJoystick.getRawButton(XboxButtonMap.START_BUTTON));
+//        System.out.println("Back " + mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON));
+//
+//        System.out.println("LY " + mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS));
+//        System.out.println("LX " + mJoystick.getRawAxis(XboxButtonMap.LEFT_X_AXIS));
+//        System.out.println("RY " + mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS));
+//        System.out.println("RX " + mJoystick.getRawAxis(XboxButtonMap.RIGHT_X_AXIS));
+//        System.out.println("LT " + mJoystick.getRawAxis(XboxButtonMap.LEFT_TRIGGER));
+//        System.out.println("RT " + mJoystick.getRawAxis(XboxButtonMap.RIGHT_TRIGGER));
+//
+//        System.out.println();
     }
     
     @Override
