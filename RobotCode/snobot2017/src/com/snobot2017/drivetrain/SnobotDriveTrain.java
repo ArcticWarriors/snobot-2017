@@ -25,10 +25,9 @@ public class SnobotDriveTrain extends ASnobotDrivetrain<SpeedController>
             Encoder aLeftDriveEncoder, 
             Encoder aRightDriveEncoder,
             IDriverJoystick aDriverJoystick, 
-            Logger aLogger, 
-            AutoLogger aAutoLogger)
+            Logger aLogger)
     {
-        super(aLeftMotor, null, aRightMotor, null, aDriverJoystick, aLogger, aAutoLogger);
+        super(aLeftMotor, null, aRightMotor, null, aDriverJoystick, aLogger);
         mLeftDriveEncoder = aLeftDriveEncoder;
         mRightDriveEncoder = aRightDriveEncoder;
 
