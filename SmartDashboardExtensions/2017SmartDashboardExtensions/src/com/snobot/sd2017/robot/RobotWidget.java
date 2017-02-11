@@ -39,7 +39,7 @@ public class RobotWidget extends AutoUpdateWidget
 
         is_gear_boss_up = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sGEAR_BOSS_SOLENOID, false);
         spool_speed = Robot.getTable().getNumber(com.snobot2017.SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, 0);
-        in_action = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sSNOBOT_ACTION, false);
+        in_action = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sIN_ACTION, false);
         
         if(mDrawer != null)
         {

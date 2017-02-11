@@ -39,8 +39,9 @@ public class RobotDrawer extends JPanel
     private static final Color sROBOT_GEARBOX_COLOR = Color.blue;
     private static final Color sROBOT_SPOOL_COLOR = Color.gray;
     private static final Color sROBOT_GEARFUNNEL_COLOR = Color.cyan;
-    private static final Color sROBOT_NOACTION_COLOR = Color.red;
-    private static final Color sROBOT_INACTION_COLOR = Color.green;
+    private static final Color sROBOT_NOACTION_COLOR = Color.green;
+    private static final Color sROBOT_INACTION1_COLOR = Color.red;
+    private static final Color sROBOT_INACTION2_COLOR = Color.pink;
 
     /**
      * The scaling factor used for drawing. For example, 1 would mean draw every
@@ -52,6 +53,7 @@ public class RobotDrawer extends JPanel
     private double mSpoolSpeed;
     private boolean mGearBossPos;
     private boolean mInAction;
+    private boolean mCycleFlash = false;
 
     public RobotDrawer()
     {
@@ -59,7 +61,6 @@ public class RobotDrawer extends JPanel
         setPreferredSize(new Dimension(600, 600));
         setVisible(true);
         setSize(400, 300);
-        mInAction = false;
         addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -72,8 +73,8 @@ public class RobotDrawer extends JPanel
 
     private void drawRobotBase(Graphics2D g2d)
     {
-        Rectangle2D robotBase = new Rectangle2D.Double(sCHASSIS_X_START * mScaleFactor, sCHASSIS_Y_START * mScaleFactor,
-                sROBOT_WIDTH * mScaleFactor, sROBOT_HEIGHT * mScaleFactor);
+        Rectangle2D robotBase = new Rectangle2D.Double(sCHASSIS_X_START * mScaleFactor, sCHASSIS_Y_START * mScaleFactor, sROBOT_WIDTH * mScaleFactor,
+                sROBOT_HEIGHT * mScaleFactor);
 
         g2d.setColor(sROBOT_BASE_COLOR);
         g2d.fill(robotBase);
@@ -90,7 +91,6 @@ public class RobotDrawer extends JPanel
         {
             color = sROBOT_SPOOL_COLOR;
         }
-        System.out.println(getSpoolMotorSpeed());
         Ellipse2D spool = new Ellipse2D.Double(sSPOOL_X_START * mScaleFactor, sSPOOL_Y_START * mScaleFactor, sSPOOL_RADIUS * mScaleFactor,
                 sSPOOL_RADIUS * mScaleFactor);
 
@@ -145,17 +145,23 @@ public class RobotDrawer extends JPanel
         Graphics2D g2d = (Graphics2D) g;
 
         g.clearRect(0, 0, (int) getSize().getWidth(), (int) getSize().getHeight());
-        System.out.println(mInAction);
         if (mInAction)
         {
-            g.setColor(sROBOT_INACTION_COLOR);
+            if (mCycleFlash)
+            {
+                g.setColor(sROBOT_INACTION1_COLOR);
+            }
+            else
+            {
+                g.setColor(sROBOT_INACTION2_COLOR);
+            }
+            mCycleFlash = !mCycleFlash;
         }
         else
         {
             g.setColor(sROBOT_NOACTION_COLOR);
         }
         g2d.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize().getHeight());
-
 
         // Draw Robot Parts
         drawRobotBase(g2d);
@@ -178,6 +184,7 @@ public class RobotDrawer extends JPanel
     {
         return mGearBossPos;
     }
+
     public void setGearBossPos(boolean mGearBossPos)
     {
         this.mGearBossPos = mGearBossPos;

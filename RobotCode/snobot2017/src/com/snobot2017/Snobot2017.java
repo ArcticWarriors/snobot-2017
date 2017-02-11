@@ -72,8 +72,6 @@ public class Snobot2017 extends ASnobot
     {
         LogManager.getLogManager().getLogger("").getHandlers()[0].setFormatter(new LogFormatter());
 
-
-
         // Joystick
         Joystick driverJoystickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
@@ -173,7 +171,7 @@ public class Snobot2017 extends ASnobot
     public void update()
     {
     	super.update();
-    	System.out.println(pdp.getCurrent(13));
+    	// System.out.println(pdp.getCurrent(13));
     }    
 
     @Override
@@ -185,7 +183,7 @@ public class Snobot2017 extends ASnobot
     /**
      * Returns the class that controls the robots drivetrain
      * 
-     * @return The robots drivetrain
+     * @return The robots drive train
      */
     public IDriveTrain getDriveTrain()
     {

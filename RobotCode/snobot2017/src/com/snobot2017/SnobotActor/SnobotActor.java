@@ -135,7 +135,7 @@ public class SnobotActor implements ISnobotActor
         double error = mDesiredDistance - mCurrentDistance;
         boolean isFinished = false;
 
-        System.out.println(error);
+        // System.out.println(error);
 
         if (mInDeadbandHelper.isFinished(Math.abs(error) < 6))
         {
