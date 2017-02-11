@@ -237,6 +237,8 @@ public class CommandParser extends ACommandParser
             break;
         case BlueLeft:
             fileName = "BlueLeftScoreGear.csv";
+            break;
+        default:
             break;   
         }
        
@@ -276,6 +278,8 @@ public class CommandParser extends ACommandParser
             break;
         case BlueLeft:
             fileName = "BlueLeftToHopperThree.csv";
+            break;
+        default:
             break;   
         }
        
@@ -292,8 +296,14 @@ public class CommandParser extends ACommandParser
     
     private Command createGetHoppersAndGetGearWithTrajectoryCommand()
     {
-        CommandGroup output = new CommandGroup();
         StartingPositions startPosition = mPositionChooser.getSelected();
+
+        if (startPosition == null)
+        {
+            return null;
+        }
+
+        CommandGroup output = new CommandGroup();
         
         switch (startPosition)
         {
@@ -320,10 +330,14 @@ public class CommandParser extends ACommandParser
         case BlueLeft:
             output.addSequential(createTrajectoryCommand("BlueLeftScoreGear.csv"));
             output.addSequential(createTrajectoryCommand("BlueLeftToHopperThree.csv"));   
+            break;
+
+        // Intentional fall through, nothing to do
+        case Origin:
+        default:
             break;   
         }
        
-        addError("Invalid start selection for the current robot start position command : " + startPosition);
         return output;
     }
     

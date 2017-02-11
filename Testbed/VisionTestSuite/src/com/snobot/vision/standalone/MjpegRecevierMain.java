@@ -41,7 +41,6 @@ public class MjpegRecevierMain
         }
     };
 
-    @SuppressWarnings("unchecked")
     public MjpegRecevierMain(String urlAddress, String thresholdConfigFile) throws FileNotFoundException
     {
 
