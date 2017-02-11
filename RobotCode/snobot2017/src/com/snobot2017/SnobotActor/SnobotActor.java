@@ -93,6 +93,7 @@ public class SnobotActor implements ISnobotActor
             if (done)
             {
                 mDriveToPegStates = DriveToPegStates.NoAction;
+                mOperatorJoystick.turnOffActions();
             }
             break;
         }
@@ -182,6 +183,7 @@ public class SnobotActor implements ISnobotActor
         {
             mInAction = false;
             mActionName = "";
+            mDriveToPegStates = DriveToPegStates.NoAction;
         }
 
     }
