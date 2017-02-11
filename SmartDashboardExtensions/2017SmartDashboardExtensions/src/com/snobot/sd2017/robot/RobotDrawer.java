@@ -56,8 +56,8 @@ public class RobotDrawer extends JPanel
     private boolean mGearBossPos;
     private boolean mInAction;
     private boolean mCycleFlash = false;
-    private String mActorStateName;
-    private String mActorActionName;
+    private String mActorStateName = "";
+    private String mActorActionName = "";
     private Font mFont = new Font("SansSerif", Font.BOLD, 14);
 
     public RobotDrawer()
@@ -151,7 +151,7 @@ public class RobotDrawer extends JPanel
         {
             g2d.setColor(sROBOT_NOACTION_COLOR);
         }
-        g2d.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize().getHeight());
+        g2d.fillRect(0, 0, (int) getWidth(), (int) getHeight());
 
         // Write State on Image
         String nameString = "";
