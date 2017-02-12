@@ -30,23 +30,24 @@ public class Replay extends Command
      * @param aDriveTrain
      * @throws IOException
      */
-    public Replay(IDriveTrain aDriveTrain) throws IOException
+    public Replay(IDriveTrain aDriveTrain, String aFilePath) throws IOException
     {
+        mFilePath = aFilePath;
         mBufferedReader = new BufferedReader(new FileReader(new File(mFilePath)));
-        mFilePath = Properties2017.sAUTO_LOG_RUN_PATH.getValue();
         mDriveTrain = aDriveTrain;
     }
 
     @Override
-    public void execute()
+    public void initialize()
     {
+        System.out.println("\n ************\n ************\n ************\n HERE IT IS FILE PATH IS:  " + mFilePath
+                + "HERE IT IS \n ************\n ************\n ************");
         try
         {
-            this.setMotors();
+            mBufferedReader.readLine();
         }
         catch (IOException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -56,29 +57,49 @@ public class Replay extends Command
      * 
      * @throws IOException
      */
-    private void setMotors() throws IOException
+    @Override
+    public void execute()
     {
-        // TODO sync file with time
-        mBufferedReader.readLine();
-        String line;
-        while ((line = mBufferedReader.readLine()) != null)
+        try
         {
-            System.out.println("\n" + line);
-
-            String[] Split = line.split(mDelim);
-            Double[] nums = new Double[Split.length - 1];
-
-            for (int x = 1; x < Split.length; x++)
+            String line = mBufferedReader.readLine();
+            if (line != null)
             {
-                nums[x - 1] = Double.parseDouble(Split[x]);
+                System.out.println("\n" + line);
+
+                String[] Split = line.split(mDelim);
+                Double[] nums = new Double[Split.length - 1];
+
+                for (int x = 1; x < Split.length; x++)
+                {
+                    nums[x - 1] = Double.parseDouble(Split[x]);
+                }
+
+                if (nums.length ==  2)
+                {
+                    double mLeftSpeed = (nums[0]);
+                    double mRightSpeed = (nums[1]);
+                    mDriveTrain.setLeftRightSpeed(mLeftSpeed, mRightSpeed);
+                }
+            }
+            else
+            {
+                mFinished = true;
+                mDriveTrain.setLeftRightSpeed(0, 0);
             }
 
-            double mLeftSpeed = (nums[0] + nums[1]) / 2;
-            double mRightSpeed = (nums[2] + nums[3]) / 2;
-            mDriveTrain.setLeftRightSpeed(mLeftSpeed, mRightSpeed);
         }
-        mFinished = true;
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
+
+    /**
+     * reads log file and sets motors in same timeframe
+     * 
+     * @throws IOException
+     */
 
     @Override
     protected boolean isFinished()

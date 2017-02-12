@@ -3,15 +3,28 @@ package com.snobot2017.autologger;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.snobot.lib.ISubsystem;
+import com.snobot.lib.ui.LatchedButton;
+import com.snobot.lib.ui.ToggleButton;
+import com.snobot.lib.ui.XboxButtonMap;
+import com.snobot2017.drivetrain.IDriveTrain;
+import com.snobot2017.joystick.IDriverJoystick;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * Class for logger
  * 
- * @author Calvin Do
+ * @author Andrew Johnson
  *
  */
 
-public class AutoLogger
+public class AutoLogger implements ISubsystem
 {
     // Current Date and Time
     private String mLogDate;
@@ -21,19 +34,30 @@ public class AutoLogger
 
     // A count that increases every teleop cycle
     private int mCurrentLogCount;
+    private boolean mLogNow = false;
+    private DateFormat mDateFormat;
+    private IDriveTrain mDriveTrain;
+    
+    private LatchedButton mDriverYButton;
 
     // A count that is used to indicate when to log (set by preferences)
     private int mConfigLogCount;
 
     // File Path set by preferences
     private String mLogFilePath;
+    
+    private Joystick mDriverJoystick;
 
     // Constructor
-    public AutoLogger(String aLogDate, int aLogConfigCount, String aLogPath)
+    public AutoLogger(int aLogConfigCount, String aLogPath, Joystick aDriverJoystick, IDriveTrain aDriveTrain)
     {
-        mLogDate = aLogDate;
         mConfigLogCount = aLogConfigCount;
         mLogFilePath = aLogPath;
+        mDriverJoystick = aDriverJoystick;
+        mDriveTrain = aDriveTrain;
+        mDriverYButton = new LatchedButton();
+        mDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
+        mLogDate = mDateFormat.format(new Date());
     }
 
     /**
@@ -42,6 +66,10 @@ public class AutoLogger
      * @throws IOException
      */
     public void init()
+    {
+    }
+    
+    private void startLog()
     {
         mCurrentLogCount = 0;
 
@@ -53,7 +81,7 @@ public class AutoLogger
                 dir.mkdirs();
             }
             mLogWriter = new FileWriter(mLogFilePath + "RobotLog_" + mLogDate + "_log.csv");
-            System.out.print("Where is this??? " + mLogFilePath + "RobotLog_" + mLogDate + "_log.csv" + "\n");
+            System.out.println(mLogFilePath + "RobotLog_" + mLogDate + "_log.csv");
             mLogWriter.write("Date and Time");
 
         }
@@ -258,4 +286,58 @@ public class AutoLogger
             mLogWriter = null;
         }
     }
+
+	@Override
+	public void update() 
+	{
+		if(mDriverYButton.update(mDriverJoystick.getRawButton(XboxButtonMap.Y_BUTTON)))
+		{
+			if(mLogNow)
+			{
+				mLogNow = false;
+				this.endLogger();
+			}
+			else
+			{
+			mLogNow = true;
+	        this.startLog();
+	        this.addHeader("LeftMotorSpeed");
+	        this.addHeader("RightMotorSpeed");
+			this.endHeader();
+			}
+		}
+		if(mLogNow)
+		{
+			String logDate = mDateFormat.format(new Date());
+            this.startLogEntry(logDate);
+            updateLogger(mDriveTrain.getLeftMotorSpeed());
+            updateLogger(mDriveTrain.getRightMotorSpeed());
+            this.endLogger();
+		}
+		
+	}
+
+	@Override
+	public void control() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rereadPreferences() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateSmartDashboard() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateLog() {
+		// TODO Auto-generated method stub
+		
+	}
 }

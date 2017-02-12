@@ -101,7 +101,6 @@ public class MjpgServer
     private ServerSocket mServerSocket;
     private boolean mRunning;
     private Thread mRunThread;
-    private Long mLastUpdate = 0L;
 
     private MjpgServer(int aBindPort)
     {
@@ -121,15 +120,6 @@ public class MjpgServer
 
     public void update(byte[] bytes)
     {
-        update(bytes, true);
-    }
-
-    private void update(byte[] bytes, boolean updateTimer)
-    {
-        if (updateTimer)
-        {
-            mLastUpdate = System.currentTimeMillis();
-        }
         synchronized (mLock)
         {
             ArrayList<Integer> badIndices = new ArrayList<>(mConnections.size());

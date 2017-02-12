@@ -2,6 +2,7 @@ package com.snobot2017.drivetrain;
 
 import com.snobot.lib.Logger;
 import com.snobot2017.SmartDashBoardNames;
+import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
@@ -10,8 +11,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Base class for drivetrains. Handles most of the interaction with drivetrain
- * 
+ * Base class for drivetrains.  Handles most of the interaction with drivetrain
  * @author PJ
  *
  * @param <SpeedControllerType>
@@ -23,7 +23,6 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     protected final IDriverJoystick mDriverJoystick;
 
     protected final Logger mLogger;
-    protected final AutoLogger mAutoLogger;
 
     protected final RobotDrive mRobotDrive;
 
@@ -32,6 +31,11 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
 
     protected double mRightMotorDistance;
     protected double mLeftMotorDistance;
+    
+    protected int mRightEncoderRaw;
+    protected int mLeftEncoderRaw;
+    
+    private ISnobotActor mSnobotActor;
 
     public ASnobotDrivetrain(
             SpeedControllerType aFrontLeftMotor, 
@@ -39,14 +43,11 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
             SpeedControllerType aFrontRightMotor,
             SpeedControllerType aRearRightMotor, 
             IDriverJoystick aDriverJoystick, 
-            Logger aLogger, 
-            AutoLogger aAutoLogger)
+            Logger aLogger)
     {
-        mAutoLogger = aAutoLogger;
-
         mLeftMotor = aFrontLeftMotor;
         mRightMotor = aFrontRightMotor;
-
+        
         mDriverJoystick = aDriverJoystick;
         mLogger = aLogger;
 
@@ -69,16 +70,17 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         mLogger.addHeader("RightEncoderDistance");
         mLogger.addHeader("LeftMotorSpeed");
         mLogger.addHeader("RightMotorSpeed");
-        
-
     }
 
     @Override
     public void control()
     {
-        setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
+        if (!mSnobotActor.InAction())
+        {
+            setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
+        }
     }
-
+    
     @Override
     public void rereadPreferences()
     {
@@ -88,6 +90,9 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     @Override
     public void updateSmartDashboard()
     {
+        SmartDashboard.putNumber("LEFT RAW", mLeftEncoderRaw);
+        SmartDashboard.putNumber("RIght RAW", mRightEncoderRaw);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, mRightMotorDistance);
         SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_ENCODER, mLeftMotorDistance);
         SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, mRightMotorDistance);
         SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_SPEED, mLeftMotorSpeed);
@@ -103,7 +108,6 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         mLogger.updateLogger(mRightMotorSpeed);
     }
 
-    
     @Override
     public double getRightDistance()
     {
@@ -125,9 +129,32 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     }
 
     @Override
+    public double getLeftMotorSpeed()
+    {
+        return mLeftMotorSpeed;
+    }
+    
+    @Override
+    public double getRightMotorSpeed()
+    {
+        return mRightMotorSpeed;
+        
+    }
+
+    @Override
     public void stop()
     {
         setLeftRightSpeed(0, 0);
+    }
+
+    /**
+     * Setting the SnobotActor in the drive train so that the drive train knows
+     * what it is because we can't do it in the constructor.
+     */
+    public void setSnobotActor(ISnobotActor aSnobotActor)
+    {
+        mSnobotActor = aSnobotActor;
+
     }
 
 }

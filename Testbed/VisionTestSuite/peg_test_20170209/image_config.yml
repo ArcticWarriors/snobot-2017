@@ -1,0 +1,23 @@
+
+one_at_a_time: true
+threshold_config: peg_test_20170202/threshold_config.yml
+images: 
+
+    - ../../Vision/Images\test_images_20170209\2ft_0deg.jpg
+    - ../../Vision/Images\test_images_20170209\3ft_0deg.jpg
+    - ../../Vision/Images\test_images_20170209\4ft_0deg.jpg
+    - ../../Vision/Images\test_images_20170209\5ft_0deg.jpg
+    - ../../Vision/Images\test_images_20170209\6ft_0deg.jpg
+    - ../../Vision/Images\test_images_20170209\7ft_0deg.jpg
+    - ../../Vision/Images\test_images_20170209\8ft_0deg.jpg
+    - ../../Vision/Images\test_images_20170209\9ft_0deg.jpg
+    - ../../Vision/Images\test_images_20170209\10ft_0deg.jpg
+    - ../../Vision/Images\test_images_20170209\11ft_0deg.jpg
+
+    - ../../Vision/Images\test_images_20170209\2ft_back_1ft_left.jpg
+    - ../../Vision/Images\test_images_20170209\4ft_back_1ft_left.jpg
+    - ../../Vision/Images\test_images_20170209\4ft_back_2ft_left.jpg
+    - ../../Vision/Images\test_images_20170209\6ft_back_1ft_left.jpg
+    - ../../Vision/Images\test_images_20170209\6ft_back_2ft_left.jpg
+    - ../../Vision/Images\test_images_20170209\6ft_back_3ft_left.jpg
+    - ../../Vision/Images\test_images_20170209\6ft_back_4ft_left.jpg

@@ -4,28 +4,28 @@ import com.snobot.lib.Logger;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Controls the gear boss
- * 
  * @author Owner/Nora
  *
  */
 public class SnobotGearBoss implements IGearBoss
 {
-    private Solenoid mGearSolenoid;
+    private DoubleSolenoid mGearSolenoid;
     private IOperatorJoystick mOperatorJoystick;
     private Logger mLogger;
     private boolean mSolenoidInOrOut;
 
-    public SnobotGearBoss(Solenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick, Logger aLogger)
+    public SnobotGearBoss(DoubleSolenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick, Logger aLogger)
     {
         mGearSolenoid = aGearSolenoid;
         mOperatorJoystick = aOperatorJoystick;
         mLogger = aLogger;
-
+        
     }
 
     @Override
@@ -37,7 +37,7 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void update()
     {
-        mSolenoidInOrOut = mGearSolenoid.get();
+        mSolenoidInOrOut = mGearSolenoid.get() == Value.kForward;
     }
 
     @Override
@@ -83,25 +83,26 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void stop()
     {
-        mGearSolenoid.set(false);
+        mGearSolenoid.set(Value.kForward);
     }
 
     @Override
     public void moveGearHigh()
     {
-        mGearSolenoid.set(true);
+        mGearSolenoid.set(Value.kReverse);
     }
 
     @Override
     public void moveGearLow()
     {
-        mGearSolenoid.set(false);
+        mGearSolenoid.set(Value.kForward);
     }
 
     @Override
     public boolean getGearHeight()
     {
-        return mGearSolenoid.get();
+        return mGearSolenoid.get() == Value.kForward;
     }
+
 
 }

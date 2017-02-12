@@ -6,13 +6,17 @@ import java.util.logging.Level;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.snobot.lib.adb.AdbBridge;
+import com.snobot.lib.adb.IAdbBridge;
+import com.snobot.lib.adb.NativeAdbBridge;
+import com.snobot.lib.adb.RioDroidAdbBridge;
 import com.snobot.lib.external_connection.RobotConnectionServer;
 import com.snobot2017.Properties2017;
 import com.snobot2017.vision.messages.HeartbeatMessage;
 import com.snobot2017.vision.messages.IterateDisplayImageMessage;
 import com.snobot2017.vision.messages.SetCameraDirectionMessage;
 import com.snobot2017.vision.messages.TargetUpdateMessage;
+
+import edu.wpi.first.wpilibj.RobotBase;
 
 public class VisionAdbServer extends RobotConnectionServer
 {
@@ -31,18 +35,30 @@ public class VisionAdbServer extends RobotConnectionServer
         Front, Rear
     }
 
-    private AdbBridge mAdb;
+    private IAdbBridge mAdb;
     private TargetUpdateMessage mLatestTargetUpdate;
 
     public VisionAdbServer(int aAppBindPort, int aAppMjpegBindPort, int aAppForwardedMjpegBindPort)
     {
         super(aAppBindPort, sTIMEOUT_PERIOD);
 
-        mAdb = new AdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY);
-        mAdb.start();
+        if(RobotBase.isSimulation())
+        {
+            mAdb = new NativeAdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY);
+        }
+        else
+        {
+            mAdb = new RioDroidAdbBridge(sAPP_PACKAGE, sAPP_MAIN_ACTIVITY);
+        }
+
         mAdb.reversePortForward(aAppBindPort, aAppBindPort);
-        // mAdb.portForward(aAppBindPort, aAppBindPort);
-        mAdb.portForward(aAppForwardedMjpegBindPort, aAppMjpegBindPort);
+        mAdb.portForward(aAppMjpegBindPort, aAppForwardedMjpegBindPort);
+
+        // MjpegReceiver receiver = new MjpegReceiver();
+        // MjpegForwarder forwarder = new MjpegForwarder(aAppMjpegBindPort);
+        // receiver.addImageReceiver(forwarder);
+        //
+        // receiver.start("127.0.0.1:" + aAppForwardedMjpegBindPort);
     }
 
     @Override
@@ -100,6 +116,11 @@ public class VisionAdbServer extends RobotConnectionServer
     public void restartApp()
     {
         mAdb.restartApp();
+    }
+
+    public void restartAdb()
+    {
+        mAdb.restartAdb();
     }
 
     protected void send(JSONObject aObject)

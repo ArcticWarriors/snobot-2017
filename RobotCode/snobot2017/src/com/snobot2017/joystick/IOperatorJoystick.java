@@ -44,4 +44,17 @@ public interface IOperatorJoystick extends ISubsystem
      *         do nothing
      */
     GearBossPositions moveGearBossToPosition();
+
+    /**
+     * returns if operators wants to go to peg or not
+     * 
+     * @return
+     */
+    boolean driveToPeg();
+
+    /**
+     * Tell the operator joystick that any active snobotActor actions are
+     * stopped.
+     */
+    void turnOffActions();
 }

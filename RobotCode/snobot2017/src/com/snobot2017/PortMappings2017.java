@@ -7,11 +7,15 @@ public class PortMappings2017
     // Joysticks
     public static final int sDRIVER_JOYSTICK_PORT = 0;
 
+    // CAN
+    public static final int sDRIVE_CAN_LEFT_A_PORT = 2;
+    public static final int sDRIVE_CAN_LEFT_B_PORT = 1;
+    public static final int sDRIVE_CAN_RIGHT_A_PORT = 3;
+    public static final int sDRIVE_CAN_RIGHT_B_PORT = 4;
+
     // PWM
-    public static final int sDRIVE_PWM_LEFT_A_PORT = 2;
-    public static final int sDRIVE_PWM_LEFT_B_PORT = 1;
-    public static final int sDRIVE_PWM_RIGHT_A_PORT = 3;
-    public static final int sDRIVE_PWM_RIGHT_B_PORT = 4;
+    public static final int sDRIVE_PWM_LEFT_A_PORT = 0;
+    public static final int sDRIVE_PWM_RIGHT_A_PORT = 1;
     public static final int sCLIMB_PWM_PORT = 5;
 
     // Digital
@@ -21,7 +25,8 @@ public class PortMappings2017
     public static final int sRIGHT_DRIVE_ENCODER_PORT_B = 3;
 
     // Solenoid
-    public static final int sGEARBOSS_SOLENOID_CHANNEL = 1;
+    public static final int sGEARBOSS_SOLENOID_CHANNEL_A = 0;
+    public static final int sGEARBOSS_SOLENOID_CHANNEL_B = 1;
 
     //////////////////////////////
     // Vision
@@ -39,5 +44,5 @@ public class PortMappings2017
     /**
      * This forwards data coming from the apps MJPEG server to this port
      */
-    public static final int sAPP_MJPEG_FORWARDED_PORT = 1800;
+    public static final int sAPP_MJPEG_FORWARDED_PORT = 5800;
 }

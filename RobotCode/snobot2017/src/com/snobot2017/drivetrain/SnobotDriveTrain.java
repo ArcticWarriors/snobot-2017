@@ -25,37 +25,26 @@ public class SnobotDriveTrain extends ASnobotDrivetrain<SpeedController>
             Encoder aLeftDriveEncoder, 
             Encoder aRightDriveEncoder,
             IDriverJoystick aDriverJoystick, 
-            Logger aLogger, 
-            AutoLogger aAutoLogger)
+            Logger aLogger)
     {
-        super(aLeftMotor, null, aRightMotor, null, aDriverJoystick, aLogger, aAutoLogger);
+        super(aLeftMotor, null, aRightMotor, null, aDriverJoystick, aLogger);
         mLeftDriveEncoder = aLeftDriveEncoder;
         mRightDriveEncoder = aRightDriveEncoder;
 
         mLeftDriveEncoder.setDistancePerPulse(Properties2017.sLEFT_ENCODER_DIST_PER_PULSE.getValue());
         mRightDriveEncoder.setDistancePerPulse(Properties2017.sRIGHT_ENCODER_DIST_PER_PULSE.getValue());
     }
-    
-    @Override
-    public void init()
-    {
-        super.init();
-        mAutoLogger.addHeader("LeftMotorSpeed");
-        mAutoLogger.addHeader("RightMotorSpeed");
-    }
-    
-    public void updateAutoLog()
-    {
-        mAutoLogger.updateLogger(mLeftMotorSpeed);
-        mAutoLogger.updateLogger(mRightMotorSpeed);
-    }
 
+    
     @Override
     public void update()
     {
         mLeftMotorDistance = mLeftDriveEncoder.getDistance();
         mRightMotorDistance = mRightDriveEncoder.getDistance();
+        mRightEncoderRaw = mRightDriveEncoder.getRaw();
+        mLeftEncoderRaw = mLeftDriveEncoder.getRaw();
     }
+
 
     @Override
     public void resetEncoders()

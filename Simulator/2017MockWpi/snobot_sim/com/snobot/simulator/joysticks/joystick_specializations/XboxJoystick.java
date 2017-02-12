@@ -12,12 +12,12 @@ public class XboxJoystick extends BaseJoystick
 
     private static final Identifier[] sAXIS = new Identifier[]
     { 
-            Identifier.Axis.X, // Left x
-            Identifier.Axis.Y, // Left Y
-            Identifier.Axis.Z, // Left Trigger
-            Identifier.Axis.RZ, // Right Trigger
-            Identifier.Axis.RX, // Right x
-            Identifier.Axis.RY, // Right y
+        Identifier.Axis.X, // Left x
+        Identifier.Axis.Y, // Left Y
+        Identifier.Axis.Z, // Left Trigger
+        Identifier.Axis.Z, // Right Trigger
+        Identifier.Axis.RX, // Right x
+        Identifier.Axis.RY, // Right y
     };
 
     private static final Identifier[] sBUTTONS = new Identifier[]
@@ -47,5 +47,26 @@ public class XboxJoystick extends BaseJoystick
     public XboxJoystick(Controller aController, String aName)
     {
         super(aName, aController, Arrays.asList(sAXIS), Arrays.asList(sBUTTONS), Arrays.asList(sPOV));
+    }
+
+    @Override
+    public float[] getAxisValues()
+    {
+        float[] output = super.getAxisValues();
+        float triggerValue = output[2];
+
+        if (triggerValue < 0)
+        {
+            output[2] = 0;
+            output[3] = triggerValue;
+        }
+        else
+        {
+            output[2] = triggerValue;
+            output[3] = 0;
+        }
+
+        
+        return output;
     }
 }
