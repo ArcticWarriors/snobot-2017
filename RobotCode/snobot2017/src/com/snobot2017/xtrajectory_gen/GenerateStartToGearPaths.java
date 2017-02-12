@@ -1,28 +1,28 @@
 package com.snobot2017.xtrajectory_gen;
 
 import com.team254.lib.trajectory.gen.WaypointSequence;
-import com.team254.lib.trajectory.gen.WaypointSequence.Waypoint;
 
 public class GenerateStartToGearPaths extends BasePathGenerator
 {
-    private void getScoreGearBlueCenter(String aDirectory, double aWheelbaseWidth)
-    {
-        final String path_name = "BlueMiddleScoreGear";
 
-        WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(0, FIELD_LENGTH_Y, 180));
-        p.addWaypoint(new Waypoint(0, CENTER_GEAR_Y, 180));
-
-        generate(BLUE_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
-    }
-    
     private void getScoreGearBlueLeft(String aDirectory, double aWheelbaseWidth)
     {
         final String path_name = "BlueLeftScoreGear";
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(BOILER_LINE_OFFSET, FIELD_LENGTH_Y, -180));
-        p.addWaypoint(new Waypoint(NON_CENTER_GEAR_X_OFFSET, NON_CENTER_CENTER_GEAR_Y, -180));
+        p.addWaypoint(BLUE_LEFT_START);
+        p.addWaypoint(BLUE_LEFT_GEAR);
+
+        generate(BLUE_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
+    }
+    
+    private void getScoreGearBlueCenter(String aDirectory, double aWheelbaseWidth)
+    {
+        final String path_name = "BlueMiddleScoreGear";
+
+        WaypointSequence p = new WaypointSequence(10000);
+        p.addWaypoint(BLUE_CENTER_START);
+        p.addWaypoint(BLUE_CENTER_GEAR);
 
         generate(BLUE_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
@@ -32,19 +32,19 @@ public class GenerateStartToGearPaths extends BasePathGenerator
         final String path_name = "BlueRightScoreGear";
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(-79.52, FIELD_LENGTH_Y, 0));
-        p.addWaypoint(new Waypoint(-34, 197.5, 0));
+        p.addWaypoint(BLUE_RIGHT_START);
+        p.addWaypoint(BLUE_RIGHT_GEAR);
 
-        generate(RED_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
+        generate(BLUE_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
 
-    private void getScoreGearRedRight(String aDirectory, double aWheelbaseWidth)
+    private void getScoreGearRedLeft(String aDirectory, double aWheelbaseWidth)
     {
-        final String path_name = "RedRightScoreGear";
+        final String path_name = "RedLeftScoreGear";
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(BOILER_LINE_OFFSET, -FIELD_LENGTH_Y, 0));
-        p.addWaypoint(new Waypoint(NON_CENTER_GEAR_X_OFFSET, -NON_CENTER_CENTER_GEAR_Y, -45));
+        p.addWaypoint(RED_LEFT_START);
+        p.addWaypoint(RED_LEFT_GEAR);
 
         generate(RED_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
@@ -54,19 +54,19 @@ public class GenerateStartToGearPaths extends BasePathGenerator
         final String path_name = "RedMiddleScoreGear";
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(0, -FIELD_LENGTH_Y, 0));
-        p.addWaypoint(new Waypoint(0, -CENTER_GEAR_Y, 0));
+        p.addWaypoint(RED_CENTER_START);
+        p.addWaypoint(RED_CENTER_GEAR);
 
         generate(RED_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
 
-    private void getScoreGearRedLeft(String aDirectory, double aWheelbaseWidth)
+    private void getScoreGearRedRight(String aDirectory, double aWheelbaseWidth)
     {
-        final String path_name = "RedLeftScoreGear";
+        final String path_name = "RedRightScoreGear";
 
         WaypointSequence p = new WaypointSequence(10000);
-        p.addWaypoint(new Waypoint(LOADING_X_OFFSET, -FIELD_LENGTH_Y, 0));
-        p.addWaypoint(new Waypoint(-NON_CENTER_GEAR_X_OFFSET, -NON_CENTER_CENTER_GEAR_Y, 45));
+        p.addWaypoint(RED_RIGHT_START);
+        p.addWaypoint(RED_RIGHT_GEAR);
 
         generate(RED_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }

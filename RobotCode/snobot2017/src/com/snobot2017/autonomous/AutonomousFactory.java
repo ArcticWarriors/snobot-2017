@@ -29,8 +29,8 @@ public class AutonomousFactory
     {
         RedLeft("Red Left", -79.53, -334.81, 0), 
         RedMiddle("Red Middle", 0, -334.81, 0), 
-        RedRight("Red Right", 43.02, -334.81, 0), 
-        BlueLeft("Blue Left", 43.02, 334.81, 180), 
+        RedRight("Red Right", 67, -334.81, 0), 
+        BlueLeft("Blue Left", 67, 334.81, 180), 
         BlueMiddle("Blue Middle", 0, 334.81, 180), 
         BlueRight("Blue Right", -79.53, 334.81, 180), 
         Origin("Origin", 0, 0, 0);

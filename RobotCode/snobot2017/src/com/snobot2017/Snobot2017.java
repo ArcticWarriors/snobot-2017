@@ -31,9 +31,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -136,8 +134,8 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mGearBoss);
 
         // Vision
-        mVisionManager = new VisionManager(operatorJoystick);
-        mSubsystems.add(mVisionManager);
+        // mVisionManager = new VisionManager(operatorJoystick);
+        // mSubsystems.add(mVisionManager);
 
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();

@@ -309,15 +309,15 @@ public class CommandParser extends ACommandParser
         {
         case RedLeft:
             output.addSequential(createTrajectoryCommand("RedLeftScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("RedLeftToHopperFive.csv"));
+            output.addSequential(createTrajectoryCommand("RedLeftScoreGearGetHopper.csv"));
             break;
         case RedMiddle:
             output.addSequential(createTrajectoryCommand("RedMiddleScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("RedMiddleToHopperFive.csv"));         
+            output.addSequential(createTrajectoryCommand("RedMiddleToHopperFive.csv"));
             break;
         case RedRight:
             output.addSequential(createTrajectoryCommand("RedRightScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("RedRightToHopperFive.csv"));           
+            output.addSequential(createTrajectoryCommand("RedRightScoreGearGetHopper.csv"));
             break;
         case BlueRight:
             output.addSequential(createTrajectoryCommand("BlueRightScoreGear.csv"));
