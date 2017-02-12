@@ -10,7 +10,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
     {
         final String path_name = "RedRightToHopperOne";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_START);
         p.addWaypoint(EAST_HOPPER_ONE);
 
@@ -21,7 +21,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
     {
         final String path_name = "RedRightToHopperTwo";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_START);
         p.addWaypoint(new Waypoint(105.3, -205.99, 0));
         p.addWaypoint(new Waypoint(160.23, -10, 45));
@@ -34,7 +34,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
     {
         final String path_name = "RedMiddleToHoppeOne";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_CENTER_START);
         p.addWaypoint(new Waypoint(102.23, -262.26, 45));
         p.addWaypoint(EAST_HOPPER_ONE);
@@ -46,7 +46,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
     {
         final String path_name = "RedMiddleToHopperTwo";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_CENTER_START);
         p.addWaypoint(new Waypoint(105.3, -205.99, 0));
         p.addWaypoint(new Waypoint(160.23, -10, 45));
@@ -59,7 +59,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
     {
         final String path_name = "RedMiddleToHopperFive";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_CENTER_START);
         p.addWaypoint(new Waypoint(-112.12, -185.87, 0));
         p.addWaypoint(new Waypoint(LEFT_HOPPERS_X, HOPPER_FIVE_Y, -45));
@@ -71,7 +71,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
     {
         final String path_name = "RedLeftToHopperFive";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_LEFT_START);
         p.addWaypoint(WEST_HOPPER_FIVE);
 

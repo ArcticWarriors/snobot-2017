@@ -25,7 +25,6 @@ public class TextFileSerializer
     public String serialize(Path path)
     {
         String content = path.getName() + "\n";
-        path.goLeft();
         content += path.getLeftWheelTrajectory().getNumSegments() + "\n";
         content += serializeTrajectory(path.getLeftWheelTrajectory());
         content += serializeTrajectory(path.getRightWheelTrajectory());

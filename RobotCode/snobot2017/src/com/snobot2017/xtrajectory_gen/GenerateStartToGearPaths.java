@@ -9,7 +9,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
     {
         final String path_name = "BlueLeftScoreGear";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_LEFT_START);
         p.addWaypoint(BLUE_LEFT_GEAR);
 
@@ -20,7 +20,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
     {
         final String path_name = "BlueMiddleScoreGear";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_CENTER_START);
         p.addWaypoint(BLUE_CENTER_GEAR);
 
@@ -31,7 +31,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
     {
         final String path_name = "BlueRightScoreGear";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_RIGHT_START);
         p.addWaypoint(BLUE_RIGHT_GEAR);
 
@@ -42,7 +42,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
     {
         final String path_name = "RedLeftScoreGear";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_LEFT_START);
         p.addWaypoint(RED_LEFT_GEAR);
 
@@ -53,7 +53,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
     {
         final String path_name = "RedMiddleScoreGear";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_CENTER_START);
         p.addWaypoint(RED_CENTER_GEAR);
 
@@ -64,7 +64,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
     {
         final String path_name = "RedRightScoreGear";
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_START);
         p.addWaypoint(RED_RIGHT_GEAR);
 

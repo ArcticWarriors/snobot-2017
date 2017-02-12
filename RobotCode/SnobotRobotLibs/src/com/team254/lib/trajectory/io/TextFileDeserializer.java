@@ -62,7 +62,7 @@ public class TextFileDeserializer implements IPathDeserializer
         }
 
         System.out.println("...finished parsing path from string.");
-        return new Path(name, new Trajectory.Pair(left, right));
+        return new Path(name, new Trajectory.WheelPair(left, right));
     }
 
     public Path deserializeFromFile(String aFilename)

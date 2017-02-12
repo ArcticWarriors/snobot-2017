@@ -16,7 +16,7 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
         config.max_jerk = 480;
         config.max_vel = 36;
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(0, 0, 0));
         p.addWaypoint(new Waypoint(0, 96, 0));
 
@@ -33,7 +33,7 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
         config.max_jerk = 480;
         config.max_vel = 84;
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(0, 0, 0));
         p.addWaypoint(new Waypoint(0, 96, 0));
 
@@ -50,7 +50,7 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
         config.max_jerk = 480;
         config.max_vel = 36;
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(0, 0, 0));
         p.addWaypoint(new Waypoint(NON_CENTER_GEAR_X_OFFSET, 96, 0));
 
@@ -67,7 +67,7 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
         config.max_jerk = 480;
         config.max_vel = 36;
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(0, 0, 0));
         p.addWaypoint(new Waypoint(-NON_CENTER_GEAR_X_OFFSET, 96, 0));
 
@@ -84,7 +84,7 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
         config.max_jerk = 480;
         config.max_vel = 84;
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(0, 0, 0));
         p.addWaypoint(new Waypoint(NON_CENTER_GEAR_X_OFFSET, 96, 0));
 
@@ -101,7 +101,7 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
         config.max_jerk = 480;
         config.max_vel = 84;
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(0, 0, 0));
         p.addWaypoint(new Waypoint(0, 96, 0));
 
@@ -118,7 +118,7 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
         config.max_jerk = 480;
         config.max_vel = 36;
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(0, 0, 0));
         p.addWaypoint(new Waypoint(0, -96, 0));
 
@@ -127,12 +127,12 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
 
     public void generatePaths(String aDirectory, double aWheelbaseWidth)
     {
-        genTestStraightSlow(aDirectory, aWheelbaseWidth);
-        genTestStraightFast(aDirectory, aWheelbaseWidth);
-        genTestMoveRightSlow(aDirectory, aWheelbaseWidth);
-        genTestMoveRightFast(aDirectory, aWheelbaseWidth);
-        genTestMoveLeftSlow(aDirectory, aWheelbaseWidth);
-        genTestMoveLeftFast(aDirectory, aWheelbaseWidth);
+        // genTestStraightSlow(aDirectory, aWheelbaseWidth);
+        // genTestStraightFast(aDirectory, aWheelbaseWidth);
+        // genTestMoveRightSlow(aDirectory, aWheelbaseWidth);
+        // genTestMoveRightFast(aDirectory, aWheelbaseWidth);
+        // genTestMoveLeftSlow(aDirectory, aWheelbaseWidth);
+        // genTestMoveLeftFast(aDirectory, aWheelbaseWidth);
         genTestDriveBackwards(aDirectory, aWheelbaseWidth);
     }
 }

@@ -1,7 +1,5 @@
 package com.team254.lib.trajectory;
 
-import com.snobot.lib.Utilities;
-
 /**
  * Implementation of a Trajectory using arrays as the underlying storage
  * mechanism.
@@ -11,16 +9,16 @@ import com.snobot.lib.Utilities;
 public class Trajectory
 {
 
-    public static class Pair
+    public static class WheelPair
     {
-        public Pair(Trajectory left, Trajectory right)
+        public WheelPair(Trajectory left, Trajectory right)
         {
-            this.left = left;
-            this.right = right;
+            this.mLeftWheel = left;
+            this.mRightWheel = right;
         }
 
-        public Trajectory left;
-        public Trajectory right;
+        public Trajectory mLeftWheel;
+        public Trajectory mRightWheel;
     }
 
     public static class Segment
@@ -62,48 +60,32 @@ public class Trajectory
         }
     }
 
-    Segment[] segments_ = null;
-    boolean inverted_y_ = false;
+    Segment[] mSegments = null;
 
     public Trajectory(int length)
     {
-        segments_ = new Segment[length];
+        mSegments = new Segment[length];
         for (int i = 0; i < length; ++i)
         {
-            segments_[i] = new Segment();
+            mSegments[i] = new Segment();
         }
     }
 
     public Trajectory(Segment[] segments)
     {
-        segments_ = segments;
-    }
-
-    public void setInvertedY(boolean inverted)
-    {
-        inverted_y_ = inverted;
+        mSegments = segments;
     }
 
     public int getNumSegments()
     {
-        return segments_.length;
+        return mSegments.length;
     }
 
     public Segment getSegment(int index)
     {
         if (index < getNumSegments())
         {
-            if (!inverted_y_)
-            {
-                return segments_[index];
-            }
-            else
-            {
-                Segment segment = new Segment(segments_[index]);
-                segment.y *= -1.0;
-                segment.heading = Utilities.boundAngle0to2PiRadians(2 * Math.PI - segment.heading);
-                return segment;
-            }
+            return mSegments[index];
         }
         else
         {
@@ -115,7 +97,7 @@ public class Trajectory
     {
         if (index < getNumSegments())
         {
-            segments_[index] = segment;
+            mSegments[index] = segment;
         }
     }
 
@@ -123,10 +105,10 @@ public class Trajectory
     {
         for (int i = 0; i < getNumSegments(); ++i)
         {
-            segments_[i].pos *= scaling_factor;
-            segments_[i].vel *= scaling_factor;
-            segments_[i].acc *= scaling_factor;
-            segments_[i].jerk *= scaling_factor;
+            mSegments[i].pos *= scaling_factor;
+            mSegments[i].vel *= scaling_factor;
+            mSegments[i].acc *= scaling_factor;
+            mSegments[i].jerk *= scaling_factor;
         }
     }
 
@@ -136,20 +118,20 @@ public class Trajectory
 
         for (int i = 0; i < getNumSegments(); ++i)
         {
-            temp[i] = new Segment(segments_[i]);
+            temp[i] = new Segment(mSegments[i]);
         }
         for (int i = 0; i < to_append.getNumSegments(); ++i)
         {
             temp[i + getNumSegments()] = new Segment(to_append.getSegment(i));
         }
 
-        this.segments_ = temp;
+        this.mSegments = temp;
     }
 
     public Trajectory copy()
     {
         Trajectory cloned = new Trajectory(getNumSegments());
-        cloned.segments_ = copySegments(this.segments_);
+        cloned.mSegments = copySegments(this.mSegments);
         return cloned;
     }
 

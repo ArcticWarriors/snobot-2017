@@ -17,7 +17,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
         xxxx.max_vel = 50;
         // xxxx.angle_offset = -0;
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(-NON_CENTER_GEAR_X_OFFSET, -NON_CENTER_CENTER_GEAR_Y, 45));
         p.addWaypoint(new Waypoint(-100, -NON_CENTER_CENTER_GEAR_Y, 90));
         // p.addWaypoint(GEAR_TO_WEST_HOPPER_FIVE);
@@ -30,7 +30,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
         final String path_name = "RedRightScoreGearGetHopper";
 
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_GEAR);
         p.addWaypoint(EAST_HOPPER_ONE);
 
@@ -42,7 +42,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
         final String path_name = "BlueRightScoreGearGetHopper";
 
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_RIGHT_GEAR);
         p.addWaypoint(WEST_HOPPER_FOUR);
 
@@ -54,7 +54,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
         final String path_name = "BlueLeftScoreGearGetHopper";
 
 
-        WaypointSequence p = new WaypointSequence(10000);
+        WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_LEFT_GEAR);
         p.addWaypoint(EAST_HOPPER_THREE);
 
