@@ -283,11 +283,11 @@ public class CommandParser extends ACommandParser
         case RedMiddle:
             if (doClose)
             {
-                fileName = "RedLeftToHopperOne.csv";
+                fileName = "RedMiddleToHopperOne.csv";
             }
             else
             {
-                fileName = "RedLeftToHopperFive.csv";
+                fileName = "RedMiddleToHopperFive.csv";
             }
             break;
         case RedRight:

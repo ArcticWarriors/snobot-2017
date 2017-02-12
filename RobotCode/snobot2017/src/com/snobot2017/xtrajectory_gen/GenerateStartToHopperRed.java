@@ -12,6 +12,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_START);
+        p.addWaypoint(createPositiveHackPoint(RED_RIGHT_START));
         p.addWaypoint(EAST_HOPPER_ONE);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
@@ -24,7 +25,6 @@ public class GenerateStartToHopperRed extends BasePathGenerator
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_START);
         p.addWaypoint(new Waypoint(100, -150, 1));
-        // p.addWaypoint(new Waypoint(160.23, -10, 45));
         p.addWaypoint(EAST_HOPPER_TWO);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
@@ -32,25 +32,12 @@ public class GenerateStartToHopperRed extends BasePathGenerator
 
     private void getRedMiddleToHopperOne(String directory, double kWheelbaseWidth)
     {
-        final String path_name = "RedMiddleToHoppeOne";
+        final String path_name = "RedMiddleToHopperOne";
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_CENTER_START);
-        p.addWaypoint(new Waypoint(102.23, -262.26, 45));
+        p.addWaypoint(new Waypoint(100, -240, 1));
         p.addWaypoint(EAST_HOPPER_ONE);
-
-        generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
-    }
-
-    private void getRedMiddleToHopperTwo(String directory, double kWheelbaseWidth)
-    {
-        final String path_name = "RedMiddleToHopperTwo";
-
-        WaypointSequence p = new WaypointSequence();
-        p.addWaypoint(RED_CENTER_START);
-        p.addWaypoint(new Waypoint(105.3, -205.99, 0));
-        p.addWaypoint(new Waypoint(160.23, -10, 45));
-        p.addWaypoint(EAST_HOPPER_TWO);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -61,8 +48,8 @@ public class GenerateStartToHopperRed extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_CENTER_START);
-        p.addWaypoint(new Waypoint(-112.12, -185.87, 0));
-        p.addWaypoint(new Waypoint(WEST_HOPPERS_X, HOPPER_FIVE_Y, -45));
+        p.addWaypoint(new Waypoint(-112.12, -185.87, -1));
+        p.addWaypoint(WEST_HOPPER_FIVE);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -85,8 +72,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_LEFT_START);
-        // p.addWaypoint(new Waypoint(-START_X_LOADING,
-        // -NON_CENTER_CENTER_GEAR_Y, 0));
+        p.addWaypoint(createNegativeHackPoint(RED_LEFT_START));
         p.addWaypoint(WEST_HOPPER_FIVE);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
@@ -94,15 +80,14 @@ public class GenerateStartToHopperRed extends BasePathGenerator
 
     public void generatePaths(String aDirectory, double aWheelbaseWidth)
     {
-        // getRedRightToHopperOne(aDirectory, aWheelbaseWidth);
-        // getRedRightToHopperTwo(aDirectory, aWheelbaseWidth);
-        //
-        // getRedMiddleToHopperOne(aDirectory, aWheelbaseWidth);
-        // getRedMiddleToHopperTwo(aDirectory, aWheelbaseWidth);
-        // getRedMiddleToHopperFive(aDirectory, aWheelbaseWidth);
-        //
+        getRedRightToHopperOne(aDirectory, aWheelbaseWidth);
+        getRedRightToHopperTwo(aDirectory, aWheelbaseWidth);
+
+        getRedMiddleToHopperOne(aDirectory, aWheelbaseWidth);
+         getRedMiddleToHopperFive(aDirectory, aWheelbaseWidth);
+
         getRedLeftToHopperFour(aDirectory, aWheelbaseWidth);
-        // getRedLeftToHopperFive(aDirectory, aWheelbaseWidth);
+        getRedLeftToHopperFive(aDirectory, aWheelbaseWidth);
     }
 
 }

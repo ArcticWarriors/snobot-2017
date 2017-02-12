@@ -138,4 +138,32 @@ public class BasePathGenerator
             System.out.println("Wrote " + fullpath);
         }
     }
+
+    protected Waypoint createPositiveHackPoint(Waypoint toCopy)
+    {
+        Waypoint hackPoint = new Waypoint(toCopy);
+        hackPoint.x += .01;
+        hackPoint.y += .01;
+        hackPoint.theta += .0001;
+
+        return hackPoint;
+    }
+
+    protected Waypoint createNegativeHackPoint(Waypoint toCopy)
+    {
+        Waypoint hackPoint = new Waypoint(toCopy);
+        hackPoint.x -= .01;
+        hackPoint.y -= .01;
+        hackPoint.theta -= .0001;
+
+        return hackPoint;
+    }
+
+    protected Waypoint negateAngle(Waypoint toCopy)
+    {
+        Waypoint hackPoint = new Waypoint(toCopy);
+        hackPoint.theta -= 180;
+
+        return hackPoint;
+    }
 }
