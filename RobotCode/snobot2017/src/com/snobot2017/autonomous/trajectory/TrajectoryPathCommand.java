@@ -148,8 +148,9 @@ public class TrajectoryPathCommand extends Command
             segment.mRightSidePosition = right.getSegment(i).pos;
             segment.mRightSideVelocity = right.getSegment(i).vel;
             segment.mRobotHeading = Utilities.boundAngleNeg180to180Degrees(right.getSegment(i).heading);
-            segment.mAverageX = right.getSegment(i).y; // Flipped on purpose
-            segment.mAverageY = right.getSegment(i).x; // Flipped on purpose
+            segment.mAverageX = (left.getSegment(i).y + right.getSegment(i).y) / 2; // Flipped on purpose
+            segment.mAverageY = (left.getSegment(i).x + right.getSegment(i).x) / 2; // Flipped on purpose
+
 
             segments.add(segment);
         }

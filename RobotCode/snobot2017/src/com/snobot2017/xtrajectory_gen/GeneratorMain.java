@@ -16,7 +16,7 @@ public class GeneratorMain
             directory = args[0];
         }
 
-        final double kWheelbaseWidth = 25.5 / 12;
+        final double kWheelbaseWidth = .1;
 
         new GenerateStartToGearPaths().generatePaths(directory, kWheelbaseWidth);
         new GenerateStartToHopperBlue().generatePaths(directory, kWheelbaseWidth);
