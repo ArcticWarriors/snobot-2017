@@ -124,19 +124,19 @@ public class CommandParser extends ACommandParser
             	newCommand = parseReplayCommand(args);
             	break;
             }
-            case AutonomousCommandNames.sSTART_POSI_GEAR_TRAJ:
+            case AutonomousCommandNames.sSCORE_GEAR_TRAJECTORY:
             {
                 newCommand = createScoreGearWithTrajectoryCommand();
                 break;
             }
             case AutonomousCommandNames.sSTART_HOPPER_TRAJ:
             {
-                newCommand = createGetHoppersWithTrajectoryCommand();
+                newCommand = createGetHoppersWithTrajectoryCommand(args);
                 break;
             }
             case AutonomousCommandNames.sGET_HOPPER_AND_GEAR:
             {
-                newCommand = createGetHoppersAndGetGearWithTrajectoryCommand();
+                newCommand = createGetHoppersAndGetGearWithTrajectoryCommand(args);
                 break;
             }
             default:
@@ -253,31 +253,82 @@ public class CommandParser extends ACommandParser
         }
     }
     
-    private Command createGetHoppersWithTrajectoryCommand()
+    private Command createGetHoppersWithTrajectoryCommand(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
         
+        boolean doClose = true;
+        if (args.size() > 1)
+        {
+            if (args.get(1).equals("Far"))
+            {
+                doClose = false;
+            }
+        }
+
         String fileName = null;
         
         switch (startPosition)
         {
         case RedLeft:
-            fileName = "RedLeftToHopperFive.csv";
+            if (doClose)
+            {
+                fileName = "RedLeftToHopperFive.csv";
+            }
+            else
+            {
+                fileName = "RedLeftToHopperFour.csv";
+            }
             break;
         case RedMiddle:
-            fileName = "RedMiddleToHopperFive.csv";
+            if (doClose)
+            {
+                fileName = "RedLeftToHopperOne.csv";
+            }
+            else
+            {
+                fileName = "RedLeftToHopperFive.csv";
+            }
             break;
         case RedRight:
-            fileName = "RedRightToHopperOne.csv";
+            if (doClose)
+            {
+                fileName = "RedRightToHopperOne.csv";
+            }
+            else
+            {
+                fileName = "RedRightToHopperTwo.csv";
+            }
             break;
         case BlueRight:
-            fileName = "BlueRightToHopperFour.csv";
+            if (doClose)
+            {
+                fileName = "BlueRightToHopperFour.csv";
+            }
+            else
+            {
+                fileName = "BlueRightToHopperFive.csv";
+            }
             break;
         case BlueMiddle:
-            fileName = "BlueMiddleToHopperFour.csv";
+            if (doClose)
+            {
+                fileName = "BlueMiddleToHopperThree.csv";
+            }
+            else
+            {
+                fileName = "BlueMiddleToHopperFour.csv";
+            }
             break;
         case BlueLeft:
-            fileName = "BlueLeftToHopperThree.csv";
+            if (doClose)
+            {
+                fileName = "BlueLeftToHopperThree.csv";
+            }
+            else
+            {
+                fileName = "BlueLeftToHopperTwo.csv";
+            }
             break;
         default:
             break;   
@@ -294,7 +345,7 @@ public class CommandParser extends ACommandParser
         }
     }
     
-    private Command createGetHoppersAndGetGearWithTrajectoryCommand()
+    private Command createGetHoppersAndGetGearWithTrajectoryCommand(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
 

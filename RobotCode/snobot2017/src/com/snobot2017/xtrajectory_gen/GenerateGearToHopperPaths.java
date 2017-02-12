@@ -12,7 +12,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(-NON_CENTER_GEAR_X_OFFSET, -NON_CENTER_CENTER_GEAR_Y, 45));
         p.addWaypoint(new Waypoint(-130, -NON_CENTER_CENTER_GEAR_Y, 130));
-        p.addWaypoint(new Waypoint(LEFT_HOPPERS_X, HOPPER_FIVE_Y, 90));
+        p.addWaypoint(new Waypoint(WEST_HOPPERS_X, HOPPER_FIVE_Y, 90));
 
         generate(GEAR_SPEED_BACKWARDS_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -23,7 +23,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_GEAR);
-        p.addWaypoint(new Waypoint(RIGHT_HOPPERS_X, HOPPER_ONE_Y, -90));
+        p.addWaypoint(new Waypoint(EAST_HOPPERS_X, HOPPER_ONE_Y, -90));
 
         generate(GEAR_SPEED_BACKWARDS_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -48,7 +48,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_LEFT_GEAR);
-        p.addWaypoint(new Waypoint(RIGHT_HOPPERS_X, HOPPER_THREE_Y, -90));
+        p.addWaypoint(new Waypoint(EAST_HOPPERS_X, HOPPER_THREE_Y, -90));
 
         generate(GEAR_SPEED_BACKWARDS_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -58,8 +58,8 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
     {
         getRedLeftScoreGearGetHopper(aDirectory, aWheelbaseWidth);
         getRedRightScoreGearGetHopper(aDirectory, aWheelbaseWidth);
-        getBlueRightScoreGearGetHopper(aDirectory, aWheelbaseWidth);
-        getBlueLeftScoreGearGetHopper(aDirectory, aWheelbaseWidth);
+        // getBlueRightScoreGearGetHopper(aDirectory, aWheelbaseWidth);
+        // getBlueLeftScoreGearGetHopper(aDirectory, aWheelbaseWidth);
     }
 
 }

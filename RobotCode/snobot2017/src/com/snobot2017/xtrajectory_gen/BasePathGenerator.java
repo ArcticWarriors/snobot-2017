@@ -18,32 +18,35 @@ public class BasePathGenerator
     protected static final double ROBOT_LENGTH = 3 * 12;
     protected static final double ROBOT_WIDTH = 2 * 12;
 
-    protected static final double CENTER_X = 0;
-    protected static final double FIELD_LENGTH_Y = 336;
-    protected static final double BOILER_LINE_OFFSET = 43.02 + ROBOT_WIDTH;
-    protected static final double LOADING_X_OFFSET = -79.53;
+    // Raw Staring locations
+    protected static final double START_Y = 336 - ROBOT_LENGTH;
+    protected static final double START_X_CENTER = 0;
+    protected static final double START_X_BOILER = 43 + ROBOT_WIDTH;
+    protected static final double START_X_LOADING = 79;
+
+    // Gear Locations
     protected static final double NON_CENTER_GEAR_X_OFFSET = 48;
     
-    protected static final double CENTER_GEAR_Y = FIELD_LENGTH_Y - 7 * 12 + ROBOT_LENGTH;
-    protected static final double NON_CENTER_CENTER_GEAR_Y = 197.5 + ROBOT_LENGTH;
+    protected static final double CENTER_GEAR_Y = START_Y - 7 * 12;
+    protected static final double NON_CENTER_CENTER_GEAR_Y = 197.5;
+
+    // Raw hopper locations
+    protected static final double WEST_HOPPERS_X = -13.5 * 12;
+    protected static final double EAST_HOPPERS_X = 13.5 * 12;
 
     protected static final double HOPPER_ONE_Y = -200;
-    protected static final double HOPPER_TWO_Y = -163;
+    protected static final double HOPPER_TWO_Y = 0;
     protected static final double HOPPER_THREE_Y = 200;
-
     protected static final double HOPPER_FOUR_Y = 120;
     protected static final double HOPPER_FIVE_Y = -120;
 
-    protected static final double LEFT_HOPPERS_X = -13.5 * 12;
-    protected static final double RIGHT_HOPPERS_X = 13.5 * 12;
-
     // Starting locations
-    protected static final Waypoint BLUE_LEFT_START = new Waypoint(BOILER_LINE_OFFSET, FIELD_LENGTH_Y, -180);
-    protected static final Waypoint BLUE_CENTER_START = new Waypoint(0, FIELD_LENGTH_Y, -180);
-    protected static final Waypoint BLUE_RIGHT_START = new Waypoint(LOADING_X_OFFSET, FIELD_LENGTH_Y, -180);
-    protected static final Waypoint RED_LEFT_START = new Waypoint(LOADING_X_OFFSET, -FIELD_LENGTH_Y, 0);
-    protected static final Waypoint RED_CENTER_START = new Waypoint(0, -FIELD_LENGTH_Y, 0);
-    protected static final Waypoint RED_RIGHT_START = new Waypoint(BOILER_LINE_OFFSET, -FIELD_LENGTH_Y, 0);
+    protected static final Waypoint BLUE_LEFT_START = new Waypoint(START_X_BOILER, START_Y, -180);
+    protected static final Waypoint BLUE_CENTER_START = new Waypoint(0, START_Y, -180);
+    protected static final Waypoint BLUE_RIGHT_START = new Waypoint(-START_X_LOADING, START_Y, -180);
+    protected static final Waypoint RED_LEFT_START = new Waypoint(-START_X_LOADING, -START_Y, 0);
+    protected static final Waypoint RED_CENTER_START = new Waypoint(0, -START_Y, 0);
+    protected static final Waypoint RED_RIGHT_START = new Waypoint(START_X_BOILER, -START_Y, 0);
 
     // Gear Locations
     protected static final Waypoint BLUE_LEFT_GEAR = new Waypoint(NON_CENTER_GEAR_X_OFFSET, NON_CENTER_CENTER_GEAR_Y, -120);
@@ -54,17 +57,11 @@ public class BasePathGenerator
     protected static final Waypoint RED_RIGHT_GEAR = new Waypoint(NON_CENTER_GEAR_X_OFFSET, -NON_CENTER_CENTER_GEAR_Y, -60);
 
     // Hoper Locations
-    protected static final Waypoint EAST_HOPPER_ONE = new Waypoint(RIGHT_HOPPERS_X, HOPPER_ONE_Y, 89);
-    protected static final Waypoint EAST_HOPPER_TWO = new Waypoint(RIGHT_HOPPERS_X, HOPPER_TWO_Y, 89);
-    protected static final Waypoint EAST_HOPPER_THREE = new Waypoint(RIGHT_HOPPERS_X, HOPPER_THREE_Y, 91);
-    protected static final Waypoint WEST_HOPPER_FOUR = new Waypoint(LEFT_HOPPERS_X, HOPPER_FOUR_Y, 89);
-    protected static final Waypoint WEST_HOPPER_FIVE = new Waypoint(LEFT_HOPPERS_X, HOPPER_FIVE_Y, -89);
-
-    // Gear-to-Hoper Locations
-    protected static final Waypoint GEAR_TO_EAST_HOPPER_ONE = new Waypoint(RIGHT_HOPPERS_X, HOPPER_ONE_Y, -89);
-    protected static final Waypoint GEAR_TO_EAST_HOPPER_TWO = new Waypoint(RIGHT_HOPPERS_X, HOPPER_TWO_Y, -89);
-    protected static final Waypoint GEAR_TO_WEST_HOPPER_FOUR = new Waypoint(LEFT_HOPPERS_X, HOPPER_FOUR_Y, -89);
-    protected static final Waypoint GEAR_TO_WEST_HOPPER_FIVE = new Waypoint(LEFT_HOPPERS_X, HOPPER_FIVE_Y, 165);
+    protected static final Waypoint EAST_HOPPER_ONE = new Waypoint(EAST_HOPPERS_X, HOPPER_ONE_Y, 90);
+    protected static final Waypoint EAST_HOPPER_TWO = new Waypoint(EAST_HOPPERS_X, HOPPER_TWO_Y, 90);
+    protected static final Waypoint EAST_HOPPER_THREE = new Waypoint(EAST_HOPPERS_X, HOPPER_THREE_Y, 90);
+    protected static final Waypoint WEST_HOPPER_FOUR = new Waypoint(WEST_HOPPERS_X, HOPPER_FOUR_Y, -90);
+    protected static final Waypoint WEST_HOPPER_FIVE = new Waypoint(WEST_HOPPERS_X, HOPPER_FIVE_Y, -90);
 
     protected static final TrajectoryGenerator.Config GEAR_SPEED_CONFIG = new TrajectoryGenerator.Config();
     protected static final TrajectoryGenerator.Config GEAR_SPEED_BACKWARDS_CONFIG = new TrajectoryGenerator.Config();
@@ -75,7 +72,7 @@ public class BasePathGenerator
         GEAR_SPEED_CONFIG.max_acc = 120;
         GEAR_SPEED_CONFIG.max_jerk = 480;
         GEAR_SPEED_CONFIG.max_vel = 50;
-        GEAR_SPEED_BACKWARDS_CONFIG.isBackwards = false;
+        GEAR_SPEED_CONFIG.isBackwards = false;
 
         GEAR_SPEED_BACKWARDS_CONFIG.dt = .02;
         GEAR_SPEED_BACKWARDS_CONFIG.max_acc = 120;

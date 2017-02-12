@@ -10,8 +10,14 @@ public class GenerateStartToHopperBlue extends BasePathGenerator
     {
         final String path_name = "BlueLeftToHopperThree";
 
+        Waypoint hackPoint = new Waypoint(BLUE_LEFT_START);
+        hackPoint.x -= .01;
+        hackPoint.y -= .01;
+        hackPoint.theta -= .0001;
+
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_LEFT_START);
+        p.addWaypoint(hackPoint);
         p.addWaypoint(EAST_HOPPER_THREE);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
@@ -23,8 +29,8 @@ public class GenerateStartToHopperBlue extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_LEFT_START);
-        p.addWaypoint(new Waypoint(60.27, 270.82, -45));
-        p.addWaypoint(new Waypoint(163.11, 0, -45));
+        p.addWaypoint(new Waypoint(100, 150, 179));
+        p.addWaypoint(EAST_HOPPER_TWO);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -72,7 +78,19 @@ public class GenerateStartToHopperBlue extends BasePathGenerator
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_RIGHT_START);
         p.addWaypoint(new Waypoint(-112.12, 185.87, -180));
-        p.addWaypoint(new Waypoint(LEFT_HOPPERS_X, HOPPER_FOUR_Y, 91));
+        p.addWaypoint(new Waypoint(WEST_HOPPERS_X, HOPPER_FOUR_Y, 91));
+
+        generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
+    }
+
+    private void getBlueRightToHopperFive(String directory, double kWheelbaseWidth)
+    {
+        final String path_name = "BlueRightToHopperFive";
+
+        WaypointSequence p = new WaypointSequence();
+        p.addWaypoint(BLUE_RIGHT_START);
+        p.addWaypoint(new Waypoint(-112, -90, -179));
+        p.addWaypoint(WEST_HOPPER_FIVE);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
@@ -87,6 +105,7 @@ public class GenerateStartToHopperBlue extends BasePathGenerator
         // getBlueMiddleToHopperFour(aDirectory, aWheelbaseWidth);
         //
         // getBlueRightToHopperFour(aDirectory, aWheelbaseWidth);
+        // getBlueRightToHopperFive(aDirectory, aWheelbaseWidth);
     }
 
 }

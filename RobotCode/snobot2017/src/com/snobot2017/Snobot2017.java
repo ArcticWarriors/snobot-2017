@@ -169,7 +169,6 @@ public class Snobot2017 extends ASnobot
     public void update()
     {
     	super.update();
-    	System.out.println(pdp.getCurrent(13));
     }    
 
     @Override
