@@ -21,7 +21,7 @@ public class WaypointSequence
             // Switched on purpose, poofs code wants it this way
             this.x = y;
             this.y = x;
-            this.theta = theta;
+            this.theta = Math.toRadians(theta);
         }
 
         public Waypoint(Waypoint tocopy)

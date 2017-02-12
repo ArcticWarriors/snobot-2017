@@ -117,22 +117,23 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
         config.max_acc = 120;
         config.max_jerk = 480;
         config.max_vel = 36;
+        config.isBackwards = true;
 
         WaypointSequence p = new WaypointSequence();
-        p.addWaypoint(new Waypoint(0, 0, 0));
-        p.addWaypoint(new Waypoint(0, -96, 0));
+        p.addWaypoint(new Waypoint(0, 0, -180));
+        p.addWaypoint(new Waypoint(0, 96, -180));
 
         generate(config, p, aDirectory, path_name, aWheelbaseWidth);
     }
 
     public void generatePaths(String aDirectory, double aWheelbaseWidth)
     {
-        // genTestStraightSlow(aDirectory, aWheelbaseWidth);
-        // genTestStraightFast(aDirectory, aWheelbaseWidth);
-        // genTestMoveRightSlow(aDirectory, aWheelbaseWidth);
-        // genTestMoveRightFast(aDirectory, aWheelbaseWidth);
-        // genTestMoveLeftSlow(aDirectory, aWheelbaseWidth);
-        // genTestMoveLeftFast(aDirectory, aWheelbaseWidth);
+        genTestStraightSlow(aDirectory, aWheelbaseWidth);
+        genTestStraightFast(aDirectory, aWheelbaseWidth);
+        genTestMoveRightSlow(aDirectory, aWheelbaseWidth);
+        genTestMoveRightFast(aDirectory, aWheelbaseWidth);
+        genTestMoveLeftSlow(aDirectory, aWheelbaseWidth);
+        genTestMoveLeftFast(aDirectory, aWheelbaseWidth);
         genTestDriveBackwards(aDirectory, aWheelbaseWidth);
     }
 }

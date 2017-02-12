@@ -321,7 +321,7 @@ public class CommandParser extends ACommandParser
             break;
         case BlueRight:
             output.addSequential(createTrajectoryCommand("BlueRightScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("BlueRightToHopperFour.csv"));
+            output.addSequential(createTrajectoryCommand("BlueRightScoreGearGetHopper.csv"));
             break;
         case BlueMiddle:
             output.addSequential(createTrajectoryCommand("BlueMiddleScoreGear.csv"));
@@ -329,7 +329,7 @@ public class CommandParser extends ACommandParser
             break;
         case BlueLeft:
             output.addSequential(createTrajectoryCommand("BlueLeftScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("BlueLeftToHopperThree.csv"));   
+            output.addSequential(createTrajectoryCommand("BlueLeftScoreGearGetHopper.csv"));
             break;
 
         // Intentional fall through, nothing to do

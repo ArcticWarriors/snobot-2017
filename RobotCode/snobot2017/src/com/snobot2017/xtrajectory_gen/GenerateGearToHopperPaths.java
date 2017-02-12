@@ -1,6 +1,5 @@
 package com.snobot2017.xtrajectory_gen;
 
-import com.team254.lib.trajectory.gen.TrajectoryGenerator;
 import com.team254.lib.trajectory.gen.WaypointSequence;
 import com.team254.lib.trajectory.gen.WaypointSequence.Waypoint;
 
@@ -10,31 +9,23 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
     {
         final String path_name = "RedLeftScoreGearGetHopper";
 
-        TrajectoryGenerator.Config xxxx = new TrajectoryGenerator.Config();
-        xxxx.dt = .02;
-        xxxx.max_acc = 120;
-        xxxx.max_jerk = 480;
-        xxxx.max_vel = 50;
-        // xxxx.angle_offset = -0;
-
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(-NON_CENTER_GEAR_X_OFFSET, -NON_CENTER_CENTER_GEAR_Y, 45));
-        p.addWaypoint(new Waypoint(-100, -NON_CENTER_CENTER_GEAR_Y, 90));
-        // p.addWaypoint(GEAR_TO_WEST_HOPPER_FIVE);
+        p.addWaypoint(new Waypoint(-130, -NON_CENTER_CENTER_GEAR_Y, 130));
+        p.addWaypoint(new Waypoint(LEFT_HOPPERS_X, HOPPER_FIVE_Y, 90));
 
-        generate(xxxx, p, directory, path_name, kWheelbaseWidth);
+        generate(GEAR_SPEED_BACKWARDS_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
     
     private void getRedRightScoreGearGetHopper(String directory, double kWheelbaseWidth)
     {
         final String path_name = "RedRightScoreGearGetHopper";
 
-
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_GEAR);
-        p.addWaypoint(EAST_HOPPER_ONE);
+        p.addWaypoint(new Waypoint(RIGHT_HOPPERS_X, HOPPER_ONE_Y, -90));
 
-        generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
+        generate(GEAR_SPEED_BACKWARDS_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
     
     private void getBlueRightScoreGearGetHopper(String directory, double kWheelbaseWidth)
@@ -44,9 +35,10 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_RIGHT_GEAR);
+        p.addWaypoint(new Waypoint(-130, NON_CENTER_CENTER_GEAR_Y, 50));
         p.addWaypoint(WEST_HOPPER_FOUR);
 
-        generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
+        generate(GEAR_SPEED_BACKWARDS_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
     
     private void getBlueLeftScoreGearGetHopper(String directory, double kWheelbaseWidth)
@@ -56,9 +48,9 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_LEFT_GEAR);
-        p.addWaypoint(EAST_HOPPER_THREE);
+        p.addWaypoint(new Waypoint(RIGHT_HOPPERS_X, HOPPER_THREE_Y, -90));
 
-        generate(RED_SCORE_GEAR_CONFIG, p, directory, path_name, kWheelbaseWidth);
+        generate(GEAR_SPEED_BACKWARDS_CONFIG, p, directory, path_name, kWheelbaseWidth);
     }
 
 

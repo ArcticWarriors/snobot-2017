@@ -39,4 +39,31 @@ public class Path
         Segment lastSegment = getLeftWheelTrajectory().getSegment(numSegments - 1);
         return lastSegment.heading;
     }
+
+    public void makeBackwards()
+    {
+        Trajectory leftTrajectory = mWheelPair.mLeftWheel.copy();
+        Trajectory rightTrajectory = mWheelPair.mRightWheel.copy();
+
+        for (int i = 0; i < leftTrajectory.getNumSegments(); ++i)
+        {
+            Segment segment = leftTrajectory.getSegment(i);
+            segment.acc *= -1;
+            segment.vel *= -1;
+            segment.pos *= -1;
+            segment.heading -= Math.PI;
+        }
+
+        for (int i = 0; i < rightTrajectory.getNumSegments(); ++i)
+        {
+            Segment segment = rightTrajectory.getSegment(i);
+            segment.acc *= -1;
+            segment.vel *= -1;
+            segment.pos *= -1;
+            segment.heading -= Math.PI;
+        }
+
+        mWheelPair.mLeftWheel = leftTrajectory;
+        mWheelPair.mRightWheel = rightTrajectory;
+    }
 }

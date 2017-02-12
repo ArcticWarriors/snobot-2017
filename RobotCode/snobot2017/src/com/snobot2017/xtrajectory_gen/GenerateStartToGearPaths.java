@@ -13,7 +13,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
         p.addWaypoint(BLUE_LEFT_START);
         p.addWaypoint(BLUE_LEFT_GEAR);
 
-        generate(BLUE_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
+        generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
     
     private void getScoreGearBlueCenter(String aDirectory, double aWheelbaseWidth)
@@ -24,7 +24,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
         p.addWaypoint(BLUE_CENTER_START);
         p.addWaypoint(BLUE_CENTER_GEAR);
 
-        generate(BLUE_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
+        generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
     
     private void getScoreGearBlueRight(String aDirectory, double aWheelbaseWidth)
@@ -35,7 +35,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
         p.addWaypoint(BLUE_RIGHT_START);
         p.addWaypoint(BLUE_RIGHT_GEAR);
 
-        generate(BLUE_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
+        generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
 
     private void getScoreGearRedLeft(String aDirectory, double aWheelbaseWidth)
@@ -46,7 +46,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
         p.addWaypoint(RED_LEFT_START);
         p.addWaypoint(RED_LEFT_GEAR);
 
-        generate(RED_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
+        generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
 
     private void getScoreGearRedMiddle(String aDirectory, double aWheelbaseWidth)
@@ -57,7 +57,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
         p.addWaypoint(RED_CENTER_START);
         p.addWaypoint(RED_CENTER_GEAR);
 
-        generate(RED_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
+        generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
 
     private void getScoreGearRedRight(String aDirectory, double aWheelbaseWidth)
@@ -68,7 +68,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
         p.addWaypoint(RED_RIGHT_START);
         p.addWaypoint(RED_RIGHT_GEAR);
 
-        generate(RED_SCORE_GEAR_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
+        generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
     }
 
     public void generatePaths(String aDirectory, double aWheelbaseWidth)
