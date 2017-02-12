@@ -58,8 +58,8 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
     {
         getRedLeftScoreGearGetHopper(aDirectory, aWheelbaseWidth);
         getRedRightScoreGearGetHopper(aDirectory, aWheelbaseWidth);
-        // getBlueRightScoreGearGetHopper(aDirectory, aWheelbaseWidth);
-        // getBlueLeftScoreGearGetHopper(aDirectory, aWheelbaseWidth);
+        getBlueRightScoreGearGetHopper(aDirectory, aWheelbaseWidth);
+        getBlueLeftScoreGearGetHopper(aDirectory, aWheelbaseWidth);
     }
 
 }

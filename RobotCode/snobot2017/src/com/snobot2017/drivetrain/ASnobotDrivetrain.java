@@ -96,11 +96,10 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     @Override
     public void updateSmartDashboard()
     {
-        SmartDashboard.putNumber("LEFT RAW", mLeftEncoderRaw);
-        SmartDashboard.putNumber("RIght RAW", mRightEncoderRaw);
-        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, mRightMotorDistance);
-        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_ENCODER, mLeftMotorDistance);
-        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, mRightMotorDistance);
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_ENCODER_RAW, mLeftEncoderRaw);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_ENCODER_RAW, mRightEncoderRaw);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_ENCODER_DISTANCE, mRightMotorDistance);
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_ENCODER_DISTANCE, mLeftMotorDistance);
         SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_SPEED, mLeftMotorSpeed);
         SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_SPEED, mRightMotorSpeed);
     }

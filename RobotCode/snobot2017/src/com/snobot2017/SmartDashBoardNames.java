@@ -32,8 +32,10 @@ public class SmartDashBoardNames
     public static final String sWE_HAVE_LIFT_OFF = "Lift Off Speed";
 
     // Drivetrain
-    public static final String sLEFT_DRIVE_MOTOR_ENCODER = "Left Drive Motor Encoder";
-    public static final String sRIGHT_DRIVE_MOTOR_ENCODER = "Right Drive Motor Encoder";
+    public static final String sLEFT_DRIVE_ENCODER_DISTANCE = "Left Drive Motor Encoder";
+    public static final String sRIGHT_DRIVE_ENCODER_DISTANCE = "Right Drive Motor Encoder";
+    public static final String sLEFT_DRIVE_ENCODER_RAW = "Left Encoder Raw";
+    public static final String sRIGHT_DRIVE_ENCODER_RAW = "Right Encoder Raw";
     public static final String sLEFT_DRIVE_MOTOR_SPEED = "Left Motor Speed";
     public static final String sRIGHT_DRIVE_MOTOR_SPEED = "Right Motor Speed";
 

@@ -215,6 +215,10 @@ public class CommandParser extends ACommandParser
     private Command createScoreGearWithTrajectoryCommand()
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
+        if (startPosition == null)
+        {
+            return null;
+        }
         
         String fileName = null;
         
@@ -256,6 +260,10 @@ public class CommandParser extends ACommandParser
     private Command createGetHoppersWithTrajectoryCommand(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
+        if (startPosition == null)
+        {
+            return null;
+        }
         
         boolean doClose = true;
         if (args.size() > 1)
@@ -348,7 +356,6 @@ public class CommandParser extends ACommandParser
     private Command createGetHoppersAndGetGearWithTrajectoryCommand(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
-
         if (startPosition == null)
         {
             return null;
@@ -362,10 +369,6 @@ public class CommandParser extends ACommandParser
             output.addSequential(createTrajectoryCommand("RedLeftScoreGear.csv"));
             output.addSequential(createTrajectoryCommand("RedLeftScoreGearGetHopper.csv"));
             break;
-        case RedMiddle:
-            output.addSequential(createTrajectoryCommand("RedMiddleScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("RedMiddleToHopperFive.csv"));
-            break;
         case RedRight:
             output.addSequential(createTrajectoryCommand("RedRightScoreGear.csv"));
             output.addSequential(createTrajectoryCommand("RedRightScoreGearGetHopper.csv"));
@@ -374,10 +377,6 @@ public class CommandParser extends ACommandParser
             output.addSequential(createTrajectoryCommand("BlueRightScoreGear.csv"));
             output.addSequential(createTrajectoryCommand("BlueRightScoreGearGetHopper.csv"));
             break;
-        case BlueMiddle:
-            output.addSequential(createTrajectoryCommand("BlueMiddleScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("BlueMiddleToHopperFour.csv"));   
-            break;
         case BlueLeft:
             output.addSequential(createTrajectoryCommand("BlueLeftScoreGear.csv"));
             output.addSequential(createTrajectoryCommand("BlueLeftScoreGearGetHopper.csv"));
@@ -385,6 +384,8 @@ public class CommandParser extends ACommandParser
 
         // Intentional fall through, nothing to do
         case Origin:
+        case RedMiddle:
+        case BlueMiddle:
         default:
             break;   
         }

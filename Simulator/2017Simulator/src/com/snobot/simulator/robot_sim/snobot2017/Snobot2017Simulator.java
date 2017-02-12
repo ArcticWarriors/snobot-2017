@@ -14,7 +14,7 @@ import com.snobot2017.PortMappings2017;
 
 public class Snobot2017Simulator extends ASimulator
 {
-    private static final boolean sSIMULATE_CAMERA = true;
+    private static final boolean sSIMULATE_CAMERA = false;
 
     public Snobot2017Simulator()
     {

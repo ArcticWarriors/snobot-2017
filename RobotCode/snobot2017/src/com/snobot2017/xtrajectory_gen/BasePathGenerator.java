@@ -162,7 +162,7 @@ public class BasePathGenerator
     protected Waypoint negateAngle(Waypoint toCopy)
     {
         Waypoint hackPoint = new Waypoint(toCopy);
-        hackPoint.theta -= 180;
+        hackPoint.theta -= Math.toRadians(180);
 
         return hackPoint;
     }
