@@ -27,8 +27,8 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
 
     // Ready for take off
     private double mLiftOffSpeed;
-    
-    //App stuff
+
+    // App stuff
     private LatchedButton mSwitchAppViewLatcher;
     private LatchedButton mSwitchToFrontCameraLatcher;
     private LatchedButton mSwitchToRearCameraLatcher;
@@ -86,8 +86,8 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         // Climb
         mClimb = mJoystick.getRawButton(XboxButtonMap.RB_BUTTON);
         mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
-        
-        //App
+
+        // App
         mSwitchAppView = mSwitchAppViewLatcher.update(mJoystick.getRawButton(XboxButtonMap.A_BUTTON));
         mSwitchToFrontCamera = mSwitchToFrontCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.X_BUTTON));
         mSwitchToRearCamera = mSwitchToRearCameraLatcher.update(mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
@@ -96,31 +96,47 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         // SnobotActor Stuff
         mDriveToPeg = mDriveToPegToggleButton.update(mJoystick.getRawButton(XboxButtonMap.START_BUTTON));
 
-//        System.out.println("A BTN " + mJoystick.getRawButton(XboxButtonMap.A_BUTTON));
-//        System.out.println("B BTN " + mJoystick.getRawButton(XboxButtonMap.B_BUTTON));
-//        System.out.println("X BTN " + mJoystick.getRawButton(XboxButtonMap.X_BUTTON));
-//        System.out.println("Y BTN " + mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
-//        System.out.println("LB BTN " + mJoystick.getRawButton(XboxButtonMap.LB_BUTTON));
-//        System.out.println("RB BTN " + mJoystick.getRawButton(XboxButtonMap.RB_BUTTON));
-//        System.out.println("L3 BTN " + mJoystick.getRawButton(XboxButtonMap.L3_BUTTON));
-//        System.out.println("R3 BTN " + mJoystick.getRawButton(XboxButtonMap.R3_BUTTON));
-//        System.out.println("Start " + mJoystick.getRawButton(XboxButtonMap.START_BUTTON));
-//        System.out.println("Back " + mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON));
-//
-//        System.out.println("LY " + mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS));
-//        System.out.println("LX " + mJoystick.getRawAxis(XboxButtonMap.LEFT_X_AXIS));
-//        System.out.println("RY " + mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS));
-//        System.out.println("RX " + mJoystick.getRawAxis(XboxButtonMap.RIGHT_X_AXIS));
-//        System.out.println("LT " + mJoystick.getRawAxis(XboxButtonMap.LEFT_TRIGGER));
-//        System.out.println("RT " + mJoystick.getRawAxis(XboxButtonMap.RIGHT_TRIGGER));
-//
-//        System.out.println();
+        // System.out.println("A BTN " +
+        // mJoystick.getRawButton(XboxButtonMap.A_BUTTON));
+        // System.out.println("B BTN " +
+        // mJoystick.getRawButton(XboxButtonMap.B_BUTTON));
+        // System.out.println("X BTN " +
+        // mJoystick.getRawButton(XboxButtonMap.X_BUTTON));
+        // System.out.println("Y BTN " +
+        // mJoystick.getRawButton(XboxButtonMap.Y_BUTTON));
+        // System.out.println("LB BTN " +
+        // mJoystick.getRawButton(XboxButtonMap.LB_BUTTON));
+        // System.out.println("RB BTN " +
+        // mJoystick.getRawButton(XboxButtonMap.RB_BUTTON));
+        // System.out.println("L3 BTN " +
+        // mJoystick.getRawButton(XboxButtonMap.L3_BUTTON));
+        // System.out.println("R3 BTN " +
+        // mJoystick.getRawButton(XboxButtonMap.R3_BUTTON));
+        // System.out.println("Start " +
+        // mJoystick.getRawButton(XboxButtonMap.START_BUTTON));
+        // System.out.println("Back " +
+        // mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON));
+        //
+        // System.out.println("LY " +
+        // mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS));
+        // System.out.println("LX " +
+        // mJoystick.getRawAxis(XboxButtonMap.LEFT_X_AXIS));
+        // System.out.println("RY " +
+        // mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS));
+        // System.out.println("RX " +
+        // mJoystick.getRawAxis(XboxButtonMap.RIGHT_X_AXIS));
+        // System.out.println("LT " +
+        // mJoystick.getRawAxis(XboxButtonMap.LEFT_TRIGGER));
+        // System.out.println("RT " +
+        // mJoystick.getRawAxis(XboxButtonMap.RIGHT_TRIGGER));
+        //
+        // System.out.println();
     }
-    
+
     @Override
     public void control()
     {
-       // Nothing
+        // Nothing
     }
 
     @Override
@@ -135,7 +151,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         SmartDashboard.putBoolean(SmartDashBoardNames.sCLIMBING_OPERATOR_JOYSTICK_SPEED, mClimb);
         SmartDashboard.putBoolean(SmartDashBoardNames.sCATCHING_OPERATOR_JOYSTICK_SPEED, mCatch);
         SmartDashboard.putNumber(SmartDashBoardNames.sWE_HAVE_LIFT_OFF, mLiftOffSpeed);
-     }
+    }
 
     @Override
     public void updateLog()
@@ -206,6 +222,16 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     public boolean driveToPeg()
     {
         return mDriveToPeg;
+    }
+
+    @Override
+    public void turnOffActions()
+    {
+        // If the drive to peg is true then we need to reset it.
+        if (mDriveToPeg)
+        {
+            mDriveToPeg = mDriveToPegToggleButton.update(true);
+        }
     }
 
 }

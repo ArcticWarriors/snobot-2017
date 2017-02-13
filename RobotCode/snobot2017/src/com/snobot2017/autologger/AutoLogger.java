@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.snobot.lib.ISubsystem;
@@ -33,7 +34,7 @@ public class AutoLogger implements ISubsystem
 
     // A count that increases every teleop cycle
     private int mCurrentLogCount;
-    private boolean mLogNow;
+    private boolean mLogNow = false;
     private DateFormat mDateFormat;
     private IDriveTrain mDriveTrain;
     
@@ -48,15 +49,15 @@ public class AutoLogger implements ISubsystem
     private Joystick mDriverJoystick;
 
     // Constructor
-    public AutoLogger(String aLogDate, int aLogConfigCount, String aLogPath, Joystick aDriverJoystick, IDriveTrain aDriveTrain)
+    public AutoLogger(int aLogConfigCount, String aLogPath, Joystick aDriverJoystick, IDriveTrain aDriveTrain)
     {
-        mLogDate = aLogDate;
         mConfigLogCount = aLogConfigCount;
         mLogFilePath = aLogPath;
         mDriverJoystick = aDriverJoystick;
         mDriveTrain = aDriveTrain;
         mDriverYButton = new LatchedButton();
-        
+        mDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
+        mLogDate = mDateFormat.format(new Date());
     }
 
     /**
@@ -65,6 +66,10 @@ public class AutoLogger implements ISubsystem
      * @throws IOException
      */
     public void init()
+    {
+    }
+    
+    private void startLog()
     {
         mCurrentLogCount = 0;
 
@@ -76,7 +81,7 @@ public class AutoLogger implements ISubsystem
                 dir.mkdirs();
             }
             mLogWriter = new FileWriter(mLogFilePath + "RobotLog_" + mLogDate + "_log.csv");
-            System.out.print("Where is this??? " + mLogFilePath + "RobotLog_" + mLogDate + "_log.csv" + "\n");
+            System.out.println(mLogFilePath + "RobotLog_" + mLogDate + "_log.csv");
             mLogWriter.write("Date and Time");
 
         }
@@ -295,7 +300,9 @@ public class AutoLogger implements ISubsystem
 			else
 			{
 			mLogNow = true;
-			this.init();
+	        this.startLog();
+	        this.addHeader("LeftMotorSpeed");
+	        this.addHeader("RightMotorSpeed");
 			this.endHeader();
 			}
 		}
@@ -303,7 +310,8 @@ public class AutoLogger implements ISubsystem
 		{
 			String logDate = mDateFormat.format(new Date());
             this.startLogEntry(logDate);
-            mDriveTrain.updateAutoLog();
+            updateLogger(mDriveTrain.getLeftMotorSpeed());
+            updateLogger(mDriveTrain.getRightMotorSpeed());
             this.endLogger();
 		}
 		

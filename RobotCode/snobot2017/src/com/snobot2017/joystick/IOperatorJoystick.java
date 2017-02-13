@@ -4,6 +4,7 @@ import com.snobot.lib.ISubsystem;
 
 /**
  * Joystick for interacting with the Gear Boss
+ * 
  * @author jbnol
  *
  */
@@ -50,4 +51,10 @@ public interface IOperatorJoystick extends ISubsystem
      * @return
      */
     boolean driveToPeg();
+
+    /**
+     * Tell the operator joystick that any active snobotActor actions are
+     * stopped.
+     */
+    void turnOffActions();
 }

@@ -370,7 +370,6 @@ public class CommandParser extends ACommandParser
         switch (startPosition)
         {
         case RedLeft:
-
             scoreFilename = "RedLeftScoreGear.csv";
             hopperFilename = "RedLeftScoreGearGetHopper.csv";
             break;
