@@ -1,6 +1,8 @@
 package com.snobot2017.vision;
 
 import com.snobot.lib.ISubsystem;
+import com.snobot.lib.vision.MjpegForwarder;
+import com.snobot.lib.vision.MjpegReceiver;
 import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
@@ -22,9 +24,15 @@ public class VisionManager implements ISubsystem
         if (Properties2017.sENABLE_VISION.getValue())
         {
             mVisionServer = new VisionAdbServer(PortMappings2017.sADB_BIND_PORT, PortMappings2017.sAPP_MJPEG_PORT,
-                    PortMappings2017.sAPP_MJPEG_FORWARDED_PORT);
+                    PortMappings2017.sAPP_MJPEG_PORT);
         }
         mOperatorJoystick = aOperatorJoystick;
+
+        MjpegForwarder forwarder = new MjpegForwarder(PortMappings2017.sAPP_MJPEG_FORWARDED_PORT);
+
+        MjpegReceiver receiver = new MjpegReceiver();
+        receiver.addImageReceiver(forwarder);
+        receiver.start("http://127.0.0.01:" + PortMappings2017.sAPP_MJPEG_PORT);
     }
 
     @Override

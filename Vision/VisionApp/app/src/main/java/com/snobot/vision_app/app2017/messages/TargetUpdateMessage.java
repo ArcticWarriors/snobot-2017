@@ -47,6 +47,7 @@ public class TargetUpdateMessage
 
         mJson.put("timestamp", aTimestamp);
         mJson.put("targets", targetJson);
+        mJson.put("type", "target_update");
     }
 
 

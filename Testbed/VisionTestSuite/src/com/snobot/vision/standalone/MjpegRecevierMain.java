@@ -33,7 +33,10 @@ public class MjpegRecevierMain
             BufferedImage image = null;
             try
             {
-                image = ImageIO.read(new ByteArrayInputStream(aImageBytes));
+                if (aImageBytes != null)
+                {
+                    image = ImageIO.read(new ByteArrayInputStream(aImageBytes));
+                }
             }
             catch (IOException e)
             {
@@ -76,7 +79,7 @@ public class MjpegRecevierMain
     {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        String urlAddress = "http://127.0.0.1:5800";
+        String urlAddress = "http://127.0.0.1:12000";
         String thresholdConfig = "peg_test_20170202/threshold_config.yml";
         if (args.length == 1)
         {
