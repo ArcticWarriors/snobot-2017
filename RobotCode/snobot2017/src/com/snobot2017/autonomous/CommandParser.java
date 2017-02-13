@@ -344,7 +344,10 @@ public class CommandParser extends ACommandParser
        
         if (fileName != null)
         {
-            return createTrajectoryCommand(fileName);
+            CommandGroup output = new CommandGroup();
+            output.addSequential(createTrajectoryCommand(fileName));
+            output.addSequential(parseScoreGearCommand(3));
+            return output;
         }
         else
         {
@@ -361,33 +364,61 @@ public class CommandParser extends ACommandParser
             return null;
         }
 
-        CommandGroup output = new CommandGroup();
+        String scoreFilename = null;
+        String hopperFilename = null;
         
         switch (startPosition)
         {
         case RedLeft:
-            output.addSequential(createTrajectoryCommand("RedLeftScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("RedLeftScoreGearGetHopper.csv"));
+
+            scoreFilename = "RedLeftScoreGear.csv";
+            hopperFilename = "RedLeftScoreGearGetHopper.csv";
             break;
         case RedRight:
-            output.addSequential(createTrajectoryCommand("RedRightScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("RedRightScoreGearGetHopper.csv"));
+            scoreFilename = "RedRightScoreGear.csv";
+            hopperFilename = "RedRightScoreGearGetHopper.csv";
             break;
         case BlueRight:
-            output.addSequential(createTrajectoryCommand("BlueRightScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("BlueRightScoreGearGetHopper.csv"));
+            scoreFilename = "BlueRightScoreGear.csv";
+            hopperFilename = "BlueRightScoreGearGetHopper.csv";
             break;
         case BlueLeft:
-            output.addSequential(createTrajectoryCommand("BlueLeftScoreGear.csv"));
-            output.addSequential(createTrajectoryCommand("BlueLeftScoreGearGetHopper.csv"));
+            scoreFilename = "BlueLeftScoreGear.csv";
+            hopperFilename = "BlueLeftScoreGearGetHopper.csv";
+            break;
+
+        case RedMiddle:
+            scoreFilename = "RedMiddleScoreGear.csv";
+            break;
+        case BlueMiddle:
+            scoreFilename = "BlueMiddleScoreGear.csv";
             break;
 
         // Intentional fall through, nothing to do
         case Origin:
-        case RedMiddle:
-        case BlueMiddle:
         default:
             break;   
+        }
+
+        CommandGroup output = new CommandGroup();
+
+        if (scoreFilename != null)
+        {
+            output.addSequential(createTrajectoryCommand(scoreFilename));
+            output.addSequential(parseScoreGearCommand(3));
+
+            if (hopperFilename != null)
+            {
+                output.addSequential(createTrajectoryCommand(hopperFilename));
+            }
+            else
+            {
+                output.addSequential(parseStupidDriveStraightCommand(1.1, -.3));
+            }
+        }
+        else
+        {
+            mErrorText += "Invalid scoring filename";
         }
        
         return output;
@@ -415,14 +446,24 @@ public class CommandParser extends ACommandParser
     private Command parseScoreGearCommand(List<String> args)
     {
         double time = Double.parseDouble(args.get(1));
-        return new ScoreGear(mSnobot.getGearBoss(), time);
+        return parseScoreGearCommand(time);
+    }
+
+    private Command parseScoreGearCommand(double aTime)
+    {
+        return new ScoreGear(mSnobot.getGearBoss(), aTime);
     }
 
     private Command parseStupidDriveStraightCommand(List<String> args)
     {
         double time = Double.parseDouble(args.get(1));
         double speed = Double.parseDouble(args.get(2));
-        return new StupidDriveStraight(mSnobot.getDriveTrain(), time, speed);
+        return parseStupidDriveStraightCommand(time, speed);
+    }
+
+    private Command parseStupidDriveStraightCommand(double aTime, double aSpeed)
+    {
+        return new StupidDriveStraight(mSnobot.getDriveTrain(), aTime, aSpeed);
     }
 
     private Command parseReplayCommand(List<String> args) throws IOException
