@@ -44,5 +44,5 @@ public class PortMappings2017
     /**
      * This forwards data coming from the apps MJPEG server to this port
      */
-    public static final int sAPP_MJPEG_FORWARDED_PORT = 5800;
+    public static final int sAPP_MJPEG_FORWARDED_PORT = 12000;
 }

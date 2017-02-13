@@ -5,8 +5,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import org.opencv.core.Core;
@@ -25,8 +28,17 @@ public class MjpegRecevierMain
     {
 
         @Override
-        public void onImage(BufferedImage image)
+        public void onImage(byte[] aImageBytes)
         {
+            BufferedImage image = null;
+            try
+            {
+                image = ImageIO.read(new ByteArrayInputStream(aImageBytes));
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
             visionPanel.setOriginalImage(image);
         }
     };

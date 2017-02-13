@@ -128,8 +128,8 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mGearBoss);
 
         // Vision
-        // mVisionManager = new VisionManager(operatorJoystick);
-        // mSubsystems.add(mVisionManager);
+        mVisionManager = new VisionManager(operatorJoystick);
+        mSubsystems.add(mVisionManager);
 
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();
