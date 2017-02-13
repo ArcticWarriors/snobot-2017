@@ -48,7 +48,7 @@ public class RobotDrawer extends JPanel
 
     // Robot State
     private double mSpoolSpeed;
-    private boolean mGearBossPos;
+    private boolean mGearBossIsUp;
 
     public RobotDrawer()
     {
@@ -86,7 +86,7 @@ public class RobotDrawer extends JPanel
         {
             color = sROBOT_SPOOL_COLOR;
         }
-        System.out.println(getSpoolMotorSpeed());
+
         Ellipse2D spool = new Ellipse2D.Double(sSPOOL_X_START * mScaleFactor, sSPOOL_Y_START * mScaleFactor, sSPOOL_RADIUS * mScaleFactor,
                 sSPOOL_RADIUS * mScaleFactor);
 
@@ -107,7 +107,7 @@ public class RobotDrawer extends JPanel
     private void drawGearBoss(Graphics2D g2d)
     {
         double mGear_Boss_Y_Start = sGEAR_BOSS_Y_START;
-        if (isGearBossUp())
+        if (mGearBossIsUp)
         {
             // in pixels
             mGear_Boss_Y_Start = 50;
@@ -156,15 +156,16 @@ public class RobotDrawer extends JPanel
 
     public void setSpoolMotorSpeed(double aRopeMotorSpeed)
     {
-        this.mSpoolSpeed = aRopeMotorSpeed;
+        mSpoolSpeed = aRopeMotorSpeed;
     }
 
     public boolean isGearBossUp()
     {
-        return mGearBossPos;
+        return mGearBossIsUp;
     }
-    public void setGearBossPos(boolean mGearBossPos)
+
+    public void setGearBossUp(boolean aGearBossIsUp)
     {
-        this.mGearBossPos = mGearBossPos;
+        mGearBossIsUp = aGearBossIsUp;
     }
 }

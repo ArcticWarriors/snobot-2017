@@ -16,7 +16,7 @@ public class SmartDashBoardNames
     public static final String sROBOT_ROPE_MOTOR_SPEED = "Rope Motor Speed";
 
     // GearBoss
-    public static final String sGEAR_BOSS_SOLENOID = "Gear Boss Solenoid";
+    public static final String sGEAR_BOSS_SOLENOID = "Gear Boss Up";
 
     // FlightSticks Joystick
     public static final String sRIGHT_JOYSTICK_SPEED = "Right Joystick Speed";

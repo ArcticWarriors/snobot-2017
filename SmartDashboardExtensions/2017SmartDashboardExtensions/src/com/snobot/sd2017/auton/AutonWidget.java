@@ -103,7 +103,6 @@ public class AutonWidget extends StaticWidget
             public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
             {
                 String filename = aAutonTable.getString(SmartDashBoardNames.sAUTON_FILENAME, "NothingReceived.txt");
-                System.out.println("Filename updated to " + filename);
             }
         };
 

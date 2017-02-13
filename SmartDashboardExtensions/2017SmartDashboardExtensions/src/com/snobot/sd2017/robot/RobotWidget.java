@@ -33,15 +33,12 @@ public class RobotWidget extends AutoUpdateWidget
     @Override
     protected void poll() throws Exception
     {
-        boolean is_gear_boss_up;
-        double spool_speed;
-
-        is_gear_boss_up = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sGEAR_BOSS_SOLENOID, false);
-        spool_speed = Robot.getTable().getNumber(com.snobot2017.SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, 0);
+        boolean is_gear_boss_up = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sGEAR_BOSS_SOLENOID, false);
+        double spool_speed = Robot.getTable().getNumber(com.snobot2017.SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, 0);
         
         if(mDrawer != null)
         {
-            mDrawer.setGearBossPos(is_gear_boss_up);
+            mDrawer.setGearBossUp(is_gear_boss_up);
             mDrawer.setSpoolMotorSpeed(spool_speed);
         }
         repaint();
