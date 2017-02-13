@@ -12,7 +12,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_START);
-        p.addWaypoint(createPositiveHackPoint(RED_RIGHT_START));
+        p.addWaypoint(createHackPoint(RED_RIGHT_START, 10, .0001));
         p.addWaypoint(EAST_HOPPER_ONE);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
@@ -72,7 +72,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_LEFT_START);
-        p.addWaypoint(createNegativeHackPoint(RED_LEFT_START));
+        p.addWaypoint(new Waypoint(-112.12, -185.87, -1));
         p.addWaypoint(WEST_HOPPER_FIVE);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
@@ -84,7 +84,7 @@ public class GenerateStartToHopperRed extends BasePathGenerator
         getRedRightToHopperTwo(aDirectory, aWheelbaseWidth);
 
         getRedMiddleToHopperOne(aDirectory, aWheelbaseWidth);
-         getRedMiddleToHopperFive(aDirectory, aWheelbaseWidth);
+        getRedMiddleToHopperFive(aDirectory, aWheelbaseWidth);
 
         getRedLeftToHopperFour(aDirectory, aWheelbaseWidth);
         getRedLeftToHopperFive(aDirectory, aWheelbaseWidth);

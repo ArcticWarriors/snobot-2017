@@ -139,22 +139,11 @@ public class BasePathGenerator
         }
     }
 
-    protected Waypoint createPositiveHackPoint(Waypoint toCopy)
+    protected Waypoint createHackPoint(Waypoint toCopy, double aDy, double aDTheta)
     {
         Waypoint hackPoint = new Waypoint(toCopy);
-        hackPoint.x += .01;
-        hackPoint.y += .01;
-        hackPoint.theta += .0001;
-
-        return hackPoint;
-    }
-
-    protected Waypoint createNegativeHackPoint(Waypoint toCopy)
-    {
-        Waypoint hackPoint = new Waypoint(toCopy);
-        hackPoint.x -= .01;
-        hackPoint.y -= .01;
-        hackPoint.theta -= .0001;
+        hackPoint.x += aDy;
+        hackPoint.theta += aDTheta;
 
         return hackPoint;
     }

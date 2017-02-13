@@ -12,7 +12,7 @@ public class GenerateStartToHopperBlue extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_LEFT_START);
-        p.addWaypoint(createNegativeHackPoint(BLUE_LEFT_START));
+        p.addWaypoint(createHackPoint(BLUE_LEFT_START, -10, -.0001));
         p.addWaypoint(EAST_HOPPER_THREE);
 
         generate(GEAR_SPEED_CONFIG, p, directory, path_name, kWheelbaseWidth);
