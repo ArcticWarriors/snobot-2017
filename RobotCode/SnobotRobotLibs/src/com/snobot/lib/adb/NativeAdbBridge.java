@@ -1,6 +1,8 @@
 package com.snobot.lib.adb;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,10 +20,41 @@ public class NativeAdbBridge extends BaseAdbBridge
 
         mAdbLocation = Paths.get(aAdbLocation);
         mValidAdb = Files.exists(mAdbLocation);
+        
+        killOldAdbs();
 
         if (!mValidAdb)
         {
             sLOGGER.severe("ADB could not be found at '" + aAdbLocation + "'");
+        }
+    }
+
+    private void killOldAdbs()
+    {
+        if (System.getProperty("os.name").startsWith("Windows"))
+        {
+            try
+            {
+                Process p = Runtime.getRuntime().exec("tasklist");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null)
+                {
+
+                    if (line.contains("adb"))
+                    {
+                        System.out.println("Found running ADB, killing it");
+                        Runtime.getRuntime().exec("taskkill /F /IM adb.exe");
+                        // killProcess.wait(1000);
+                    }
+                }
+                System.out.println("Killed old ADB's");
+            }
+            catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 

@@ -120,6 +120,11 @@ public class MjpgServer
 
     public void update(byte[] bytes)
     {
+        if (bytes == null)
+        {
+            return;
+        }
+
         synchronized (mLock)
         {
             ArrayList<Integer> badIndices = new ArrayList<>(mConnections.size());
