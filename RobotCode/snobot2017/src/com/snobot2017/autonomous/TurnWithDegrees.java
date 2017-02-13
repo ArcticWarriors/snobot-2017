@@ -1,10 +1,6 @@
 package com.snobot2017.autonomous;
 
-import com.snobot.lib.InDeadbandHelper;
 import com.snobot2017.SnobotActor.ISnobotActor;
-import com.snobot2017.SnobotActor.SnobotActor;
-import com.snobot2017.drivetrain.IDriveTrain;
-import com.snobot2017.positioner.IPositioner;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,13 +12,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TurnWithDegrees extends Command
 {
-    private SnobotActor mSnobotActor;
+    private ISnobotActor mSnobotActor;
     private double mSpeed;
     private double mTurnAngle;
-    private IDriveTrain mDriveTrain;
-    private IPositioner mPositioner;
-    private double mTurnMeasure;
-    private InDeadbandHelper mInDeadbandHelper;
     private boolean mFinished;
 
     /**
@@ -35,6 +27,7 @@ public class TurnWithDegrees extends Command
      */
     public TurnWithDegrees(double aSpeed, double aTurnAngle, ISnobotActor aSnobotActor)
     {
+        mSnobotActor = aSnobotActor;
         mTurnAngle = aTurnAngle;
         mSpeed = aSpeed;
         mFinished = false;
@@ -44,31 +37,6 @@ public class TurnWithDegrees extends Command
     protected void execute()
     {
         mFinished = mSnobotActor.turnToAngle(mTurnAngle, mSpeed);
-        mTurnMeasure = (mTurnAngle - mPositioner.getOrientationDegrees()) % 360;
-        if ((mTurnMeasure) < 0)
-        {
-            mTurnMeasure = mTurnMeasure + 360;
-        }
-        if (mTurnMeasure <= 180)
-        {
-            mDriveTrain.setLeftRightSpeed(mSpeed, -mSpeed);
-        }
-        else
-        {
-            mDriveTrain.setLeftRightSpeed(-mSpeed, mSpeed);
-        }
-
-        if (mInDeadbandHelper.isFinished(Math.abs(mTurnAngle - mPositioner.getOrientationDegrees()) < 5))
-        {
-            mDriveTrain.setLeftRightSpeed(0, 0);
-            mFinished = true;
-        }
-        else
-        {
-            mFinished = false;
-        }
-        
-        //System.out.println("TurnWithDegrees " + mTurnAngle + " " + mPositioner.getOrientationDegrees() + " " + mTurnMeasure);
     }
 
     @Override
