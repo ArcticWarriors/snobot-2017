@@ -2,6 +2,7 @@ package com.snobot.sd2017.robot;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
@@ -39,8 +40,10 @@ public class RobotDrawer extends JPanel
     private static final Color sROBOT_GEARBOX_COLOR = Color.blue;
     private static final Color sROBOT_SPOOL_COLOR = Color.gray;
     private static final Color sROBOT_GEARFUNNEL_COLOR = Color.cyan;
-    private static final Color sROBOT_SPOOL_SPEED_ONE_COLOR = Color.yellow;
-    private static final Color sROBOT_SPOOL_SPEED_TWO_COLOR = Color.green;
+    private static final Color sROBOT_NOACTION_COLOR = Color.white;
+    private static final Color sROBOT_INACTION1_COLOR = Color.orange;
+    private static final Color sROBOT_INACTION2_COLOR = new Color(0xD79B24);
+    private static final Color sROBOT_STATE_TEXT_COLOR = Color.black;
 
     /**
      * The scaling factor used for drawing. For example, 1 would mean draw every
@@ -50,7 +53,12 @@ public class RobotDrawer extends JPanel
 
     // Robot State
     private double mSpoolSpeed;
-    private boolean mGearBossPos;
+    private boolean mGearBossIsUp;
+    private boolean mInAction;
+    private boolean mCycleFlash = false;
+    private String mActorStateName = "";
+    private String mActorActionName = "";
+    private Font mFont = new Font("SansSerif", Font.BOLD, 14);
 
     public RobotDrawer()
     {
@@ -70,8 +78,8 @@ public class RobotDrawer extends JPanel
 
     private void drawRobotBase(Graphics2D g2d)
     {
-        Rectangle2D robotBase = new Rectangle2D.Double(sCHASSIS_X_START * mScaleFactor, sCHASSIS_Y_START * mScaleFactor,
-                sROBOT_WIDTH * mScaleFactor, sROBOT_HEIGHT * mScaleFactor);
+        Rectangle2D robotBase = new Rectangle2D.Double(sCHASSIS_X_START * mScaleFactor, sCHASSIS_Y_START * mScaleFactor, sROBOT_WIDTH * mScaleFactor,
+                sROBOT_HEIGHT * mScaleFactor);
 
         g2d.setColor(sROBOT_BASE_COLOR);
         g2d.fill(robotBase);
@@ -88,7 +96,7 @@ public class RobotDrawer extends JPanel
         {
             color = sROBOT_SPOOL_COLOR;
         }
-        System.out.println(getSpoolMotorSpeed());
+
         Ellipse2D spool = new Ellipse2D.Double(sSPOOL_X_START * mScaleFactor, sSPOOL_Y_START * mScaleFactor, sSPOOL_RADIUS * mScaleFactor,
                 sSPOOL_RADIUS * mScaleFactor);
 
@@ -109,7 +117,7 @@ public class RobotDrawer extends JPanel
     private void drawGearBoss(Graphics2D g2d)
     {
         double mGear_Boss_Y_Start = sGEAR_BOSS_Y_START;
-        if (isGearBossUp())
+        if (mGearBossIsUp)
         {
             // in pixels
             mGear_Boss_Y_Start = 50;
@@ -124,6 +132,39 @@ public class RobotDrawer extends JPanel
 
         g2d.setColor(sROBOT_GEARBOX_COLOR);
         g2d.fill(gearBoss);
+    }
+
+    protected void drawActorState(Graphics2D g2d)
+    {
+        if (mInAction)
+        {
+            if (mCycleFlash)
+            {
+                g2d.setColor(sROBOT_INACTION1_COLOR);
+            }
+            else
+            {
+                g2d.setColor(sROBOT_INACTION2_COLOR);
+            }
+            mCycleFlash = !mCycleFlash;
+        }
+        else
+        {
+            g2d.setColor(sROBOT_NOACTION_COLOR);
+        }
+        g2d.fillRect(0, 0, (int) getWidth(), (int) getHeight());
+
+        // Write State on Image
+        String nameString = "";
+        if (!mActorActionName.isEmpty())
+        {
+            nameString = mActorActionName + ": ";
+        }
+        nameString = nameString + mActorStateName;
+
+        g2d.setColor(sROBOT_STATE_TEXT_COLOR);
+        g2d.setFont(mFont);
+        g2d.drawString(nameString, 10, 20);
     }
 
     public void updateSize()
@@ -145,6 +186,7 @@ public class RobotDrawer extends JPanel
         g.clearRect(0, 0, (int) getSize().getWidth(), (int) getSize().getHeight());
 
         // Draw Robot Parts
+        drawActorState(g2d);
         drawRobotBase(g2d);
         drawSpool(g2d);
         drawGearFunnel(g2d);
@@ -158,15 +200,32 @@ public class RobotDrawer extends JPanel
 
     public void setSpoolMotorSpeed(double aRopeMotorSpeed)
     {
-        this.mSpoolSpeed = aRopeMotorSpeed;
+        mSpoolSpeed = aRopeMotorSpeed;
     }
 
     public boolean isGearBossUp()
     {
-        return mGearBossPos;
+        return mGearBossIsUp;
     }
-    public void setGearBossPos(boolean mGearBossPos)
+
+    public void setGearBossUp(boolean aGearBossIsUp)
     {
-        this.mGearBossPos = mGearBossPos;
+        mGearBossIsUp = aGearBossIsUp;
+    }
+
+    public void setInAction(boolean inAction)
+    {
+        mInAction = inAction;
+    }
+
+    public void setActorState(String actorStateName)
+    {
+        mActorStateName = actorStateName;
+    }
+
+    public void setActionName(String actorActionName)
+    {
+        mActorActionName = actorActionName;
+
     }
 }

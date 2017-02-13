@@ -9,51 +9,28 @@ import com.team254.lib.trajectory.Trajectory.Segment;
  */
 public class Path
 {
-    protected Trajectory.Pair go_left_pair_;
-    protected String name_;
-    protected boolean go_left_;
+    protected Trajectory.WheelPair mWheelPair;
+    protected String mName;
 
-    public Path(String name, Trajectory.Pair go_left_pair)
+    public Path(String name, Trajectory.WheelPair go_left_pair)
     {
-        name_ = name;
-        go_left_pair_ = go_left_pair;
-        go_left_ = true;
+        mName = name;
+        mWheelPair = go_left_pair;
     }
 
     public String getName()
     {
-        return name_;
-    }
-
-    public void goLeft()
-    {
-        go_left_ = true;
-        go_left_pair_.left.setInvertedY(false);
-        go_left_pair_.right.setInvertedY(false);
-    }
-
-    public void goRight()
-    {
-        go_left_ = false;
-        go_left_pair_.left.setInvertedY(true);
-        go_left_pair_.right.setInvertedY(true);
+        return mName;
     }
 
     public Trajectory getLeftWheelTrajectory()
     {
-        return (go_left_ ? go_left_pair_.left : go_left_pair_.right);
+        return mWheelPair.mLeftWheel;
     }
 
     public Trajectory getRightWheelTrajectory()
     {
-        return (go_left_ ? go_left_pair_.right : go_left_pair_.left);
-    }
-
-    public boolean canFlip(int segmentNum)
-    {
-        Segment a = go_left_pair_.right.getSegment(segmentNum);
-        Segment b = go_left_pair_.left.getSegment(segmentNum);
-        return (a.pos == b.pos) && (a.vel == b.vel);
+        return mWheelPair.mRightWheel;
     }
 
     public double getEndHeading()
@@ -61,5 +38,32 @@ public class Path
         int numSegments = getLeftWheelTrajectory().getNumSegments();
         Segment lastSegment = getLeftWheelTrajectory().getSegment(numSegments - 1);
         return lastSegment.heading;
+    }
+
+    public void makeBackwards()
+    {
+        Trajectory leftTrajectory = mWheelPair.mLeftWheel.copy();
+        Trajectory rightTrajectory = mWheelPair.mRightWheel.copy();
+
+        for (int i = 0; i < leftTrajectory.getNumSegments(); ++i)
+        {
+            Segment segment = leftTrajectory.getSegment(i);
+            segment.acc *= -1;
+            segment.vel *= -1;
+            segment.pos *= -1;
+            segment.heading -= Math.PI;
+        }
+
+        for (int i = 0; i < rightTrajectory.getNumSegments(); ++i)
+        {
+            Segment segment = rightTrajectory.getSegment(i);
+            segment.acc *= -1;
+            segment.vel *= -1;
+            segment.pos *= -1;
+            segment.heading -= Math.PI;
+        }
+
+        mWheelPair.mLeftWheel = leftTrajectory;
+        mWheelPair.mRightWheel = rightTrajectory;
     }
 }

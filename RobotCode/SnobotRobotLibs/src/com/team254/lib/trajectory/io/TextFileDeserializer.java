@@ -26,24 +26,10 @@ public class TextFileDeserializer implements IPathDeserializer
         String name = tokenizer.nextToken();
         int num_elements = Integer.parseInt(tokenizer.nextToken());
 
+        // Flipped on purpose
         Trajectory left = new Trajectory(num_elements);
-        for (int i = 0; i < num_elements; ++i)
-        {
-            Trajectory.Segment segment = new Trajectory.Segment();
-            StringTokenizer line_tokenizer = new StringTokenizer(tokenizer.nextToken(), " ");
-
-            segment.pos = Double.parseDouble(line_tokenizer.nextToken());
-            segment.vel = Double.parseDouble(line_tokenizer.nextToken());
-            segment.acc = Double.parseDouble(line_tokenizer.nextToken());
-            segment.jerk = Double.parseDouble(line_tokenizer.nextToken());
-            segment.heading = Double.parseDouble(line_tokenizer.nextToken());
-            segment.dt = Double.parseDouble(line_tokenizer.nextToken());
-            segment.x = Double.parseDouble(line_tokenizer.nextToken());
-            segment.y = Double.parseDouble(line_tokenizer.nextToken());
-
-            left.setSegment(i, segment);
-        }
         Trajectory right = new Trajectory(num_elements);
+
         for (int i = 0; i < num_elements; ++i)
         {
             Trajectory.Segment segment = new Trajectory.Segment();
@@ -60,9 +46,25 @@ public class TextFileDeserializer implements IPathDeserializer
 
             right.setSegment(i, segment);
         }
+        for (int i = 0; i < num_elements; ++i)
+        {
+            Trajectory.Segment segment = new Trajectory.Segment();
+            StringTokenizer line_tokenizer = new StringTokenizer(tokenizer.nextToken(), " ");
+
+            segment.pos = Double.parseDouble(line_tokenizer.nextToken());
+            segment.vel = Double.parseDouble(line_tokenizer.nextToken());
+            segment.acc = Double.parseDouble(line_tokenizer.nextToken());
+            segment.jerk = Double.parseDouble(line_tokenizer.nextToken());
+            segment.heading = Double.parseDouble(line_tokenizer.nextToken());
+            segment.dt = Double.parseDouble(line_tokenizer.nextToken());
+            segment.x = Double.parseDouble(line_tokenizer.nextToken());
+            segment.y = Double.parseDouble(line_tokenizer.nextToken());
+
+            left.setSegment(i, segment);
+        }
 
         System.out.println("...finished parsing path from string.");
-        return new Path(name, new Trajectory.Pair(left, right));
+        return new Path(name, new Trajectory.WheelPair(left, right));
     }
 
     public Path deserializeFromFile(String aFilename)

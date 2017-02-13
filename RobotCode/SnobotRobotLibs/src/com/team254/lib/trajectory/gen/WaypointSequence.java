@@ -1,5 +1,8 @@
 package com.team254.lib.trajectory.gen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A WaypointSequence is a sequence of Waypoints. #whatdidyouexpect
  *
@@ -18,7 +21,7 @@ public class WaypointSequence
             // Switched on purpose, poofs code wants it this way
             this.x = y;
             this.y = x;
-            this.theta = theta;
+            this.theta = Math.toRadians(theta);
         }
 
         public Waypoint(Waypoint tocopy)
@@ -33,51 +36,25 @@ public class WaypointSequence
         public double theta;
     }
 
-    Waypoint[] waypoints_;
-    int num_waypoints_;
+    List<Waypoint> mWaypoints;
 
-    public WaypointSequence(int max_size)
+    public WaypointSequence()
     {
-        waypoints_ = new Waypoint[max_size];
+        mWaypoints = new ArrayList<>();
     }
 
-    public void addWaypoint(Waypoint w)
+    public void addWaypoint(Waypoint aWaypoint)
     {
-        if (num_waypoints_ < waypoints_.length)
-        {
-            waypoints_[num_waypoints_] = w;
-            ++num_waypoints_;
-        }
+        mWaypoints.add(aWaypoint);
     }
 
     public int getNumWaypoints()
     {
-        return num_waypoints_;
+        return mWaypoints.size();
     }
 
     public Waypoint getWaypoint(int index)
     {
-        if (index >= 0 && index < getNumWaypoints())
-        {
-            return waypoints_[index];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public WaypointSequence invertY()
-    {
-        WaypointSequence inverted = new WaypointSequence(waypoints_.length);
-        inverted.num_waypoints_ = num_waypoints_;
-        for (int i = 0; i < num_waypoints_; ++i)
-        {
-            inverted.waypoints_[i] = waypoints_[i];
-            inverted.waypoints_[i].y *= -1;
-            inverted.waypoints_[i].theta = ChezyMath.boundAngle0to2PiRadians(2 * Math.PI - inverted.waypoints_[i].theta);
-        }
-
-        return inverted;
+        return mWaypoints.get(index);
     }
 }

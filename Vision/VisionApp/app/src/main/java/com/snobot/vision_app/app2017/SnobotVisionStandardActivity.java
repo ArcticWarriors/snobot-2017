@@ -82,7 +82,7 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
         }
 
         cameraRenderer = new CameraRenderer(this, captureRequests, textureView);
-        visionAlgorithm = new JavaVisionAlgorithm();
+        visionAlgorithm = new JavaVisionAlgorithm(sRobotConnection);
 
     }
 

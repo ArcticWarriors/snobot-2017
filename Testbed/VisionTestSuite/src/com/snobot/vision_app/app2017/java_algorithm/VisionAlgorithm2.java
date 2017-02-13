@@ -1,6 +1,5 @@
 package com.snobot.vision_app.app2017.java_algorithm;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.text.DecimalFormat;
@@ -10,9 +9,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.opencv.core.Core;
@@ -54,7 +51,9 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
 
     public enum DisplayType
     {
-        OriginalImage, PostThreshold, MarkedUpImage
+        OriginalImage,
+        PostThreshold,
+        MarkedUpImage
     }
 
     public static class TapeLocation
@@ -126,11 +125,8 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
             return "TapeLocation [mAngle=" + mAngle + ", mDistanceFromHoriz=" + mDistanceFromHoriz + ", mDistanceFromVert="
                     + mDistanceFromVert + ", mAspectRatio=" + mAspectRatio + "]";
         }
-        
     }
 
-    protected List<ProcessedImageListener> mUpdateListeners;
-    protected BufferedImage mCurrentImage;
     protected GripPegAlgorithm mPegGripAlgorithm;
     protected GripPegAlgorithm mRopeGripAlgorithm;
     protected DisplayType mDisplayType;
@@ -147,41 +143,7 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
         mDisplayType = aDisplayType;
     }
 
-    public void setThresholds(HslThreshold aMin, HslThreshold aMax)
-    {
-        mPegGripAlgorithm.setThreshold(aMin, aMax);
-
-        if (mCurrentImage != null)
-        {
-            processImage(mCurrentImage);
-        }
-    }
-
-    public void processImage(BufferedImage originalImage)
-    {
-        mCurrentImage = originalImage;
-
-        if (originalImage != null)
-        {
-            byte[] pixels = ((DataBufferByte) mCurrentImage.getRaster().getDataBuffer()).getData();
-            Mat matImage = new Mat(originalImage.getHeight(), originalImage.getWidth(), CvType.CV_8UC3);
-            matImage.put(0, 0, pixels);
-
-            processImage(matImage);
-        }
-    }
-
-    public void processImage(Mat aOriginalImage)
-    {
-        Mat displayImage = processPegImage(aOriginalImage);
-
-        for (ProcessedImageListener listener : mUpdateListeners)
-        {
-            listener.onCalculation(scaleImage(aOriginalImage), scaleImage(displayImage));
-        }
-    }
-    
-    class AspectRatioComparator implements Comparator<TapeLocation>
+    private class AspectRatioComparator implements Comparator<TapeLocation>
     {
         @Override
         public int compare(TapeLocation o1, TapeLocation o2)
@@ -195,8 +157,8 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
                 return -1;
         }
     }
-    
-    class AngleComparator implements Comparator<TapeLocation>
+
+    private class AngleComparator implements Comparator<TapeLocation>
     {
         @Override
         public int compare(TapeLocation o1, TapeLocation o2)
@@ -280,7 +242,7 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
                 break;
             }
         }
-        
+
         return displayImage;
     }
 
@@ -319,6 +281,47 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
 
         return displayImage;
     }
+
+    ////////////////////////
+    // App Specific Stuff
+    ////////////////////////
+    protected List<ProcessedImageListener> mUpdateListeners;
+    protected BufferedImage mCurrentImage;
+
+    public void setThresholds(HslThreshold aMin, HslThreshold aMax)
+    {
+        mPegGripAlgorithm.setThreshold(aMin, aMax);
+
+        if (mCurrentImage != null)
+        {
+            processImage(mCurrentImage);
+        }
+    }
+
+    public void processImage(BufferedImage originalImage)
+    {
+        mCurrentImage = originalImage;
+
+        if (originalImage != null)
+        {
+            byte[] pixels = ((DataBufferByte) mCurrentImage.getRaster().getDataBuffer()).getData();
+            Mat matImage = new Mat(originalImage.getHeight(), originalImage.getWidth(), CvType.CV_8UC3);
+            matImage.put(0, 0, pixels);
+
+            processImage(matImage);
+        }
+    }
+    
+    public void processImage(Mat aOriginalImage)
+    {
+        Mat displayImage = processPegImage(aOriginalImage);
+
+        for (ProcessedImageListener listener : mUpdateListeners)
+        {
+            listener.onCalculation(scaleImage(aOriginalImage), scaleImage(displayImage));
+        }
+    }
+    
 
     private Mat scaleImage(Mat input)
     {

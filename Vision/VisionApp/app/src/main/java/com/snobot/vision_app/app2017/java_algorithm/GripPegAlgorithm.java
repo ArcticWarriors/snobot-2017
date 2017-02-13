@@ -32,19 +32,15 @@ public class GripPegAlgorithm {
     private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
     private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
 
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
-
     /**
      * This is the primary method that runs the entire pipeline and updates the outputs.
      */
     public void process(Mat source0) {
         // Step HSL_Threshold0:
         Mat hslThresholdInput = source0;
-        double[] hslThresholdHue = {50.179856115107924, 92.45733788395903};
-        double[] hslThresholdSaturation = {130.71043165467623, 255.0};
-        double[] hslThresholdLuminance = {87.14028776978417, 255.0};
+        double[] hslThresholdHue = {27.179856115107924, 92.45733788395903};
+        double[] hslThresholdSaturation = {170.71043165467623, 255.0};
+        double[] hslThresholdLuminance = {44.14028776978417, 255.0};
         hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
         // Step CV_erode0:

@@ -1,6 +1,8 @@
 package com.snobot2017.autonomous;
 
 import com.snobot.lib.InDeadbandHelper;
+import com.snobot2017.SnobotActor.ISnobotActor;
+import com.snobot2017.SnobotActor.SnobotActor;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.positioner.IPositioner;
 
@@ -14,14 +16,14 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TurnWithDegrees extends Command
 {
+    private SnobotActor mSnobotActor;
     private double mSpeed;
     private double mTurnAngle;
     private IDriveTrain mDriveTrain;
     private IPositioner mPositioner;
     private double mTurnMeasure;
+    private InDeadbandHelper mInDeadbandHelper;
     private boolean mFinished;
-
-    private InDeadbandHelper mInDeadbandHelper = new InDeadbandHelper(10);
 
     /**
      * Constructor 
@@ -31,11 +33,9 @@ public class TurnWithDegrees extends Command
      * @param aDriveTrain
      * @param aPositioner
      */
-    public TurnWithDegrees(double aSpeed, double aTurnAngle, IDriveTrain aDriveTrain, IPositioner aPositioner)
+    public TurnWithDegrees(double aSpeed, double aTurnAngle, ISnobotActor aSnobotActor)
     {
         mTurnAngle = aTurnAngle;
-        mPositioner = aPositioner;
-        mDriveTrain = aDriveTrain;
         mSpeed = aSpeed;
         mFinished = false;
     }
@@ -43,6 +43,7 @@ public class TurnWithDegrees extends Command
     @Override
     protected void execute()
     {
+        mFinished = mSnobotActor.turnToAngle(mTurnAngle, mSpeed);
         mTurnMeasure = (mTurnAngle - mPositioner.getOrientationDegrees()) % 360;
         if ((mTurnMeasure) < 0)
         {
@@ -68,7 +69,6 @@ public class TurnWithDegrees extends Command
         }
         
         //System.out.println("TurnWithDegrees " + mTurnAngle + " " + mPositioner.getOrientationDegrees() + " " + mTurnMeasure);
-
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.snobot2017.drivetrain;
 
 import com.snobot.lib.Logger;
 import com.snobot2017.SmartDashBoardNames;
+import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
@@ -22,7 +23,6 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     protected final IDriverJoystick mDriverJoystick;
 
     protected final Logger mLogger;
-    protected final AutoLogger mAutoLogger;
 
     protected final RobotDrive mRobotDrive;
 
@@ -31,6 +31,11 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
 
     protected double mRightMotorDistance;
     protected double mLeftMotorDistance;
+    
+    protected int mRightEncoderRaw;
+    protected int mLeftEncoderRaw;
+    
+    private ISnobotActor mSnobotActor;
 
     public ASnobotDrivetrain(
             SpeedControllerType aFrontLeftMotor, 
@@ -38,11 +43,8 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
             SpeedControllerType aFrontRightMotor,
             SpeedControllerType aRearRightMotor, 
             IDriverJoystick aDriverJoystick, 
-            Logger aLogger, 
-            AutoLogger aAutoLogger)
+            Logger aLogger)
     {
-        mAutoLogger = aAutoLogger;
-
         mLeftMotor = aFrontLeftMotor;
         mRightMotor = aFrontRightMotor;
         
@@ -68,23 +70,17 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         mLogger.addHeader("RightEncoderDistance");
         mLogger.addHeader("LeftMotorSpeed");
         mLogger.addHeader("RightMotorSpeed");
-
-        mAutoLogger.addHeader("LeftMotorSpeed");
-        mAutoLogger.addHeader("RightMotorSpeed");
     }
 
     @Override
     public void control()
     {
-        setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
+        if (!mSnobotActor.InAction())
+        {
+            setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
+        }
     }
     
-    public void updateAutoLog()
-    {
-    	mAutoLogger.updateLogger(mLeftMotor.get());
-    	mAutoLogger.updateLogger(mRightMotor.get());
-    }
-
     @Override
     public void rereadPreferences()
     {
@@ -94,8 +90,10 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     @Override
     public void updateSmartDashboard()
     {
-        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_ENCODER, mLeftMotorDistance);
-        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, mRightMotorDistance);
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_ENCODER_RAW, mLeftEncoderRaw);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_ENCODER_RAW, mRightEncoderRaw);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_ENCODER_DISTANCE, mRightMotorDistance);
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_ENCODER_DISTANCE, mLeftMotorDistance);
         SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_SPEED, mLeftMotorSpeed);
         SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_SPEED, mRightMotorSpeed);
     }
@@ -130,9 +128,32 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     }
 
     @Override
+    public double getLeftMotorSpeed()
+    {
+        return mLeftMotorSpeed;
+    }
+    
+    @Override
+    public double getRightMotorSpeed()
+    {
+        return mRightMotorSpeed;
+        
+    }
+
+    @Override
     public void stop()
     {
         setLeftRightSpeed(0, 0);
+    }
+
+    /**
+     * Setting the SnobotActor in the drive train so that the drive train knows
+     * what it is because we can't do it in the constructor.
+     */
+    public void setSnobotActor(ISnobotActor aSnobotActor)
+    {
+        mSnobotActor = aSnobotActor;
+
     }
 
 }
