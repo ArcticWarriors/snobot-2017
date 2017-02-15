@@ -61,7 +61,6 @@ public class TargetUpdateMessage
 
     }
     
-    private JSONObject mJson;
     private List<TargetInfo> mTargets;
     private double mTimestamp;
 
@@ -72,7 +71,6 @@ public class TargetUpdateMessage
 
     public TargetUpdateMessage(JSONObject aJson)
     {
-        mJson = aJson;
         mTargets = new ArrayList<>();
 
         mTimestamp = Double.parseDouble(aJson.get("timestamp").toString());
@@ -85,11 +83,6 @@ public class TargetUpdateMessage
 
             mTargets.add(new TargetInfo(targetJson));
         }
-    }
-
-    public String toJsonString()
-    {
-        return mJson.toJSONString();
     }
 
     /**
