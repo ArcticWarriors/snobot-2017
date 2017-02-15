@@ -128,8 +128,8 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mGearBoss);
 
         // Vision
-        mVisionManager = new VisionManager(operatorJoystick);
-        mSubsystems.add(mVisionManager);
+        // mVisionManager = new VisionManager(operatorJoystick);
+        // mSubsystems.add(mVisionManager);
 
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();
@@ -140,7 +140,7 @@ public class Snobot2017 extends ASnobot
         mAutonFactory = new AutonomousFactory(this);
 
         // SnobotActor
-        mSnobotActor = new SnobotActor(mDriveTrain, mPositioner, operatorJoystick);
+        mSnobotActor = new SnobotActor(mDriveTrain, mPositioner);
         mSubsystems.add(mSnobotActor);
         ((ASnobotDrivetrain) mDriveTrain).setSnobotActor(mSnobotActor);
 

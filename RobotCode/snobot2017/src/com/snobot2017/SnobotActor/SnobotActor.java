@@ -3,33 +3,56 @@ package com.snobot2017.SnobotActor;
 import com.snobot.lib.InDeadbandHelper;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.drivetrain.IDriveTrain;
-import com.snobot2017.joystick.IOperatorJoystick;
 import com.snobot2017.positioner.IPositioner;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnobotActor implements ISnobotActor
 {
-    private InDeadbandHelper mInDeadbandHelper = new InDeadbandHelper(10);
     private IDriveTrain mDriveTrain;
     private IPositioner mPositioner;
-    private double mDistance;
-    private double mRemainingDistance;
-    private double mDesiredDistance;
-    private double mCurrentDistance;
-    private double mGoalSpeed;
-    private IOperatorJoystick mOperatorJoystick;
-    private boolean mInAction;
-    private double mAngle;
-    private double mSpeed;
-    private String mActionName;
 
-    private enum DriveToPegStates
+    private InDeadbandHelper mInDeadbandHelper;
+
+    private DistanceControlParams mDistanceControlParams;
+    private TurnControlParams mTurningControlParams;
+    private ControlMode mControlMode;
+
+    private class DistanceControlParams
+    {
+        double mGoalDistance;
+        double mDrivingSpeed;
+
+        DistanceControlParams(double aGoalDistance, double aDrivingSpeed)
+        {
+            mGoalDistance = aGoalDistance;
+            mDrivingSpeed = aDrivingSpeed;
+        }
+    }
+
+    private class TurnControlParams
+    {
+        double mGoalAngle;
+        double mTurningSpeed;
+
+        TurnControlParams(double aGoalAngle, double aTurningSpeed)
+        {
+            mGoalAngle = aGoalAngle;
+            mTurningSpeed = aTurningSpeed;
+        }
+    }
+
+    private enum ControlMode
+    {
+        Off, Distance, Turning, PositionInSteps
+    }
+
+    private enum GoToPositionSubsteps
     {
         NoAction, Turning, Driving
     }
 
-    private DriveToPegStates mDriveToPegStates = DriveToPegStates.NoAction;
+    private GoToPositionSubsteps mGoToPositionSubstep = GoToPositionSubsteps.NoAction;
 
     /**
      * Constructor
@@ -37,12 +60,27 @@ public class SnobotActor implements ISnobotActor
      * @param aDriveTrain
      * @param aPositioner
      */
-    public SnobotActor(IDriveTrain aDriveTrain, IPositioner aPositioner, IOperatorJoystick aOperatorJoystick)
+    public SnobotActor(IDriveTrain aDriveTrain, IPositioner aPositioner)
     {
         mDriveTrain = aDriveTrain;
         mPositioner = aPositioner;
-        mOperatorJoystick = aOperatorJoystick;
-        mActionName = "";
+
+        mInDeadbandHelper = new InDeadbandHelper(10);
+        mControlMode = ControlMode.Off;
+        mDistanceControlParams = new DistanceControlParams(0, 0);
+        mTurningControlParams = new TurnControlParams(0, 0);
+    }
+
+    @Override
+    public void init()
+    {
+
+    }
+
+    @Override
+    public void update()
+    {
+
     }
 
     /**
@@ -51,62 +89,140 @@ public class SnobotActor implements ISnobotActor
      * @param aDesiredDistance
      *            in inches
      */
-    public void setGoal(double aDesiredDistance, double aGoalSpeed)
+    public void setDistanceGoal(double aDistance, double aGoalSpeed)
     {
-        mDesiredDistance = mPositioner.getTotalDistance() + aDesiredDistance;
-        mGoalSpeed = aGoalSpeed;
+        mControlMode = ControlMode.Distance;
+        mDistanceControlParams = new DistanceControlParams(mPositioner.getTotalDistance() + aDistance, aGoalSpeed);
+    }
+
+    @Override
+    public void setTurnGoal(double aAngle, double aGoalSpeed)
+    {
+        mControlMode = ControlMode.Turning;
+        mTurningControlParams = new TurnControlParams(aAngle, aGoalSpeed);
+    }
+
+    @Override
+    public void setGoToPositionInStepsGoal(double aX, double aY, double aSpeed)
+    {
+        mControlMode = ControlMode.PositionInSteps;
+        mGoToPositionSubstep = GoToPositionSubsteps.Turning;
+
+        double dx = aX - mPositioner.getXPosition();
+        double dy = aY - mPositioner.getXPosition();
+
+        double distanceAway = Math.sqrt(dx * dx + dy * dy);
+        double goalAngle = Math.toDegrees(Math.atan2(dx, dy)); //Switched on purpose
+
+        mDistanceControlParams = new DistanceControlParams(mPositioner.getTotalDistance() + distanceAway, aSpeed);
+        mTurningControlParams = new TurnControlParams(goalAngle, aSpeed);
+    }
+
+
+    @Override
+    public boolean executeControlMode()
+    {
+        boolean finished = false;
+        
+        switch(mControlMode)
+        {
+        case Off:
+            finished = true;
+            break;
+        case Distance:
+            finished = driveDistance();
+            break;
+        case Turning:
+            finished = turnToAngle();
+            break;
+        case PositionInSteps:
+            finished = driveToPositionInSteps();
+            break;
+        default:
+            break;
+        
+        }
+
+        if (finished)
+        {
+            mControlMode = ControlMode.Off;
+            mDriveTrain.stop();
+        }
+
+        return finished;
+    }
+
+    @Override
+    public void control()
+    {
 
     }
 
     @Override
-    public void setGoal(double aAngle, double aGoalSpeed, double aDistance)
+    public void rereadPreferences()
     {
-        mAngle = aAngle;
-        mGoalSpeed = aGoalSpeed;
-        mDesiredDistance = mPositioner.getTotalDistance() + aDistance;
+
     }
 
-    public void driveToPeg()
+    @Override
+    public void updateSmartDashboard()
     {
-        if (!mInAction)
+        String actionName = "";
+        switch (mControlMode)
         {
-            // temporary until vision manager is working
-            setGoal(45, .5, 100);
-            mInAction = true;
-            mDriveToPegStates = DriveToPegStates.Turning;
-        }
-
-        switch (mDriveToPegStates)
-        {
+        case Distance:
+            actionName = "Driving Distance";
+            break;
         case Turning:
-        {
-            boolean done = turnToAngle(mAngle, mGoalSpeed);
-            if (done)
+            actionName = "Turning";
+            break;
+        case PositionInSteps:
+            actionName = "Go To Position";
+            switch (mGoToPositionSubstep)
             {
-                mDriveToPegStates = DriveToPegStates.Driving;
+            case Driving:
+                actionName += "::Driving";
+                break;
+            case Turning:
+                actionName += "::Turning";
+                break;
+            case NoAction:
+                actionName += "::No Action";
+                break;
             }
             break;
-        }
-        case Driving:
-        {
-            boolean done = driveDistance();
-            if (done)
-            {
-                mDriveToPegStates = DriveToPegStates.NoAction;
-                mOperatorJoystick.turnOffActions();
-            }
+        case Off:
+        default:
             break;
+
         }
-        case NoAction:
-        {
-            break;
-        }
-        }
+        SmartDashboard.putString(SmartDashBoardNames.sSNOBOT_ACTION, mGoToPositionSubstep.toString());
+        SmartDashboard.putBoolean(SmartDashBoardNames.sIN_ACTION, isInAction());
+        SmartDashboard.putString(SmartDashBoardNames.sSNOBOT_ACTION_NAME, actionName);
     }
 
-    public boolean turnToAngle(double aAngle, double aSpeed)
+    @Override
+    public void updateLog()
     {
-        double error = aAngle - mPositioner.getOrientationDegrees();
+
+    }
+
+    @Override
+    public void stop()
+    {
+        mControlMode = ControlMode.Off;
+        mGoToPositionSubstep = GoToPositionSubsteps.NoAction;
+    }
+
+    @Override
+    public boolean isInAction()
+    {
+        return mControlMode != ControlMode.Off;
+    }
+
+    private boolean turnToAngle()
+    {
+        double error = mTurningControlParams.mGoalAngle - mPositioner.getOrientationDegrees();
         double turnMeasure = error % 360;
 
         if ((turnMeasure) < 0)
@@ -116,11 +232,11 @@ public class SnobotActor implements ISnobotActor
 
         if (turnMeasure <= 180)
         {
-            mDriveTrain.setLeftRightSpeed(aSpeed, -aSpeed);
+            mDriveTrain.setLeftRightSpeed(mTurningControlParams.mTurningSpeed, -mTurningControlParams.mTurningSpeed);
         }
         else
         {
-            mDriveTrain.setLeftRightSpeed(-aSpeed, aSpeed);
+            mDriveTrain.setLeftRightSpeed(-mTurningControlParams.mTurningSpeed, mTurningControlParams.mTurningSpeed);
         }
 
         if (mInDeadbandHelper.isFinished(Math.abs(error) < 5))
@@ -132,13 +248,10 @@ public class SnobotActor implements ISnobotActor
         return false;
     }
 
-    public boolean driveDistance()
+    private boolean driveDistance()
     {
-        mCurrentDistance = mPositioner.getTotalDistance();
-        double error = mDesiredDistance - mCurrentDistance;
+        double error = mDistanceControlParams.mGoalDistance - mPositioner.getTotalDistance();
         boolean isFinished = false;
-
-        // System.out.println(error);
 
         if (mInDeadbandHelper.isFinished(Math.abs(error) < 6))
         {
@@ -147,79 +260,48 @@ public class SnobotActor implements ISnobotActor
         }
         else if (error > 0)
         {
-            mDriveTrain.setLeftRightSpeed(mGoalSpeed, mGoalSpeed);
+            mDriveTrain.setLeftRightSpeed(mDistanceControlParams.mDrivingSpeed, mDistanceControlParams.mDrivingSpeed);
         }
         else
         {
-            mDriveTrain.setLeftRightSpeed(-mGoalSpeed, -mGoalSpeed);
+            mDriveTrain.setLeftRightSpeed(-mDistanceControlParams.mDrivingSpeed, -mDistanceControlParams.mDrivingSpeed);
         }
+
         return isFinished;
     }
 
-    @Override
-    public void init()
+    private boolean driveToPositionInSteps()
     {
-        // TODO Auto-generated method stub
+        boolean finished = false;
 
-    }
-
-    @Override
-    public void update()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void control()
-    {
-        if (mOperatorJoystick.driveToPeg())
+        switch (mGoToPositionSubstep)
         {
-            mActionName = "Drive To Peg";
-            driveToPeg();
+        case Turning:
+        {
+            boolean done = turnToAngle();
+            if (done)
+            {
+                mGoToPositionSubstep = GoToPositionSubsteps.Driving;
+            }
+            break;
+        }
+        case Driving:
+        {
+            boolean done = driveDistance();
+            if (done)
+            {
+                mGoToPositionSubstep = GoToPositionSubsteps.NoAction;
+                finished = true;
+            }
+            break;
+        }
+        case NoAction:
+        {
+            finished = true;
+            break;
+        }
         }
 
-        else
-        {
-            mInAction = false;
-            mActionName = "";
-            mDriveToPegStates = DriveToPegStates.NoAction;
-        }
-
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void updateSmartDashboard()
-    {
-        SmartDashboard.putString(SmartDashBoardNames.sSNOBOT_ACTION, mDriveToPegStates.toString());
-        SmartDashboard.putBoolean(SmartDashBoardNames.sIN_ACTION, mInAction);
-        SmartDashboard.putString(SmartDashBoardNames.sSNOBOT_ACTION_NAME, mActionName);
-    }
-
-    @Override
-    public void updateLog()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void stop()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public boolean InAction()
-    {
-        return mInAction;
+        return finished;
     }
 }

@@ -18,6 +18,7 @@ public class AutonomousCommandNames
     // Smarter
     public static final String sTURN_WITH_DEGREES = "TurnWithDegrees";
     public static final String sDRIVE_STRAIGHT_A_DISTANCE = "DriveStraightADistance";
+    public static final String sGO_TO_POSITION_SMOOTH_IN_STEPS = "GoToPositionInSteps";
 
     // Path + Trajectory
     public static final String sDRIVE_PATH_STRAIGHT = "DrivePathStraight";

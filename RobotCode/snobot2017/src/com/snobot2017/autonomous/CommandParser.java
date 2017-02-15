@@ -124,6 +124,12 @@ public class CommandParser extends ACommandParser
             	newCommand = parseReplayCommand(args);
             	break;
             }
+            case AutonomousCommandNames.sGO_TO_POSITION_SMOOTH_IN_STEPS:
+            {
+                newCommand = parseGoToPositionInStepsCommand(args);
+                break;
+            }
+
             case AutonomousCommandNames.sSCORE_GEAR_TRAJECTORY:
             {
                 newCommand = createScoreGearWithTrajectoryCommand();
@@ -467,8 +473,21 @@ public class CommandParser extends ACommandParser
 
     private Command parseReplayCommand(List<String> args) throws IOException
     {
-    	String autoPath = Properties2017.sREPLAY_PATH.getValue() + args.get(1);
+        String autoPath = Properties2017.sREPLAY_PATH.getValue() + args.get(1);
         return new Replay(mSnobot.getDriveTrain(), autoPath);
+    }
+
+    private Command parseGoToPositionInStepsCommand(List<String> args) throws IOException
+    {
+        double x = Double.parseDouble(args.get(1));
+        double y = Double.parseDouble(args.get(2));
+        double speed = .5;
+        if (args.size() > 3)
+        {
+            speed = Double.parseDouble(args.get(3));
+        }
+
+        return new GoToPositionInSteps(x, y, speed, mSnobot.getSnobotActor());
     }
 
     protected Command parseWaitCommand(List<String> args)

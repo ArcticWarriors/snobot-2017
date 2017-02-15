@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TurnWithDegrees extends Command
 {
     private ISnobotActor mSnobotActor;
-    private double mSpeed;
-    private double mTurnAngle;
     private boolean mFinished;
 
     /**
@@ -28,15 +26,15 @@ public class TurnWithDegrees extends Command
     public TurnWithDegrees(double aSpeed, double aTurnAngle, ISnobotActor aSnobotActor)
     {
         mSnobotActor = aSnobotActor;
-        mTurnAngle = aTurnAngle;
-        mSpeed = aSpeed;
+        mSnobotActor.setTurnGoal(aTurnAngle, aSpeed);
+
         mFinished = false;
     }
 
     @Override
     protected void execute()
     {
-        mFinished = mSnobotActor.turnToAngle(mTurnAngle, mSpeed);
+        mFinished = mSnobotActor.executeControlMode();
     }
 
     @Override

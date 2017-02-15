@@ -4,29 +4,22 @@ import com.snobot2017.SnobotActor.ISnobotActor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveStraightADistance extends Command
+public class GoToPositionInSteps extends Command
 {
     private boolean mFinished;
     private ISnobotActor mSnobotActor;
 
-    public DriveStraightADistance(double aDistance, double aSpeed, ISnobotActor aSnobotActor)
+    public GoToPositionInSteps(double aX, double aY, double aSpeed, ISnobotActor aSnobotActor)
     {
         mSnobotActor = aSnobotActor;
         mFinished = false;
 
-        mSnobotActor.setDistanceGoal(aDistance, aSpeed);
-    }
-
-    @Override
-    protected void initialize()
-    {
-        super.initialize();
+        mSnobotActor.setGoToPositionInStepsGoal(aX, aY, aSpeed);
     }
 
     @Override
     protected void execute()
     {
-        super.execute();
         mFinished = mSnobotActor.executeControlMode();
     }
 
@@ -35,4 +28,5 @@ public class DriveStraightADistance extends Command
     {
         return mFinished;
     }
+
 }
