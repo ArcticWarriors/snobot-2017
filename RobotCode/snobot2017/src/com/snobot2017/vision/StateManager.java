@@ -1,17 +1,22 @@
 package com.snobot2017.vision;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import com.snobot2017.vision.messages.TargetUpdateMessage;
+import com.snobot2017.vision.messages.TargetUpdateMessage.TargetInfo;
+
 public class StateManager
 {
-    private TreeMap<Double, SavedRobotState> mStateHistory;
-    private TargetLocation mMostRecentTargetLocation;
+    protected TreeMap<Double, SavedRobotState> mStateHistory;
+    protected List<TargetLocation> mMostRecentTargetLocations;
 
     public StateManager()
     {
         mStateHistory = new TreeMap<>();
-        mMostRecentTargetLocation = new TargetLocation();
+        mMostRecentTargetLocations = new ArrayList<>();
     }
 
     /**
@@ -36,14 +41,30 @@ public class StateManager
         mStateHistory.put(aTime, state);
     }
 
-    public void updateCameraFindings(double aTimestamp)
+    public void updateCameraFindings(TargetUpdateMessage latestTargetUpdate)
     {
-        SavedRobotState stateAtTime = getStateHistory(aTimestamp);
-        if (stateAtTime == null)
+        mMostRecentTargetLocations.clear();
+
+        double timestamp = latestTargetUpdate.getTimestamp();
+        double dt = (System.currentTimeMillis() * 1e-3) - timestamp;
+        System.out.println(dt);
+        if (canCalculate(timestamp))
         {
-            mMostRecentTargetLocation.mX = Double.NaN;
-            mMostRecentTargetLocation.mY = Double.NaN;
-            return;
+            SavedRobotState stateAtTime = getStateHistory(timestamp);
+            
+            for (TargetInfo cameraTarget : latestTargetUpdate.getTargets())
+            {
+                double targetDistance = cameraTarget.getDistance();
+                double targetAngle = cameraTarget.getAngle();
+                targetAngle += stateAtTime.mAngle;
+
+                double angleRads = Math.toRadians(targetAngle);
+
+                TargetLocation targetLocation = new TargetLocation();
+                targetLocation.mX = stateAtTime.mRobotX + targetDistance * Math.sin(angleRads);
+                targetLocation.mY = stateAtTime.mRobotY + targetDistance * Math.cos(angleRads);
+                mMostRecentTargetLocations.add(targetLocation);
+            }
         }
     }
 
@@ -60,5 +81,10 @@ public class StateManager
     private Entry<Double, SavedRobotState> getStateAtTime(double aTimestamp)
     {
         return mStateHistory.floorEntry(aTimestamp);
+    }
+
+    public List<TargetLocation> getTargets()
+    {
+        return mMostRecentTargetLocations;
     }
 }

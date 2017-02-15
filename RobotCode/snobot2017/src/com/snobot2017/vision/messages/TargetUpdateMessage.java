@@ -33,6 +33,12 @@ public class TargetUpdateMessage
             mDistance = 0;
         }
 
+        public TargetInfo(double aAngle, double aDistance)
+        {
+            mAngle = aAngle;
+            mDistance = aDistance;
+        }
+
         public TargetInfo(JSONObject aJson)
         {
             mAngle = Double.parseDouble(aJson.get("angle").toString());
@@ -67,6 +73,12 @@ public class TargetUpdateMessage
     public TargetUpdateMessage()
     {
         mTargets = new ArrayList<>();
+    }
+
+    public TargetUpdateMessage(double aTimestamp, List<TargetInfo> aTargets)
+    {
+        mTimestamp = aTimestamp;
+        mTargets = aTargets;
     }
 
     public TargetUpdateMessage(JSONObject aJson)

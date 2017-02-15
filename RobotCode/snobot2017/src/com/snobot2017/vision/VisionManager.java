@@ -16,8 +16,6 @@ import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.joystick.IVisionJoystick;
 import com.snobot2017.positioner.IPositioner;
 import com.snobot2017.vision.VisionAdbServer.CameraFacingDirection;
-import com.snobot2017.vision.messages.TargetUpdateMessage;
-import com.snobot2017.vision.messages.TargetUpdateMessage.TargetInfo;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -81,23 +79,21 @@ public class VisionManager implements ISubsystem
     @SuppressWarnings("unchecked")
     private void updateTargetInformation(double aTimestamp)
     {
-        TargetUpdateMessage latestTargetUpdate = mVisionServer.getLatestTargetUpdate();
+        mStateManager.updateCameraFindings(mVisionServer.getLatestTargetUpdate());
         mTargetInformation.clear();
 
         SavedRobotState robotState = mStateManager.getStateHistory(aTimestamp);
+        System.out.println("Robot state " + robotState);
 
         JSONObject targetUpdateJson = new JSONObject();
         JSONArray targets = new JSONArray();
 
-        for (TargetInfo targetInfo : latestTargetUpdate.getTargets())
-        {
-            double targetDistance = targetInfo.getDistance();
-            double targetAngle = Math.toRadians(targetInfo.getAngle());
-            targetAngle += Math.toRadians(robotState.mAngle);
 
+        for (TargetLocation targetInfo : mStateManager.getTargets())
+        {
             TargetLocation target = new TargetLocation();
-            target.mX = robotState.mRobotX + targetDistance * Math.sin(targetAngle);
-            target.mY = robotState.mRobotY + targetDistance * Math.cos(targetAngle);
+            target.mX = targetInfo.mX;
+            target.mY = targetInfo.mY;
             mTargetInformation.add(target);
 
             JSONObject jsonTarget = new JSONObject();
@@ -109,6 +105,7 @@ public class VisionManager implements ISubsystem
         targetUpdateJson.put("robot_x", robotState.mRobotX);
         targetUpdateJson.put("robot_y", robotState.mRobotY);
         targetUpdateJson.put("targets", targets);
+
 
         mTargetMessage = targetUpdateJson.toJSONString();
     }
