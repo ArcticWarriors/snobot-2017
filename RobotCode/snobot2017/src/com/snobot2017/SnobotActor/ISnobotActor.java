@@ -51,4 +51,9 @@ public interface ISnobotActor extends ISubsystem
      * @return If in an Action or not
      */
     boolean isInAction();
+
+    /**
+     * Cancels any running actions
+     */
+    void cancelAction();
 }

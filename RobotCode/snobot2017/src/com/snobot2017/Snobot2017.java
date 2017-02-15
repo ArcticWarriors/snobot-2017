@@ -13,7 +13,6 @@ import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
-import com.snobot2017.drivetrain.ASnobotDrivetrain;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.drivetrain.SnobotCanDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
@@ -127,22 +126,22 @@ public class Snobot2017 extends ASnobot
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
 
-        // Vision
-        // mVisionManager = new VisionManager(operatorJoystick);
-        // mSubsystems.add(mVisionManager);
-
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();
         mPositioner = new Positioner(gyro, mDriveTrain, mLogger);
         mSubsystems.add(mPositioner);
 
-        // Autonomous
-        mAutonFactory = new AutonomousFactory(this);
-
         // SnobotActor
         mSnobotActor = new SnobotActor(mDriveTrain, mPositioner);
         mSubsystems.add(mSnobotActor);
-        ((ASnobotDrivetrain) mDriveTrain).setSnobotActor(mSnobotActor);
+        mDriveTrain.setSnobotActor(mSnobotActor);
+
+        // Vision
+        mVisionManager = new VisionManager(mSnobotActor, operatorJoystick);
+        mSubsystems.add(mVisionManager);
+
+        // Autonomous
+        mAutonFactory = new AutonomousFactory(this);
 
         // Call last
         mLogger.startLogging(
@@ -154,6 +153,13 @@ public class Snobot2017 extends ASnobot
         mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystickRaw, mDriveTrain);
         mSubsystems.add(mAutoLogger);
         init();
+    }
+
+    @Override
+    public void teleopInit()
+    {
+        super.teleopInit();
+        mSnobotActor.cancelAction();
     }
     		
     @Override

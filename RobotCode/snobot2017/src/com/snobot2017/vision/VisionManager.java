@@ -6,6 +6,7 @@ import com.snobot.lib.vision.MjpegReceiver;
 import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
+import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.joystick.IVisionJoystick;
 import com.snobot2017.vision.VisionAdbServer.CameraFacingDirection;
 import com.snobot2017.vision.messages.TargetUpdateMessage;
@@ -16,16 +17,18 @@ public class VisionManager implements ISubsystem
 {
     private VisionAdbServer mVisionServer;
     private IVisionJoystick mOperatorJoystick;
+    private ISnobotActor mSnobotActor;
     
     private TargetUpdateMessage mLatestUpdate;
     
-    public VisionManager(IVisionJoystick aOperatorJoystick)
+    public VisionManager(ISnobotActor aSnobotActor, IVisionJoystick aOperatorJoystick)
     {
         if (Properties2017.sENABLE_VISION.getValue())
         {
             mVisionServer = new VisionAdbServer(PortMappings2017.sADB_BIND_PORT, PortMappings2017.sAPP_MJPEG_PORT,
                     PortMappings2017.sAPP_MJPEG_PORT);
         }
+        mSnobotActor = aSnobotActor;
         mOperatorJoystick = aOperatorJoystick;
 
         MjpegForwarder forwarder = new MjpegForwarder(PortMappings2017.sAPP_MJPEG_FORWARDED_PORT);
@@ -67,6 +70,26 @@ public class VisionManager implements ISubsystem
         else if(mOperatorJoystick.restartApp())
         {
             mVisionServer.restartApp();
+        }
+
+        if (mOperatorJoystick.driveToPeg())
+        {
+            if (!mSnobotActor.isInAction())
+            {
+                // Temporary, should use most recent vision update
+                mSnobotActor.setGoToPositionInStepsGoal(0, 0, .3);
+            }
+
+            boolean finished = mSnobotActor.executeControlMode();
+            if (finished)
+            {
+                mOperatorJoystick.turnOffActions();
+            }
+        }
+        else
+        {
+            mSnobotActor.cancelAction();
+            mOperatorJoystick.turnOffActions();
         }
     }
 

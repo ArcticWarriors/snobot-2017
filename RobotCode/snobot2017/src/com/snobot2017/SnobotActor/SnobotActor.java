@@ -1,6 +1,7 @@
 package com.snobot2017.SnobotActor;
 
 import com.snobot.lib.InDeadbandHelper;
+import com.snobot.lib.Utilities;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.positioner.IPositioner;
@@ -22,11 +23,13 @@ public class SnobotActor implements ISnobotActor
     {
         double mGoalDistance;
         double mDrivingSpeed;
+        double mDeadband;
 
         DistanceControlParams(double aGoalDistance, double aDrivingSpeed)
         {
             mGoalDistance = aGoalDistance;
             mDrivingSpeed = aDrivingSpeed;
+            mDeadband = 6; // inches
         }
     }
 
@@ -34,11 +37,13 @@ public class SnobotActor implements ISnobotActor
     {
         double mGoalAngle;
         double mTurningSpeed;
+        double mDeadband;
 
         TurnControlParams(double aGoalAngle, double aTurningSpeed)
         {
             mGoalAngle = aGoalAngle;
             mTurningSpeed = aTurningSpeed;
+            mDeadband = 5; // degrees
         }
     }
 
@@ -109,7 +114,7 @@ public class SnobotActor implements ISnobotActor
         mGoToPositionSubstep = GoToPositionSubsteps.Turning;
 
         double dx = aX - mPositioner.getXPosition();
-        double dy = aY - mPositioner.getXPosition();
+        double dy = aY - mPositioner.getYPosition();
 
         double distanceAway = Math.sqrt(dx * dx + dy * dy);
         double goalAngle = Math.toDegrees(Math.atan2(dx, dy)); //Switched on purpose
@@ -145,8 +150,7 @@ public class SnobotActor implements ISnobotActor
 
         if (finished)
         {
-            mControlMode = ControlMode.Off;
-            mDriveTrain.stop();
+            cancelAction();
         }
 
         return finished;
@@ -178,18 +182,6 @@ public class SnobotActor implements ISnobotActor
             break;
         case PositionInSteps:
             actionName = "Go To Position";
-            switch (mGoToPositionSubstep)
-            {
-            case Driving:
-                actionName += "::Driving";
-                break;
-            case Turning:
-                actionName += "::Turning";
-                break;
-            case NoAction:
-                actionName += "::No Action";
-                break;
-            }
             break;
         case Off:
         default:
@@ -210,8 +202,8 @@ public class SnobotActor implements ISnobotActor
     @Override
     public void stop()
     {
-        mControlMode = ControlMode.Off;
-        mGoToPositionSubstep = GoToPositionSubsteps.NoAction;
+        cancelAction();
+        mDriveTrain.stop();
     }
 
     @Override
@@ -228,6 +220,7 @@ public class SnobotActor implements ISnobotActor
         if ((turnMeasure) < 0)
         {
             turnMeasure = turnMeasure + 360;
+            error = Utilities.boundAngleNeg180to180Degrees(error);
         }
 
         if (turnMeasure <= 180)
@@ -239,7 +232,7 @@ public class SnobotActor implements ISnobotActor
             mDriveTrain.setLeftRightSpeed(-mTurningControlParams.mTurningSpeed, mTurningControlParams.mTurningSpeed);
         }
 
-        if (mInDeadbandHelper.isFinished(Math.abs(error) < 5))
+        if (mInDeadbandHelper.isFinished(Math.abs(error) < mTurningControlParams.mDeadband))
         {
             mDriveTrain.setLeftRightSpeed(0, 0);
             return true;
@@ -253,7 +246,7 @@ public class SnobotActor implements ISnobotActor
         double error = mDistanceControlParams.mGoalDistance - mPositioner.getTotalDistance();
         boolean isFinished = false;
 
-        if (mInDeadbandHelper.isFinished(Math.abs(error) < 6))
+        if (mInDeadbandHelper.isFinished(Math.abs(error) < mDistanceControlParams.mDeadband))
         {
             mDriveTrain.setLeftRightSpeed(0, 0);
             isFinished = true;
@@ -303,5 +296,12 @@ public class SnobotActor implements ISnobotActor
         }
 
         return finished;
+    }
+
+    @Override
+    public void cancelAction()
+    {
+        mControlMode = ControlMode.Off;
+        mGoToPositionSubstep = GoToPositionSubsteps.NoAction;
     }
 }
