@@ -75,7 +75,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     @Override
     public void control()
     {
-        if (!mSnobotActor.InAction())
+        if (!mSnobotActor.isInAction())
         {
             setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
         }
