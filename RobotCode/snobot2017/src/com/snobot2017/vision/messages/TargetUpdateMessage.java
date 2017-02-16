@@ -81,11 +81,12 @@ public class TargetUpdateMessage
         mTargets = aTargets;
     }
 
-    public TargetUpdateMessage(JSONObject aJson)
+    public TargetUpdateMessage(JSONObject aJson, double aCurrentTime)
     {
         mTargets = new ArrayList<>();
 
-        mTimestamp = Double.parseDouble(aJson.get("timestamp").toString());
+        double latency_ms = Double.parseDouble(aJson.get("camera_latency_ms").toString());
+        mTimestamp = aCurrentTime - latency_ms * 1e-3;
 
         JSONArray targets = (JSONArray) aJson.get("targets");
 

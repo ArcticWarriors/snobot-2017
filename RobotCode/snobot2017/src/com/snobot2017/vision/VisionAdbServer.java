@@ -17,6 +17,7 @@ import com.snobot2017.vision.messages.SetCameraDirectionMessage;
 import com.snobot2017.vision.messages.TargetUpdateMessage;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.hal.HAL;
 
 public class VisionAdbServer extends RobotConnectionServer
 {
@@ -76,7 +77,7 @@ public class VisionAdbServer extends RobotConnectionServer
             }
             else if (sTARGET_UPDATE_MESSAGE.equals(type))
             {
-                mLatestTargetUpdate = new TargetUpdateMessage(jsonObject);
+                mLatestTargetUpdate = new TargetUpdateMessage(jsonObject, getTimestamp());
                 mFreshImage = true;
             }
             else
@@ -96,7 +97,8 @@ public class VisionAdbServer extends RobotConnectionServer
     @Override
     public double getTimestamp()
     {
-        return System.currentTimeMillis() * 1e-3;
+        // return System.currentTimeMillis() * 1e-3;
+        return HAL.getMatchTime();
     }
 
     @Override

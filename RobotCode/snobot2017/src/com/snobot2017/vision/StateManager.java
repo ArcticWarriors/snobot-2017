@@ -46,8 +46,7 @@ public class StateManager
         mMostRecentTargetLocations.clear();
 
         double timestamp = latestTargetUpdate.getTimestamp();
-        double dt = (System.currentTimeMillis() * 1e-3) - timestamp;
-        System.out.println(dt);
+
         if (canCalculate(timestamp))
         {
             SavedRobotState stateAtTime = getStateHistory(timestamp);

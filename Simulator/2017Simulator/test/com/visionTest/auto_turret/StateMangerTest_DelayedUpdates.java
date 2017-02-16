@@ -41,11 +41,11 @@ public class StateMangerTest_DelayedUpdates
         mStateManager.setCurrentCameraState(timestamp0, 45, 14.1421356237);
         Assert.assertEquals(0.0, mStateManager.getTargetLocation().mX, sEPSILON);
         Assert.assertEquals(10.00, mStateManager.getTargetLocation().mY, sEPSILON);
-        Assert.assertEquals(45, mStateManager.calculateDesiredAngleFromState(), sEPSILON);
 
         // No state update
         mStateManager.saveRobotState(timestamp1, 10, 0, 0);
-        Assert.assertEquals(-45, mStateManager.calculateDesiredAngleFromState(), sEPSILON);
+        Assert.assertEquals(0.0, mStateManager.getTargetLocation().mX, sEPSILON);
+        Assert.assertEquals(10.00, mStateManager.getTargetLocation().mY, sEPSILON);
     }
 
     @Test
@@ -60,23 +60,21 @@ public class StateMangerTest_DelayedUpdates
 
         mStateManager.saveRobotState(timestamp0, 0, 0, 0);
         mStateManager.setCurrentCameraState(timestamp0, 0, 100);
-        Assert.assertEquals(0, mStateManager.calculateDesiredAngleFromState(), sEPSILON);
+        Assert.assertEquals(0.0, mStateManager.getTargetLocation().mX, sEPSILON);
+        Assert.assertEquals(100.0, mStateManager.getTargetLocation().mY, sEPSILON);
 
         // No camera update
         mStateManager.saveRobotState(timestamp1, 0, 0, 15);
         Assert.assertEquals(0.000, mStateManager.getTargetLocation().mX, sEPSILON);
         Assert.assertEquals(100.0, mStateManager.getTargetLocation().mY, sEPSILON);
-        Assert.assertEquals(0, mStateManager.calculateDesiredAngleFromState(), sEPSILON);
 
         mStateManager.saveRobotState(timestamp2, 0, 0, 45);
         Assert.assertEquals(0.000, mStateManager.getTargetLocation().mX, sEPSILON);
         Assert.assertEquals(100.0, mStateManager.getTargetLocation().mY, sEPSILON);
-        Assert.assertEquals(0, mStateManager.calculateDesiredAngleFromState(), sEPSILON);
 
         mStateManager.saveRobotState(timestamp3, 0, 0, 90);
         Assert.assertEquals(0.000, mStateManager.getTargetLocation().mX, sEPSILON);
         Assert.assertEquals(100.0, mStateManager.getTargetLocation().mY, sEPSILON);
-        Assert.assertEquals(0, mStateManager.calculateDesiredAngleFromState(), sEPSILON);
     }
 
     @Test
@@ -93,16 +91,30 @@ public class StateMangerTest_DelayedUpdates
         mStateManager.setCurrentCameraState(timestamp0, 45, 100);
         Assert.assertEquals(70.71, mStateManager.getTargetLocation().mX, sEPSILON);
         Assert.assertEquals(70.71, mStateManager.getTargetLocation().mY, sEPSILON);
-        Assert.assertEquals(45, mStateManager.calculateDesiredAngleFromState(), sEPSILON);
 
         mStateManager.setCurrentCameraState(timestamp1, 45, 100);
         Assert.assertEquals(86.602, mStateManager.getTargetLocation().mX, sEPSILON);
         Assert.assertEquals(50.000, mStateManager.getTargetLocation().mY, sEPSILON);
-        Assert.assertEquals(60, mStateManager.calculateDesiredAngleFromState(), sEPSILON);
 
         mStateManager.setCurrentCameraState(timestamp2, 45, 100);
         Assert.assertEquals(100.0, mStateManager.getTargetLocation().mX, sEPSILON);
         Assert.assertEquals(0.000, mStateManager.getTargetLocation().mY, sEPSILON);
-        Assert.assertEquals(90, mStateManager.calculateDesiredAngleFromState(), sEPSILON);
+    }
+
+    @Test
+    public void delayedAngleCalculation3()
+    {
+
+        for (int i = 0; i < 10; ++i)
+        {
+            mStateManager.saveRobotState(i, 0, 0, i * 5);
+        }
+
+        mStateManager.setCurrentCameraState(1, 45, 100);
+
+        Assert.assertEquals(76.604, mStateManager.getTargetLocation().mX, sEPSILON);
+        Assert.assertEquals(64.278, mStateManager.getTargetLocation().mY, sEPSILON);
+
+        System.out.println(mStateManager.getTargetLocation());
     }
 }

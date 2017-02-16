@@ -3,7 +3,6 @@ package com.visionTest.auto_turret;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.snobot2017.vision.SavedRobotState;
 import com.snobot2017.vision.StateManager;
 import com.snobot2017.vision.TargetLocation;
 import com.snobot2017.vision.messages.TargetUpdateMessage;
@@ -27,17 +26,17 @@ public class TestableStateManager extends StateManager
         return targets.isEmpty() ? null : targets.get(0);
     }
 
-    public double calculateDesiredAngleFromState()
-    {
-        SavedRobotState mostRecentState = mStateHistory.lastEntry().getValue();
-        TargetLocation targetLocation = getTargetLocation();
-
-        double dx = targetLocation.mX - mostRecentState.mRobotX;
-        double dy = targetLocation.mY - mostRecentState.mRobotY;
-
-        double angle = Math.toDegrees(Math.atan2(dx, dy));
-
-        return angle;
-    }
+    // public double calculateDesiredAngleFromState()
+    // {
+    // SavedRobotState mostRecentState = mStateHistory.lastEntry().getValue();
+    // TargetLocation targetLocation = getTargetLocation();
+    //
+    // double dx = targetLocation.mX - mostRecentState.mRobotX;
+    // double dy = targetLocation.mY - mostRecentState.mRobotY;
+    //
+    // double angle = Math.toDegrees(Math.atan2(dx, dy));
+    //
+    // return angle;
+    // }
 
 }
