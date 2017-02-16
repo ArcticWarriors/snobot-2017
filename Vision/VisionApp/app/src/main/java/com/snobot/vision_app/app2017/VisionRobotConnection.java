@@ -118,11 +118,11 @@ public class VisionRobotConnection extends RobotConnection {
         send(ByteBuffer.wrap(message.getBytes()));
     }
 
-    public void sendVisionUpdate(List<TargetUpdateMessage.TargetInfo> aTargets, int aTimestamp)
+    public void sendVisionUpdate(List<TargetUpdateMessage.TargetInfo> aTargets, double aLatencySec)
     {
         try
         {
-            send(new TargetUpdateMessage(aTargets, aTimestamp).getJson());
+            send(new TargetUpdateMessage(aTargets, aLatencySec).getJson());
         }
         catch (JSONException e)
         {

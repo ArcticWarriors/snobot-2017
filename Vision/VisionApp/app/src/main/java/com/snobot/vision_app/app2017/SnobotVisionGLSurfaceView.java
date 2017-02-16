@@ -41,7 +41,7 @@ public class SnobotVisionGLSurfaceView extends VisionTrackerGLSurfaceView{
     }
 
     @Override
-    protected void processTexture(int texIn, int texOut, int width, int height, long image_timestamp) {
+    protected void processTexture(int texIn, int texOut, int width, int height, long aSystemTimeNs) {
 
         int size = 1228800; // TODO magic number
         byte[] byteBuff = new byte[size];
@@ -54,7 +54,7 @@ public class SnobotVisionGLSurfaceView extends VisionTrackerGLSurfaceView{
         Mat imageToDisplay;
 
         if(mVisionAlgorithm != null) {
-            imageToDisplay = mVisionAlgorithm.processImage(originalMat);
+            imageToDisplay = mVisionAlgorithm.processImage(originalMat, aSystemTimeNs);
             byte[] byteBuff2 = new byte[size];
             imageToDisplay.get(0, 0, byteBuff2);
             outputTextureData = ByteBuffer.wrap(byteBuff2);

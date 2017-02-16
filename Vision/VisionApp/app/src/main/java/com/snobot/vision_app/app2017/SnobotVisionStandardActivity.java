@@ -161,7 +161,7 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
     public void handleImage(Bitmap aBitmap) {
 
         if(visionAlgorithm != null) {
-            Mat userImage = visionAlgorithm.processImage(aBitmap);
+            Mat userImage = visionAlgorithm.processImage(aBitmap, System.nanoTime());
 
 
             Bitmap bitmap = Bitmap.createBitmap(userImage.cols(), userImage.rows(), Bitmap.Config.ARGB_8888);

@@ -177,7 +177,7 @@ public class JavaVisionAlgorithm
         }
     }
 
-    protected Mat processPegImage(Mat aOriginalImage)
+    protected Mat processPegImage(Mat aOriginalImage, long aSystemTimeNs)
     {
         mPegGripAlgorithm.process(aOriginalImage);
 
@@ -253,8 +253,10 @@ public class JavaVisionAlgorithm
             }
         }
 
-
-        sendTargetInformation(targetInfos, distance, angle_to_the_peg, 0);
+        long currentTime = System.nanoTime();
+        double latencySec = (currentTime - aSystemTimeNs) / 1e9;
+        System.out.println("Latency (sec) " + latencySec);
+        sendTargetInformation(targetInfos, distance, angle_to_the_peg, latencySec);
 
         return displayImage;
     }
@@ -295,7 +297,7 @@ public class JavaVisionAlgorithm
         return displayImage;
     }
 
-    protected Mat processRopeImage(Mat aOriginal)
+    protected Mat processRopeImage(Mat aOriginal, long aSystemTimeNs)
     {
         mRopeGripAlgorithm.process(aOriginal);
 
@@ -327,22 +329,22 @@ public class JavaVisionAlgorithm
     private int cameraDirection;
     private VisionRobotConnection mRobotConnection;
 
-    public Mat processImage(Bitmap aBitmap) {
+    public Mat processImage(Bitmap aBitmap, long aImageTimestamp) {
         Mat mat = new Mat();
         Utils.bitmapToMat(aBitmap, mat);
 
-        return processImage(mat);
+        return processImage(mat, aImageTimestamp);
     }
 
-    public Mat processImage(Mat mat) {
+    public Mat processImage(Mat aMat, long aSystemTimeNs) {
 
         if(cameraDirection == CameraBridgeViewBase.CAMERA_ID_FRONT)
         {
-            return processPegImage(mat);
+            return processPegImage(aMat, aSystemTimeNs);
         }
         else
         {
-            return processRopeImage(mat);
+            return processRopeImage(aMat, aSystemTimeNs);
         }
     }
 
@@ -357,7 +359,7 @@ public class JavaVisionAlgorithm
         this.cameraDirection = cameraDirection;
     }
 
-    private void sendTargetInformation(Collection<TapeLocation> targetInfos, double aDistance, double aAngleToPeg, int aTimestamp)
+    private void sendTargetInformation(Collection<TapeLocation> targetInfos, double aDistance, double aAngleToPeg, double aLatencySec)
     {
         List<TargetUpdateMessage.TargetInfo> targets = new ArrayList<>();
 
@@ -367,6 +369,6 @@ public class JavaVisionAlgorithm
             targets.add(new TargetUpdateMessage.TargetInfo(aDistance, aAngleToPeg));
         }
 
-        mRobotConnection.sendVisionUpdate(targets, aTimestamp);
+        mRobotConnection.sendVisionUpdate(targets, aLatencySec);
     }
 }
