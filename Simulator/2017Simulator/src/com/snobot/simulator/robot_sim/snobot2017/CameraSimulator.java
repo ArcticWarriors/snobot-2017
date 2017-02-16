@@ -143,7 +143,7 @@ public class CameraSimulator implements ISimulatorUpdater
         }
 
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("camera_latency_ms", sLATENCY_MS);
+        jsonMessage.put("camera_latency_sec", sLATENCY_MS * 1e-3);
         jsonMessage.put("targets", targetJson);
         jsonMessage.put("type", "target_update");
 
