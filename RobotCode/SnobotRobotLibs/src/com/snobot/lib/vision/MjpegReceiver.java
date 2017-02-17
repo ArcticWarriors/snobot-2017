@@ -92,6 +92,11 @@ public class MjpegReceiver
 
         for (int i = 0; i < END_BYTES.length;)
         {
+            if (imageBuffer.size() > 1000000)
+            {
+                imageBuffer.close();
+                return null;
+            }
             int b = stream.read();
             imageBuffer.write(b);
             if (b == END_BYTES[i])
