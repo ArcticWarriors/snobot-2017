@@ -48,6 +48,8 @@ public class SmartDashBoardNames
     // Camera
     public static final String sVISION_APP_CONNECTED = "App Connected";
     public static final String sVISION_TARGETS = "Targets";
+    public static final String sGREEN_LIGHT_ON = "Green Light On";
+    public static final String sBLUE_LIGHT_ON = "Blue Light On";
 
     // Path Plotting
     public static final String sPATH_NAMESPACE = "PathPlotting"; // Namespace
