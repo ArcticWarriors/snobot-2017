@@ -3,7 +3,6 @@ package com.snobot2017.drivetrain;
 import com.snobot.lib.Logger;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.SnobotActor.ISnobotActor;
-import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -75,7 +74,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     @Override
     public void control()
     {
-        if (!mSnobotActor.InAction())
+        if ((mSnobotActor == null) || !mSnobotActor.isInAction())
         {
             setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
         }
@@ -90,11 +89,10 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     @Override
     public void updateSmartDashboard()
     {
-        SmartDashboard.putNumber("LEFT RAW", mLeftEncoderRaw);
-        SmartDashboard.putNumber("RIght RAW", mRightEncoderRaw);
-        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, mRightMotorDistance);
-        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_ENCODER, mLeftMotorDistance);
-        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_ENCODER, mRightMotorDistance);
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_ENCODER_RAW, mLeftEncoderRaw);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_ENCODER_RAW, mRightEncoderRaw);
+        SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_ENCODER_DISTANCE, mRightMotorDistance);
+        SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_ENCODER_DISTANCE, mLeftMotorDistance);
         SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_DRIVE_MOTOR_SPEED, mLeftMotorSpeed);
         SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_DRIVE_MOTOR_SPEED, mRightMotorSpeed);
     }
@@ -147,10 +145,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         setLeftRightSpeed(0, 0);
     }
 
-    /**
-     * Setting the SnobotActor in the drive train so that the drive train knows
-     * what it is because we can't do it in the constructor.
-     */
+    @Override
     public void setSnobotActor(ISnobotActor aSnobotActor)
     {
         mSnobotActor = aSnobotActor;

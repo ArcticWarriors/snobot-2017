@@ -99,17 +99,20 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
             Coordinate coord = new Coordinate(x, y, angle);
             mCoordinateGui.addCoordinate(coord);
 
-            parseRays(x, y, angle);
+            List<Ray> rays = parseRays();
+            mCoordinateGui.setRays(rays);
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void parseRays(double aRobotX, double aRobotY, double aRobotAngle)
+    private List<Ray> parseRays()
     {
+        List<Ray> rays = new ArrayList<>();
+
         String targetJson = Robot.getTable().getString(SmartDashBoardNames.sVISION_TARGETS, "");
         if (targetJson.equals(""))
         {
-            return;
+            return rays;
         }
 
 
@@ -117,22 +120,24 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
         Map<String, Object> targetMessage = (Map<String, Object>) yaml.load(targetJson);
         List<Map<String, Object>> targets = (List<Map<String, Object>>) targetMessage.get("targets");
 
-        List<Ray> rays = new ArrayList<>();
+        double robotX = Double.parseDouble(targetMessage.get("robot_x").toString());
+        double robotY = Double.parseDouble(targetMessage.get("robot_y").toString());
+
         for (Map<String, Object> targetInfo : targets)
         {
-            double targetDistance = Double.parseDouble(targetInfo.get("distance").toString()) / 12;
-            double targetAngle = Math.toRadians(Double.parseDouble(targetInfo.get("angle").toString()));
-            targetAngle += Math.toRadians(aRobotAngle);
+            double targetX = Double.parseDouble(targetInfo.get("x").toString());
+            double targetY = Double.parseDouble(targetInfo.get("y").toString());
 
             Ray ray = new Ray();
-            ray.mXStart = aRobotX;
-            ray.mYStart = aRobotY;
-            ray.mXEnd = aRobotX + targetDistance * Math.sin(targetAngle);
-            ray.mYEnd = aRobotY + targetDistance * Math.cos(targetAngle);
+            ray.mXStart = robotX / 12;
+            ray.mYStart = robotY / 12;
+            ray.mXEnd = targetX / 12;
+            ray.mYEnd = targetY / 12;
 
             rays.add(ray);
         }
 
-        mCoordinateGui.setRays(rays);
+        return rays;
+
     }
 }

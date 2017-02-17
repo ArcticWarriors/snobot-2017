@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -204,15 +205,19 @@ public class VisionAlgorithm2 implements IVisionAlgorithm
         
         double angle_to_the_peg = Double.NaN;
         double centroid_of_image_X = sIMAGE_WIDTH/2;
+        Iterator<TapeLocation> targetIterator = targetInfos.iterator();
         if(targetInfos.size()>=2)
         {
-            Rect one = Imgproc.boundingRect(targetInfos.iterator().next().mContour);
-            Rect two = Imgproc.boundingRect(targetInfos.iterator().next().mContour);
+            Rect one = Imgproc.boundingRect(targetIterator.next().mContour);
+            Rect two = Imgproc.boundingRect(targetIterator.next().mContour);
             double centroid_of_bounding_box_one = one.x + (one.width/2);
             double centroid_of_bounding_box_two = two.x + (two.width/2);
             double peg_X = (centroid_of_bounding_box_one + centroid_of_bounding_box_two)/2;
             double peg_to_center_of_image_pixels = centroid_of_image_X-peg_X;
-            angle_to_the_peg = -Math.toDegrees(Math.atan((peg_to_center_of_image_pixels/centroid_of_image_X)*Math.tan(Math.toRadians(sHORIZONTAL_FOV_ANGLE))));
+            
+            double angle_to_peg_RAD = Math.atan((peg_to_center_of_image_pixels/centroid_of_image_X) * Math.tan(sHORIZONTAL_FOV_ANGLE));
+            angle_to_the_peg = Math.toDegrees(angle_to_peg_RAD);
+            System.out.println("ANGLE: " + angle_to_the_peg);
         }
 
         Mat displayImage;

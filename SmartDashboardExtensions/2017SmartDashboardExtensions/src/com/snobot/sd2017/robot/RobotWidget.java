@@ -33,21 +33,15 @@ public class RobotWidget extends AutoUpdateWidget
     @Override
     protected void poll() throws Exception
     {
-        boolean is_gear_boss_up;
-        double spool_speed;
-        boolean inAction;
-        String actorStateName;
-        String actorActionName;
-
-        is_gear_boss_up = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sGEAR_BOSS_SOLENOID, false);
-        spool_speed = Robot.getTable().getNumber(com.snobot2017.SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, 0);
-        inAction = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sIN_ACTION, false);
-        actorStateName = Robot.getTable().getString(com.snobot2017.SmartDashBoardNames.sSNOBOT_ACTION, "Not Found");
-        actorActionName = Robot.getTable().getString(com.snobot2017.SmartDashBoardNames.sSNOBOT_ACTION_NAME, "");
+        boolean is_gear_boss_up = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sGEAR_BOSS_SOLENOID, false);
+        double spool_speed = Robot.getTable().getNumber(com.snobot2017.SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, 0);
+        boolean inAction = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sIN_ACTION, false);
+        String actorStateName = Robot.getTable().getString(com.snobot2017.SmartDashBoardNames.sSNOBOT_ACTION, "Not Found");
+        String actorActionName = Robot.getTable().getString(com.snobot2017.SmartDashBoardNames.sSNOBOT_ACTION_NAME, "");
 
         if (mDrawer != null)
         {
-            mDrawer.setGearBossPos(is_gear_boss_up);
+            mDrawer.setGearBossUp(is_gear_boss_up);
             mDrawer.setSpoolMotorSpeed(spool_speed);
             mDrawer.setInAction(inAction);
             mDrawer.setActorState(actorStateName);

@@ -13,7 +13,6 @@ import com.snobot2017.Snobot2017;
 import com.snobot2017.positioner.IPositioner;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.hal.HAL;
 
 public class CameraSimulator implements ISimulatorUpdater
@@ -73,8 +72,8 @@ public class CameraSimulator implements ISimulatorUpdater
     }
 
     private static final double sMAX_VIEWABLE_ANGLE = 60;
-    private static final double sFRAMES_PER_SECOND = 50;
-    private static final double sLATENCY_MS = 0;
+    private static final double sFRAMES_PER_SECOND = .6;
+    private static final double sLATENCY_MS = 5000;
 
     private int mLoopsBetweenUpdates;
     private int mLoopsStale;
@@ -144,12 +143,13 @@ public class CameraSimulator implements ISimulatorUpdater
         }
 
         JSONObject jsonMessage = new JSONObject();
-        jsonMessage.put("timestamp", Timer.getFPGATimestamp());
+        jsonMessage.put("camera_latency_sec", sLATENCY_MS * 1e-3);
         jsonMessage.put("targets", targetJson);
         jsonMessage.put("type", "target_update");
 
         if (mLoopCtr % mLoopsBetweenUpdates == 0)
         {
+            System.out.println("Sending data " + currentState + ", " + stateAtLatency);
 //            System.out.println("Sending message: LoopCtr: " + mLoopCtr + ", Delay " + mLoopsBetweenUpdates + ", Loops Stale: " + mLoopsStale);
             mMockAppConnection.send(jsonMessage);
         }

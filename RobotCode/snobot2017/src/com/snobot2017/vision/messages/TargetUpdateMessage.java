@@ -33,6 +33,12 @@ public class TargetUpdateMessage
             mDistance = 0;
         }
 
+        public TargetInfo(double aAngle, double aDistance)
+        {
+            mAngle = aAngle;
+            mDistance = aDistance;
+        }
+
         public TargetInfo(JSONObject aJson)
         {
             mAngle = Double.parseDouble(aJson.get("angle").toString());
@@ -61,7 +67,6 @@ public class TargetUpdateMessage
 
     }
     
-    private JSONObject mJson;
     private List<TargetInfo> mTargets;
     private double mTimestamp;
 
@@ -70,12 +75,18 @@ public class TargetUpdateMessage
         mTargets = new ArrayList<>();
     }
 
-    public TargetUpdateMessage(JSONObject aJson)
+    public TargetUpdateMessage(double aTimestamp, List<TargetInfo> aTargets)
     {
-        mJson = aJson;
+        mTimestamp = aTimestamp;
+        mTargets = aTargets;
+    }
+
+    public TargetUpdateMessage(JSONObject aJson, double aCurrentTime)
+    {
         mTargets = new ArrayList<>();
 
-        mTimestamp = Double.parseDouble(aJson.get("timestamp").toString());
+        double latency_sec = Double.parseDouble(aJson.get("camera_latency_sec").toString());
+        mTimestamp = aCurrentTime - latency_sec;
 
         JSONArray targets = (JSONArray) aJson.get("targets");
 
@@ -85,11 +96,6 @@ public class TargetUpdateMessage
 
             mTargets.add(new TargetInfo(targetJson));
         }
-    }
-
-    public String toJsonString()
-    {
-        return mJson.toJSONString();
     }
 
     /**

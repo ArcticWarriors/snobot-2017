@@ -6,19 +6,15 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveStraightADistance extends Command
 {
-    private double mDistance;
-    private double mSpeed;
-    private double mStartDistance;
     private boolean mFinished;
     private ISnobotActor mSnobotActor;
 
     public DriveStraightADistance(double aDistance, double aSpeed, ISnobotActor aSnobotActor)
     {
         mSnobotActor = aSnobotActor;
-        mDistance = aDistance;
-        mSpeed = aSpeed;
         mFinished = false;
-        mSnobotActor.setGoal(mDistance, aSpeed);
+
+        mSnobotActor.setDistanceGoal(aDistance, aSpeed);
     }
 
     @Override
@@ -31,7 +27,7 @@ public class DriveStraightADistance extends Command
     protected void execute()
     {
         super.execute();
-        mFinished = mSnobotActor.driveDistance();
+        mFinished = mSnobotActor.executeControlMode();
     }
 
     @Override

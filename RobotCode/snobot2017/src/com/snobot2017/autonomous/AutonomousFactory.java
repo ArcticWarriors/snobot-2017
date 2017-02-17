@@ -17,6 +17,11 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class AutonomousFactory
 {
+    private static final double sY_START = 336 - 3 * 12;
+    private static final double sX_START_CENTER = 0;
+    private static final double sX_START_BOILER = 67;
+    private static final double sX_START_LOADING = 80;
+    
     protected SendableChooser<File> mAutonModeChooser;
     protected SendableChooser<StartingPositions> mPositionChooser;
     protected ITable mAutoModeTable;
@@ -27,12 +32,12 @@ public class AutonomousFactory
     
     public enum StartingPositions
     {
-        RedLeft("Red Left", -79.53, -334.81, 0), 
-        RedMiddle("Red Middle", 0, -334.81, 0), 
-        RedRight("Red Right", 43.02, -334.81, 0), 
-        BlueLeft("Blue Left", 43.02, 334.81, 180), 
-        BlueMiddle("Blue Middle", 0, 334.81, 180), 
-        BlueRight("Blue Right", -79.53, 334.81, 180), 
+        RedLeft("Red Left", -sX_START_LOADING, -sY_START, 0), 
+        RedMiddle("Red Middle", sX_START_CENTER, -sY_START, 0), 
+        RedRight("Red Right", sX_START_BOILER, -sY_START, 0), 
+        BlueLeft("Blue Left", sX_START_BOILER, sY_START, 180), 
+        BlueMiddle("Blue Middle", sX_START_CENTER, sY_START, 180), 
+        BlueRight("Blue Right", -sX_START_LOADING, sY_START, 180), 
         Origin("Origin", 0, 0, 0);
 
         public final String mDisplayName;

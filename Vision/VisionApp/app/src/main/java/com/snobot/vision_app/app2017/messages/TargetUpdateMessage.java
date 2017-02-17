@@ -32,7 +32,7 @@ public class TargetUpdateMessage
 
     private JSONObject mJson;
 
-    public TargetUpdateMessage(List<TargetInfo> aTargets, int aTimestamp) throws JSONException {
+    public TargetUpdateMessage(List<TargetInfo> aTargets, double aLatencySec) throws JSONException {
         mJson = new JSONObject();
 
         JSONArray targetJson = new JSONArray();
@@ -45,8 +45,9 @@ public class TargetUpdateMessage
             targetJson.put(targetInfoJson);
         }
 
-        mJson.put("timestamp", aTimestamp);
+        mJson.put("camera_latency_sec", aLatencySec);
         mJson.put("targets", targetJson);
+        mJson.put("type", "target_update");
     }
 
 

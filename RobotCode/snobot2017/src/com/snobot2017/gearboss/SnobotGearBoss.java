@@ -15,17 +15,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SnobotGearBoss implements IGearBoss
 {
+    private static final Value sGEAR_DOWN_VALUE = Value.kForward;
+    private static final Value sGEAR_UP_VALUE = Value.kReverse;
+
     private DoubleSolenoid mGearSolenoid;
     private IOperatorJoystick mOperatorJoystick;
     private Logger mLogger;
-    private boolean mSolenoidInOrOut;
+    private boolean mGearIsUp;
 
     public SnobotGearBoss(DoubleSolenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick, Logger aLogger)
     {
         mGearSolenoid = aGearSolenoid;
         mOperatorJoystick = aOperatorJoystick;
         mLogger = aLogger;
-        
+
+        moveGearHigh();
     }
 
     @Override
@@ -37,7 +41,7 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void update()
     {
-        mSolenoidInOrOut = mGearSolenoid.get() == Value.kForward;
+        mGearIsUp = mGearSolenoid.get() == sGEAR_UP_VALUE;
     }
 
     @Override
@@ -71,37 +75,37 @@ public class SnobotGearBoss implements IGearBoss
     @Override
     public void updateSmartDashboard()
     {
-        SmartDashboard.putBoolean(SmartDashBoardNames.sGEAR_BOSS_SOLENOID, mSolenoidInOrOut);
+        SmartDashboard.putBoolean(SmartDashBoardNames.sGEAR_BOSS_SOLENOID, mGearIsUp);
     }
 
     @Override
     public void updateLog()
     {
-        mLogger.updateLogger(mSolenoidInOrOut);
+        mLogger.updateLogger(mGearIsUp);
     }
 
     @Override
     public void stop()
     {
-        mGearSolenoid.set(Value.kForward);
+        moveGearHigh();
     }
 
     @Override
     public void moveGearHigh()
     {
-        mGearSolenoid.set(Value.kReverse);
+        mGearSolenoid.set(sGEAR_UP_VALUE);
     }
 
     @Override
     public void moveGearLow()
     {
-        mGearSolenoid.set(Value.kForward);
+        mGearSolenoid.set(sGEAR_DOWN_VALUE);
     }
 
     @Override
-    public boolean getGearHeight()
+    public boolean isGearUp()
     {
-        return mGearSolenoid.get() == Value.kForward;
+        return mGearIsUp;
     }
 
 

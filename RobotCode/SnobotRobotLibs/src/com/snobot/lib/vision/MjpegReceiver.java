@@ -1,7 +1,5 @@
 package com.snobot.lib.vision;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,8 +8,6 @@ import java.net.SocketException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 public class MjpegReceiver
 {
@@ -23,7 +19,7 @@ public class MjpegReceiver
 
     public interface ImageReceiver
     {
-        public void onImage(BufferedImage image);
+        public void onImage(byte[] image);
     }
 
     public MjpegReceiver()
@@ -71,7 +67,7 @@ public class MjpegReceiver
         mReadTimeout = aTimeout;
     }
 
-    private BufferedImage parseImage(InputStream stream, ByteArrayOutputStream imageBuffer) throws IOException
+    private byte[] parseImage(InputStream stream, ByteArrayOutputStream imageBuffer) throws IOException
     {
         System.out.println("Buffer size : " + stream.available());
         imageBuffer.reset();
@@ -109,15 +105,15 @@ public class MjpegReceiver
         }
 
         byte[] imageBytes = imageBuffer.toByteArray();
-        return ImageIO.read(new ByteArrayInputStream(imageBytes));
+        return imageBytes;
 
     }
 
-    private void publishImage(BufferedImage image)
+    private void publishImage(byte[] imageData)
     {
         for (ImageReceiver recv : mImageRecievers)
         {
-            recv.onImage(image);
+            recv.onImage(imageData);
         }
     }
 
@@ -150,8 +146,8 @@ public class MjpegReceiver
 
                     while (mRunning && mConnected)
                     {
-                        BufferedImage image = parseImage(stream, imageBuffer);
-                        publishImage(image);
+                        byte[] imageData = parseImage(stream, imageBuffer);
+                        publishImage(imageData);
                     }
                 }
                 catch (SocketException e)

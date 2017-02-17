@@ -31,4 +31,17 @@ public interface IVisionJoystick extends ISubsystem
      * @return True if the app should be reset
      */
     boolean restartApp();
+
+    /**
+     * returns if operators wants to go to peg or not
+     * 
+     * @return
+     */
+    boolean driveToPeg();
+
+    /**
+     * Tell the operator joystick that any active snobotActor actions are
+     * stopped.
+     */
+    void turnOffActions();
 }
