@@ -14,8 +14,8 @@ public class PortMappings2017
     public static final int sDRIVE_CAN_RIGHT_B_PORT = 4;
 
     // PWM
-    public static final int sDRIVE_PWM_LEFT_A_PORT = 0;
-    public static final int sDRIVE_PWM_RIGHT_A_PORT = 1;
+    public static final int sDRIVE_PWM_LEFT_A_PORT = 1;
+    public static final int sDRIVE_PWM_RIGHT_A_PORT = 0;
     public static final int sCLIMB_PWM_PORT = 5;
 
     // Digital
