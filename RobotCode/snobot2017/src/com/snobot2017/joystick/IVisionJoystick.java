@@ -44,4 +44,12 @@ public interface IVisionJoystick extends ISubsystem
      * stopped.
      */
     void turnOffActions();
+
+    /**
+     * If command is executed, the robot will drive to peg and turn at the same
+     * time in order to get to the desired position smoothly.
+     * 
+     * @return true if in driveSmoothlyToPositionState
+     */
+    boolean DriveSmoothlyToPosition();
 }

@@ -140,6 +140,22 @@ public class VisionManager implements ISubsystem
                     mSnobotActor.setGoToPositionInStepsGoal(target.mX, target.mY, .3);
                 }
             }
+            boolean finished = mSnobotActor.executeControlMode();
+            if (finished)
+            {
+                mOperatorJoystick.turnOffActions();
+            }
+        }
+        else if (mOperatorJoystick.DriveSmoothlyToPosition())
+        {
+            if (!mSnobotActor.isInAction())
+            {
+                if (!mTargetInformation.isEmpty())
+                {
+                    TargetLocation target = mTargetInformation.get(0);
+                    mSnobotActor.setDriveSmoothlyToPositionGoal(target.mX, target.mY, .3);
+                }
+            }
 
             boolean finished = mSnobotActor.executeControlMode();
             if (finished)
@@ -152,6 +168,7 @@ public class VisionManager implements ISubsystem
             mSnobotActor.cancelAction();
             mOperatorJoystick.turnOffActions();
         }
+
     }
 
     @Override

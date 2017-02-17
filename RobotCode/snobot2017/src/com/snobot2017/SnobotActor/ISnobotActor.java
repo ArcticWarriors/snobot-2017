@@ -56,4 +56,6 @@ public interface ISnobotActor extends ISubsystem
      * Cancels any running actions
      */
     void cancelAction();
+
+    void setDriveSmoothlyToPositionGoal(double aX, double aY, double aSpeed);
 }
