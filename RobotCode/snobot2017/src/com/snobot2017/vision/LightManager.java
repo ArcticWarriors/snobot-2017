@@ -1,6 +1,8 @@
 package com.snobot2017.vision;
 
+import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.joystick.IOperatorJoystick;
+import com.snobot2017.joystick.IVisionJoystick;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
@@ -11,18 +13,22 @@ public class LightManager
 {
     private Relay mGreenRelay;
     private Relay mBlueRelay;
-    private IOperatorJoystick mJoystick;
-    public LightManager(IOperatorJoystick aJoystick, Relay aRelay, Relay anotherRelay)
+    private IOperatorJoystick mOperatorJoystick;
+    private ISnobotActor mSnobotActor;
+    private int mCounter;
+    public LightManager(IOperatorJoystick aOperatorJoystick, ISnobotActor aSnobotActor, Relay aRelay, Relay anotherRelay)
     {
         mGreenRelay = aRelay;
         mBlueRelay = anotherRelay;
         
-        mJoystick = aJoystick;
+        mOperatorJoystick = aOperatorJoystick;
+        mSnobotActor = aSnobotActor;
+        mCounter = 0;
     }
     
     public void update()
     {
-        if(mJoystick.greenLightOn())
+        if(mOperatorJoystick.greenLightOn())
         {
             mGreenRelay.set(Value.kOn);
         }
@@ -31,13 +37,33 @@ public class LightManager
             mGreenRelay.set(Value.kOff);
         }
         
-        if(mJoystick.blueLightOn())
+        if(!mSnobotActor.executeControlMode())
         {
-            mBlueRelay.set(Value.kOn);
+            if(mOperatorJoystick.blueLightOn())
+            {
+                mBlueRelay.set(Value.kOn);
+            }
+            else
+            {
+                mBlueRelay.set(Value.kOff);
+            }
         }
         else
         {
-            mBlueRelay.set(Value.kOff);
+            if(mCounter > 20 && mBlueRelay.get() == Value.kOff)
+            {
+                mBlueRelay.set(Value.kOn);
+                mCounter = 0;
+            }
+            else if(mCounter > 20 && mBlueRelay.get() == Value.kOn)
+            {
+                mBlueRelay.set(Value.kOff);
+                mCounter = 0;
+            }
+            else
+            {
+                mCounter++;
+            }
         }
     }
     

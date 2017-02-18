@@ -80,7 +80,7 @@ public class Snobot2017 extends ASnobot
         Joystick driverJoystickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
 
-        IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, mLogger);
+        IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, mLogger, mAutonFactory);
         mSubsystems.add(driverJoystick);
 
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
@@ -149,10 +149,10 @@ public class Snobot2017 extends ASnobot
         mBlueRelay = new Relay(1);
         mVisionManager = new VisionManager(mPositioner, mSnobotActor, operatorJoystick);
         mSubsystems.add(mVisionManager);
-        mLightManager = new LightManager(operatorJoystick, mGreenRelay, mBlueRelay);
+        mLightManager = new LightManager(operatorJoystick, mSnobotActor, mGreenRelay, mBlueRelay);
 
         // Autonomous
-        mAutonFactory = new AutonomousFactory(this);
+        mAutonFactory = new AutonomousFactory(this, driverJoystick);
 
         // Call last
         mLogger.startLogging(

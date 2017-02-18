@@ -39,6 +39,7 @@ public class CommandParser extends ACommandParser
     private static final double sEXPECTED_DT = .02;
 
     protected Snobot2017 mSnobot;
+    private AutonomousFactory mAutonFactory;
     protected SendableChooser<StartingPositions> mPositionChooser;
 
     /**
@@ -49,11 +50,11 @@ public class CommandParser extends ACommandParser
      * @param aPositionChooser 
      * @param aStartPosition
      */
-    public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser)
+    public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser, AutonomousFactory aAutonFactory)
     {
         super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
                 SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
-
+        mAutonFactory = aAutonFactory;
         mSnobot = aSnobot;
         mPositionChooser = aPositionChooser;
 
@@ -70,6 +71,7 @@ public class CommandParser extends ACommandParser
     {
         String commandName = args.get(0);
         Command newCommand = null;
+        
         try
         {
             switch (commandName)
@@ -160,6 +162,46 @@ public class CommandParser extends ACommandParser
         }
         return newCommand;
     }
+   
+//    protected Command parseCommand()
+//    {
+//        Command newCommand;
+//        switch(mAutonFactory.autonMode())
+//        {
+//        case 0:
+//        {
+//            newCommand = parseStupidDriveStraightCommand(1, 1);
+//            break;
+//        }
+//        case 1:
+//        {
+//            //something
+//            break;
+//        }
+//        case 2:
+//        {
+//            //something
+//            break;
+//        }
+//        case 3:
+//        {
+//            //something
+//            break;
+//        }
+//        case 4:
+//        {
+//            //something
+//            break;
+//        }
+//        case 5:
+//        {
+//            //something
+//            break;
+//        }
+//        
+//        }
+//        return newCommand;
+//    }
 
     private Command createTurnPathCommand(List<String> args)
     {
