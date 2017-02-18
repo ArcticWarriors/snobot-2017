@@ -184,22 +184,57 @@ public class SnobotActor implements ISnobotActor
         return finished;
     }
 
+    private double limitAngle(double aAngle)
+    {
+        aAngle %= 360;
+        return (aAngle > 180) ? (aAngle - 360) : aAngle;
+    }
+
     private boolean driveSmoothlyToPosition()
     {
-
         double dx = mSmoothControlParams.mGoalX - mPositioner.getXPosition();
         double dy = mSmoothControlParams.mGoalY - mPositioner.getYPosition();
 
         double distanceAway = Math.sqrt(dx * dx + dy * dy);
-        double goalAngle = Math.toDegrees(Math.atan2(dx, dy)); // Switched on
-                                                               // purpose
 
-        double AngleError = ((mPositioner.getOrientationDegrees() % 360) - goalAngle) % 360;
+        // dx and dy are switched on purpose to make 0 degrees refer to up
+        double goalAngle = Math.toDegrees(Math.atan2(dx, dy));
+        double currentAngle = limitAngle(mPositioner.getOrientationDegrees());
+
+        double rightError = limitAngle(goalAngle - currentAngle);
+        double leftError = limitAngle(360 - rightError);
+        double rightSpeed = 0.0;
+        double leftSpeed = 0.0;
+
+        if (rightError < leftError)
+        {
+            rightSpeed = (.3 - rightError * .005);
+            leftSpeed = (.3 + rightError * .005);
+        }
+        else
+        {
+            rightSpeed = (.3 + leftError * .005);
+            leftSpeed = (.3 - leftError * .005);
+        }
+        
+        System.out.println(
+                goalAngle
+                + "\t" + currentAngle
+                + "\t" + rightError
+                + "\t" + leftError
+                + "\t" + rightSpeed
+                + "\t" + leftSpeed);
+
+        // double AngleError = (goalAngle - (mPositioner.getOrientationDegrees()
+        // % 360)) % 360;
         boolean isFinished = false;
-        System.out.println("Smooth " + AngleError + " " + goalAngle + " dx " + dx + " dy " + dy + "  goalx " + mSmoothControlParams.mGoalX + " goaly "
-                + mSmoothControlParams.mGoalY);
-        double leftSpeed = (.3 - AngleError * .001);
-        double rightSpeed = (.3 + AngleError * .001);
+        // System.out.println("Smooth " + " AE " + AngleError + " AG " +
+        // goalAngle + " dx " + dx + " dy " + dy + " goalx " +
+        // mSmoothControlParams.mGoalX
+        // + " goaly "
+        // + mSmoothControlParams.mGoalY + distanceAway);
+        // System.out.println((mPositioner.getOrientationDegrees() % 360) + "\t"
+        // + goalAngle);
 
         if (mInDeadbandHelper.isFinished(Math.abs(distanceAway) < mDistanceControlParams.mDeadband))
         {
@@ -210,10 +245,10 @@ public class SnobotActor implements ISnobotActor
         {
             mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
         }
-        else
-        {
-            mDriveTrain.setLeftRightSpeed(-leftSpeed, -rightSpeed);
-        }
+        // else
+        // {
+        // mDriveTrain.setLeftRightSpeed(-leftSpeed, -rightSpeed);
+        // }
 
         return isFinished;
     }

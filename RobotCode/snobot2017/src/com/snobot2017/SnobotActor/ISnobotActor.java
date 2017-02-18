@@ -57,5 +57,16 @@ public interface ISnobotActor extends ISubsystem
      */
     void cancelAction();
 
+    /**
+     * Sets the goal for going to an XY coordinate and drives/turns to point at
+     * the same time.
+     * 
+     * @param aX
+     *            The X Position to go to, in inches
+     * @param aY
+     *            The Y Position to go to, in inches
+     * @param aSpeed
+     *            The speed (0-1) to drive at
+     */
     void setDriveSmoothlyToPositionGoal(double aX, double aY, double aSpeed);
 }
