@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * reads a log file and makes the motor replay
+ * 
  * @author Andrew
  *
  */
@@ -25,58 +26,80 @@ public class Replay extends Command
 
     /**
      * Constructor
+     * 
      * @param aDriveTrain
      * @throws IOException
      */
     public Replay(IDriveTrain aDriveTrain, String aFilePath) throws IOException
     {
-        mBufferedReader = new BufferedReader(new FileReader(new File(mFilePath)));
         mFilePath = aFilePath;
+        mBufferedReader = new BufferedReader(new FileReader(new File(mFilePath)));
         mDriveTrain = aDriveTrain;
     }
-    
-    public void init()
+
+    @Override
+    public void initialize()
     {
-    	super.initialize();
-    	try {
-			mBufferedReader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        System.out.println("\n ************\n ************\n ************\n HERE IT IS FILE PATH IS:  " + mFilePath
+                + "HERE IT IS \n ************\n ************\n ************");
+        try
+        {
+            mBufferedReader.readLine();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
      * reads log file and sets motors in same timeframe
+     * 
      * @throws IOException
      */
     @Override
     public void execute()
     {
-    	try {
-			String line = mBufferedReader.readLine();
-			System.out.println("\n" + line);
-
-            String[] Split = line.split(mDelim);
-            Double[] nums = new Double[Split.length - 1];
-
-            for (int x = 1; x <= Split.length; x++)
+        try
+        {
+            String line = mBufferedReader.readLine();
+            if (line != null)
             {
-                nums[x - 1] = Double.parseDouble(Split[x]);
+                System.out.println("\n" + line);
+
+                String[] Split = line.split(mDelim);
+                Double[] nums = new Double[Split.length - 1];
+
+                for (int x = 1; x < Split.length; x++)
+                {
+                    nums[x - 1] = Double.parseDouble(Split[x]);
+                }
+
+                if (nums.length ==  2)
+                {
+                    double mLeftSpeed = (nums[0]);
+                    double mRightSpeed = (nums[1]);
+                    mDriveTrain.setLeftRightSpeed(mLeftSpeed, mRightSpeed);
+                }
+            }
+            else
+            {
+                mFinished = true;
+                mDriveTrain.setLeftRightSpeed(0, 0);
             }
 
-            double mLeftSpeed = (nums[0]);
-            double mRightSpeed = (nums[1]);
-            mDriveTrain.setLeftRightSpeed(mLeftSpeed, mRightSpeed);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
      * reads log file and sets motors in same timeframe
+     * 
      * @throws IOException
      */
-    
 
     @Override
     protected boolean isFinished()

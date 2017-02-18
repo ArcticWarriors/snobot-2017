@@ -5,8 +5,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import org.opencv.core.Core;
@@ -25,8 +28,20 @@ public class MjpegRecevierMain
     {
 
         @Override
-        public void onImage(BufferedImage image)
+        public void onImage(byte[] aImageBytes)
         {
+            BufferedImage image = null;
+            try
+            {
+                if (aImageBytes != null)
+                {
+                    image = ImageIO.read(new ByteArrayInputStream(aImageBytes));
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
             visionPanel.setOriginalImage(image);
         }
     };
@@ -41,7 +56,6 @@ public class MjpegRecevierMain
         }
     };
 
-    @SuppressWarnings("unchecked")
     public MjpegRecevierMain(String urlAddress, String thresholdConfigFile) throws FileNotFoundException
     {
 
@@ -65,7 +79,7 @@ public class MjpegRecevierMain
     {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        String urlAddress = "http://127.0.0.1:5800";
+        String urlAddress = "http://127.0.0.1:12000";
         String thresholdConfig = "peg_test_20170202/threshold_config.yml";
         if (args.length == 1)
         {

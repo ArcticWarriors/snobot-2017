@@ -22,12 +22,19 @@ public class ScoreGear extends TimedCommand
     public ScoreGear(IGearBoss aGearBoss, double aTimeOut)
     {
         super(aTimeOut);
-        mGearBoss = aGearBoss;        
+        mGearBoss = aGearBoss;
     }
     
     @Override
     protected void execute()
     {
         mGearBoss.moveGearLow();
+    }
+
+    @Override
+    protected void end()
+    {
+        super.end();
+        mGearBoss.moveGearHigh();
     }
 }

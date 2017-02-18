@@ -1,24 +1,35 @@
 package com.snobot2017.joystick;
 
 import com.snobot.lib.Logger;
+import com.snobot.lib.ui.LatchedButton;
+import com.snobot.lib.Utilities;
+
 import com.snobot.lib.ui.XboxButtonMap;
 import com.snobot2017.SmartDashBoardNames;
+import com.snobot2017.autonomous.AutonomousFactory;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnobotDriveXbaxJoystick implements IDriverJoystick
 {
+	private static final double sJOYSTICK_DEADBAND = .032;
     private Joystick mJoystick;
     private double mLeftSpeed;
     private double mRightSpeed;
     private Logger mLogger;
+    private LatchedButton mDPadUp;
+    private LatchedButton mDPadDown;
+    private AutonomousFactory mAutonFactory;
 
-    public SnobotDriveXbaxJoystick(Joystick aJoystick, Logger aLogger)
+    public SnobotDriveXbaxJoystick(Joystick aJoystick, Logger aLogger, AutonomousFactory aAutonFactory)
     {
 
         mJoystick = aJoystick;
         mLogger = aLogger;
+        mAutonFactory = aAutonFactory;
+        mDPadUp = new LatchedButton();
+        mDPadDown = new LatchedButton();
     }
 
     @Override
@@ -31,8 +42,21 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public void update()
     {
-        mLeftSpeed = -mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS);
-        mRightSpeed = -mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
+
+    	double leftJoystick = -Utilities.stopInDeadband(mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS), sJOYSTICK_DEADBAND);
+        double rightJoystick = -Utilities.stopInDeadband(mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS), sJOYSTICK_DEADBAND);
+        
+
+        double leftNeg = Math.signum(leftJoystick);
+        double rightNeg = Math.signum(rightJoystick);
+        
+
+//        mRightSpeed = rightJoystick * rightJoystick * rightNeg;
+//        mLeftSpeed = leftJoystick * leftJoystick * leftNeg;
+
+        mRightSpeed = rightJoystick;
+        mLeftSpeed = leftJoystick;
+
     }
 
     @Override
@@ -52,6 +76,7 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     {
         SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_XBAX_JOYSTICK_SPEED, mLeftSpeed);
         SmartDashboard.putNumber(SmartDashBoardNames.sRIGHT_XBAX_JOYSTICK_SPEED, mRightSpeed);
+        SmartDashboard.putNumber(SmartDashBoardNames.sAUTON_NUM, mAutonFactory.autonMode());
     }
 
     @Override

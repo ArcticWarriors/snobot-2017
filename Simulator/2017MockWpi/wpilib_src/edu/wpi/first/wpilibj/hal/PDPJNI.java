@@ -22,7 +22,7 @@ public class PDPJNI extends JNIWrapper
 
     public static boolean checkPDPChannel(int channel)
     {
-        return false;
+        return channel >= 0 && channel <= 16;
     }
 
     public static double getPDPTemperature(int module)

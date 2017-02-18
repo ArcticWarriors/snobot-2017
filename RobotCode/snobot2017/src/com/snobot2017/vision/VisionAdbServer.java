@@ -10,6 +10,7 @@ import com.snobot.lib.adb.IAdbBridge;
 import com.snobot.lib.adb.NativeAdbBridge;
 import com.snobot.lib.adb.RioDroidAdbBridge;
 import com.snobot.lib.external_connection.RobotConnectionServer;
+import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.vision.messages.HeartbeatMessage;
 import com.snobot2017.vision.messages.IterateDisplayImageMessage;
@@ -17,6 +18,7 @@ import com.snobot2017.vision.messages.SetCameraDirectionMessage;
 import com.snobot2017.vision.messages.TargetUpdateMessage;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.hal.HAL;
 
 public class VisionAdbServer extends RobotConnectionServer
 {
@@ -37,6 +39,7 @@ public class VisionAdbServer extends RobotConnectionServer
 
     private IAdbBridge mAdb;
     private TargetUpdateMessage mLatestTargetUpdate;
+    private boolean mFreshImage;
 
     public VisionAdbServer(int aAppBindPort, int aAppMjpegBindPort, int aAppForwardedMjpegBindPort)
     {
@@ -54,11 +57,7 @@ public class VisionAdbServer extends RobotConnectionServer
         mAdb.reversePortForward(aAppBindPort, aAppBindPort);
         mAdb.portForward(aAppMjpegBindPort, aAppForwardedMjpegBindPort);
 
-        // MjpegReceiver receiver = new MjpegReceiver();
-        // MjpegForwarder forwarder = new MjpegForwarder(aAppMjpegBindPort);
-        // receiver.addImageReceiver(forwarder);
-        //
-        // receiver.start("127.0.0.1:" + aAppForwardedMjpegBindPort);
+        mFreshImage = false;
     }
 
     @Override
@@ -79,7 +78,8 @@ public class VisionAdbServer extends RobotConnectionServer
             }
             else if (sTARGET_UPDATE_MESSAGE.equals(type))
             {
-                mLatestTargetUpdate = new TargetUpdateMessage(jsonObject);
+                mLatestTargetUpdate = new TargetUpdateMessage(jsonObject, getTimestamp());
+                mFreshImage = true;
             }
             else
             {
@@ -98,7 +98,8 @@ public class VisionAdbServer extends RobotConnectionServer
     @Override
     public double getTimestamp()
     {
-        return System.currentTimeMillis() * 1e-3;
+        // return System.currentTimeMillis() * 1e-3;
+        return HAL.getMatchTime();
     }
 
     @Override
@@ -116,6 +117,8 @@ public class VisionAdbServer extends RobotConnectionServer
     public void restartApp()
     {
         mAdb.restartApp();
+        mAdb.reversePortForward(PortMappings2017.sADB_BIND_PORT, PortMappings2017.sADB_BIND_PORT);
+        mAdb.portForward(PortMappings2017.sAPP_MJPEG_PORT, PortMappings2017.sAPP_MJPEG_PORT);
     }
 
     public void restartAdb()
@@ -142,6 +145,13 @@ public class VisionAdbServer extends RobotConnectionServer
     public TargetUpdateMessage getLatestTargetUpdate()
     {
         return mLatestTargetUpdate;
+    }
+
+    public boolean hasFreshImage()
+    {
+        boolean output = mFreshImage;
+        mFreshImage = false;
+        return output;
     }
 
 }

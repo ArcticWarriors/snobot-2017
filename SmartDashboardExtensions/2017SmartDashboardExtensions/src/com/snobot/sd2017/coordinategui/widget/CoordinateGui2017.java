@@ -62,7 +62,6 @@ public class CoordinateGui2017 extends BaseCoordinateGui
     {
         synchronized (mDataLock)
         {
-            System.out.println(aSplineSegments.size());
             mTrajectoryDataProvider.clear();
             for (SplineSegment segment : aSplineSegments)
             {

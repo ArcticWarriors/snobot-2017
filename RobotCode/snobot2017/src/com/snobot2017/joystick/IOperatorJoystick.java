@@ -4,6 +4,7 @@ import com.snobot.lib.ISubsystem;
 
 /**
  * Joystick for interacting with the Gear Boss
+ * 
  * @author jbnol
  *
  */
@@ -34,7 +35,15 @@ public interface IOperatorJoystick extends ISubsystem
      * @return true if pressed
      */
     boolean isClimb();
-
+    
+    /**
+     * Is the green light toggle on?
+     * 
+     * @return whether the green lights should be on
+     */
+    boolean greenLightOn();
+    boolean blueLightOn();
+    
     /**
      * Returns UP if up button is pressed, DOWN, if down button is pressed, and
      * NONE, if neither buttons are pressed

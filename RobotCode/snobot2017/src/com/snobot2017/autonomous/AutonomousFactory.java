@@ -6,6 +6,7 @@ import com.snobot.lib.autonomous.SnobotAutonCrawler;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
+import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.positioner.IPositioner;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -17,6 +18,14 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class AutonomousFactory
 {
+    private static final double sY_START = 336 - 3 * 12;
+    private static final double sX_START_CENTER = 0;
+    private static final double sX_START_BOILER = 67;
+    private static final double sX_START_LOADING = 80;
+    
+    private IDriverJoystick mDriverJoystick;
+    private int mAutonModeNum;
+    
     protected SendableChooser<File> mAutonModeChooser;
     protected SendableChooser<StartingPositions> mPositionChooser;
     protected ITable mAutoModeTable;
@@ -27,18 +36,20 @@ public class AutonomousFactory
     
     public enum StartingPositions
     {
-        RedLeft("Red Left", -79.53, -334.81, 0), 
-        RedMiddle("Red Middle", 0, -334.81, 0), 
-        RedRight("Red Right", 43.02, -334.81, 0), 
-        BlueLeft("Blue Left", 43.02, 334.81, 180), 
-        BlueMiddle("Blue Middle", 0, 334.81, 180), 
-        BlueRight("Blue Right", -79.53, 334.81, 180), 
+        RedLeft("Red Left", -sX_START_LOADING, -sY_START, 0), 
+        RedMiddle("Red Middle", sX_START_CENTER, -sY_START, 0), 
+        RedRight("Red Right", sX_START_BOILER, -sY_START, 0), 
+        BlueLeft("Blue Left", sX_START_BOILER, sY_START, 180), 
+        BlueMiddle("Blue Middle", sX_START_CENTER, sY_START, 180), 
+        BlueRight("Blue Right", -sX_START_LOADING, sY_START, 180), 
         Origin("Origin", 0, 0, 0);
 
         public final String mDisplayName;
         public final double mX;
         public final double mY;
         public final double mAngle;
+        
+
 
         private StartingPositions(String aDisplayName, double aX, double aY, double aAngle)
         {
@@ -55,10 +66,11 @@ public class AutonomousFactory
         }
     }
     
-    public AutonomousFactory(Snobot2017 aSnobot)
+    public AutonomousFactory(Snobot2017 aSnobot, IDriverJoystick aDriverJoystick)
     {
+        mDriverJoystick = aDriverJoystick;
         mPositionChooser = new SendableChooser<StartingPositions>();
-        mCommandParser = new CommandParser(aSnobot, mPositionChooser);
+        mCommandParser = new CommandParser(aSnobot, mPositionChooser, this);
         mAutoModeTable = NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME);
         
         mPositioner = aSnobot.getPositioner();
@@ -137,5 +149,17 @@ public class AutonomousFactory
         {
             mPositioner.setPosition(startingPosition.mX, startingPosition.mY, startingPosition.mAngle);
         }
+    }
+    public void incrementAutonMode(int aint)
+    {
+        mAutonModeNum = (mAutonModeNum + aint)%6;
+        if  (mAutonModeNum < 0)
+        {
+            mAutonModeNum = 5;
+        }
+    }
+    public int autonMode()
+    {
+        return mAutonModeNum;
     }
 }
