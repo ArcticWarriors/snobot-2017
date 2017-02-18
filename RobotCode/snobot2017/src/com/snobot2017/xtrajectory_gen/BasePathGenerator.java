@@ -26,7 +26,7 @@ public class BasePathGenerator
 
     // Gear Locations
     protected static final double NON_CENTER_GEAR_X_OFFSET = 48;
-    
+
     protected static final double CENTER_GEAR_Y = START_Y - 7 * 12;
     protected static final double NON_CENTER_CENTER_GEAR_Y = 197.5;
 
@@ -65,6 +65,10 @@ public class BasePathGenerator
 
     protected static final TrajectoryGenerator.Config GEAR_SPEED_CONFIG = new TrajectoryGenerator.Config();
     protected static final TrajectoryGenerator.Config GEAR_SPEED_BACKWARDS_CONFIG = new TrajectoryGenerator.Config();
+
+    // Boiler Locations
+    protected static final Waypoint RED_BOILER = new Waypoint(163.13, -334.81, -45);
+    protected static final Waypoint BLUE_BOILER = new Waypoint(163.13, 334.81, -135);
 
     static
     {

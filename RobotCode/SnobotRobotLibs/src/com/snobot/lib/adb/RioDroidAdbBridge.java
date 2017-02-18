@@ -15,15 +15,18 @@ public class RioDroidAdbBridge extends BaseAdbBridge
     protected boolean runCommand(String aCommand)
     {
         boolean success = false;
+        
+        String command = "adb " + aCommand;
 
         try
         {
-            RIOdroid.executeCommand(aCommand);
+            sLOGGER.log(Level.INFO, "Running command: " + command);
+            RIOdroid.executeCommand(command);
             success = true;
         }
         catch (Exception e)
         {
-            sLOGGER.log(Level.WARNING, "Could not run command: " + aCommand, e);
+            sLOGGER.log(Level.WARNING, "Could not run command: " + command, e);
         }
 
         return success;

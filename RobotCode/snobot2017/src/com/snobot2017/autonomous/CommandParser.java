@@ -39,6 +39,7 @@ public class CommandParser extends ACommandParser
     private static final double sEXPECTED_DT = .02;
 
     protected Snobot2017 mSnobot;
+    private AutonomousFactory mAutonFactory;
     protected SendableChooser<StartingPositions> mPositionChooser;
 
     /**
@@ -46,14 +47,14 @@ public class CommandParser extends ACommandParser
      * 
      * @param aSnobot
      *            The robot using the CommandParser.
-     * @param aPositionChooser 
+     * @param aPositionChooser
      * @param aStartPosition
      */
-    public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser)
+    public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser, AutonomousFactory aAutonFactory)
     {
         super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
                 SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
-
+        mAutonFactory = aAutonFactory;
         mSnobot = aSnobot;
         mPositionChooser = aPositionChooser;
 
@@ -70,6 +71,7 @@ public class CommandParser extends ACommandParser
     {
         String commandName = args.get(0);
         Command newCommand = null;
+        
         try
         {
             switch (commandName)
@@ -121,8 +123,8 @@ public class CommandParser extends ACommandParser
             }
             case AutonomousCommandNames.sREPLAY:
             {
-            	newCommand = parseReplayCommand(args);
-            	break;
+                newCommand = parseReplayCommand(args);
+                break;
             }
             case AutonomousCommandNames.sGO_TO_POSITION_SMOOTH_IN_STEPS:
             {
@@ -150,6 +152,11 @@ public class CommandParser extends ACommandParser
                 newCommand = parseGoToPositionSmoothlyCommand(args);
                 break;
             }
+            case AutonomousCommandNames.sGET_GEAR_AND_BOILER:
+            {
+                newCommand = createScoreFuelWithTrajectoryCommand();
+                break;
+            }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
@@ -165,6 +172,46 @@ public class CommandParser extends ACommandParser
         }
         return newCommand;
     }
+   
+//    protected Command parseCommand()
+//    {
+//        Command newCommand;
+//        switch(mAutonFactory.autonMode())
+//        {
+//        case 0:
+//        {
+//            newCommand = parseStupidDriveStraightCommand(1, 1);
+//            break;
+//        }
+//        case 1:
+//        {
+//            //something
+//            break;
+//        }
+//        case 2:
+//        {
+//            //something
+//            break;
+//        }
+//        case 3:
+//        {
+//            //something
+//            break;
+//        }
+//        case 4:
+//        {
+//            //something
+//            break;
+//        }
+//        case 5:
+//        {
+//            //something
+//            break;
+//        }
+//        
+//        }
+//        return newCommand;
+//    }
 
     private Command parseGoToPositionSmoothlyCommand(List<String> args)
     {
@@ -236,6 +283,69 @@ public class CommandParser extends ACommandParser
         return output;
     }
 
+    private Command createScoreFuelWithTrajectoryCommand()
+    {
+        StartingPositions startPosition = mPositionChooser.getSelected();
+        if (startPosition == null)
+        {
+            return null;
+        }
+
+        String scoreFilename = null;
+        String boilFilename = null;
+
+        switch (startPosition)
+        {
+        case RedRight:
+            scoreFilename = "RedRightScoreGear.csv";
+            boilFilename = "RedRightGearToBoiler.csv";
+            break;
+        case RedMiddle:
+            scoreFilename = "RedMiddleScoreGear.csv";
+            break;
+        case RedLeft:
+            scoreFilename = "RedLeftScoreGear.csv";
+            break;
+        case BlueRight:
+            scoreFilename = "BlueRightScoreGear.csv";
+            break;
+        case BlueMiddle:
+            scoreFilename = "BlueMiddleScoreGear.csv";
+            break;
+        case BlueLeft:
+            scoreFilename = "BLueLeftScoreGear.csv";
+            boilFilename = "BlueLeftGearToBoiler.csv";
+            break;
+        default:
+            break;
+        }
+        CommandGroup output = new CommandGroup();
+
+        if (scoreFilename != null)
+        {
+            output.addSequential(createTrajectoryCommand(scoreFilename));
+            output.addSequential(parseScoreGearCommand(3));
+
+            if (boilFilename != null)
+            {
+                // TODO
+                System.out.println("********************  ADD BOILER TRAJECTORY *********************");
+                output.addSequential(createTrajectoryCommand(boilFilename));
+            }
+            else
+            {
+                output.addSequential(parseStupidDriveStraightCommand(1.1, -.3));
+            }
+
+        }
+        else
+        {
+            mErrorText += "Invalid scoring filename";
+        }
+
+        return output;
+    }
+
     private Command createScoreGearWithTrajectoryCommand()
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
@@ -243,9 +353,9 @@ public class CommandParser extends ACommandParser
         {
             return null;
         }
-        
+
         String fileName = null;
-        
+
         switch (startPosition)
         {
         case RedLeft:
@@ -267,9 +377,9 @@ public class CommandParser extends ACommandParser
             fileName = "BlueLeftScoreGear.csv";
             break;
         default:
-            break;   
+            break;
         }
-       
+
         if (fileName != null)
         {
             return createTrajectoryCommand(fileName);
@@ -280,7 +390,7 @@ public class CommandParser extends ACommandParser
             return null;
         }
     }
-    
+
     private Command createGetHoppersWithTrajectoryCommand(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
@@ -288,7 +398,7 @@ public class CommandParser extends ACommandParser
         {
             return null;
         }
-        
+
         boolean doClose = true;
         if (args.size() > 1)
         {
@@ -299,7 +409,7 @@ public class CommandParser extends ACommandParser
         }
 
         String fileName = null;
-        
+
         switch (startPosition)
         {
         case RedLeft:
@@ -363,9 +473,9 @@ public class CommandParser extends ACommandParser
             }
             break;
         default:
-            break;   
+            break;
         }
-       
+
         if (fileName != null)
         {
             CommandGroup output = new CommandGroup();
@@ -379,7 +489,7 @@ public class CommandParser extends ACommandParser
             return null;
         }
     }
-    
+
     private Command createGetHoppersAndGetGearWithTrajectoryCommand(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
@@ -390,7 +500,7 @@ public class CommandParser extends ACommandParser
 
         String scoreFilename = null;
         String hopperFilename = null;
-        
+
         switch (startPosition)
         {
         case RedLeft:
@@ -420,7 +530,7 @@ public class CommandParser extends ACommandParser
         // Intentional fall through, nothing to do
         case Origin:
         default:
-            break;   
+            break;
         }
 
         CommandGroup output = new CommandGroup();
@@ -438,15 +548,16 @@ public class CommandParser extends ACommandParser
             {
                 output.addSequential(parseStupidDriveStraightCommand(1.1, -.3));
             }
+
         }
         else
         {
             mErrorText += "Invalid scoring filename";
         }
-       
+
         return output;
     }
-    
+
     /**
      * 
      * @param args

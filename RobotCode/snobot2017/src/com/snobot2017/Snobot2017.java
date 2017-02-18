@@ -23,13 +23,17 @@ import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
 import com.snobot2017.positioner.IPositioner;
 import com.snobot2017.positioner.Positioner;
+import com.snobot2017.vision.LightManager;
 import com.snobot2017.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -52,6 +56,10 @@ public class Snobot2017 extends ASnobot
 
     // Vision
     private VisionManager mVisionManager;
+    private LightManager mLightManager;
+    
+    private Relay mGreenRelay;
+    private Relay mBlueRelay;    
 
     // Logger
     private AutoLogger mAutoLogger;
@@ -72,7 +80,7 @@ public class Snobot2017 extends ASnobot
         Joystick driverJoystickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
 
-        IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, mLogger);
+        IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, mLogger, mAutonFactory);
         mSubsystems.add(driverJoystick);
 
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
@@ -137,11 +145,14 @@ public class Snobot2017 extends ASnobot
         mDriveTrain.setSnobotActor(mSnobotActor);
 
         // Vision
+        mGreenRelay = new Relay(0);
+        mBlueRelay = new Relay(1);
         mVisionManager = new VisionManager(mPositioner, mSnobotActor, operatorJoystick);
         mSubsystems.add(mVisionManager);
+        mLightManager = new LightManager(operatorJoystick, mSnobotActor, mGreenRelay, mBlueRelay);
 
         // Autonomous
-        mAutonFactory = new AutonomousFactory(this);
+        mAutonFactory = new AutonomousFactory(this, driverJoystick);
 
         // Call last
         mLogger.startLogging(
@@ -165,6 +176,7 @@ public class Snobot2017 extends ASnobot
     @Override
     public void init()
     {
+ 
         super.init();
     }
     
@@ -173,6 +185,7 @@ public class Snobot2017 extends ASnobot
     @Override
     public void update()
     {
+        mLightManager.update();
     	super.update();
     	// System.out.println(pdp.getCurrent(13));
     }    
