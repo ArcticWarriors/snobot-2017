@@ -2,6 +2,8 @@ package com.snobot2017.joystick;
 
 import com.snobot.lib.Logger;
 import com.snobot.lib.ui.LatchedButton;
+import com.snobot.lib.Utilities;
+
 import com.snobot.lib.ui.XboxButtonMap;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.autonomous.AutonomousFactory;
@@ -11,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnobotDriveXbaxJoystick implements IDriverJoystick
 {
+	private static final double sJOYSTICK_DEADBAND = .032;
     private Joystick mJoystick;
     private double mLeftSpeed;
     private double mRightSpeed;
@@ -39,17 +42,21 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
     @Override
     public void update()
     {
-        mLeftSpeed = -mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS);
-        mRightSpeed = -mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
+
+    	double leftJoystick = -Utilities.stopInDeadband(mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS), sJOYSTICK_DEADBAND);
+        double rightJoystick = -Utilities.stopInDeadband(mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS), sJOYSTICK_DEADBAND);
         
-        if(mDPadUp.update(mJoystick.getPOV(0) == 0))
-        {
-            mAutonFactory.incrementAutonMode(1);
-        }
-        else if(mDPadDown.update(mJoystick.getPOV(180) == 180))
-        {
-            mAutonFactory.incrementAutonMode(-1);
-        }
+
+        double leftNeg = Math.signum(leftJoystick);
+        double rightNeg = Math.signum(rightJoystick);
+        
+
+//        mRightSpeed = rightJoystick * rightJoystick * rightNeg;
+//        mLeftSpeed = leftJoystick * leftJoystick * leftNeg;
+
+        mRightSpeed = rightJoystick;
+        mLeftSpeed = leftJoystick;
+
     }
 
     @Override

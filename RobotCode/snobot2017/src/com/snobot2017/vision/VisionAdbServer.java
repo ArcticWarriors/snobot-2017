@@ -10,6 +10,7 @@ import com.snobot.lib.adb.IAdbBridge;
 import com.snobot.lib.adb.NativeAdbBridge;
 import com.snobot.lib.adb.RioDroidAdbBridge;
 import com.snobot.lib.external_connection.RobotConnectionServer;
+import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.vision.messages.HeartbeatMessage;
 import com.snobot2017.vision.messages.IterateDisplayImageMessage;
@@ -116,6 +117,8 @@ public class VisionAdbServer extends RobotConnectionServer
     public void restartApp()
     {
         mAdb.restartApp();
+        mAdb.reversePortForward(PortMappings2017.sADB_BIND_PORT, PortMappings2017.sADB_BIND_PORT);
+        mAdb.portForward(PortMappings2017.sAPP_MJPEG_PORT, PortMappings2017.sAPP_MJPEG_PORT);
     }
 
     public void restartAdb()

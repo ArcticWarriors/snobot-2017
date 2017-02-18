@@ -117,7 +117,13 @@ public class TrajectoryPathCommand extends Command
     @Override
     protected boolean isFinished()
     {
-        return followerLeft.isFinishedTrajectory();
+        boolean finished = followerLeft.isFinishedTrajectory();
+        if (finished)
+        {
+            System.out.println("***************************************** TRAJ Finished *******************");
+        }
+        return finished;
+        // return followerLeft.isFinishedTrajectory();
     }
 
     @Override
@@ -148,9 +154,12 @@ public class TrajectoryPathCommand extends Command
             segment.mRightSidePosition = right.getSegment(i).pos;
             segment.mRightSideVelocity = right.getSegment(i).vel;
             segment.mRobotHeading = Utilities.boundAngleNeg180to180Degrees(right.getSegment(i).heading);
-            segment.mAverageX = (left.getSegment(i).y + right.getSegment(i).y) / 2; // Flipped on purpose
-            segment.mAverageY = (left.getSegment(i).x + right.getSegment(i).x) / 2; // Flipped on purpose
-
+            segment.mAverageX = (left.getSegment(i).y + right.getSegment(i).y) / 2; // Flipped
+                                                                                    // on
+                                                                                    // purpose
+            segment.mAverageY = (left.getSegment(i).x + right.getSegment(i).x) / 2; // Flipped
+                                                                                    // on
+                                                                                    // purpose
 
             segments.add(segment);
         }

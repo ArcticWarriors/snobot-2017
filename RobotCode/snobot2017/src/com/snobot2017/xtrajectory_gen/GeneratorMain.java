@@ -18,10 +18,17 @@ public class GeneratorMain
 
         final double kWheelbaseWidth = 24;
 
-        new GenerateStartToGearPaths().generatePaths(directory, kWheelbaseWidth);
-        new GenerateStartToHopperBlue().generatePaths(directory, kWheelbaseWidth);
-        new GenerateStartToHopperRed().generatePaths(directory, kWheelbaseWidth);
-        new GenerateGearToHopperPaths().generatePaths(directory, kWheelbaseWidth);
-        new GenerateTestTrajectoryPaths().generatePaths(directory, kWheelbaseWidth);
+        // new GenerateStartToGearPaths().generatePaths(directory,
+        // kWheelbaseWidth);
+        // new GenerateStartToHopperBlue().generatePaths(directory,
+        // kWheelbaseWidth);
+        // new GenerateStartToHopperRed().generatePaths(directory,
+        // kWheelbaseWidth);
+        // new GenerateGearToHopperPaths().generatePaths(directory,
+        // kWheelbaseWidth);
+        // new GenerateTestTrajectoryPaths().generatePaths(directory,
+        // kWheelbaseWidth);
+        new GenerateGearToBoilerPaths().generatePaths(directory, kWheelbaseWidth);
+
     }
 }

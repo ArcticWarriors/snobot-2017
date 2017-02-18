@@ -33,6 +33,9 @@ public class Climbing implements IClimbing
         mClimbingMotor = aClimbingMotor;
         mLogger = aLogger;
         mJoystick = aJoystick;
+
+        SmartDashboard.putNumber(SmartDashBoardNames.sROBOT_CATCHING_ROPE_SPEED, 0.5);
+        SmartDashboard.putNumber(SmartDashBoardNames.sROBOT_CLIMBING_ROPE_SPEED, 1.0);
     }
 
     @Override
