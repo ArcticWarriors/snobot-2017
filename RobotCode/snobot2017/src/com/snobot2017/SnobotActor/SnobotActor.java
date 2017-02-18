@@ -194,11 +194,12 @@ public class SnobotActor implements ISnobotActor
         double goalAngle = Math.toDegrees(Math.atan2(dx, dy)); // Switched on
                                                                // purpose
 
-        double AngleError = mPositioner.getOrientationDegrees() - goalAngle;
+        double AngleError = ((mPositioner.getOrientationDegrees() % 360) - goalAngle) % 360;
         boolean isFinished = false;
-        System.out.println(AngleError);
-        double leftSpeed = (.3 + AngleError * .01);
-        double rightSpeed = (.3 - AngleError * .01);
+        System.out.println("Smooth " + AngleError + " " + goalAngle + " dx " + dx + " dy " + dy + "  goalx " + mSmoothControlParams.mGoalX + " goaly "
+                + mSmoothControlParams.mGoalY);
+        double leftSpeed = (.3 - AngleError * .001);
+        double rightSpeed = (.3 + AngleError * .001);
 
         if (mInDeadbandHelper.isFinished(Math.abs(distanceAway) < mDistanceControlParams.mDeadband))
         {

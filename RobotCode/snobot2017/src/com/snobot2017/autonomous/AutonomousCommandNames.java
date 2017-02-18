@@ -27,5 +27,6 @@ public class AutonomousCommandNames
     public static final String sSCORE_GEAR_TRAJECTORY = "ScoreGearTraj";
     public static final String sSTART_HOPPER_TRAJ = "GetHopper";
     public static final String sGET_HOPPER_AND_GEAR = "GetHopperAndGear";
+    public static final String sGO_TO_POSITION_SMOOTHLY = "GoToPositionSmoothly";
     
 }
