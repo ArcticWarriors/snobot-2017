@@ -26,14 +26,14 @@ import com.snobot2017.positioner.Positioner;
 import com.snobot2017.vision.LightManager;
 import com.snobot2017.vision.VisionManager;
 
+import FuelPooper.IFuelPooper;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Direction;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -57,13 +57,17 @@ public class Snobot2017 extends ASnobot
     // Vision
     private VisionManager mVisionManager;
     private LightManager mLightManager;
-    
+
     private Relay mGreenRelay;
-    private Relay mBlueRelay;    
+    private Relay mBlueRelay;
 
     // Logger
     private AutoLogger mAutoLogger;
     private DateFormat mAutoLogDateFormat;
+
+    // Sphincter
+    private Servo mSphincter;
+    private IFuelPooper mPooper;
 
     // SnobotActor
     private ISnobotActor mSnobotActor;
@@ -85,9 +89,7 @@ public class Snobot2017 extends ASnobot
 
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
         mSubsystems.add(operatorJoystick);
-        
-        
-        
+
         // Drive Train
         boolean useCan = false;
         if (useCan)
@@ -97,13 +99,7 @@ public class Snobot2017 extends ASnobot
             CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
             CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
 
-            mDriveTrain = new SnobotCanDriveTrain(
-                    driveLeftMotorA, 
-                    driveLeftMotorB, 
-                    driveRightMotorA, 
-                    driveRightMotorB, 
-                    driverJoystick, 
-                    mLogger);
+            mDriveTrain = new SnobotCanDriveTrain(driveLeftMotorA, driveLeftMotorB, driveRightMotorA, driveRightMotorB, driverJoystick, mLogger);
         }
         else
         {
@@ -111,18 +107,10 @@ public class Snobot2017 extends ASnobot
             SpeedController driveRightMotor = new VictorSP(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
             Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
             Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
-    
-            mDriveTrain = new SnobotDriveTrain(
-                    driveLeftMotor, 
-                    driveRightMotor,
-                    leftDriveEncoder, 
-                    rightDriveEncoder, 
-                    driverJoystick, 
-                    mLogger);
+
+            mDriveTrain = new SnobotDriveTrain(driveLeftMotor, driveRightMotor, leftDriveEncoder, rightDriveEncoder, driverJoystick, mLogger);
         }
         mSubsystems.add(mDriveTrain);
-        
-
 
         // Climbing
         SpeedController climbingMotor = new VictorSP(PortMappings2017.sCLIMB_PWM_PORT);
@@ -130,7 +118,8 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mClimber);
 
         // GearBoss
-        DoubleSolenoid gearSolonoid = new DoubleSolenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A, PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B);
+        DoubleSolenoid gearSolonoid = new DoubleSolenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A,
+                PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
 
@@ -154,14 +143,17 @@ public class Snobot2017 extends ASnobot
         // Autonomous
         mAutonFactory = new AutonomousFactory(this);
 
+        // Sphincter
+        mSphincter = new Servo(3);
+        mSubsystems.add(mPooper);
+
         // Call last
-        mLogger.startLogging(
-                new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), 
-                Properties2017.sLOG_COUNT.getValue(),
+        mLogger.startLogging(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), Properties2017.sLOG_COUNT.getValue(),
                 Properties2017.sLOG_FILE_PATH.getValue());
-        //autolog
+        // autolog
         mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
-        mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystickRaw, mDriveTrain);
+        mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystickRaw,
+                mDriveTrain);
         mSubsystems.add(mAutoLogger);
         init();
     }
@@ -172,23 +164,23 @@ public class Snobot2017 extends ASnobot
         super.teleopInit();
         mSnobotActor.cancelAction();
     }
-    		
+
     @Override
     public void init()
     {
- 
+
         super.init();
     }
-    
+
     PowerDistributionPanel pdp = new PowerDistributionPanel();
-    
+
     @Override
     public void update()
     {
         mLightManager.update();
-    	super.update();
-    	// System.out.println(pdp.getCurrent(13));
-    }    
+        super.update();
+        // System.out.println(pdp.getCurrent(13));
+    }
 
     @Override
     protected CommandGroup createAutonomousCommand()
@@ -205,7 +197,7 @@ public class Snobot2017 extends ASnobot
     {
         return this.mDriveTrain;
     }
-    
+
     /**
      * Returns the IGearBoss for the robot
      * 
