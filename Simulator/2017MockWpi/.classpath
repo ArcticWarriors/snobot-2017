@@ -22,5 +22,7 @@
 	<classpathentry kind="var" path="wpilib" sourcepath="wpilib.sources"/>
 	<classpathentry kind="var" path="opencv" sourcepath="opencv.sources"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/json-simple-1.1.1.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/RIOdroid.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

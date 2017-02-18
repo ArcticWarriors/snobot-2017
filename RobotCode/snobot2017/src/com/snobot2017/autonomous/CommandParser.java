@@ -379,10 +379,15 @@ public class CommandParser extends ACommandParser
         default:
             break;
         }
-
+       
+        CommandGroup group = new CommandGroup();
         if (fileName != null)
         {
-            return createTrajectoryCommand(fileName);
+            group.addSequential(createTrajectoryCommand(fileName));
+            group.addSequential(this.parseScoreGearCommand(1.2));
+//            group.addSequential(this.createTrajectoryCommand("BackOffPeg.csv"));
+            group.addSequential(this.parseStupidDriveStraightCommand(3, -.1));
+            return group;
         }
         else
         {

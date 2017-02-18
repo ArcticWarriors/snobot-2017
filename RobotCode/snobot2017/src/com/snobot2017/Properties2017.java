@@ -47,6 +47,7 @@ public class Properties2017
     public static final DoubleProperty sTURN_PATH_KD = new DoubleProperty("TurnPathKD", 0);
     public static final DoubleProperty sTURN_PATH_KV = new DoubleProperty("TurnPathKVel", 0.0053);
     public static final DoubleProperty sTURN_PATH_KA = new DoubleProperty("TurnPathKAccel", 0);
+//    public static
 
     // Trajectory Driving
     public static final DoubleProperty sSPLINE_TURN_FACTOR = new DoubleProperty("SplineTurnFactor", 0.1);
@@ -74,7 +75,7 @@ public class Properties2017
         {
             logPath = "/u/logs/";
             adbLocation = "/tmp/adb";
-            resourcesDir = "/home/lvuser/2016Resources/";
+            resourcesDir = "/home/lvuser/2017Resources/";
             autoLogPath = "/u/autologs/";
             replayPath = resourcesDir + "replays/";
 

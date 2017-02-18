@@ -30,11 +30,4 @@ public class ScoreGear extends TimedCommand
     {
         mGearBoss.moveGearLow();
     }
-
-    @Override
-    protected void end()
-    {
-        super.end();
-        mGearBoss.moveGearHigh();
-    }
 }
