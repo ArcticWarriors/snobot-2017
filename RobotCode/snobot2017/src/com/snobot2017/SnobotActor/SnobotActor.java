@@ -17,6 +17,7 @@ public class SnobotActor implements ISnobotActor
 
     private DistanceControlParams mDistanceControlParams;
     private TurnControlParams mTurningControlParams;
+    private SmoothControlParams mSmoothControlParams;
     private ControlMode mControlMode;
 
     private class DistanceControlParams
@@ -47,9 +48,25 @@ public class SnobotActor implements ISnobotActor
         }
     }
 
+    private class SmoothControlParams
+    {
+        double mGoalX;
+        double mGoalY;
+        double mDeadband;
+        double mSpeed;
+
+        SmoothControlParams(double aGoalX, double aGoalY, double aSpeed)
+        {
+            mGoalX = aGoalX;
+            mGoalY = aGoalY;
+            mDeadband = 6; // inches
+            mSpeed = aSpeed;
+        }
+    }
+
     private enum ControlMode
     {
-        Off, Distance, Turning, PositionInSteps
+        Off, Distance, Turning, PositionInSteps, SmoothTurning
     }
 
     private enum GoToPositionSubsteps
@@ -74,6 +91,7 @@ public class SnobotActor implements ISnobotActor
         mControlMode = ControlMode.Off;
         mDistanceControlParams = new DistanceControlParams(0, 0);
         mTurningControlParams = new TurnControlParams(0, 0);
+        mSmoothControlParams = new SmoothControlParams(0, 0, 0);
     }
 
     @Override
@@ -117,19 +135,27 @@ public class SnobotActor implements ISnobotActor
         double dy = aY - mPositioner.getYPosition();
 
         double distanceAway = Math.sqrt(dx * dx + dy * dy);
-        double goalAngle = Math.toDegrees(Math.atan2(dx, dy)); //Switched on purpose
+        double goalAngle = Math.toDegrees(Math.atan2(dx, dy)); // Switched on
+                                                               // purpose
 
         mDistanceControlParams = new DistanceControlParams(mPositioner.getTotalDistance() + distanceAway, aSpeed);
         mTurningControlParams = new TurnControlParams(goalAngle, aSpeed);
     }
 
+    @Override
+    public void setDriveSmoothlyToPositionGoal(double aX, double aY, double aSpeed)
+    {
+        mControlMode = ControlMode.SmoothTurning;
+
+        mSmoothControlParams = new SmoothControlParams(aX, aY, aSpeed);
+    }
 
     @Override
     public boolean executeControlMode()
     {
         boolean finished = false;
-        
-        switch(mControlMode)
+
+        switch (mControlMode)
         {
         case Off:
             finished = true;
@@ -143,9 +169,11 @@ public class SnobotActor implements ISnobotActor
         case PositionInSteps:
             finished = driveToPositionInSteps();
             break;
+        case SmoothTurning:
+            finished = driveSmoothlyToPosition();
+            break;
         default:
             break;
-        
         }
 
         if (finished)
@@ -154,6 +182,40 @@ public class SnobotActor implements ISnobotActor
         }
 
         return finished;
+    }
+
+    private boolean driveSmoothlyToPosition()
+    {
+
+        double dx = mSmoothControlParams.mGoalX - mPositioner.getXPosition();
+        double dy = mSmoothControlParams.mGoalY - mPositioner.getYPosition();
+
+        double distanceAway = Math.sqrt(dx * dx + dy * dy);
+        double goalAngle = Math.toDegrees(Math.atan2(dx, dy)); // Switched on
+                                                               // purpose
+
+        double AngleError = ((mPositioner.getOrientationDegrees() % 360) - goalAngle) % 360;
+        boolean isFinished = false;
+        System.out.println("Smooth " + AngleError + " " + goalAngle + " dx " + dx + " dy " + dy + "  goalx " + mSmoothControlParams.mGoalX + " goaly "
+                + mSmoothControlParams.mGoalY);
+        double leftSpeed = (.3 - AngleError * .001);
+        double rightSpeed = (.3 + AngleError * .001);
+
+        if (mInDeadbandHelper.isFinished(Math.abs(distanceAway) < mDistanceControlParams.mDeadband))
+        {
+            mDriveTrain.setLeftRightSpeed(0, 0);
+            isFinished = true;
+        }
+        else if (distanceAway > 0)
+        {
+            mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
+        }
+        else
+        {
+            mDriveTrain.setLeftRightSpeed(-leftSpeed, -rightSpeed);
+        }
+
+        return isFinished;
     }
 
     @Override
@@ -185,6 +247,9 @@ public class SnobotActor implements ISnobotActor
             break;
         case Off:
         default:
+            break;
+        case SmoothTurning:
+            actionName = "Smoothly Drive To Position";
             break;
 
         }
@@ -304,4 +369,5 @@ public class SnobotActor implements ISnobotActor
         mControlMode = ControlMode.Off;
         mGoToPositionSubstep = GoToPositionSubsteps.NoAction;
     }
+
 }

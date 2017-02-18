@@ -41,6 +41,8 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     // Snobot Actor Stuff
     private boolean mDriveToPeg;
     private ToggleButton mDriveToPegToggleButton;
+    private boolean mDriveSmoothlyToPosition;
+    private ToggleButton mDriveSmoothlyToPositionToggleButton;
 
     public SnobotOperatorXbaxJoystick(Joystick aJoystick, Logger aLogger)
     {
@@ -52,6 +54,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         mRestartAppLatcher = new LatchedButton();
         mLogger = aLogger;
         mDriveToPegToggleButton = new ToggleButton();
+        mDriveSmoothlyToPositionToggleButton = new ToggleButton();
     }
 
     @Override
@@ -95,7 +98,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
 
         // SnobotActor Stuff
         mDriveToPeg = mDriveToPegToggleButton.update(mJoystick.getRawButton(XboxButtonMap.START_BUTTON));
-
+        mDriveSmoothlyToPosition = mDriveSmoothlyToPositionToggleButton.update(mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON));
         // System.out.println("A BTN " +
         // mJoystick.getRawButton(XboxButtonMap.A_BUTTON));
         // System.out.println("B BTN " +
@@ -232,6 +235,15 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         {
             mDriveToPeg = mDriveToPegToggleButton.update(true);
         }
+        if (mDriveSmoothlyToPosition)
+        {
+            mDriveSmoothlyToPosition = mDriveSmoothlyToPositionToggleButton.update(true);
+        }
     }
 
+    @Override
+    public boolean DriveSmoothlyToPosition()
+    {
+        return mDriveSmoothlyToPosition;
+    }
 }

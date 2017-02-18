@@ -145,6 +145,11 @@ public class CommandParser extends ACommandParser
                 newCommand = createGetHoppersAndGetGearWithTrajectoryCommand(args);
                 break;
             }
+            case AutonomousCommandNames.sGO_TO_POSITION_SMOOTHLY:
+            {
+                newCommand = parseGoToPositionSmoothlyCommand(args);
+                break;
+            }
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
@@ -159,6 +164,19 @@ public class CommandParser extends ACommandParser
             e.printStackTrace();
         }
         return newCommand;
+    }
+
+    private Command parseGoToPositionSmoothlyCommand(List<String> args)
+    {
+        double x = Double.parseDouble(args.get(1));
+        double y = Double.parseDouble(args.get(2));
+        double speed = .5;
+        if (args.size() > 3)
+        {
+            speed = Double.parseDouble(args.get(3));
+        }
+
+        return new GoToPositionSmoothly(x, y, speed, mSnobot.getSnobotActor());
     }
 
     private Command createTurnPathCommand(List<String> args)

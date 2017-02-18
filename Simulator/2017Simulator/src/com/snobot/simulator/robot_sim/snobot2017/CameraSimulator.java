@@ -149,7 +149,7 @@ public class CameraSimulator implements ISimulatorUpdater
 
         if (mLoopCtr % mLoopsBetweenUpdates == 0)
         {
-            System.out.println("Sending data " + currentState + ", " + stateAtLatency);
+//            System.out.println("Sending data " + currentState + ", " + stateAtLatency);
 //            System.out.println("Sending message: LoopCtr: " + mLoopCtr + ", Delay " + mLoopsBetweenUpdates + ", Loops Stale: " + mLoopsStale);
             mMockAppConnection.send(jsonMessage);
         }
