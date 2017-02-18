@@ -30,18 +30,18 @@ public class LightManager
     {
         if(mOperatorJoystick.greenLightOn())
         {
-            mGreenRelay.set(Value.kOn);
+            mGreenRelay.set(Value.kForward);
         }
         else
         {
             mGreenRelay.set(Value.kOff);
         }
         
-        if(!mSnobotActor.executeControlMode())
+        if(!mSnobotActor.isInAction())
         {
             if(mOperatorJoystick.blueLightOn())
             {
-                mBlueRelay.set(Value.kOn);
+                mBlueRelay.set(Value.kForward);
             }
             else
             {
@@ -50,12 +50,12 @@ public class LightManager
         }
         else
         {
-            if(mCounter > 20 && mBlueRelay.get() == Value.kOff)
+            if(mCounter > 2 && mBlueRelay.get() == Value.kOff)
             {
-                mBlueRelay.set(Value.kOn);
+                mBlueRelay.set(Value.kForward);
                 mCounter = 0;
             }
-            else if(mCounter > 20 && mBlueRelay.get() == Value.kOn)
+            else if(mCounter > 2 && mBlueRelay.get() == Value.kForward)
             {
                 mBlueRelay.set(Value.kOff);
                 mCounter = 0;
