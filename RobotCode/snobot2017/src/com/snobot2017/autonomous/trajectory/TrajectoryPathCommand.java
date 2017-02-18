@@ -95,6 +95,8 @@ public class TrajectoryPathCommand extends Command
 
         double turn = mKTurn * angleDiff;
 
+        System.out.println("Goal " + goalHeading + ", " + observedHeading + ", " + turn);
+
         mDrivetrain.setLeftRightSpeed(speedLeft + turn, speedRight - turn);
 
         SplineSegment segment = new SplineSegment();

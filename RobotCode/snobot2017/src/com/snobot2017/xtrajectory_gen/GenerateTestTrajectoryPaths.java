@@ -121,7 +121,25 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(0, 0, -180));
-        p.addWaypoint(new Waypoint(0, 96, -180));
+        p.addWaypoint(new Waypoint(0, 48, -180));
+
+        generate(config, p, aDirectory, path_name, aWheelbaseWidth);
+    }
+
+    private void genDriveBackwards(String aDirectory, double aWheelbaseWidth)
+    {
+        final String path_name = "BackOffPeg";
+
+        TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+        config.dt = .02;
+        config.max_acc = 20;
+        config.max_jerk = 480;
+        config.max_vel = 10;
+        config.isBackwards = true;
+
+        WaypointSequence p = new WaypointSequence();
+        p.addWaypoint(new Waypoint(0, 0, -0));
+        p.addWaypoint(new Waypoint(0, -48, -0));
 
         generate(config, p, aDirectory, path_name, aWheelbaseWidth);
     }
@@ -135,5 +153,6 @@ public class GenerateTestTrajectoryPaths extends BasePathGenerator
         genTestMoveLeftSlow(aDirectory, aWheelbaseWidth);
         genTestMoveLeftFast(aDirectory, aWheelbaseWidth);
         genTestDriveBackwards(aDirectory, aWheelbaseWidth);
+        genDriveBackwards(aDirectory, aWheelbaseWidth);
     }
 }

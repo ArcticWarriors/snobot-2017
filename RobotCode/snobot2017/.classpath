@@ -10,5 +10,7 @@
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
 	<classpathentry kind="lib" path="/2017MockWpi/3rdParyLibraries/simple-json/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="/2017MockWpi/3rdParyLibraries/RIOdroid.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/json-simple-1.1.1.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/RIOdroid.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

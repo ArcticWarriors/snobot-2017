@@ -15,7 +15,7 @@ import com.team254.lib.trajectory.io.TextFileSerializer;
 public class BasePathGenerator
 {
 
-    protected static final double ROBOT_LENGTH = 3 * 12;
+    protected static final double ROBOT_LENGTH = 20;
     protected static final double ROBOT_WIDTH = 2 * 12;
 
     // Raw Staring locations
@@ -27,7 +27,7 @@ public class BasePathGenerator
     // Gear Locations
     protected static final double NON_CENTER_GEAR_X_OFFSET = 48;
     
-    protected static final double CENTER_GEAR_Y = START_Y - 7 * 12;
+    protected static final double CENTER_GEAR_Y = START_Y - 8 * 12;
     protected static final double NON_CENTER_CENTER_GEAR_Y = 197.5;
 
     // Raw hopper locations
@@ -69,15 +69,15 @@ public class BasePathGenerator
     static
     {
         GEAR_SPEED_CONFIG.dt = .02;
-        GEAR_SPEED_CONFIG.max_acc = 120;
+        GEAR_SPEED_CONFIG.max_acc = 80;
         GEAR_SPEED_CONFIG.max_jerk = 480;
-        GEAR_SPEED_CONFIG.max_vel = 60;
+        GEAR_SPEED_CONFIG.max_vel = 36;
         GEAR_SPEED_CONFIG.isBackwards = false;
 
         GEAR_SPEED_BACKWARDS_CONFIG.dt = .02;
-        GEAR_SPEED_BACKWARDS_CONFIG.max_acc = 120;
+        GEAR_SPEED_BACKWARDS_CONFIG.max_acc = 80;
         GEAR_SPEED_BACKWARDS_CONFIG.max_jerk = 480;
-        GEAR_SPEED_BACKWARDS_CONFIG.max_vel = 60;
+        GEAR_SPEED_BACKWARDS_CONFIG.max_vel = 36;
         GEAR_SPEED_BACKWARDS_CONFIG.isBackwards = true;
 
     }

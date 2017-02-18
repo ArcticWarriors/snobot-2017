@@ -39,6 +39,9 @@ public class SnobotDriveTrain extends ASnobotDrivetrain<SpeedController>
     @Override
     public void update()
     {
+        mLeftDriveEncoder.setDistancePerPulse(Properties2017.sLEFT_ENCODER_DIST_PER_PULSE.getValue());
+        mRightDriveEncoder.setDistancePerPulse(Properties2017.sRIGHT_ENCODER_DIST_PER_PULSE.getValue());
+        
         mLeftMotorDistance = mLeftDriveEncoder.getDistance();
         mRightMotorDistance = mRightDriveEncoder.getDistance();
         mRightEncoderRaw = mRightDriveEncoder.getRaw();
