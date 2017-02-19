@@ -1,8 +1,8 @@
 package com.snobot2017.positioner;
 
 import com.snobot.lib.ISubsystem;
-import com.snobot.lib.Logger;
 import com.snobot.lib.Utilities;
+import com.snobot.lib.logging.ILogger;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.drivetrain.IDriveTrain;
 
@@ -21,7 +21,7 @@ public class Positioner implements ISubsystem, IPositioner
 {
     private Timer mTimer;
     private IDriveTrain mDriveTrain;
-    private Logger mLogger;
+    private ILogger mLogger;
     private Gyro mGyro;
 
     private double mXPosition;
@@ -44,7 +44,7 @@ public class Positioner implements ISubsystem, IPositioner
      * @param aLogger
      *            The robot's Logger.
      */
-    public Positioner(Gyro aGyro, IDriveTrain aDriveTrain, Logger aLogger)
+    public Positioner(Gyro aGyro, IDriveTrain aDriveTrain, ILogger aLogger)
     {
         mXPosition = 0;
         mYPosition = 0;

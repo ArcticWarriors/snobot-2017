@@ -1,8 +1,7 @@
 package com.snobot2017.drivetrain;
 
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.ILogger;
 import com.snobot2017.Properties2017;
-import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -25,7 +24,7 @@ public class SnobotDriveTrain extends ASnobotDrivetrain<SpeedController>
             Encoder aLeftDriveEncoder, 
             Encoder aRightDriveEncoder,
             IDriverJoystick aDriverJoystick, 
-            Logger aLogger)
+            ILogger aLogger)
     {
         super(aLeftMotor, null, aRightMotor, null, aDriverJoystick, aLogger);
         mLeftDriveEncoder = aLeftDriveEncoder;

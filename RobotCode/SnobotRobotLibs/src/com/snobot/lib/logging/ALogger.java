@@ -1,4 +1,4 @@
-package com.snobot.lib;
+package com.snobot.lib.logging;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -6,84 +6,59 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Class for logger
- * 
- * @author Calvin Do
- *
- */
-
-public class Logger
+public abstract class ALogger implements ILogger
 {
-    // File Writer
+
     private FileWriter mLogWriter;
-
-    // A count that increases every teleop cycle
-    private int mCurrentLogCount;
-
-    // A count that is used to indicate when to log (set by preferences)
-    private int mConfigLogCount;
-
-    // File Path set by preferences
     private String mLogFilePath;
     private SimpleDateFormat mLogDateFormat;
+    protected boolean mRunning;
 
-    private boolean mRunning;
-
-    public Logger()
+    public ALogger()
     {
         mRunning = false;
     }
 
-    public void startLogging(SimpleDateFormat aLogFormat, int aLogConfigCount, String aLogPath)
+    @Override
+    public void startLogging(SimpleDateFormat aLogFormat, String aLogPath)
     {
         mRunning = true;
         mLogDateFormat = aLogFormat;
-        mConfigLogCount = aLogConfigCount;
         mLogFilePath = aLogPath;
     }
 
-    /**
-     * Initializes member-variables and opens file-stream
-     * 
-     * @throws IOException
-     */
-    public void init()
+    public void initializeLogger()
     {
         if (mRunning)
         {
-            mCurrentLogCount = 0;
-
             try
             {
                 File dir = new File(mLogFilePath);
                 if (!dir.exists())
                 {
-                    dir.mkdirs();
+                    System.err.println("ERROR CREATING LOGGER: Path to '" + mLogFilePath + "' does not exist.  Bailing");
+                    mRunning = false;
+                    return;
                 }
-
+    
                 String timeString = mLogDateFormat.format(new Date());
                 mLogWriter = new FileWriter(mLogFilePath + "RobotLog_" + timeString + "_log.csv");
-
+    
                 mLogWriter.write("Date and Time");
-
+    
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
         }
-
+    
     }
 
-    /**
-     * Adds a new header to represent logged data
-     * 
-     * @param aHeader
-     */
+    @Override
     public void addHeader(String aHeader)
     {
-
+    
         try
         {
             if (mLogWriter != null)
@@ -99,9 +74,7 @@ public class Logger
         }
     }
 
-    /**
-     * Stops accepting new headers
-     */
+    @Override
     public void endHeader()
     {
         try
@@ -111,7 +84,7 @@ public class Logger
                 mLogWriter.write("\n");
                 mLogWriter.flush();
             }
-
+    
         }
         catch (IOException e)
         {
@@ -121,12 +94,10 @@ public class Logger
         }
     }
 
-    /**
-     * Begins accepting new log entries
-     */
+    @Override
     public void startRow()
     {
-
+    
         try
         {
             if (mLogWriter != null)
@@ -141,14 +112,10 @@ public class Logger
             this.stop();
             mLogWriter = null;
         }
-
+    
     }
 
-    /**
-     * Updates log information
-     * 
-     * @param aEntry
-     */
+    @Override
     public void updateLogger(String aEntry)
     {
         try
@@ -157,7 +124,7 @@ public class Logger
             {
                 mLogWriter.write("," + aEntry);
             }
-
+    
         }
         catch (IOException e)
         {
@@ -167,42 +134,28 @@ public class Logger
         }
     }
 
-    /**
-     * Updates log information
-     * 
-     * @param aEntry
-     */
+    @Override
     public void updateLogger(int aEntry)
     {
         updateLogger("" + aEntry);
     }
 
-    /**
-     * Updates log information
-     * 
-     * @param aEntry
-     */
+    @Override
     public void updateLogger(double aEntry)
     {
         updateLogger("" + aEntry);
     }
 
-    /**
-     * Updates log information
-     * 
-     * @param aEntry
-     */
+    @Override
     public void updateLogger(boolean aEntry)
     {
         // Convert boolean to a number, then log
         updateLogger(aEntry ? 1 : 0);
-
+    
     }
 
-    /**
-     * Stops accepting log entries
-     */
-    public void endLogger()
+    @Override
+    public void endRow()
     {
         try
         {
@@ -211,7 +164,7 @@ public class Logger
                 mLogWriter.write("\n");
                 mLogWriter.flush();
             }
-
+    
         }
         catch (IOException e)
         {
@@ -241,23 +194,7 @@ public class Logger
         }
     }
 
-    /**
-     * Lets robot check for when to log
-     */
-    public boolean logNow()
-    {
-        if (mCurrentLogCount < mConfigLogCount)
-        {
-            mCurrentLogCount++;
-            return false;
-        }
-        else
-        {
-            mCurrentLogCount = 0;
-            return true;
-        }
-    }
-
+    @Override
     public void flush()
     {
         try
@@ -274,4 +211,5 @@ public class Logger
             mLogWriter = null;
         }
     }
+
 }

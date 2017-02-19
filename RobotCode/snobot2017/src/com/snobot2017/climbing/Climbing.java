@@ -1,6 +1,6 @@
 package com.snobot2017.climbing;
 
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.ILogger;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
@@ -19,7 +19,7 @@ public class Climbing implements IClimbing
 
     private SpeedController mClimbingMotor;
     private IOperatorJoystick mJoystick;
-    private Logger mLogger;
+    private ILogger mLogger;
     private double mMotorSpeed;
 
     /**
@@ -29,7 +29,7 @@ public class Climbing implements IClimbing
      * @param aLogger
      * @param aJoystick
      */
-    public Climbing(SpeedController aClimbingMotor, Logger aLogger, IOperatorJoystick aJoystick)
+    public Climbing(SpeedController aClimbingMotor, ILogger aLogger, IOperatorJoystick aJoystick)
     {
         mClimbingMotor = aClimbingMotor;
         mLogger = aLogger;

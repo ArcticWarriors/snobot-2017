@@ -1,9 +1,8 @@
 package com.snobot2017.drivetrain;
 
 import com.ctre.CANTalon;
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.ILogger;
 import com.snobot2017.Properties2017;
-import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.joystick.IDriverJoystick;
 
 /**
@@ -19,7 +18,7 @@ public class SnobotCanDriveTrain extends ASnobotDrivetrain<CANTalon>
             CANTalon aRightMotorA, 
             CANTalon aRightMotorB, 
             IDriverJoystick aDriverJoystick, 
-            Logger aLogger)
+            ILogger aLogger)
     {
         super(aLeftMotorA, aLeftMotorB, aRightMotorA, aRightMotorB, aDriverJoystick, aLogger);
     }

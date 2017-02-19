@@ -1,6 +1,6 @@
 package com.snobot2017.joystick;
 
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.Logger;
 import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.wpilibj.Joystick;

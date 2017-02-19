@@ -1,6 +1,6 @@
 package com.snobot2017.gearboss;
 
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.ILogger;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
 
@@ -20,10 +20,10 @@ public class SnobotGearBoss implements IGearBoss
 
     private DoubleSolenoid mGearSolenoid;
     private IOperatorJoystick mOperatorJoystick;
-    private Logger mLogger;
+    private ILogger mLogger;
     private boolean mGearIsUp;
 
-    public SnobotGearBoss(DoubleSolenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick, Logger aLogger)
+    public SnobotGearBoss(DoubleSolenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick, ILogger aLogger)
     {
         mGearSolenoid = aGearSolenoid;
         mOperatorJoystick = aOperatorJoystick;

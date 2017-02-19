@@ -19,7 +19,6 @@ import com.snobot2017.fuel_pooper.FuelPooper;
 import com.snobot2017.fuel_pooper.IFuelPooper;
 import com.snobot2017.gearboss.IGearBoss;
 import com.snobot2017.gearboss.SnobotGearBoss;
-import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
 import com.snobot2017.light_manager.LightManager;
@@ -78,7 +77,7 @@ public class Snobot2017 extends ASnobot
         Joystick driverJoystickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
 
-        IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, mLogger, mAutonFactory);
+        SnobotDriveXbaxJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, mLogger, mAutonFactory);
         mSubsystems.add(driverJoystick);
 
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
@@ -147,11 +146,11 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mPooper);
 
         // Call last
-        mLogger.startLogging(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), Properties2017.sLOG_COUNT.getValue(),
-                Properties2017.sLOG_FILE_PATH.getValue());
+        mLogger.startLogging(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"),
+                " xfxfx /fjjdf ");
 
         // Autolog
-        mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystickRaw,
+        mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_COUNT.getValue(), " xfxfx /fjjdf ", driverJoystick,
                 mDriveTrain);
         mSubsystems.add(mAutoLogger);
         init();

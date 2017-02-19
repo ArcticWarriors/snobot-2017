@@ -1,6 +1,7 @@
 package com.snobot2017.fuel_pooper;
 
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.ILogger;
+import com.snobot.lib.logging.Logger;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
@@ -13,11 +14,11 @@ public class FuelPooper implements IFuelPooper
     private IOperatorJoystick mJoystick;
     private Servo mSphincterRight;
     private Servo mSphincterLeft;
-    private Logger mLogger;
+    private ILogger mLogger;
 
     private boolean mIsShincterOpen;
 
-    public FuelPooper(IOperatorJoystick aJoystick, Servo aRightSphincter, Servo aLeftSphincter, Logger aLogger)
+    public FuelPooper(IOperatorJoystick aJoystick, Servo aRightSphincter, Servo aLeftSphincter, ILogger aLogger)
     {
         mSphincterRight = aRightSphincter;
         mSphincterLeft = aLeftSphincter;

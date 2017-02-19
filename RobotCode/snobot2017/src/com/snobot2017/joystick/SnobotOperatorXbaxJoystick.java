@@ -1,6 +1,6 @@
 package com.snobot2017.joystick;
 
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.ILogger;
 import com.snobot.lib.ui.LatchedButton;
 import com.snobot.lib.ui.ToggleButton;
 import com.snobot.lib.ui.XboxButtonMap;
@@ -21,7 +21,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     private Joystick mJoystick;
     private boolean mClimb;
     private boolean mCatch;
-    private Logger mLogger;
+    private ILogger mLogger;
 
     // Gear Boss
     private GearBossPositions mGearBossPos;
@@ -52,7 +52,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     private boolean mDriveSmoothlyToPosition;
     private ToggleButton mDriveSmoothlyToPositionToggleButton;
 
-    public SnobotOperatorXbaxJoystick(Joystick aJoystick, Logger aLogger)
+    public SnobotOperatorXbaxJoystick(Joystick aJoystick, ILogger aLogger)
     {
         mJoystick = aJoystick;
 

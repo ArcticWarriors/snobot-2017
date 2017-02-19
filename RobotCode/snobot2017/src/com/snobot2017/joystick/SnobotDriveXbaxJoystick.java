@@ -1,9 +1,8 @@
 package com.snobot2017.joystick;
 
-import com.snobot.lib.Logger;
-import com.snobot.lib.ui.LatchedButton;
 import com.snobot.lib.Utilities;
-
+import com.snobot.lib.logging.ILogger;
+import com.snobot.lib.ui.LatchedButton;
 import com.snobot.lib.ui.XboxButtonMap;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.autonomous.AutonomousFactory;
@@ -11,18 +10,18 @@ import com.snobot2017.autonomous.AutonomousFactory;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SnobotDriveXbaxJoystick implements IDriverJoystick
+public class SnobotDriveXbaxJoystick implements IDriverJoystick, IAutoLoggerJoystick
 {
 	private static final double sJOYSTICK_DEADBAND = .032;
     private Joystick mJoystick;
     private double mLeftSpeed;
     private double mRightSpeed;
-    private Logger mLogger;
+    private ILogger mLogger;
     private LatchedButton mDPadUp;
     private LatchedButton mDPadDown;
     private AutonomousFactory mAutonFactory;
 
-    public SnobotDriveXbaxJoystick(Joystick aJoystick, Logger aLogger, AutonomousFactory aAutonFactory)
+    public SnobotDriveXbaxJoystick(Joystick aJoystick, ILogger aLogger, AutonomousFactory aAutonFactory)
     {
 
         mJoystick = aJoystick;
@@ -120,6 +119,12 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick
 
     @Override
     public boolean isArcadeMode()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isRecording()
     {
         return false;
     }

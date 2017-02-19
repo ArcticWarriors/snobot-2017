@@ -3,6 +3,8 @@ package com.snobot.lib;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.snobot.lib.logging.Logger;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -86,7 +88,7 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     @Override
     public void init()
     {
-        mLogger.init();
+        mLogger.initializeLogger();
         for (ISubsystem iSubsystem : mSubsystems)
         {
             iSubsystem.init();
@@ -125,7 +127,7 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
             {
                 iSubsystem.updateLog();
             }
-            mLogger.endLogger();
+            mLogger.endRow();
         }
 
     }
