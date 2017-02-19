@@ -1,8 +1,8 @@
 package com.snobot2017.positioner;
 
-import com.snobot.lib.ISubsystem;
 import com.snobot.lib.Utilities;
 import com.snobot.lib.logging.ILogger;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.drivetrain.IDriveTrain;
 

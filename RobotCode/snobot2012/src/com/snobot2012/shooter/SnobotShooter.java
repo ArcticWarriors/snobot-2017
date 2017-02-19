@@ -1,6 +1,6 @@
 package com.snobot2012.shooter;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot.lib.ui.LatchedButton;
 import com.snobot2012.SmartDashboardNames;
 import com.snobot2012.ui.OperatorJoystick;

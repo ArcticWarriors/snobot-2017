@@ -1,4 +1,4 @@
-package com.snobot.lib;
+package com.snobot.lib.logging;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

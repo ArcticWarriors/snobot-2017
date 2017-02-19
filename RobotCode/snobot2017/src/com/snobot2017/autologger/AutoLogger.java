@@ -7,8 +7,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.snobot.lib.ISubsystem;
 import com.snobot.lib.logging.ALogger;
+import com.snobot.lib.modules.ILoggableModule;
+import com.snobot.lib.modules.IUpdateableModule;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.joystick.IAutoLoggerJoystick;
 
@@ -19,7 +20,7 @@ import com.snobot2017.joystick.IAutoLoggerJoystick;
  *
  */
 
-public class AutoLogger extends ALogger implements ISubsystem
+public class AutoLogger extends ALogger implements IUpdateableModule, ILoggableModule
 {
     // Current Date and Time
     private String mLogDate;
@@ -82,26 +83,6 @@ public class AutoLogger extends ALogger implements ISubsystem
     }
 
     /**
-     * Begins accepting new log entries
-     */
-    public void startLogEntry(String aLogDate)
-    {
-        try
-        {
-            if (mLogWriter != null)
-            {
-                mLogWriter.write(aLogDate);
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            this.stop();
-            mLogWriter = null;
-        }
-    }
-
-    /**
      * Stops accepting log entries
      */
     public void endLogger()
@@ -154,24 +135,11 @@ public class AutoLogger extends ALogger implements ISubsystem
         }
         if (mIsRecording)
         {
-            String logDate = mDateFormat.format(new Date());
-            this.startLogEntry(logDate);
+            startRow();
             updateLogger(mDriveTrain.getLeftMotorSpeed());
             updateLogger(mDriveTrain.getRightMotorSpeed());
-            this.endLogger();
+            endLogger();
         }
-
-    }
-
-    @Override
-    public void control()
-    {
-
-    }
-
-    @Override
-    public void updateSmartDashboard()
-    {
 
     }
 

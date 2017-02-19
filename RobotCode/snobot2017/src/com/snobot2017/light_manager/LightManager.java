@@ -1,15 +1,13 @@
 package com.snobot2017.light_manager;
 
+import com.snobot.lib.modules.IUpdateableModule;
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.joystick.IOperatorJoystick;
-import com.snobot2017.joystick.IVisionJoystick;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay.Value;
 
-public class LightManager
+public class LightManager implements IUpdateableModule
 {
     private Relay mGreenRelay;
     private Relay mBlueRelay;
@@ -26,6 +24,7 @@ public class LightManager
         mCounter = 0;
     }
     
+    @Override
     public void update()
     {
         if(mOperatorJoystick.greenLightOn())

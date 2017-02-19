@@ -1,6 +1,6 @@
 package com.snobot2017.drivetrain;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot2017.SnobotActor.ISnobotActor;
 
 public interface IDriveTrain extends ISubsystem

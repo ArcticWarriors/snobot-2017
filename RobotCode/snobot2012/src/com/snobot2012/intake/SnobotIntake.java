@@ -1,6 +1,6 @@
 package com.snobot2012.intake;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot2012.SmartDashboardNames;
 import com.snobot2012.ui.OperatorJoystick;
 

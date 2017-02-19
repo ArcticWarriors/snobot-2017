@@ -1,6 +1,6 @@
 package com.snobot2017.SnobotActor;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 
 public interface ISnobotActor extends ISubsystem
 {

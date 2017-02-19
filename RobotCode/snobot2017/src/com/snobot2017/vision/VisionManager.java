@@ -6,7 +6,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot.lib.vision.MjpegForwarder;
 import com.snobot.lib.vision.MjpegReceiver;
 import com.snobot2017.PortMappings2017;
@@ -83,7 +83,6 @@ public class VisionManager implements ISubsystem
         mTargetInformation.clear();
 
         SavedRobotState robotState = mStateManager.getStateHistory(aTimestamp);
-        System.out.println("Robot state " + robotState);
 
         JSONObject targetUpdateJson = new JSONObject();
         JSONArray targets = new JSONArray();

@@ -1,6 +1,6 @@
 package com.snobot2017.positioner;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 
 public interface IPositioner extends ISubsystem
 {

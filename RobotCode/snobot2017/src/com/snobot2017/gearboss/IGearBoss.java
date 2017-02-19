@@ -1,6 +1,6 @@
 package com.snobot2017.gearboss;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 
 /**
  * Interface controls gear position

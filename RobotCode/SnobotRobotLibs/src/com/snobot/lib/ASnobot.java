@@ -3,10 +3,12 @@ package com.snobot.lib;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.snobot.lib.logging.ILogger;
 import com.snobot.lib.logging.Logger;
 import com.snobot.lib.modules.IControllableModule;
 import com.snobot.lib.modules.ILoggableModule;
 import com.snobot.lib.modules.ISmartDashboardUpdaterModule;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot.lib.modules.IUpdateableModule;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -21,7 +23,7 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     private List<ILoggableModule> mLoggableModules;
     private List<ISmartDashboardUpdaterModule> mSmartDashboardModules;
 
-    protected Logger mLogger;
+    private Logger mLogger;
 
     // Autonomous
     private CommandGroup mAutonCommand;
@@ -49,6 +51,10 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
         if (aModule instanceof ILoggableModule)
         {
             mLoggableModules.add((ILoggableModule) aModule);
+        }
+        if (aModule instanceof ISmartDashboardUpdaterModule)
+        {
+            mSmartDashboardModules.add((ISmartDashboardUpdaterModule) aModule);
         }
 
     }
@@ -185,6 +191,11 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     public void testPeriodic()
     {
 
+    }
+
+    protected ILogger getLogger()
+    {
+        return mLogger;
     }
 
     protected abstract CommandGroup createAutonomousCommand();
