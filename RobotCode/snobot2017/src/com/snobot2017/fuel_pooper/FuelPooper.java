@@ -1,7 +1,6 @@
 package com.snobot2017.fuel_pooper;
 
 import com.snobot.lib.logging.ILogger;
-import com.snobot.lib.logging.Logger;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
@@ -29,7 +28,7 @@ public class FuelPooper implements IFuelPooper
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("SphincterIsOpen");
     }
@@ -52,12 +51,6 @@ public class FuelPooper implements IFuelPooper
         {
             closeSphincter();
         }
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
-        // Nothing
     }
 
     @Override

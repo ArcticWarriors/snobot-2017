@@ -30,7 +30,7 @@ public class SnobotShooter implements ISubsystem
 	}
 	
 	@Override
-	public void init() {
+	public void initializeLogHeaders() {
 	}
 
 	@Override
@@ -72,10 +72,6 @@ public class SnobotShooter implements ISubsystem
 			mShooterSolenoid.set(false);
 		}
 		
-	}
-	@Override
-    public void rereadPreferences()
-    {
 	}
 
 	@Override

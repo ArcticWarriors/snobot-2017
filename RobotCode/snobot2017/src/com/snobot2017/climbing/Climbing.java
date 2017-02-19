@@ -37,7 +37,7 @@ public class Climbing implements IClimbing
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("RotationSpeed");
     }
@@ -71,12 +71,6 @@ public class Climbing implements IClimbing
         {
             stop();
         }
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
-        // Nothing
     }
 
     @Override

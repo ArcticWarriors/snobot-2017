@@ -64,7 +64,7 @@ public class Positioner implements ISubsystem, IPositioner
      * Starts timer and adds headers to Logger.
      */
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mTimer.start();
 
@@ -145,12 +145,6 @@ public class Positioner implements ISubsystem, IPositioner
 
     @Override
     public void control()
-    {
-        // Nothing
-    }
-
-    @Override
-    public void rereadPreferences()
     {
         // Nothing
     }

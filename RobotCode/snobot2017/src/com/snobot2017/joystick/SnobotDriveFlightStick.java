@@ -28,7 +28,7 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("LeftDriveJoystickSpeed");
         mLogger.addHeader("RightDriveJoystickSpeed");
@@ -39,18 +39,6 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     {
         mLeftSpeed = mLeft.getY();
         mRightSpeed = mRight.getY();
-    }
-
-    @Override
-    public void control()
-    {
-       // Nothing
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
-        // Nothing
     }
 
     @Override
@@ -66,12 +54,6 @@ public class SnobotDriveFlightStick implements IDriverJoystick
     {
         mLogger.updateLogger(mLeftSpeed);
         mLogger.updateLogger(mRightSpeed);
-    }
-
-    @Override
-    public void stop()
-    {
-        // Nothing
     }
 
     @Override

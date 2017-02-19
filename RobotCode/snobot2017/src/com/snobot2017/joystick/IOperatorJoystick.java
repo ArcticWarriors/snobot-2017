@@ -1,6 +1,6 @@
 package com.snobot2017.joystick;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.IJoystick;
 
 /**
  * Joystick for interacting with the Gear Boss
@@ -8,7 +8,7 @@ import com.snobot.lib.ISubsystem;
  * @author jbnol
  *
  */
-public interface IOperatorJoystick extends ISubsystem
+public interface IOperatorJoystick extends IJoystick
 {
     enum GearBossPositions
     {

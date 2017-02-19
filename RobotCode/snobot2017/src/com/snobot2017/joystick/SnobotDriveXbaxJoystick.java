@@ -32,7 +32,7 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick, IAutoLoggerJoys
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("XbaxLeftJoystickSpeed");
         mLogger.addHeader("XbaxRightJoystickSpeed");
@@ -59,18 +59,6 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick, IAutoLoggerJoys
     }
 
     @Override
-    public void control()
-    {
-        // Nothing
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
-        // Nothing
-    }
-
-    @Override
     public void updateSmartDashboard()
     {
         SmartDashboard.putNumber(SmartDashBoardNames.sLEFT_XBAX_JOYSTICK_SPEED, mLeftSpeed);
@@ -83,12 +71,6 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick, IAutoLoggerJoys
     {
         mLogger.updateLogger(mLeftSpeed);
         mLogger.updateLogger(mRightSpeed);
-    }
-
-    @Override
-    public void stop()
-    {
-        // Nothing
     }
 
     @Override

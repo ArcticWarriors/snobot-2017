@@ -33,7 +33,7 @@ public class SnobotGearBoss implements IGearBoss
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("SolenoidPosition");
     }
@@ -64,12 +64,6 @@ public class SnobotGearBoss implements IGearBoss
             break;
         }
         }
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
-        // Nothing
     }
 
     @Override

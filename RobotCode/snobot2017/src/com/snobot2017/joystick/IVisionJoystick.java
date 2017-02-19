@@ -1,13 +1,13 @@
 package com.snobot2017.joystick;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.IJoystick;
 
 /**
  * Joystick for interacting with the vision app
  * @author jbnol
  *
  */
-public interface IVisionJoystick extends ISubsystem
+public interface IVisionJoystick extends IJoystick
 {
     /**
      * @return true if App View should be changed

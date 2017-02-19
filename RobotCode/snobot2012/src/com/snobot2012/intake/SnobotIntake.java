@@ -21,7 +21,7 @@ public class SnobotIntake implements ISubsystem
         mIntakeJoystick = aJoystick;
     }
 
-    public void init()
+    public void initializeLogHeaders()
     {
 
     }
@@ -36,11 +36,6 @@ public class SnobotIntake implements ISubsystem
     {
         mIntakeMotorLower.set(mIntakeJoystick.useIntakeLower());
         mIntakeMotorUpper.set(mIntakeJoystick.useIntakeUpper());
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
     }
 
     @Override

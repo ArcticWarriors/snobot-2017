@@ -1,46 +1,16 @@
 package com.snobot.lib;
 
+import com.snobot.lib.modules.IControllableModule;
+import com.snobot.lib.modules.ILoggableModule;
+import com.snobot.lib.modules.ISmartDashboardUpdaterModule;
+import com.snobot.lib.modules.IUpdateableModule;
+
 /**
  * Main interface for the Robot subsystems.
  * 
  * @author Ayush/Ammar
  *
  */
-public interface ISubsystem
+public interface ISubsystem extends IControllableModule, IUpdateableModule, ILoggableModule, ISmartDashboardUpdaterModule
 {
-
-    /**
-     * Perform initialization.
-     */
-    void init();
-
-    /**
-     * Gathering and storing current sensor information. Ex. Motor Speed.
-     */
-    void update();
-
-    /**
-     * Setting sensor and device states.
-     */
-    void control();
-
-    /**
-     * Rereads and applies current preferences.
-     */
-    void rereadPreferences();
-
-    /**
-     * Updates information that is sent to SmartDashboard Takes Enum argument
-     */
-    void updateSmartDashboard();
-
-    /**
-     * Updates the logger.
-     */
-    void updateLog();
-
-    /**
-     * Stops all sensors and motors
-     */
-    void stop();
 }

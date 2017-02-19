@@ -53,7 +53,7 @@ public class VisionManager implements ISubsystem
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         // mVisionServer.restartApp();
 
@@ -168,12 +168,6 @@ public class VisionManager implements ISubsystem
             mSnobotActor.cancelAction();
             mOperatorJoystick.turnOffActions();
         }
-
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
 
     }
 

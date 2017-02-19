@@ -68,7 +68,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("Climb");
         mLogger.addHeader("Catch");
@@ -161,18 +161,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     }
 
     @Override
-    public void control()
-    {
-        // Nothing
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
-        // Nothing
-    }
-
-    @Override
     public void updateSmartDashboard()
     {
         SmartDashboard.putBoolean(SmartDashBoardNames.sOPERATOR_JOYSTICK_IS_CLIMBING, mClimb);
@@ -187,12 +175,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         mLogger.updateLogger(mClimb);
         mLogger.updateLogger(mCatch);
         mLogger.updateLogger(mGearBossPos.toString());
-    }
-
-    @Override
-    public void stop()
-    {
-        // Nothing
     }
 
     @Override

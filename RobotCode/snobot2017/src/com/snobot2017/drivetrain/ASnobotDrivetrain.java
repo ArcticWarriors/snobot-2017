@@ -63,7 +63,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("LeftEncoderDistance");
         mLogger.addHeader("RightEncoderDistance");
@@ -78,12 +78,6 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         {
             setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
         }
-    }
-    
-    @Override
-    public void rereadPreferences()
-    {
-        // Nothing
     }
 
     @Override

@@ -53,7 +53,7 @@ public class AutoLogger extends ALogger implements ISubsystem
      * 
      * @throws IOException
      */
-    public void init()
+    public void initializeLogHeaders()
     {
     }
     
@@ -165,12 +165,6 @@ public class AutoLogger extends ALogger implements ISubsystem
 
     @Override
     public void control()
-    {
-
-    }
-
-    @Override
-    public void rereadPreferences()
     {
 
     }

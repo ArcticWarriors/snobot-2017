@@ -93,7 +93,7 @@ public class SnobotActor implements ISnobotActor
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
 
     }
@@ -253,12 +253,6 @@ public class SnobotActor implements ISnobotActor
 
     @Override
     public void control()
-    {
-
-    }
-
-    @Override
-    public void rereadPreferences()
     {
 
     }
