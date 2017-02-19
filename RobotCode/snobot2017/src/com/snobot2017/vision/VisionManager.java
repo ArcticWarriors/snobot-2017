@@ -153,7 +153,7 @@ public class VisionManager implements ISubsystem
                 if (!mTargetInformation.isEmpty())
                 {
                     TargetLocation target = mTargetInformation.get(0);
-                    mSnobotActor.setDriveSmoothlyToPositionGoal(target.mX, target.mY, .3);
+                    mSnobotActor.setDriveSmoothlyToPositionGoal(target.mX, target.mY);
                 }
             }
 

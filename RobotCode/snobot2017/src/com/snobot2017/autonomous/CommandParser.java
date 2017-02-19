@@ -16,6 +16,13 @@ import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
 import com.snobot2017.autonomous.AutonomousFactory.StartingPositions;
+import com.snobot2017.autonomous.commands.DriveStraightADistance;
+import com.snobot2017.autonomous.commands.GoToPositionInSteps;
+import com.snobot2017.autonomous.commands.GoToPositionSmoothly;
+import com.snobot2017.autonomous.commands.Replay;
+import com.snobot2017.autonomous.commands.ScoreGear;
+import com.snobot2017.autonomous.commands.StupidDriveStraight;
+import com.snobot2017.autonomous.commands.TurnWithDegrees;
 import com.snobot2017.autonomous.path.DriveStraightPath;
 import com.snobot2017.autonomous.path.DriveTurnPath;
 import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
@@ -39,7 +46,6 @@ public class CommandParser extends ACommandParser
     private static final double sEXPECTED_DT = .02;
 
     protected Snobot2017 mSnobot;
-    private AutonomousFactory mAutonFactory;
     protected SendableChooser<StartingPositions> mPositionChooser;
 
     /**
@@ -50,11 +56,10 @@ public class CommandParser extends ACommandParser
      * @param aPositionChooser
      * @param aStartPosition
      */
-    public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser, AutonomousFactory aAutonFactory)
+    public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser)
     {
         super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
                 SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
-        mAutonFactory = aAutonFactory;
         mSnobot = aSnobot;
         mPositionChooser = aPositionChooser;
 
@@ -217,13 +222,8 @@ public class CommandParser extends ACommandParser
     {
         double x = Double.parseDouble(args.get(1));
         double y = Double.parseDouble(args.get(2));
-        double speed = .5;
-        if (args.size() > 3)
-        {
-            speed = Double.parseDouble(args.get(3));
-        }
 
-        return new GoToPositionSmoothly(x, y, speed, mSnobot.getSnobotActor());
+        return new GoToPositionSmoothly(x, y, mSnobot.getSnobotActor());
     }
 
     private Command createTurnPathCommand(List<String> args)
@@ -233,13 +233,7 @@ public class CommandParser extends ACommandParser
                 Double.parseDouble(args.get(3)), // Max Acceleration
                 sEXPECTED_DT);
 
-        ISetpointIterator dudeSetpointIterator;
-
-        // TODO create dynamic iterator, way to switch
-        if (true)
-        {
-            dudeSetpointIterator = new StaticSetpointIterator(dudePathConfig);
-        }
+        ISetpointIterator dudeSetpointIterator = new StaticSetpointIterator(dudePathConfig);
 
         return new DriveTurnPath(mSnobot.getDriveTrain(), mSnobot.getPositioner(), dudeSetpointIterator);
     }
@@ -251,15 +245,9 @@ public class CommandParser extends ACommandParser
                 Double.parseDouble(args.get(3)), // Max Acceleration
                 sEXPECTED_DT);
 
-        ISetpointIterator dudeSetpointIterator;
-
-        // TODO create dynamic iterator, way to switch
-        if (true)
-        {
-            PathGenerator dudePathGenerator = new PathGenerator();
-            List<PathSetpoint> dudeList = dudePathGenerator.generate(dudePathConfig);
-            dudeSetpointIterator = new StaticSetpointIterator(dudeList);
-        }
+        PathGenerator dudePathGenerator = new PathGenerator();
+        List<PathSetpoint> dudeList = dudePathGenerator.generate(dudePathConfig);
+        ISetpointIterator dudeSetpointIterator = new StaticSetpointIterator(dudeList);
 
         return new DriveStraightPath(mSnobot.getDriveTrain(), mSnobot.getPositioner(), dudeSetpointIterator);
     }
@@ -328,8 +316,6 @@ public class CommandParser extends ACommandParser
 
             if (boilFilename != null)
             {
-                // TODO
-                System.out.println("********************  ADD BOILER TRAJECTORY *********************");
                 output.addSequential(createTrajectoryCommand(boilFilename));
             }
             else

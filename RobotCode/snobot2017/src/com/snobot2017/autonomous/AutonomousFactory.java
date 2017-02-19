@@ -70,7 +70,7 @@ public class AutonomousFactory
     {
         mDriverJoystick = aDriverJoystick;
         mPositionChooser = new SendableChooser<StartingPositions>();
-        mCommandParser = new CommandParser(aSnobot, mPositionChooser, this);
+        mCommandParser = new CommandParser(aSnobot, mPositionChooser);
         mAutoModeTable = NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME);
         
         mPositioner = aSnobot.getPositioner();

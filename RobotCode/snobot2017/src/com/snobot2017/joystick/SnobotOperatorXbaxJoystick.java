@@ -26,12 +26,8 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     // Gear Boss
     private GearBossPositions mGearBossPos;
 
-    // Ready for take off
-    private double mLiftOffSpeed;
-
     // Sphincter
-    private boolean mSphincterOpen;
-    private boolean mSphincterClose;
+    private boolean mSphincterIsOpen;
 
     // App stuff
     private LatchedButton mSwitchAppViewLatcher;
@@ -74,7 +70,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     @Override
     public void init()
     {
-        mLogger.addHeader("LiftOffSpeed");
         mLogger.addHeader("Climb");
         mLogger.addHeader("Catch");
         mLogger.addHeader("GearBossPosition");
@@ -101,16 +96,12 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
             mGearBossPos = GearBossPositions.NONE;
         }
 
-        // Ready for take off
-        mLiftOffSpeed = mJoystick.getRawAxis(XboxButtonMap.RIGHT_Y_AXIS);
-
         // Climb
         mClimb = mJoystick.getRawButton(XboxButtonMap.RB_BUTTON);
         mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
 
         // Sphincter
-        mSphincterOpen = mJoystick.getRawButton(XboxButtonMap.RIGHT_TRIGGER);
-        mSphincterClose = mJoystick.getRawButton(XboxButtonMap.LEFT_TRIGGER);
+        mSphincterIsOpen = mJoystick.getRawAxis(XboxButtonMap.LEFT_Y_AXIS) > .5;
 
         // Light
         if (mToggleGreenLight.update(mJoystick.getRawButton(XboxButtonMap.START_BUTTON)))
@@ -184,17 +175,15 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     @Override
     public void updateSmartDashboard()
     {
-        SmartDashboard.putBoolean(SmartDashBoardNames.sCLIMBING_OPERATOR_JOYSTICK_SPEED, mClimb);
-        SmartDashboard.putBoolean(SmartDashBoardNames.sCATCHING_OPERATOR_JOYSTICK_SPEED, mCatch);
-        SmartDashboard.putNumber(SmartDashBoardNames.sWE_HAVE_LIFT_OFF, mLiftOffSpeed);
-        SmartDashboard.putBoolean(SmartDashBoardNames.sGREEN_LIGHT_ON, mGreenRelayOn);
-        SmartDashboard.putBoolean(SmartDashBoardNames.sBLUE_LIGHT_ON, mBlueRelayOn);
+        SmartDashboard.putBoolean(SmartDashBoardNames.sOPERATOR_JOYSTICK_IS_CLIMBING, mClimb);
+        SmartDashboard.putBoolean(SmartDashBoardNames.sOPERATOR_JOYSTICK_IS_CATCHING, mCatch);
+        SmartDashboard.putBoolean(SmartDashBoardNames.sOPERATOR_JOYSTICK_GREEN_LIGHT_BTN, mGreenRelayOn);
+        SmartDashboard.putBoolean(SmartDashBoardNames.sOPERATOR_JOYSTICK_BLUE_LIGHT_BTN, mBlueRelayOn);
     }
 
     @Override
     public void updateLog()
     {
-        mLogger.updateLogger(mLiftOffSpeed);
         mLogger.updateLogger(mClimb);
         mLogger.updateLogger(mCatch);
         mLogger.updateLogger(mGearBossPos.toString());
@@ -216,12 +205,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     public boolean blueLightOn()
     {
         return mBlueRelayOn;
-    }
-
-    @Override
-    public double getTakeOffSpeed()
-    {
-        return mLiftOffSpeed;
     }
 
     @Override
@@ -297,6 +280,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     @Override
     public boolean isPooperOpen()
     {
-        return mJoystick.getRawButton(XboxButtonMap.RIGHT_TRIGGER);
+        return mSphincterIsOpen;
     }
 }

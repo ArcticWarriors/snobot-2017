@@ -1,4 +1,4 @@
-package FuelPooper;
+package com.snobot2017.fuel_pooper;
 
 import com.snobot.lib.ISubsystem;
 

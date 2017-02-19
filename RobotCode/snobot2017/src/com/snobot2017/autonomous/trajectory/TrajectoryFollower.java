@@ -1,7 +1,5 @@
 package com.snobot2017.autonomous.trajectory;
 
-import java.text.DecimalFormat;
-
 import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.Trajectory.Segment;
 
@@ -65,8 +63,8 @@ public class TrajectoryFollower
             double a_term = ka_ * segment.acc;
             double output = p_term + d_term + v_term + a_term;
 
-            DecimalFormat df = new DecimalFormat("#.000");
-
+//            DecimalFormat df = new DecimalFormat("#.000");
+//
 //            if (name.equals("right"))
 //            {
 //                System.out.println(name + " - " + 
@@ -91,7 +89,6 @@ public class TrajectoryFollower
         {
             return 0;
         }
-        // return 0;
     }
 
     public double getHeading()

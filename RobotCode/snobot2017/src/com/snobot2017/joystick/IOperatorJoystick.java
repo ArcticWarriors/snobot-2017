@@ -16,13 +16,6 @@ public interface IOperatorJoystick extends ISubsystem
     }
 
     /**
-     * Returns the speed for the climbing mechanism
-     * 
-     * @return Climbing Speed
-     */
-    double getTakeOffSpeed();
-
-    /**
      * Is the catch rope button pressed?
      * 
      * @return true if pressed
@@ -43,6 +36,11 @@ public interface IOperatorJoystick extends ISubsystem
      */
     boolean greenLightOn();
 
+    /**
+     * Should the green light be on?
+     * 
+     * @return True if the light should be on
+     */
     boolean blueLightOn();
 
     /**

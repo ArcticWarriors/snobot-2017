@@ -34,8 +34,6 @@ public class Positioner implements ISubsystem, IPositioner
     private double mSpeed;
     private double mStartAngle;
 
-    // private
-
     /**
      * Creates a new Positioner object.
      * 
@@ -89,7 +87,6 @@ public class Positioner implements ISubsystem, IPositioner
 
         // ChangeInDistance and X/Y
       mTotalDistance = (mDriveTrain.getRightDistance() + mDriveTrain.getLeftDistance()) / 2.0f;
-//      mTotalDistance = mDriveTrain.getLeftDistance();
         double deltaDistance = mTotalDistance - mLastDistance;
         mXPosition += deltaDistance * Math.sin(orientationRadians);
         mYPosition += deltaDistance * Math.cos(orientationRadians);

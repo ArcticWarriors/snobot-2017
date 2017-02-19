@@ -53,14 +53,12 @@ public class SnobotActor implements ISnobotActor
         double mGoalX;
         double mGoalY;
         double mDeadband;
-        double mSpeed;
 
-        SmoothControlParams(double aGoalX, double aGoalY, double aSpeed)
+        SmoothControlParams(double aGoalX, double aGoalY)
         {
             mGoalX = aGoalX;
             mGoalY = aGoalY;
             mDeadband = 6; // inches
-            mSpeed = aSpeed;
         }
     }
 
@@ -91,7 +89,7 @@ public class SnobotActor implements ISnobotActor
         mControlMode = ControlMode.Off;
         mDistanceControlParams = new DistanceControlParams(0, 0);
         mTurningControlParams = new TurnControlParams(0, 0);
-        mSmoothControlParams = new SmoothControlParams(0, 0, 0);
+        mSmoothControlParams = new SmoothControlParams(0, 0);
     }
 
     @Override
@@ -143,11 +141,11 @@ public class SnobotActor implements ISnobotActor
     }
 
     @Override
-    public void setDriveSmoothlyToPositionGoal(double aX, double aY, double aSpeed)
+    public void setDriveSmoothlyToPositionGoal(double aX, double aY)
     {
         mControlMode = ControlMode.SmoothTurning;
 
-        mSmoothControlParams = new SmoothControlParams(aX, aY, aSpeed);
+        mSmoothControlParams = new SmoothControlParams(aX, aY);
     }
 
     @Override
@@ -236,7 +234,7 @@ public class SnobotActor implements ISnobotActor
         // System.out.println((mPositioner.getOrientationDegrees() % 360) + "\t"
         // + goalAngle);
 
-        if (mInDeadbandHelper.isFinished(Math.abs(distanceAway) < mDistanceControlParams.mDeadband))
+        if (mInDeadbandHelper.isFinished(Math.abs(distanceAway) < mSmoothControlParams.mDeadband))
         {
             mDriveTrain.setLeftRightSpeed(0, 0);
             isFinished = true;
@@ -280,11 +278,11 @@ public class SnobotActor implements ISnobotActor
         case PositionInSteps:
             actionName = "Go To Position";
             break;
-        case Off:
-        default:
-            break;
         case SmoothTurning:
             actionName = "Smoothly Drive To Position";
+            break;
+        case Off:
+        default:
             break;
 
         }

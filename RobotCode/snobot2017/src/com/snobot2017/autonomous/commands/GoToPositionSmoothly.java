@@ -1,20 +1,20 @@
-package com.snobot2017.autonomous;
+package com.snobot2017.autonomous.commands;
 
 import com.snobot2017.SnobotActor.ISnobotActor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class GoToPositionInSteps extends Command
+public class GoToPositionSmoothly extends Command
 {
     private boolean mFinished;
     private ISnobotActor mSnobotActor;
 
-    public GoToPositionInSteps(double aX, double aY, double aSpeed, ISnobotActor aSnobotActor)
+    public GoToPositionSmoothly(double aX, double aY, ISnobotActor aSnobotActor)
     {
         mSnobotActor = aSnobotActor;
         mFinished = false;
 
-        mSnobotActor.setGoToPositionInStepsGoal(aX, aY, aSpeed);
+        mSnobotActor.setDriveSmoothlyToPositionGoal(aX, aY);
     }
 
     @Override
@@ -30,3 +30,4 @@ public class GoToPositionInSteps extends Command
     }
 
 }
+

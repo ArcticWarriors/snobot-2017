@@ -1,4 +1,4 @@
-package com.snobot2017.vision;
+package com.snobot2017.light_manager;
 
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.joystick.IOperatorJoystick;

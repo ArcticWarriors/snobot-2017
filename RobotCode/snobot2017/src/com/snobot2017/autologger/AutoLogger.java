@@ -9,13 +9,10 @@ import java.util.Date;
 
 import com.snobot.lib.ISubsystem;
 import com.snobot.lib.ui.LatchedButton;
-import com.snobot.lib.ui.ToggleButton;
 import com.snobot.lib.ui.XboxButtonMap;
 import com.snobot2017.drivetrain.IDriveTrain;
-import com.snobot2017.joystick.IDriverJoystick;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * Class for logger
@@ -81,7 +78,6 @@ public class AutoLogger implements ISubsystem
                 dir.mkdirs();
             }
             mLogWriter = new FileWriter(mLogFilePath + "RobotLog_" + mLogDate + "_log.csv");
-            System.out.println(mLogFilePath + "RobotLog_" + mLogDate + "_log.csv");
             mLogWriter.write("Date and Time");
 
         }
@@ -287,57 +283,57 @@ public class AutoLogger implements ISubsystem
         }
     }
 
-	@Override
-	public void update() 
-	{
-		if(mDriverYButton.update(mDriverJoystick.getRawButton(XboxButtonMap.Y_BUTTON)))
-		{
-			if(mLogNow)
-			{
-				mLogNow = false;
-				this.endLogger();
-			}
-			else
-			{
-			mLogNow = true;
-	        this.startLog();
-	        this.addHeader("LeftMotorSpeed");
-	        this.addHeader("RightMotorSpeed");
-			this.endHeader();
-			}
-		}
-		if(mLogNow)
-		{
-			String logDate = mDateFormat.format(new Date());
+    @Override
+    public void update()
+    {
+        if (mDriverYButton.update(mDriverJoystick.getRawButton(XboxButtonMap.Y_BUTTON)))
+        {
+            if (mLogNow)
+            {
+                mLogNow = false;
+                this.endLogger();
+            }
+            else
+            {
+                mLogNow = true;
+                this.startLog();
+                this.addHeader("LeftMotorSpeed");
+                this.addHeader("RightMotorSpeed");
+                this.endHeader();
+            }
+        }
+        if (mLogNow)
+        {
+            String logDate = mDateFormat.format(new Date());
             this.startLogEntry(logDate);
             updateLogger(mDriveTrain.getLeftMotorSpeed());
             updateLogger(mDriveTrain.getRightMotorSpeed());
             this.endLogger();
-		}
-		
-	}
+        }
 
-	@Override
-	public void control() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void rereadPreferences() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void control()
+    {
 
-	@Override
-	public void updateSmartDashboard() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void updateLog() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void rereadPreferences()
+    {
+
+    }
+
+    @Override
+    public void updateSmartDashboard()
+    {
+
+    }
+
+    @Override
+    public void updateLog()
+    {
+
+    }
 }

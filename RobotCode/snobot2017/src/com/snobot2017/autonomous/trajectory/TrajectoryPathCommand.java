@@ -125,7 +125,6 @@ public class TrajectoryPathCommand extends Command
             System.out.println("***************************************** TRAJ Finished *******************");
         }
         return finished;
-        // return followerLeft.isFinishedTrajectory();
     }
 
     @Override

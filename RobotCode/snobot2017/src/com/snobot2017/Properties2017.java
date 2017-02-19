@@ -25,7 +25,6 @@ public class Properties2017
     // AutoLogger
     public static final IntegerProperty sAUTO_LOG_COUNT = new IntegerProperty("AutoLogCount", 1);
     public static final StringProperty sAUTO_LOG_FILE_PATH;
-    public static final StringProperty sAUTO_LOG_RUN_PATH = new StringProperty("autologs/" + Properties2017.class.getCanonicalName() + "/");
     public static final StringProperty sREPLAY_PATH;
 
     // Drivetrain
@@ -47,7 +46,6 @@ public class Properties2017
     public static final DoubleProperty sTURN_PATH_KD = new DoubleProperty("TurnPathKD", 0);
     public static final DoubleProperty sTURN_PATH_KV = new DoubleProperty("TurnPathKVel", 0.0053);
     public static final DoubleProperty sTURN_PATH_KA = new DoubleProperty("TurnPathKAccel", 0);
-//    public static
 
     // Trajectory Driving
     public static final DoubleProperty sSPLINE_TURN_FACTOR = new DoubleProperty("SplineTurnFactor", 0.1);
@@ -56,9 +54,11 @@ public class Properties2017
     public static final DoubleProperty sROBOT_CATCHING_ROPE_SPEED = new DoubleProperty("RopeCatchingSpeed", 0.5);
     public static final DoubleProperty sROBOT_CLIMBING_ROPE_SPEED = new DoubleProperty("RopeClimbingSpeed", 1.0);
 
-    // Sphincter
-    public static final DoubleProperty sSPCHINCTER_OPEN = new DoubleProperty("OpenSphincter", 1.0);
-    public static final DoubleProperty sSPCHINCTER_CLOSE = new DoubleProperty("CloseSphincter", 0.0);
+    // Fuel Pooper
+    public static final DoubleProperty sSPCHINCTER_RIGHT_OPEN = new DoubleProperty("SphincterRightOpen", 1.0);
+    public static final DoubleProperty sSPCHINCTER_LEFT_OPEN = new DoubleProperty("SphincterLeftOpen", 1.0);
+    public static final DoubleProperty sSPCHINCTER_RIGHT_CLOSED = new DoubleProperty("SphincterRightClosed", 0.0);
+    public static final DoubleProperty sSPCHINCTER_LEFT_CLOSED = new DoubleProperty("SphincterLeftClosed", 0.0);
 
     static
     {

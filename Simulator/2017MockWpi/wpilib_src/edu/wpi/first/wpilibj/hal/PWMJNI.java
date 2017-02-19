@@ -71,7 +71,7 @@ public class PWMJNI extends DIOJNI
 
     public static void setPWMPosition(int pwmPortHandle, double position)
     {
-
+        getWrapperFromBuffer((int) pwmPortHandle).set(position);
     }
 
     public static short getPWMRaw(int pwmPortHandle)

@@ -1,6 +1,5 @@
 package com.snobot2017;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.LogManager;
 
@@ -16,22 +15,22 @@ import com.snobot2017.climbing.IClimbing;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.drivetrain.SnobotCanDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
+import com.snobot2017.fuel_pooper.FuelPooper;
+import com.snobot2017.fuel_pooper.IFuelPooper;
 import com.snobot2017.gearboss.IGearBoss;
 import com.snobot2017.gearboss.SnobotGearBoss;
 import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
+import com.snobot2017.light_manager.LightManager;
 import com.snobot2017.positioner.IPositioner;
 import com.snobot2017.positioner.Positioner;
-import com.snobot2017.vision.LightManager;
 import com.snobot2017.vision.VisionManager;
 
-import FuelPooper.IFuelPooper;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -58,15 +57,10 @@ public class Snobot2017 extends ASnobot
     private VisionManager mVisionManager;
     private LightManager mLightManager;
 
-    private Relay mGreenRelay;
-    private Relay mBlueRelay;
-
     // Logger
     private AutoLogger mAutoLogger;
-    private DateFormat mAutoLogDateFormat;
 
     // Sphincter
-    private Servo mSphincter;
     private IFuelPooper mPooper;
 
     // SnobotActor
@@ -118,7 +112,8 @@ public class Snobot2017 extends ASnobot
         mSubsystems.add(mClimber);
 
         // GearBoss
-        DoubleSolenoid gearSolonoid = new DoubleSolenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A,
+        DoubleSolenoid gearSolonoid = new DoubleSolenoid(
+                PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A,
                 PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
         mSubsystems.add(mGearBoss);
@@ -134,24 +129,28 @@ public class Snobot2017 extends ASnobot
         mDriveTrain.setSnobotActor(mSnobotActor);
 
         // Vision
-        mGreenRelay = new Relay(0);
-        mBlueRelay = new Relay(1);
         mVisionManager = new VisionManager(mPositioner, mSnobotActor, operatorJoystick);
         mSubsystems.add(mVisionManager);
-        mLightManager = new LightManager(operatorJoystick, mSnobotActor, mGreenRelay, mBlueRelay);
+
+        // LED Manager
+        Relay greenLight = new Relay(PortMappings2017.sRELAY_GREEN_LED);
+        Relay blueLight = new Relay(PortMappings2017.sRELAY_BLUE_LED);
+        mLightManager = new LightManager(operatorJoystick, mSnobotActor, greenLight, blueLight);
 
         // Autonomous
         mAutonFactory = new AutonomousFactory(this, driverJoystick);
 
         // Sphincter
-        mSphincter = new Servo(3);
+        Servo rightSphincter = new Servo(PortMappings2017.sFUEL_PWM_RIGHT);
+        Servo leftSphincter = new Servo(PortMappings2017.sFUEL_PWM_LEFT);
+        mPooper = new FuelPooper(operatorJoystick, rightSphincter, leftSphincter, mLogger);
         mSubsystems.add(mPooper);
 
         // Call last
         mLogger.startLogging(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), Properties2017.sLOG_COUNT.getValue(),
                 Properties2017.sLOG_FILE_PATH.getValue());
-        // autolog
-        mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
+
+        // Autolog
         mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystickRaw,
                 mDriveTrain);
         mSubsystems.add(mAutoLogger);
@@ -172,14 +171,11 @@ public class Snobot2017 extends ASnobot
         super.init();
     }
 
-    PowerDistributionPanel pdp = new PowerDistributionPanel();
-
     @Override
     public void update()
     {
-        mLightManager.update();
         super.update();
-        // System.out.println(pdp.getCurrent(13));
+        mLightManager.update();
     }
 
     @Override

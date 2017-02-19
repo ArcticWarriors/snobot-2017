@@ -77,7 +77,7 @@ public class PathFollower
             System.out.println(
                     "Current: " + aCurrPosition  + ", " + 
                     "Error: " + error + ", " + 
- "Vel: " + velocity + ", " + 
+                    "Vel: " + velocity + ", " + 
                     "p: " + p_term + ", " + 
                     "v: " + v_term + ", " + 
                     "a: " + a_term + ", " + 

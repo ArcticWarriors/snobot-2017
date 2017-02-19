@@ -1,11 +1,10 @@
-package com.snobot2017.autonomous;
+package com.snobot2017.autonomous.commands;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.snobot2017.Properties2017;
 import com.snobot2017.drivetrain.IDriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -40,8 +39,6 @@ public class Replay extends Command
     @Override
     public void initialize()
     {
-        System.out.println("\n ************\n ************\n ************\n HERE IT IS FILE PATH IS:  " + mFilePath
-                + "HERE IT IS \n ************\n ************\n ************");
         try
         {
             mBufferedReader.readLine();

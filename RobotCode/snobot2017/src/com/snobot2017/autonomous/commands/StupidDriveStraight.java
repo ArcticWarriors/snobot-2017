@@ -1,4 +1,4 @@
-package com.snobot2017.autonomous;
+package com.snobot2017.autonomous.commands;
 
 import com.snobot2017.drivetrain.IDriveTrain;
 import edu.wpi.first.wpilibj.command.TimedCommand;
