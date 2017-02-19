@@ -29,6 +29,10 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     // Ready for take off
     private double mLiftOffSpeed;
 
+    // Sphincter
+    private boolean mSphincterOpen;
+    private boolean mSphincterClose;
+
     // App stuff
     private LatchedButton mSwitchAppViewLatcher;
     private LatchedButton mSwitchToFrontCameraLatcher;
@@ -38,11 +42,11 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     private boolean mSwitchToFrontCamera;
     private boolean mSwitchToRearCamera;
     private boolean mRestartApp;
-    
-    //Relay
+
+    // Relay
     private LatchedButton mToggleGreenLight;
-    private boolean mGreenRelayOn =true;
-    
+    private boolean mGreenRelayOn = true;
+
     private LatchedButton mToggleBlueLight;
     private boolean mBlueRelayOn = true;
 
@@ -103,14 +107,18 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
         // Climb
         mClimb = mJoystick.getRawButton(XboxButtonMap.RB_BUTTON);
         mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
-        
-        //Light
-        if(mToggleGreenLight.update(mJoystick.getRawButton(XboxButtonMap.START_BUTTON)))
+
+        // Sphincter
+        mSphincterOpen = mJoystick.getRawButton(XboxButtonMap.RIGHT_TRIGGER);
+        mSphincterClose = mJoystick.getRawButton(XboxButtonMap.LEFT_TRIGGER);
+
+        // Light
+        if (mToggleGreenLight.update(mJoystick.getRawButton(XboxButtonMap.START_BUTTON)))
         {
             mGreenRelayOn = !mGreenRelayOn;
         }
-        
-        if(mToggleBlueLight.update(mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON)))
+
+        if (mToggleBlueLight.update(mJoystick.getRawButton(XboxButtonMap.BACK_BUTTON)))
         {
             mBlueRelayOn = !mBlueRelayOn;
         }
@@ -203,13 +211,13 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     {
         return mGreenRelayOn;
     }
-    
+
     @Override
     public boolean blueLightOn()
     {
         return mBlueRelayOn;
     }
-    
+
     @Override
     public double getTakeOffSpeed()
     {
@@ -284,5 +292,11 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick, IVisionJoy
     public boolean DriveSmoothlyToPosition()
     {
         return mDriveSmoothlyToPosition;
+    }
+
+    @Override
+    public boolean isPooperOpen()
+    {
+        return mJoystick.getRawButton(XboxButtonMap.RIGHT_TRIGGER);
     }
 }

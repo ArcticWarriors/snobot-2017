@@ -1,6 +1,7 @@
 package com.snobot2017.climbing;
 
 import com.snobot.lib.Logger;
+import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
 
@@ -102,8 +103,7 @@ public class Climbing implements IClimbing
     @Override
     public void catchRope()
     {
-        // TODO noll - make a property instead
-        double speed = SmartDashboard.getNumber(SmartDashBoardNames.sROBOT_CATCHING_ROPE_SPEED, 0.5);
+        double speed = Properties2017.sROBOT_CATCHING_ROPE_SPEED.getValue();
         mClimbingMotor.set(speed);
         mLogger.updateLogger(speed);
     }
@@ -111,8 +111,7 @@ public class Climbing implements IClimbing
     @Override
     public void climbRope()
     {
-        // TODO noll - make a property instead
-        double speed = SmartDashboard.getNumber(SmartDashBoardNames.sROBOT_CLIMBING_ROPE_SPEED, 1.0);
+        double speed = Properties2017.sROBOT_CLIMBING_ROPE_SPEED.getValue();
         mClimbingMotor.set(speed);
         mLogger.updateLogger(speed);
     }

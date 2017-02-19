@@ -111,4 +111,9 @@ public class SmartDashBoardNames
                                                                 // action
     public static final String sIN_ACTION = "InAction";
     public static String sSNOBOT_ACTION_NAME = "SnobotActionName";
+
+    // Sphincter
+    public static final String sSPHINCTER_POSITION = "SphincterPosition";
+    public static final String sSPCHINCTER_OPEN = "SphincterOpen";
+    public static final String sSPHINCTER_DOWN = "SphincterClose";
 }

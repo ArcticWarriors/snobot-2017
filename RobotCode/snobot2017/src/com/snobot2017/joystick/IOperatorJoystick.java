@@ -35,15 +35,23 @@ public interface IOperatorJoystick extends ISubsystem
      * @return true if pressed
      */
     boolean isClimb();
-    
+
     /**
      * Is the green light toggle on?
      * 
      * @return whether the green lights should be on
      */
     boolean greenLightOn();
+
     boolean blueLightOn();
-    
+
+    /**
+     * Is the sphincter open?
+     * 
+     * @return true if the sphincter is open
+     */
+    boolean isPooperOpen();
+
     /**
      * Returns UP if up button is pressed, DOWN, if down button is pressed, and
      * NONE, if neither buttons are pressed

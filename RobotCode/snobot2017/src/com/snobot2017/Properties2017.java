@@ -35,7 +35,7 @@ public class Properties2017
     // Autonomous
     public static final StringProperty sAUTON_DIRECTORY;
     public static final StringProperty sAUTON_PATH_DIRECTORY;
- 
+
     // Drive path
     public static final DoubleProperty sDRIVE_PATH_KP = new DoubleProperty("DrivePathKP", 0.001);
     public static final DoubleProperty sDRIVE_PATH_KD = new DoubleProperty("DrivePathKD", 0);
@@ -51,7 +51,15 @@ public class Properties2017
 
     // Trajectory Driving
     public static final DoubleProperty sSPLINE_TURN_FACTOR = new DoubleProperty("SplineTurnFactor", 0.1);
-    
+
+    // Climbing
+    public static final DoubleProperty sROBOT_CATCHING_ROPE_SPEED = new DoubleProperty("RopeCatchingSpeed", 0.5);
+    public static final DoubleProperty sROBOT_CLIMBING_ROPE_SPEED = new DoubleProperty("RopeClimbingSpeed", 1.0);
+
+    // Sphincter
+    public static final DoubleProperty sSPCHINCTER_OPEN = new DoubleProperty("OpenSphincter", 1.0);
+    public static final DoubleProperty sSPCHINCTER_CLOSE = new DoubleProperty("CloseSphincter", 0.0);
+
     static
     {
         String logPath;
@@ -67,8 +75,7 @@ public class Properties2017
             resourcesDir = "../../RobotCode/snobot2017/resources/";
             autoLogPath = "autologs/" + Properties2017.class.getCanonicalName() + "/";
             replayPath = resourcesDir + "replays/";
-            
-            
+
             System.out.println("Using simulation constants");
         }
         else
