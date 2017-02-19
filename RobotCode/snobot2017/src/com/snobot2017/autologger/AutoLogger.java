@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.snobot.lib.logging.ALogger;
-import com.snobot.lib.modules.ILoggableModule;
 import com.snobot.lib.modules.IUpdateableModule;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.joystick.IAutoLoggerJoystick;
@@ -20,7 +19,7 @@ import com.snobot2017.joystick.IAutoLoggerJoystick;
  *
  */
 
-public class AutoLogger extends ALogger implements IUpdateableModule, ILoggableModule
+public class AutoLogger extends ALogger implements IUpdateableModule
 {
     // Current Date and Time
     private String mLogDate;
@@ -39,7 +38,7 @@ public class AutoLogger extends ALogger implements IUpdateableModule, ILoggableM
     private IAutoLoggerJoystick mJoystick;
 
     // Constructor
-    public AutoLogger(int aLogConfigCount, String aLogPath, IAutoLoggerJoystick aDriverJoystick, IDriveTrain aDriveTrain)
+    public AutoLogger(String aLogPath, IAutoLoggerJoystick aDriverJoystick, IDriveTrain aDriveTrain)
     {
         mLogFilePath = aLogPath;
         mJoystick = aDriverJoystick;
@@ -103,14 +102,6 @@ public class AutoLogger extends ALogger implements IUpdateableModule, ILoggableM
         }
     }
 
-    /**
-     * Lets robot check for when to log
-     */
-    public boolean logNow()
-    {
-        return true;
-    }
-
     @Override
     public void update()
     {
@@ -140,12 +131,6 @@ public class AutoLogger extends ALogger implements IUpdateableModule, ILoggableM
             updateLogger(mDriveTrain.getRightMotorSpeed());
             endLogger();
         }
-
-    }
-
-    @Override
-    public void updateLog()
-    {
 
     }
 }

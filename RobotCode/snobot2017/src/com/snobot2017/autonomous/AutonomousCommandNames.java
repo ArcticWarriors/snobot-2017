@@ -24,6 +24,8 @@ public class AutonomousCommandNames
     public static final String sDRIVE_PATH_STRAIGHT = "DrivePathStraight";
     public static final String sDRIVE_PATH_TURN = "DrivePathTurn";
     public static final String sDRIVE_TRAJECTORY = "DriveTrajectory";
+
+    // Combined modes
     public static final String sSCORE_GEAR_TRAJECTORY = "ScoreGearTraj";
     public static final String sSTART_HOPPER_TRAJ = "GetHopper";
     public static final String sGET_HOPPER_AND_GEAR = "GetHopperAndGear";

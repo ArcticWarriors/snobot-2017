@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
@@ -23,11 +22,9 @@ import com.snobot.vision_app.utils.MjpgServer;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +33,8 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
     private static final String TAG = "CameraActivity";
     private static final int REQUEST_CAMERA_PERMISSION = 200;
 
-    private static VisionRobotConnection sRobotConnection;
+    private VisionRobotConnection mRobotConnection;
+    private VisionAlgorithmPreferences mPreferences;
 
     private TextureView textureView;
 
@@ -46,11 +44,10 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(sRobotConnection == null)
-        {
-            sRobotConnection = new VisionRobotConnection(this);
-            sRobotConnection.start();
-        }
+        mRobotConnection = new VisionRobotConnection(this);
+        mRobotConnection.start();
+
+        mPreferences = new VisionAlgorithmPreferences(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_snobot_vision_standard);
@@ -82,7 +79,7 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
         }
 
         cameraRenderer = new CameraRenderer(this, captureRequests, textureView);
-        visionAlgorithm = new JavaVisionAlgorithm(sRobotConnection);
+        visionAlgorithm = new JavaVisionAlgorithm(mRobotConnection, mPreferences);
 
     }
 

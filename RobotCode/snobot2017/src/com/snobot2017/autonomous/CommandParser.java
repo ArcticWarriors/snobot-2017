@@ -177,46 +177,6 @@ public class CommandParser extends ACommandParser
         }
         return newCommand;
     }
-   
-//    protected Command parseCommand()
-//    {
-//        Command newCommand;
-//        switch(mAutonFactory.autonMode())
-//        {
-//        case 0:
-//        {
-//            newCommand = parseStupidDriveStraightCommand(1, 1);
-//            break;
-//        }
-//        case 1:
-//        {
-//            //something
-//            break;
-//        }
-//        case 2:
-//        {
-//            //something
-//            break;
-//        }
-//        case 3:
-//        {
-//            //something
-//            break;
-//        }
-//        case 4:
-//        {
-//            //something
-//            break;
-//        }
-//        case 5:
-//        {
-//            //something
-//            break;
-//        }
-//        
-//        }
-//        return newCommand;
-//    }
 
     private Command parseGoToPositionSmoothlyCommand(List<String> args)
     {
@@ -326,7 +286,7 @@ public class CommandParser extends ACommandParser
         }
         else
         {
-            mErrorText += "Invalid scoring filename";
+            addError("Invalid scoring filename");
         }
 
         return output;
@@ -543,7 +503,7 @@ public class CommandParser extends ACommandParser
         }
         else
         {
-            mErrorText += "Invalid scoring filename";
+            addError("Invalid scoring filename");
         }
 
         return output;

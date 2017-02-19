@@ -153,7 +153,7 @@ public class Snobot2017 extends ASnobot
         addModule(mPooper);
 
         // Autolog
-        mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_COUNT.getValue(), " xfxfx /fjjdf ", driverJoystick, mDriveTrain);
+        mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystick, mDriveTrain);
         addModule(mAutoLogger);
 
         ////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ public class Snobot2017 extends ASnobot
 
         // Call last
         logger.startLogging(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"),
-                " xfxfx /fjjdf ");
+                Properties2017.sLOG_FILE_PATH.getValue());
         initializeLogHeaders();
     }
 

@@ -2,6 +2,7 @@ package com.snobot.vision_app.app2017.java_algorithm;
 
 import android.graphics.Bitmap;
 
+import com.snobot.vision_app.app2017.VisionAlgorithmPreferences;
 import com.snobot.vision_app.app2017.VisionRobotConnection;
 import com.snobot.vision_app.app2017.messages.TargetUpdateMessage;
 
@@ -136,13 +137,14 @@ public class JavaVisionAlgorithm
     private GripRopeAlgorithm mRopeGripAlgorithm;
     private DisplayType mDisplayType;
 
-    public JavaVisionAlgorithm(VisionRobotConnection aRobotConnection)
+    public JavaVisionAlgorithm(VisionRobotConnection aRobotConnection, VisionAlgorithmPreferences aPreferences)
     {
         mRobotConnection = aRobotConnection;
         mPegGripAlgorithm = new GripPegAlgorithm();
         mRopeGripAlgorithm = new GripRopeAlgorithm();
         mDisplayType = DisplayType.OriginalImage;
         cameraDirection = CameraBridgeViewBase.CAMERA_ID_FRONT;
+        mPreferences = aPreferences;
     }
 
     public void setDisplayType(DisplayType aDisplayType)
@@ -328,6 +330,7 @@ public class JavaVisionAlgorithm
     ////////////////////////
     private int cameraDirection;
     private VisionRobotConnection mRobotConnection;
+    private VisionAlgorithmPreferences mPreferences;
 
     public Mat processImage(Bitmap aBitmap, long aImageTimestamp) {
         Mat mat = new Mat();
