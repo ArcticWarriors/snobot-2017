@@ -204,6 +204,7 @@ public abstract class RobotConnectionServer
             while (true)
             {
                 double timestampDiff = getTimestamp() - mLastReceivedMessage;
+                
                 if (timestampDiff > mTimeout)
                 {
                     if (mIsConnected)

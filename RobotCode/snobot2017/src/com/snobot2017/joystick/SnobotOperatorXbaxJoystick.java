@@ -138,6 +138,7 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     @Override
     public void setShouldRumble(boolean aRumble)
     {
+//    	System.out.println("RUmbling " + aRumble);
         if(aRumble)
         {
             mJoystick.setRumble(RumbleType.kLeftRumble, 1);

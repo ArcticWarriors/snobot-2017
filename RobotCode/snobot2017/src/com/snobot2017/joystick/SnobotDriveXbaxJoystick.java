@@ -70,6 +70,8 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick, IAutoLoggerJoys
         mSwitchToFrontCamera = mSwitchToFrontCameraLatcher.update(mJoystick.getPOV() == 0);
         mSwitchToRearCamera = mSwitchToRearCameraLatcher.update(mJoystick.getPOV() == 180);
         mRestartApp = mRestartAppLatcher.update(mJoystick.getPOV() == 270);
+        
+//        System.out.println("X " + mJoystick.getPOV() + ", " + mSwitchToFrontCamera + ", " + mSwitchToRearCamera);
 
         // SnobotActor Stuff
         mDriveToPeg = mDriveToPegToggleButton.update(mJoystick.getRawButton(XboxButtonMap.A_BUTTON));

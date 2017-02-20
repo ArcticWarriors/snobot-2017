@@ -52,7 +52,8 @@ public class TargetUpdateMessage
 
         public TargetInfo(JSONObject aJson)
         {
-            mAngle = Double.parseDouble(aJson.get("angle").toString());
+            // TODO PJ - ANgle should be flipped in app
+            mAngle = -Double.parseDouble(aJson.get("angle").toString());
             mDistance = Double.parseDouble(aJson.get("distance").toString());
             mAbmigious = Boolean.parseBoolean(aJson.get("ambiguous").toString());
         }

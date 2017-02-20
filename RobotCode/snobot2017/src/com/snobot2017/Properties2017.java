@@ -25,6 +25,10 @@ public class Properties2017
     // AutoLogger
     public static final StringProperty sAUTO_LOG_FILE_PATH;
     public static final StringProperty sREPLAY_PATH;
+    
+    // Snobot Actor
+    public static final DoubleProperty sDRIVE_TO_POSITION_DISTANCE_KP = new DoubleProperty("SnobotActorDriveToPositionDistanceKp", .1);
+    public static final DoubleProperty sDRIVE_TO_POSITION_ANGLE_KP = new DoubleProperty("SnobotActorDriveToPositionAngleKp", 0.2);
 
     // Drivetrain
     public static final DoubleProperty sLEFT_ENCODER_DIST_PER_PULSE = new DoubleProperty("DriveEncoderLeftDPP", -0.00564998);

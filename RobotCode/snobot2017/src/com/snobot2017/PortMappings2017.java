@@ -8,10 +8,10 @@ public class PortMappings2017
     public static final int sDRIVER_JOYSTICK_PORT = 0;
 
     // CAN
-    public static final int sDRIVE_CAN_LEFT_A_PORT = 2;
-    public static final int sDRIVE_CAN_LEFT_B_PORT = 1;
-    public static final int sDRIVE_CAN_RIGHT_A_PORT = 3;
-    public static final int sDRIVE_CAN_RIGHT_B_PORT = 4;
+    public static final int sDRIVE_CAN_LEFT_A_PORT = 3;
+    public static final int sDRIVE_CAN_LEFT_B_PORT = 4;
+    public static final int sDRIVE_CAN_RIGHT_A_PORT = 1;
+    public static final int sDRIVE_CAN_RIGHT_B_PORT = 2;
 
     // PWM
     public static final int sDRIVE_PWM_LEFT_A_PORT = 1;
