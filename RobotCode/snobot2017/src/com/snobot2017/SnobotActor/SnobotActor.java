@@ -65,7 +65,7 @@ public class SnobotActor implements ISnobotActor
 
     private enum ControlMode
     {
-        Off, Distance, Turning, PositionInSteps, SmoothTurning
+        Off, Distance, Turning, PositionInSteps, PositionSmooth
     }
 
     private enum GoToPositionSubsteps
@@ -142,9 +142,9 @@ public class SnobotActor implements ISnobotActor
     }
 
     @Override
-    public void setDriveSmoothlyToPositionGoal(double aX, double aY)
+    public void setGoToPositionSmoothlyGoal(double aX, double aY)
     {
-        mControlMode = ControlMode.SmoothTurning;
+        mControlMode = ControlMode.PositionSmooth;
 
         mSmoothControlParams = new SmoothControlParams(aX, aY);
         System.out.println("Setting go to position " + aX + ", " + aY);
@@ -169,7 +169,7 @@ public class SnobotActor implements ISnobotActor
         case PositionInSteps:
             finished = driveToPositionInSteps();
             break;
-        case SmoothTurning:
+        case PositionSmooth:
             finished = driveSmoothlyToPosition();
             break;
         default:
@@ -182,95 +182,6 @@ public class SnobotActor implements ISnobotActor
         }
 
         return finished;
-    }
-
-    private boolean driveSmoothlyToPosition()
-    {
-        double dx = mSmoothControlParams.mGoalX - mPositioner.getXPosition();
-        double dy = mSmoothControlParams.mGoalY - mPositioner.getYPosition();
-
-        double distanceError = Math.sqrt(dx * dx + dy * dy);
-        
-        double angleToTarget = Math.toDegrees(Math.atan2(dx, dy)); // dx and dy are switched on purpose to make 0 degrees refer to up
-        double angleError = angleToTarget - mPositioner.getOrientationDegrees();
-        angleError = Utilities.boundAngleNeg180to180Degrees(angleError);
-
-      double distanceKp = Properties2017.sDRIVE_TO_POSITION_DISTANCE_KP.getValue();
-      double turnKp = Properties2017.sDRIVE_TO_POSITION_ANGLE_KP.getValue();
-
-      double leftSpeed = distanceError * distanceKp + angleError * turnKp;
-      double rightSpeed = distanceError * distanceKp - angleError * turnKp;
-      
-      System.out.println("DE: " + distanceError + ", AE: " + angleError + ", L: " + leftSpeed + ", R: " + rightSpeed);
-
-      boolean isFinished = false;
-      if (mInDeadbandHelper.isFinished(Math.abs(distanceError) < mSmoothControlParams.mDeadband))
-        {
-            mDriveTrain.setLeftRightSpeed(0, 0);
-            isFinished = true;
-        }
-      else
-      {
-          mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
-      }
-
-//        // dx and dy are switched on purpose to make 0 degrees refer to up
-//        double goalAngle = Math.toDegrees(Math.atan2(dx, dy));
-//        double currentAngle = limitAngle(mPositioner.getOrientationDegrees());
-//
-//        double rightError = limitAngle(goalAngle - currentAngle);
-//        double leftError = limitAngle(360 - rightError);
-//        double rightSpeed = 0.0;
-//        double leftSpeed = 0.0;
-//        
-//        double driveSpeed = Properties2017.sDRIVE_TO_POSITION_DISTANCE_KP.getValue();
-//        double turnKp = Properties2017.sDRIVE_TO_POSITION_ANGLE_KP.getValue();
-//
-//        if (rightError < leftError)
-//        {
-//            rightSpeed = (driveSpeed - rightError * turnKp);
-//            leftSpeed = (driveSpeed + rightError * turnKp);
-//        }
-//        else
-//        {
-//            rightSpeed = (driveSpeed + leftError * turnKp);
-//            leftSpeed = (driveSpeed - leftError * turnKp);
-//        }
-//        
-//        System.out.println(
-//                goalAngle
-//                + "\t" + currentAngle
-//                + "\t" + rightError
-//                + "\t" + leftError
-//                + "\t" + rightSpeed
-//                + "\t" + leftSpeed);
-//
-//        // double AngleError = (goalAngle - (mPositioner.getOrientationDegrees()
-//        // % 360)) % 360;
-//        boolean isFinished = false;
-//        // System.out.println("Smooth " + " AE " + AngleError + " AG " +
-//        // goalAngle + " dx " + dx + " dy " + dy + " goalx " +
-//        // mSmoothControlParams.mGoalX
-//        // + " goaly "
-//        // + mSmoothControlParams.mGoalY + distanceAway);
-//        // System.out.println((mPositioner.getOrientationDegrees() % 360) + "\t"
-//        // + goalAngle);
-//
-//        if (mInDeadbandHelper.isFinished(Math.abs(distanceAway) < mSmoothControlParams.mDeadband))
-//        {
-//            mDriveTrain.setLeftRightSpeed(0, 0);
-//            isFinished = true;
-//        }
-//        else if (distanceAway > 0)
-//        {
-//            mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
-//        }
-//        // else
-//        // {
-//        // mDriveTrain.setLeftRightSpeed(-leftSpeed, -rightSpeed);
-//        // }
-
-        return isFinished;
     }
 
     @Override
@@ -294,7 +205,7 @@ public class SnobotActor implements ISnobotActor
         case PositionInSteps:
             actionName = "Go To Position";
             break;
-        case SmoothTurning:
+        case PositionSmooth:
             actionName = "Smoothly Drive To Position";
             break;
         case Off:
@@ -410,6 +321,39 @@ public class SnobotActor implements ISnobotActor
         }
 
         return finished;
+    }
+
+    private boolean driveSmoothlyToPosition()
+    {
+        double dx = mSmoothControlParams.mGoalX - mPositioner.getXPosition();
+        double dy = mSmoothControlParams.mGoalY - mPositioner.getYPosition();
+
+        double distanceError = Math.sqrt(dx * dx + dy * dy);
+    
+        double angleToTarget = Math.toDegrees(Math.atan2(dx, dy)); // dx and dy are switched on purpose to make 0 degrees refer to up
+        double angleError = angleToTarget - mPositioner.getOrientationDegrees();
+        angleError = Utilities.boundAngleNeg180to180Degrees(angleError);
+
+        double distanceKp = Properties2017.sDRIVE_TO_POSITION_DISTANCE_KP.getValue();
+        double turnKp = Properties2017.sDRIVE_TO_POSITION_ANGLE_KP.getValue();
+
+        double leftSpeed = distanceError * distanceKp + angleError * turnKp;
+        double rightSpeed = distanceError * distanceKp - angleError * turnKp;
+
+        System.out.println("DE: " + distanceError + ", AE: " + angleError + ", L: " + leftSpeed + ", R: " + rightSpeed);
+
+        boolean isFinished = false;
+        if (mInDeadbandHelper.isFinished(Math.abs(distanceError) < mSmoothControlParams.mDeadband))
+        {
+            mDriveTrain.setLeftRightSpeed(0, 0);
+            isFinished = true;
+        }
+        else
+        {
+            mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
+        }
+
+        return isFinished;
     }
 
     @Override

@@ -117,7 +117,7 @@ public class VisionManager implements ISubsystem
                 TargetLocation target = mLatestTargetInformation.get(0);
                 if(!target.mAmbigious)
                 {
-                    mSnobotActor.setDriveSmoothlyToPositionGoal(target.mX, target.mY);
+                    mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 }
             }
         }
@@ -151,7 +151,7 @@ public class VisionManager implements ISubsystem
                 {
                     // On the first update, send the target even if it is ambiguous
                     TargetLocation target = mLatestTargetInformation.get(0);
-                    mSnobotActor.setDriveSmoothlyToPositionGoal(target.mX, target.mY);
+                    mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 }
             }
             boolean finished = mSnobotActor.executeControlMode();
@@ -168,7 +168,7 @@ public class VisionManager implements ISubsystem
                 {
                     // On the first update, send the target even if it is ambiguous
                     TargetLocation target = mLatestTargetInformation.get(0);
-                    mSnobotActor.setDriveSmoothlyToPositionGoal(target.mX, target.mY);
+                    mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 }
             }
 

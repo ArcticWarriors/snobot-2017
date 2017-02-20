@@ -46,7 +46,7 @@ public interface ISnobotActor extends ISubsystem
      * @param aY
      *            The Y Position to go to, in inches
      */
-    void setDriveSmoothlyToPositionGoal(double aX, double aY);
+    void setGoToPositionSmoothlyGoal(double aX, double aY);
 
     /**
      * Executes the currently selected control mode. Returns true when it is

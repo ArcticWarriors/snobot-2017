@@ -14,7 +14,7 @@ public class GoToPositionSmoothly extends Command
         mSnobotActor = aSnobotActor;
         mFinished = false;
 
-        mSnobotActor.setDriveSmoothlyToPositionGoal(aX, aY);
+        mSnobotActor.setGoToPositionSmoothlyGoal(aX, aY);
     }
 
     @Override
