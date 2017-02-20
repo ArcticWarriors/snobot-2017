@@ -20,7 +20,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="25dp"
-            android:background="@android:color/holo_red_light"
+            android:background="@color/app_disconnected"
             android:id="@+id/connectionState" />
 
         <LinearLayout

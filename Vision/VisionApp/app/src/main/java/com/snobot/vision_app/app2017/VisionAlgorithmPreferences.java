@@ -13,10 +13,10 @@ public class VisionAlgorithmPreferences
 {
     private static final int sDEFAULT_HUE_MIN = 27;
     private static final int sDEFAULT_HUE_MAX = 92;
-    private static final int sDEFAULT_SAT_MIN = 44;
+    private static final int sDEFAULT_SAT_MIN = 172;
     private static final int sDEFAULT_SAT_MAX = 255;
-    private static final int sDEFAULT_LAT_MIN = 172;
-    private static final int sDEFAULT_LAT_MAX = 255;
+    private static final int sDEFAULT_LUM_MIN = 42;
+    private static final int sDEFAULT_LUM_MAX = 255;
 
     private Pair<Integer, Integer> mHueRange;
     private Pair<Integer, Integer> mSatRange;
@@ -37,8 +37,8 @@ public class VisionAlgorithmPreferences
                 mPreferences.getInt("SatMax", sDEFAULT_SAT_MAX));
 
         mLumRange = new Pair<>(
-                mPreferences.getInt("LumMin", sDEFAULT_LAT_MIN),
-                mPreferences.getInt("LumMax", sDEFAULT_LAT_MAX));
+                mPreferences.getInt("LumMin", sDEFAULT_LUM_MIN),
+                mPreferences.getInt("LumMax", sDEFAULT_LUM_MAX));
 
         setHueThreshold(mHueRange);
         setSatThreshold(mSatRange);
@@ -107,7 +107,7 @@ public class VisionAlgorithmPreferences
 
         mHueRange = new Pair<>(sDEFAULT_HUE_MIN, sDEFAULT_HUE_MAX);
         mSatRange = new Pair<>(sDEFAULT_SAT_MIN, sDEFAULT_SAT_MAX);
-        mLumRange = new Pair<>(sDEFAULT_LAT_MIN, sDEFAULT_LAT_MAX);
+        mLumRange = new Pair<>(sDEFAULT_LUM_MIN, sDEFAULT_LUM_MAX);
 
         setHueThreshold(mHueRange);
         setSatThreshold(mSatRange);

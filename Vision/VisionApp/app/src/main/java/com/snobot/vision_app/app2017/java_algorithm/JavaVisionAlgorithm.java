@@ -63,76 +63,6 @@ public class JavaVisionAlgorithm
         MarkedUpImage
     }
 
-    public static class TapeLocation
-    {
-        private MatOfPoint mContour;
-        private double mAngle;
-        private double mDistanceFromHoriz;
-        private double mDistanceFromVert;
-        private double mAspectRatio;
-
-        public TapeLocation(MatOfPoint aContour, double aAngle, double aDistanceFromHoriz, double aDistanceFromVert, double aAspectRatio)
-        {
-            mContour = aContour;
-            mAngle = aAngle;
-            mDistanceFromHoriz = aDistanceFromHoriz;
-            mDistanceFromVert = aDistanceFromVert;
-            mAspectRatio = aAspectRatio;
-        }
-
-        @Override
-        public int hashCode()
-        {
-            final int prime = 31;
-            int result = 1;
-            long temp;
-            temp = Double.doubleToLongBits(mAngle);
-            result = prime * result + (int) (temp ^ (temp >>> 32));
-            temp = Double.doubleToLongBits(mAspectRatio);
-            result = prime * result + (int) (temp ^ (temp >>> 32));
-            result = prime * result + ((mContour == null) ? 0 : mContour.hashCode());
-            temp = Double.doubleToLongBits(mDistanceFromHoriz);
-            result = prime * result + (int) (temp ^ (temp >>> 32));
-            temp = Double.doubleToLongBits(mDistanceFromVert);
-            result = prime * result + (int) (temp ^ (temp >>> 32));
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj)
-        {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            TapeLocation other = (TapeLocation) obj;
-            if (Double.doubleToLongBits(mAngle) != Double.doubleToLongBits(other.mAngle))
-                return false;
-            if (Double.doubleToLongBits(mAspectRatio) != Double.doubleToLongBits(other.mAspectRatio))
-                return false;
-            if (mContour == null)
-            {
-                if (other.mContour != null)
-                    return false;
-            }
-            else if (!mContour.equals(other.mContour))
-                return false;
-            if (Double.doubleToLongBits(mDistanceFromHoriz) != Double.doubleToLongBits(other.mDistanceFromHoriz))
-                return false;
-            if (Double.doubleToLongBits(mDistanceFromVert) != Double.doubleToLongBits(other.mDistanceFromVert))
-                return false;
-            return true;
-        }
-
-        @Override
-        public String toString()
-        {
-            return "TapeLocation [mAngle=" + mAngle + ", mDistanceFromHoriz=" + mDistanceFromHoriz + ", mDistanceFromVert="
-                    + mDistanceFromVert + ", mAspectRatio=" + mAspectRatio + "]";
-        }
-    }
 
     private GripPegAlgorithm mPegGripAlgorithm;
     private GripRopeAlgorithm mRopeGripAlgorithm;
@@ -153,39 +83,13 @@ public class JavaVisionAlgorithm
         mDisplayType = aDisplayType;
     }
 
-    private class AspectRatioComparator implements Comparator<TapeLocation>
-    {
-        @Override
-        public int compare(TapeLocation o1, TapeLocation o2)
-        {
-            double aspectRatioDifference_1 = Math.abs(0.4 - o1.mAspectRatio);
-            double aspectRatioDifference_2 = Math.abs(0.4 - o2.mAspectRatio);
-
-            if(aspectRatioDifference_1>aspectRatioDifference_2)
-                return 1;
-            else
-                return -1;
-        }
-    }
-
-    private class AngleComparator implements Comparator<TapeLocation>
-    {
-        @Override
-        public int compare(TapeLocation o1, TapeLocation o2)
-        {
-            if(o1.mAngle>o2.mAngle)
-                return 1;
-            else
-                return -1;
-        }
-    }
 
     protected Mat processPegImage(Mat aOriginalImage, long aSystemTimeNs)
     {
         mPegGripAlgorithm.process(aOriginalImage);
 
         ArrayList<MatOfPoint> contours = mPegGripAlgorithm.filterContoursOutput();
-        Set<TapeLocation> targetInfos = new TreeSet<>(new AspectRatioComparator());
+        Set<TapeLocation> targetInfos = new TreeSet<>(new TargetComparators.AspectRatioComparator());
 
         for (int i = 0; i < contours.size(); ++i)
         {
@@ -220,8 +124,8 @@ public class JavaVisionAlgorithm
             TapeLocation target1 = targetIterator.next();
             TapeLocation target2 = targetIterator.next();
 
-            Rect one = Imgproc.boundingRect(target1.mContour);
-            Rect two = Imgproc.boundingRect(target2.mContour);
+            Rect one = Imgproc.boundingRect(target1.getContour());
+            Rect two = Imgproc.boundingRect(target2.getContour());
             double centroid_of_bounding_box_one = one.x + (one.width/2);
             double centroid_of_bounding_box_two = two.x + (two.width/2);
             double peg_X = (centroid_of_bounding_box_one + centroid_of_bounding_box_two)/2;
@@ -230,7 +134,7 @@ public class JavaVisionAlgorithm
             double angle_to_peg_RAD = Math.atan((peg_to_center_of_image_pixels/centroid_of_image_X) * Math.tan(sHORIZONTAL_FOV_ANGLE));
             angle_to_the_peg = Math.toDegrees(angle_to_peg_RAD);
 
-            distance = (target1.mDistanceFromVert + target2.mDistanceFromVert) / 2;
+            distance = (target1.getPreferredDistance() + target2.getPreferredDistance()) / 2;
             ambgiuous = false;
         }
         else if(targetInfos.size() == 1)
@@ -239,7 +143,7 @@ public class JavaVisionAlgorithm
             TapeLocation target = targetIterator.next();
 
             angle_to_the_peg = 0;
-            distance = target.mDistanceFromVert;
+            distance = target.getPreferredDistance();
         }
 
         Mat displayImage;
@@ -292,10 +196,10 @@ public class JavaVisionAlgorithm
         int ctr = 0;
         for (TapeLocation targetInfo : aTargetInfos)
         {
-            String textToDisplay = "Dist. " + sDF.format(targetInfo.mDistanceFromVert) + " Angle: " + sDF.format(targetInfo.mAngle);
+            String textToDisplay = "Dist. " + sDF.format(targetInfo.getPreferredDistance()) + " Angle: " + sDF.format(targetInfo.getAngle());
 
             Scalar contourColor = sCONTOUR_COLORS[ctr % sCONTOUR_COLORS.length];
-            Imgproc.drawContours(displayImage, Arrays.asList(targetInfo.mContour), 0, contourColor, 3);
+            Imgproc.drawContours(displayImage, Arrays.asList(targetInfo.getContour()), 0, contourColor, 3);
             Imgproc.putText(displayImage, textToDisplay, new Point(20, 20 * ctr + 50), Core.FONT_HERSHEY_COMPLEX, .6, contourColor);
             ++ctr;
         }

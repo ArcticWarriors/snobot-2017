@@ -4,8 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -14,7 +17,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStateListener;
+import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStatusBroadcastReceiver;
 import com.snobot.vision_app.app2017.java_algorithm.JavaVisionAlgorithm;
 import com.snobot.vision_app.utils.MjpgServer;
 
@@ -24,7 +30,7 @@ import org.opencv.android.OpenCVLoader;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class SnobotVisionGLActivity extends Activity implements VisionRobotConnection.IVisionActivity {
+public class SnobotVisionGLActivity extends Activity implements VisionRobotConnection.IVisionActivity, RobotConnectionStateListener {
     private static final String TAG = "CameraActivity";
     private static final int REQUEST_CAMERA_PERMISSION = 200;
 
@@ -35,6 +41,8 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
 
     private VisionAlgorithmPreferences mPreferences;
 
+    private RobotConnectionStatusBroadcastReceiver mRobotConnectionBroadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +51,7 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         mRobotConnection.start();
 
         mPreferences = new VisionAlgorithmPreferences(this);
+        mRobotConnectionBroadcastReceiver = new RobotConnectionStatusBroadcastReceiver(this, this);
 
         if (!OpenCVLoader.initDebug()) {
             Log.e(this.getClass().getSimpleName(), "  OpenCVLoader.initDebug(), not working.");
@@ -73,6 +82,12 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         if (mView != null) {
             mView.onResume();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mRobotConnectionBroadcastReceiver);
     }
 
     private void openCamera() {
@@ -112,6 +127,7 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         dialog.setCancelable(true);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
         final EditText hueMin = (EditText) view.findViewById(R.id.hueMinValue);
@@ -184,5 +200,19 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
             default:
                 return super.dispatchKeyEvent(event);
         }
+    }
+
+    @Override
+    public void robotConnected() {
+        View  connectionStateView = findViewById(R.id.connectionState);
+        Toast.makeText(this, "Connected to Robot", Toast.LENGTH_SHORT).show();
+        connectionStateView.setBackgroundColor(ContextCompat.getColor(this, R.color.app_connected));
+    }
+
+    @Override
+    public void robotDisconnected() {
+        View  connectionStateView = findViewById(R.id.connectionState);
+        Toast.makeText(this, "Lost connection to Robot", Toast.LENGTH_SHORT).show();
+        connectionStateView.setBackgroundColor(ContextCompat.getColor(this, R.color.app_disconnected));
     }
 }
