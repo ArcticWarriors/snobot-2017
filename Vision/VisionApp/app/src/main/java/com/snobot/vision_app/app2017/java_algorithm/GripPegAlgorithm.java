@@ -32,15 +32,16 @@ public class GripPegAlgorithm {
     private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
     private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
 
+    double[] hslThresholdHue = {27.179856115107924, 92.45733788395903};
+    double[] hslThresholdSaturation = {170.71043165467623, 255.0};
+    double[] hslThresholdLuminance = {44.14028776978417, 255.0};
+
     /**
      * This is the primary method that runs the entire pipeline and updates the outputs.
      */
     public void process(Mat source0) {
         // Step HSL_Threshold0:
         Mat hslThresholdInput = source0;
-        double[] hslThresholdHue = {27.179856115107924, 92.45733788395903};
-        double[] hslThresholdSaturation = {170.71043165467623, 255.0};
-        double[] hslThresholdLuminance = {44.14028776978417, 255.0};
         hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
         // Step CV_erode0:
@@ -276,8 +277,14 @@ public class GripPegAlgorithm {
         }
     }
 
-
-
-
+    public void setHslThreshold(int aHueMin, int aHueMax, int aSatMin, int aSatMax, int aLumMin, int aLumMax)
+    {
+        hslThresholdHue[0] = aHueMin;
+        hslThresholdHue[1] = aHueMax;
+        hslThresholdSaturation[0] = aSatMin;
+        hslThresholdSaturation[1] = aSatMax;
+        hslThresholdLuminance[0] = aLumMin;
+        hslThresholdLuminance[1] = aLumMax;
+    }
 }
 

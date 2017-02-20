@@ -68,6 +68,7 @@ public class MjpegRecevierMain
 
         JFrame frame = new JFrame();
 
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addWindowListener(closingListener);
         frame.setLayout(new BorderLayout());
         frame.add(visionPanel, BorderLayout.CENTER);
@@ -79,7 +80,7 @@ public class MjpegRecevierMain
     {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        String urlAddress = "http://127.0.0.1:12000";
+        String urlAddress = "http://127.0.0.1:5800";
         String thresholdConfig = "peg_test_20170202/threshold_config.yml";
         if (args.length == 1)
         {

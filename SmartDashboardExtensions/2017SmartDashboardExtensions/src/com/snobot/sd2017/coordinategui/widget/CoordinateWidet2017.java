@@ -133,6 +133,7 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
             ray.mYStart = robotY / 12;
             ray.mXEnd = targetX / 12;
             ray.mYEnd = targetY / 12;
+            ray.mAmbiguous = Boolean.parseBoolean(targetInfo.get("ambiguous").toString());
 
             rays.add(ray);
         }

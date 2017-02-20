@@ -62,6 +62,7 @@ public class StateManager
                 TargetLocation targetLocation = new TargetLocation();
                 targetLocation.mX = stateAtTime.mRobotX + targetDistance * Math.sin(angleRads);
                 targetLocation.mY = stateAtTime.mRobotY + targetDistance * Math.cos(angleRads);
+                targetLocation.mAmbigious = cameraTarget.isAmbigious();
                 mMostRecentTargetLocations.add(targetLocation);
             }
         }

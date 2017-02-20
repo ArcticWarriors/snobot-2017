@@ -17,6 +17,7 @@ public class RayLayer implements ILayer
         public double mYStart;
         public double mXEnd;
         public double mYEnd;
+        public boolean mAmbiguous;
 
         @Override
         public String toString()
@@ -27,7 +28,8 @@ public class RayLayer implements ILayer
 
     protected PixelConverter mPixelConverter;
     private List<Ray> mRays;
-    private Color mRayColor = Color.green;
+    private Color mUnambiguousRayColor = Color.green;
+    private Color mAmbiguousRayColor = Color.yellow;
 
     public RayLayer(PixelConverter aConverter)
     {
@@ -45,7 +47,14 @@ public class RayLayer implements ILayer
             int xEnd = mPixelConverter.convertXFeetToPixels(ray.mXEnd);
             int yEnd = mPixelConverter.convertYFeetToPixels(ray.mYEnd);
 
-            aGraphics.setColor(mRayColor);
+            if (ray.mAmbiguous)
+            {
+                aGraphics.setColor(mAmbiguousRayColor);
+            }
+            else
+            {
+                aGraphics.setColor(mUnambiguousRayColor);
+            }
             aGraphics.drawLine(xStart, yStart, xEnd, yEnd);
         }
     }

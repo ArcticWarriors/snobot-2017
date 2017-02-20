@@ -27,22 +27,34 @@ public class TargetUpdateMessage
          */
         private double mDistance;
 
+        /**
+         * Indicates the the target location is reported with a very low
+         * confidence
+         */
+        private boolean mAbmigious;
+
         public TargetInfo()
         {
-            mAngle = 0;
-            mDistance = 0;
+            this(0, 0);
         }
 
         public TargetInfo(double aAngle, double aDistance)
         {
+            this(0, 0, true);
+        }
+
+        public TargetInfo(double aAngle, double aDistance, boolean aAmbigious)
+        {
             mAngle = aAngle;
             mDistance = aDistance;
+            mAbmigious = aAmbigious;
         }
 
         public TargetInfo(JSONObject aJson)
         {
             mAngle = Double.parseDouble(aJson.get("angle").toString());
             mDistance = Double.parseDouble(aJson.get("distance").toString());
+            mAbmigious = Boolean.parseBoolean(aJson.get("ambiguous").toString());
         }
 
         /**
@@ -63,6 +75,11 @@ public class TargetUpdateMessage
         public double getDistance()
         {
             return mDistance;
+        }
+
+        public boolean isAmbigious()
+        {
+            return mAbmigious;
         }
 
     }

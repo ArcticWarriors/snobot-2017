@@ -85,6 +85,7 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         }
 
         mAlgorithm = new JavaVisionAlgorithm(mRobotConnection, mPreferences);
+        mAlgorithm.setDisplayType(JavaVisionAlgorithm.DisplayType.MarkedUpImage);
 
         mView = (SnobotVisionGLSurfaceView) findViewById(R.id.texture);
         mView.setCameraTextureListener(mView);
@@ -113,15 +114,6 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         dialog.show();
 
-        Button restoreButton = (Button) view.findViewById(R.id.restoreAlgorithimDefaultsButton);
-        restoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPreferences.restoreDefaults();
-                dialog.dismiss();
-            }
-        });
-
         final EditText hueMin = (EditText) view.findViewById(R.id.hueMinValue);
         final EditText hueMax = (EditText) view.findViewById(R.id.hueMaxValue);
         final EditText satMin = (EditText) view.findViewById(R.id.satMinValue);
@@ -132,6 +124,15 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         populateRangePair(hueMin, hueMax, mPreferences.getHueThreshold());
         populateRangePair(satMin, satMax, mPreferences.getSatThreshold());
         populateRangePair(lumMin, lumMax, mPreferences.getLumThreshold());
+
+        Button restoreButton = (Button) view.findViewById(R.id.restoreAlgorithimDefaultsButton);
+        restoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPreferences.restoreDefaults();
+                dialog.dismiss();
+            }
+        });
 
         Button saveButton = (Button) view.findViewById(R.id.saveAlgorithmSettingsButton);
         saveButton.setOnClickListener(new View.OnClickListener() {

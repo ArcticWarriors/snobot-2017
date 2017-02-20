@@ -56,6 +56,8 @@ public class VisionAlgorithmPreferences
         editor.putInt("HueMin", aMin);
         editor.putInt("HueMax", aMax);
         editor.apply();
+
+        mHueRange = new Pair<>(aMin, aMax);
     }
 
     public void setSatThreshold(Pair<Integer, Integer> aThreshold)
@@ -69,6 +71,8 @@ public class VisionAlgorithmPreferences
         editor.putInt("SatMin", aMin);
         editor.putInt("SatMax", aMax);
         editor.apply();
+
+        mSatRange = new Pair<>(aMin, aMax);
     }
 
     public void setLumThreshold(Pair<Integer, Integer> aThreshold)
@@ -82,6 +86,8 @@ public class VisionAlgorithmPreferences
         editor.putInt("LumMin", aMin);
         editor.putInt("LumMax", aMax);
         editor.apply();
+
+        mLumRange = new Pair<>(aMin, aMax);
     }
 
     public Pair<Integer, Integer> getHueThreshold() {
@@ -99,17 +105,13 @@ public class VisionAlgorithmPreferences
 
     public void restoreDefaults() {
 
-        mHueRange = new Pair<>(
-                mPreferences.getInt("HueMin", sDEFAULT_HUE_MIN),
-                mPreferences.getInt("HueMax", sDEFAULT_HUE_MAX));
+        mHueRange = new Pair<>(sDEFAULT_HUE_MIN, sDEFAULT_HUE_MAX);
+        mSatRange = new Pair<>(sDEFAULT_SAT_MIN, sDEFAULT_SAT_MAX);
+        mLumRange = new Pair<>(sDEFAULT_LAT_MIN, sDEFAULT_LAT_MAX);
 
-        mSatRange = new Pair<>(
-                mPreferences.getInt("SatMin", sDEFAULT_SAT_MIN),
-                mPreferences.getInt("SatMax", sDEFAULT_SAT_MAX));
-
-        mLumRange = new Pair<>(
-                mPreferences.getInt("LumMin", sDEFAULT_LAT_MIN),
-                mPreferences.getInt("LumMax", sDEFAULT_LAT_MAX));
+        setHueThreshold(mHueRange);
+        setSatThreshold(mSatRange);
+        setLumThreshold(mLumRange);
 
     }
 }

@@ -122,7 +122,9 @@ public class VisionRobotConnection extends RobotConnection {
     {
         try
         {
-            send(new TargetUpdateMessage(aTargets, aLatencySec).getJson());
+            JSONObject message = new TargetUpdateMessage(aTargets, aLatencySec).getJson();
+            Log.i(sTAG, message.toString());
+            send(message);
         }
         catch (JSONException e)
         {

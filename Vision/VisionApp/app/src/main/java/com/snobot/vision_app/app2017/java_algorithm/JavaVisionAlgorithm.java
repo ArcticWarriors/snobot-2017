@@ -1,6 +1,7 @@
 package com.snobot.vision_app.app2017.java_algorithm;
 
 import android.graphics.Bitmap;
+import android.util.Pair;
 
 import com.snobot.vision_app.app2017.VisionAlgorithmPreferences;
 import com.snobot.vision_app.app2017.VisionRobotConnection;
@@ -186,7 +187,6 @@ public class JavaVisionAlgorithm
         ArrayList<MatOfPoint> contours = mPegGripAlgorithm.filterContoursOutput();
         Set<TapeLocation> targetInfos = new TreeSet<>(new AspectRatioComparator());
 
-        double distance = 0;
         for (int i = 0; i < contours.size(); ++i)
         {
             MatOfPoint contour = contours.get(i);
@@ -204,24 +204,24 @@ public class JavaVisionAlgorithm
             double percentOffCenter = distanceFromCenterPixel / sIMAGE_WIDTH * 100;
             double yawAngle = percentOffCenter * sHORIZONTAL_FOV_ANGLE;
 
-            System.out.println("Contour " + i);
-            System.out.println("  Aspect Ratio         : " + sDF.format(aspectRatio));
-            System.out.println("  Angle                : " + sDF.format(yawAngle));
-            System.out.println("  Distance From Horz.  : Dist=" + sDF.format(distanceFromHorz));
-            System.out.println("  Distance From Vert.  : Dist=" + sDF.format(distanceFromVert));
-
             targetInfos.add(new TapeLocation(contours.get(i), yawAngle, distanceFromHorz, distanceFromVert, aspectRatio));
-
-            distance = distanceFromVert;
         }
 
+        // Reported numbers
+        double distance = 0;
         double angle_to_the_peg = Double.NaN;
+        boolean ambgiuous = true;
+
         double centroid_of_image_X = sIMAGE_WIDTH/2;
-        Iterator<TapeLocation> targetIterator = targetInfos.iterator();
         if(targetInfos.size()>=2)
         {
-            Rect one = Imgproc.boundingRect(targetIterator.next().mContour);
-            Rect two = Imgproc.boundingRect(targetIterator.next().mContour);
+            Iterator<TapeLocation> targetIterator = targetInfos.iterator();
+
+            TapeLocation target1 = targetIterator.next();
+            TapeLocation target2 = targetIterator.next();
+
+            Rect one = Imgproc.boundingRect(target1.mContour);
+            Rect two = Imgproc.boundingRect(target2.mContour);
             double centroid_of_bounding_box_one = one.x + (one.width/2);
             double centroid_of_bounding_box_two = two.x + (two.width/2);
             double peg_X = (centroid_of_bounding_box_one + centroid_of_bounding_box_two)/2;
@@ -229,7 +229,17 @@ public class JavaVisionAlgorithm
 
             double angle_to_peg_RAD = Math.atan((peg_to_center_of_image_pixels/centroid_of_image_X) * Math.tan(sHORIZONTAL_FOV_ANGLE));
             angle_to_the_peg = Math.toDegrees(angle_to_peg_RAD);
-            System.out.println("ANGLE: " + angle_to_the_peg);
+
+            distance = (target1.mDistanceFromVert + target2.mDistanceFromVert) / 2;
+            ambgiuous = false;
+        }
+        else if(targetInfos.size() == 1)
+        {
+            Iterator<TapeLocation> targetIterator = targetInfos.iterator();
+            TapeLocation target = targetIterator.next();
+
+            angle_to_the_peg = 0;
+            distance = target.mDistanceFromVert;
         }
 
         Mat displayImage;
@@ -244,7 +254,7 @@ public class JavaVisionAlgorithm
             }
             case MarkedUpImage:
             {
-                displayImage = getMarkedUpImage(aOriginalImage, targetInfos, angle_to_the_peg);
+                displayImage = getMarkedUpImage(aOriginalImage, targetInfos, distance, angle_to_the_peg);
                 break;
             }
             case OriginalImage:
@@ -257,28 +267,27 @@ public class JavaVisionAlgorithm
 
         long currentTime = System.nanoTime();
         double latencySec = (currentTime - aSystemTimeNs) / 1e9;
-        System.out.println("Latency (sec) " + latencySec);
-        sendTargetInformation(targetInfos, distance, angle_to_the_peg, latencySec);
+        sendTargetInformation(targetInfos, ambgiuous, distance, angle_to_the_peg, latencySec);
 
         return displayImage;
     }
 
-    private Mat getMarkedUpImage(Mat aOriginal, Collection<TapeLocation> aTargetInfos, double aAngle_to_the_peg)
+    private Mat getMarkedUpImage(Mat aOriginal, Collection<TapeLocation> aTargetInfos, double aDistance, double aOverallAngle)
     {
         Mat displayImage = new Mat();
         aOriginal.copyTo(displayImage);
 
-        String text_angle;
-        if(Double.isNaN(aAngle_to_the_peg))
+        String overallInformation;
+        if(Double.isNaN(aOverallAngle))
         {
-            text_angle = "No angle detected";
+            overallInformation = "No angle detected";
         }
         else
         {
-            text_angle = "Angle To Peg: " + sDF.format(aAngle_to_the_peg);
+            overallInformation = "Dist: " + sDF.format(aDistance) + ", Angle: " + sDF.format(aOverallAngle);
         }
         Imgproc.line(displayImage, sCENTER_LINE_START, sCENTER_LINE_END, sCENTER_LINE_COLOR, 1);
-        Imgproc.putText(displayImage, text_angle, new Point(20, 20), Core.FONT_HERSHEY_COMPLEX, .6, sWHITE_COLOR);
+        Imgproc.putText(displayImage, overallInformation, new Point(20, 20), Core.FONT_HERSHEY_COMPLEX, .6, sWHITE_COLOR);
 
         int ctr = 0;
         for (TapeLocation targetInfo : aTargetInfos)
@@ -341,6 +350,11 @@ public class JavaVisionAlgorithm
 
     public Mat processImage(Mat aMat, long aSystemTimeNs) {
 
+        Pair<Integer, Integer> hue = mPreferences.getHueThreshold();
+        Pair<Integer, Integer> sat = mPreferences.getSatThreshold();
+        Pair<Integer, Integer> lum = mPreferences.getLumThreshold();
+        mPegGripAlgorithm.setHslThreshold(hue.first, hue.second, sat.first, sat.second, lum.first, lum.second);
+
         if(cameraDirection == CameraBridgeViewBase.CAMERA_ID_FRONT)
         {
             return processPegImage(aMat, aSystemTimeNs);
@@ -362,14 +376,14 @@ public class JavaVisionAlgorithm
         this.cameraDirection = cameraDirection;
     }
 
-    private void sendTargetInformation(Collection<TapeLocation> targetInfos, double aDistance, double aAngleToPeg, double aLatencySec)
+    private void sendTargetInformation(Collection<TapeLocation> targetInfos, boolean aAmbigious, double aDistance, double aAngleToPeg, double aLatencySec)
     {
         List<TargetUpdateMessage.TargetInfo> targets = new ArrayList<>();
 
         if(!targetInfos.isEmpty())
         {
             aAngleToPeg = Double.isNaN(aAngleToPeg) ? 0 : aAngleToPeg;
-            targets.add(new TargetUpdateMessage.TargetInfo(aDistance, aAngleToPeg));
+            targets.add(new TargetUpdateMessage.TargetInfo(aAngleToPeg, aDistance, aAmbigious));
         }
 
         mRobotConnection.sendVisionUpdate(targets, aLatencySec);

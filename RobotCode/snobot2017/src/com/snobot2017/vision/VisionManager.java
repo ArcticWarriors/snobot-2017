@@ -93,11 +93,13 @@ public class VisionManager implements ISubsystem
             TargetLocation target = new TargetLocation();
             target.mX = targetInfo.mX;
             target.mY = targetInfo.mY;
+            target.mAmbigious = targetInfo.mAmbigious;
             mTargetInformation.add(target);
 
             JSONObject jsonTarget = new JSONObject();
             jsonTarget.put("x", target.mX);
             jsonTarget.put("y", target.mY);
+            jsonTarget.put("ambiguous", target.mAmbigious);
             targets.add(jsonTarget);
         }
 
