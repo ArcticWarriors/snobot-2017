@@ -54,13 +54,13 @@ public class SnobotVisionGLSurfaceView extends VisionTrackerGLSurfaceView {
         ByteBuffer outputTextureData;
         Mat imageToDisplay;
 
-//        if(mVisionAlgorithm != null) {
-//            imageToDisplay = mVisionAlgorithm.processImage(originalMat, aSystemTimeNs);
-//            byte[] byteBuff2 = new byte[size];
-//            imageToDisplay.get(0, 0, byteBuff2);
-//            outputTextureData = ByteBuffer.wrap(byteBuff2);
-//        }
-//        else
+        if(mVisionAlgorithm != null) {
+            imageToDisplay = mVisionAlgorithm.processImage(originalMat, aSystemTimeNs);
+            byte[] byteBuff2 = new byte[size];
+            imageToDisplay.get(0, 0, byteBuff2);
+            outputTextureData = ByteBuffer.wrap(byteBuff2);
+        }
+        else
         {
             imageToDisplay = originalMat;
             outputTextureData = screenData;
