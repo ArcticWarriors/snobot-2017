@@ -37,7 +37,7 @@ public interface IVisionJoystick extends IJoystick
      * 
      * @return
      */
-    boolean driveToPeg();
+    boolean driveToPositionInSteps();
 
     /**
      * Tell the operator joystick that any active snobotActor actions are
@@ -51,5 +51,5 @@ public interface IVisionJoystick extends IJoystick
      * 
      * @return true if in driveSmoothlyToPositionState
      */
-    boolean DriveSmoothlyToPosition();
+    boolean driveSmoothlyToPosition();
 }

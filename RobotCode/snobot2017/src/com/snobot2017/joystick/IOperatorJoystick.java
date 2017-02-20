@@ -58,4 +58,12 @@ public interface IOperatorJoystick extends IJoystick
      *         do nothing
      */
     GearBossPositions moveGearBossToPosition();
+
+    /**
+     * Indicates the joystick should be rumbling
+     * 
+     * @param aRumble
+     *            True to rumble
+     */
+    void setShouldRumble(boolean aRumble);
 }

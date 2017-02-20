@@ -42,6 +42,7 @@ public class SnobotGearBoss implements IGearBoss
     public void update()
     {
         mGearIsUp = mGearSolenoid.get() == sGEAR_UP_VALUE;
+        mOperatorJoystick.setShouldRumble(!mGearIsUp);
     }
 
     @Override

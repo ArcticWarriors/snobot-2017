@@ -72,8 +72,8 @@ public class CameraSimulator implements ISimulatorUpdater
     }
 
     private static final double sMAX_VIEWABLE_ANGLE = 60;
-    private static final double sFRAMES_PER_SECOND = .6;
-    private static final double sLATENCY_MS = 5000;
+    private static final double sFRAMES_PER_SECOND = 50;
+    private static final double sLATENCY_MS = 0;
 
     private int mLoopsBetweenUpdates;
     private int mLoopsStale;
@@ -139,6 +139,7 @@ public class CameraSimulator implements ISimulatorUpdater
             JSONObject targetInfoJson = new JSONObject();
             targetInfoJson.put("angle", targetInfo.mAngle);
             targetInfoJson.put("distance", targetInfo.mDistance);
+            targetInfoJson.put("ambiguous", false);
             targetJson.add(targetInfoJson);
         }
 

@@ -22,22 +22,4 @@ public interface IDriverJoystick extends IJoystick
      */
     double getLeftSpeed();
 
-    /**
-     * 
-     * @return Returns the arcade power
-     */
-    double getArcadePower();
-
-    /**
-     * 
-     * @return Turn Radius in Arcade mode
-     */
-    double getArcadeTurn();
-
-    /**
-     * 
-     * @return Is Arcade mode enabled
-     */
-    boolean isArcadeMode();
-
 }

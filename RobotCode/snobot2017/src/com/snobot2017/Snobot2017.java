@@ -137,7 +137,7 @@ public class Snobot2017 extends ASnobot
         mDriveTrain.setSnobotActor(mSnobotActor);
 
         // Vision
-        mVisionManager = new VisionManager(mPositioner, mSnobotActor, operatorJoystick);
+        mVisionManager = new VisionManager(mPositioner, mSnobotActor, driverJoystick);
         addModule(mVisionManager);
 
         // LED Manager

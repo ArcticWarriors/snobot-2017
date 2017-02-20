@@ -66,7 +66,27 @@ public class RelayJNI extends DIOJNI
 
     public static boolean getRelay(int relayPortHandle)
     {
-        return getWrapperFromBuffer(relayPortHandle).getRelayForwards();
+        int ourPort = relayPortHandle;
+        boolean forward = relayPortHandle % 2 == 0;
+
+        boolean output = false;
+
+        if (!forward)
+        {
+            ourPort -= 1;
+        }
+        
+        RelayWrapper wrapper = getWrapperFromBuffer(ourPort);
+        if (forward)
+        {
+            output = wrapper.getRelayForwards();
+        }
+        else
+        {
+            output = wrapper.getRelayReverse();
+        }
+
+        return output;
     }
 
     //////////////////////////////////

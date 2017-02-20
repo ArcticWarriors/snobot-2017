@@ -1,6 +1,7 @@
 package com.snobot2017.light_manager;
 
 import com.snobot.lib.modules.IUpdateableModule;
+import com.snobot2017.Properties2017;
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.joystick.IOperatorJoystick;
 
@@ -9,11 +10,15 @@ import edu.wpi.first.wpilibj.Relay.Value;
 
 public class LightManager implements IUpdateableModule
 {
+    private static final Value sLIGHT_ON_VALUE = Value.kForward;
+    private static final Value sLIGHT_OFF_VALUE = Value.kOff;
+
     private Relay mGreenRelay;
     private Relay mBlueRelay;
     private IOperatorJoystick mOperatorJoystick;
     private ISnobotActor mSnobotActor;
-    private int mCounter;
+    private int mFlashCounter;
+
     public LightManager(IOperatorJoystick aOperatorJoystick, ISnobotActor aSnobotActor, Relay aRelay, Relay anotherRelay)
     {
         mGreenRelay = aRelay;
@@ -21,7 +26,7 @@ public class LightManager implements IUpdateableModule
         
         mOperatorJoystick = aOperatorJoystick;
         mSnobotActor = aSnobotActor;
-        mCounter = 0;
+        mFlashCounter = 0;
     }
     
     @Override
@@ -29,39 +34,40 @@ public class LightManager implements IUpdateableModule
     {
         if(mOperatorJoystick.greenLightOn())
         {
-            mGreenRelay.set(Value.kForward);
+            mGreenRelay.set(sLIGHT_ON_VALUE);
         }
         else
         {
-            mGreenRelay.set(Value.kOff);
+            mGreenRelay.set(sLIGHT_OFF_VALUE);
         }
         
         if(!mSnobotActor.isInAction())
         {
             if(mOperatorJoystick.blueLightOn())
             {
-                mBlueRelay.set(Value.kForward);
+                mBlueRelay.set(sLIGHT_ON_VALUE);
             }
             else
             {
-                mBlueRelay.set(Value.kOff);
+                mBlueRelay.set(sLIGHT_OFF_VALUE);
             }
         }
         else
         {
-            if(mCounter > 2 && mBlueRelay.get() == Value.kOff)
+            int loopsToFlash = Properties2017.sFLASH_LIGHT_LOOPS.getValue();
+            if (mFlashCounter > loopsToFlash && mBlueRelay.get() == sLIGHT_OFF_VALUE)
             {
-                mBlueRelay.set(Value.kForward);
-                mCounter = 0;
+                mBlueRelay.set(sLIGHT_ON_VALUE);
+                mFlashCounter = 0;
             }
-            else if(mCounter > 2 && mBlueRelay.get() == Value.kForward)
+            else if (mFlashCounter > loopsToFlash && mBlueRelay.get() == sLIGHT_ON_VALUE)
             {
-                mBlueRelay.set(Value.kOff);
-                mCounter = 0;
+                mBlueRelay.set(sLIGHT_OFF_VALUE);
+                mFlashCounter = 0;
             }
             else
             {
-                mCounter++;
+                mFlashCounter++;
             }
         }
     }

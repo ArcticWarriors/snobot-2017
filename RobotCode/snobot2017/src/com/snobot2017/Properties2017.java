@@ -34,6 +34,9 @@ public class Properties2017
     public static final StringProperty sAUTON_DIRECTORY;
     public static final StringProperty sAUTON_PATH_DIRECTORY;
 
+    // Light Manager
+    public static final IntegerProperty sFLASH_LIGHT_LOOPS = new IntegerProperty("LightFlashLoops", 2);
+
     // Drive path
     public static final DoubleProperty sDRIVE_PATH_KP = new DoubleProperty("DrivePathKP", 0.001);
     public static final DoubleProperty sDRIVE_PATH_KD = new DoubleProperty("DrivePathKD", 0);

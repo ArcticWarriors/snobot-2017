@@ -131,7 +131,7 @@ public class VisionManager implements ISubsystem
             mVisionServer.restartApp();
         }
 
-        if (mOperatorJoystick.driveToPeg())
+        if (mOperatorJoystick.driveToPositionInSteps())
         {
             if (!mSnobotActor.isInAction())
             {
@@ -147,7 +147,7 @@ public class VisionManager implements ISubsystem
                 mOperatorJoystick.turnOffActions();
             }
         }
-        else if (mOperatorJoystick.DriveSmoothlyToPosition())
+        else if (mOperatorJoystick.driveSmoothlyToPosition())
         {
             if (!mSnobotActor.isInAction())
             {
