@@ -1,4 +1,4 @@
-package com.snobot.vision_app.app2017.java_algorithm;
+package com.snobot.vision_app.app2017.java_algorithm.common;
 
 import java.util.ArrayList;
 import java.util.List;

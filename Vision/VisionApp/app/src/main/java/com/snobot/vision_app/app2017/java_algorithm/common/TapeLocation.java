@@ -1,4 +1,4 @@
-package com.snobot.vision_app.app2017.java_algorithm;
+package com.snobot.vision_app.app2017.java_algorithm.common;
 
 import org.opencv.core.MatOfPoint;
 

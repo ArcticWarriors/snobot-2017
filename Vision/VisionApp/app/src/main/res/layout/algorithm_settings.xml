@@ -26,11 +26,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:selectAllOnFocus="true"
             android:id="@+id/hueMinValue" />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:selectAllOnFocus="true"
             android:id="@+id/hueMaxValue" />
 
     </LinearLayout>
@@ -52,11 +54,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:selectAllOnFocus="true"
             android:id="@+id/satMinValue" />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:selectAllOnFocus="true"
             android:id="@+id/satMaxValue" />
 
     </LinearLayout>
@@ -78,11 +82,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:selectAllOnFocus="true"
             android:id="@+id/lumMinValue" />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:selectAllOnFocus="true"
             android:id="@+id/lumMaxValue" />
 
     </LinearLayout>
