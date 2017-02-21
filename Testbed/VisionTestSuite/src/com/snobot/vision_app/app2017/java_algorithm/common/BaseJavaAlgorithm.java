@@ -16,10 +16,12 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import com.snobot.vision_app.app2017.java_algorithm.common.TargetComparators.AspectRatioComparator;
+/**
+ * Created by PJ on 2/20/2017.
+ */
 
-public class BaseJavaAlgorithm
-{
+public abstract class BaseJavaAlgorithm {
+
     private static final double sIMAGE_WIDTH = 640;
     private static final double sIMAGE_HEIGHT = 480;
     private static final double sHORIZONTAL_FOV_ANGLE = Math.toRadians(62.69 / 2);
@@ -33,16 +35,21 @@ public class BaseJavaAlgorithm
 
     private static final Scalar sCENTER_LINE_COLOR = new Scalar(0, 255, 0);
     private static final Scalar sBLACK_COLOR = new Scalar(0, 0, 0);
-    private static final Scalar sWHITE_COLOR = new Scalar(255, 255, 255);
+    private static final Scalar sWHITE_COLOR = new Scalar( 255, 255, 255);
 
-    private static final Scalar[] sCONTOUR_COLORS = new Scalar[]
-    { new Scalar(0, 0, 255), new Scalar(255, 0, 0), new Scalar(0, 255, 255) };
+    private static final Scalar[] sCONTOUR_COLORS = new Scalar[]{
+            new Scalar(0, 0, 255),
+            new Scalar(255, 0, 0),
+            new Scalar(0, 255, 255)
+    };
 
     private static final DecimalFormat sDF = new DecimalFormat("0.0000");
 
     public enum DisplayType
     {
-        OriginalImage, PostThreshold, MarkedUpImage
+        OriginalImage,
+        PostThreshold,
+        MarkedUpImage
     }
 
     protected GripPegAlgorithm mPegGripAlgorithm;
@@ -61,12 +68,13 @@ public class BaseJavaAlgorithm
         mDisplayType = aDisplayType;
     }
 
-    protected Mat processPegImage(Mat aOriginalImage)
+
+    protected Mat processPegImage(Mat aOriginalImage, long aSystemTimeNs)
     {
         mPegGripAlgorithm.process(aOriginalImage);
 
         ArrayList<MatOfPoint> contours = mPegGripAlgorithm.filterContoursOutput();
-        Set<TapeLocation> targetInfos = new TreeSet<>(new AspectRatioComparator());
+        Set<TapeLocation> targetInfos = new TreeSet<>(new TargetComparators.AspectRatioComparator());
 
         for (int i = 0; i < contours.size(); ++i)
         {
@@ -85,30 +93,42 @@ public class BaseJavaAlgorithm
             double percentOffCenter = distanceFromCenterPixel / sIMAGE_WIDTH * 100;
             double yawAngle = percentOffCenter * sHORIZONTAL_FOV_ANGLE;
 
-            System.out.println("Contour " + i);
-            System.out.println("  Aspect Ratio         : " + sDF.format(aspectRatio));
-            System.out.println("  Angle                : " + sDF.format(yawAngle));
-            System.out.println("  Distance From Horz.  : Dist=" + sDF.format(distanceFromHorz));
-            System.out.println("  Distance From Vert.  : Dist=" + sDF.format(distanceFromVert));
-
             targetInfos.add(new TapeLocation(contours.get(i), yawAngle, distanceFromHorz, distanceFromVert, aspectRatio));
         }
 
+        // Reported numbers
+        double distance = 0;
         double angle_to_the_peg = Double.NaN;
-        double centroid_of_image_X = sIMAGE_WIDTH / 2;
-        Iterator<TapeLocation> targetIterator = targetInfos.iterator();
-        if (targetInfos.size() >= 2)
-        {
-            Rect one = Imgproc.boundingRect(targetIterator.next().getContour());
-            Rect two = Imgproc.boundingRect(targetIterator.next().getContour());
-            double centroid_of_bounding_box_one = one.x + (one.width / 2);
-            double centroid_of_bounding_box_two = two.x + (two.width / 2);
-            double peg_X = (centroid_of_bounding_box_one + centroid_of_bounding_box_two) / 2;
-            double peg_to_center_of_image_pixels = centroid_of_image_X - peg_X;
+        boolean ambgiuous = true;
 
-            double angle_to_peg_RAD = Math.atan((peg_to_center_of_image_pixels / centroid_of_image_X) * Math.tan(sHORIZONTAL_FOV_ANGLE));
+        double centroid_of_image_X = sIMAGE_WIDTH/2;
+        if(targetInfos.size()>=2)
+        {
+            Iterator<TapeLocation> targetIterator = targetInfos.iterator();
+
+            TapeLocation target1 = targetIterator.next();
+            TapeLocation target2 = targetIterator.next();
+
+            Rect one = Imgproc.boundingRect(target1.getContour());
+            Rect two = Imgproc.boundingRect(target2.getContour());
+            double centroid_of_bounding_box_one = one.x + (one.width/2);
+            double centroid_of_bounding_box_two = two.x + (two.width/2);
+            double peg_X = (centroid_of_bounding_box_one + centroid_of_bounding_box_two)/2;
+            double peg_to_center_of_image_pixels = centroid_of_image_X-peg_X;
+
+            double angle_to_peg_RAD = Math.atan((peg_to_center_of_image_pixels/centroid_of_image_X) * Math.tan(sHORIZONTAL_FOV_ANGLE));
             angle_to_the_peg = Math.toDegrees(angle_to_peg_RAD);
-            System.out.println("ANGLE: " + angle_to_the_peg);
+
+            distance = (target1.getPreferredDistance() + target2.getPreferredDistance()) / 2;
+            ambgiuous = false;
+        }
+        else if(targetInfos.size() == 1)
+        {
+            Iterator<TapeLocation> targetIterator = targetInfos.iterator();
+            TapeLocation target = targetIterator.next();
+
+            angle_to_the_peg = target.getAngle();
+            distance = target.getPreferredDistance();
         }
 
         Mat displayImage;
@@ -123,7 +143,7 @@ public class BaseJavaAlgorithm
         }
         case MarkedUpImage:
         {
-            displayImage = getMarkedUpImage(aOriginalImage, targetInfos, angle_to_the_peg);
+            displayImage = getMarkedUpPegImage(aOriginalImage, targetInfos, distance, angle_to_the_peg);
             break;
         }
         case OriginalImage:
@@ -134,25 +154,54 @@ public class BaseJavaAlgorithm
         }
         }
 
+        long currentTime = System.nanoTime();
+        double latencySec = (currentTime - aSystemTimeNs) / 1e9;
+        sendTargetInformation(targetInfos, ambgiuous, distance, angle_to_the_peg, latencySec);
+
         return displayImage;
     }
 
-    private Mat getMarkedUpImage(Mat aOriginal, Collection<TapeLocation> aTargetInfos, double aAngle_to_the_peg)
+    protected Mat processRopeImage(Mat aOriginal, long aSystemTimeNs)
+    {
+        mRopeGripAlgorithm.process(aOriginal);
+
+        Mat output;
+
+        switch(mDisplayType) {
+            case PostThreshold:
+            {
+                output = new Mat();
+                Imgproc.cvtColor(mRopeGripAlgorithm.hslThresholdOutput(), output, 9); //TODO magic number, should be CV_GRAY2RGBA but I can't find it
+                break;
+            }
+            case OriginalImage:
+            default: // Intentional fallthrough
+            {
+                output = aOriginal;
+                break;
+            }
+
+        }
+
+        return output;
+    }
+
+    private Mat getMarkedUpPegImage(Mat aOriginal, Collection<TapeLocation> aTargetInfos, double aDistance, double aOverallAngle)
     {
         Mat displayImage = new Mat();
         aOriginal.copyTo(displayImage);
 
-        String text_angle;
-        if (Double.isNaN(aAngle_to_the_peg))
+        String overallInformation;
+        if(Double.isNaN(aOverallAngle))
         {
-            text_angle = "No angle detected";
+            overallInformation = "No angle detected";
         }
         else
         {
-            text_angle = "Angle To Peg: " + sDF.format(aAngle_to_the_peg);
+            overallInformation = "Dist: " + sDF.format(aDistance) + ", Angle: " + sDF.format(aOverallAngle);
         }
         Imgproc.line(displayImage, sCENTER_LINE_START, sCENTER_LINE_END, sCENTER_LINE_COLOR, 1);
-        Imgproc.putText(displayImage, text_angle, new Point(20, 20), Core.FONT_HERSHEY_COMPLEX, .6, sWHITE_COLOR);
+        Imgproc.putText(displayImage, overallInformation, new Point(20, 20), Core.FONT_HERSHEY_COMPLEX, .6, sWHITE_COLOR);
 
         int ctr = 0;
         for (TapeLocation targetInfo : aTargetInfos)
@@ -172,4 +221,6 @@ public class BaseJavaAlgorithm
 
         return displayImage;
     }
+
+    protected abstract void sendTargetInformation(Collection<TapeLocation> targetInfos, boolean aAmbigious, double aDistance, double aAngleToPeg, double aLatencySec);
 }

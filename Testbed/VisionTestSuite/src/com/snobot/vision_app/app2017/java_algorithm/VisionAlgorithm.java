@@ -3,6 +3,7 @@ package com.snobot.vision_app.app2017.java_algorithm;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.opencv.core.CvType;
@@ -11,6 +12,7 @@ import org.opencv.core.Mat;
 import com.snobot.vision.HslThreshold;
 import com.snobot.vision.IVisionAlgorithm;
 import com.snobot.vision_app.app2017.java_algorithm.common.BaseJavaAlgorithm;
+import com.snobot.vision_app.app2017.java_algorithm.common.TapeLocation;
 
 public class VisionAlgorithm extends BaseJavaAlgorithm implements IVisionAlgorithm
 {
@@ -48,7 +50,7 @@ public class VisionAlgorithm extends BaseJavaAlgorithm implements IVisionAlgorit
     
     public void processImage(Mat aOriginalImage)
     {
-        Mat displayImage = processPegImage(aOriginalImage);
+        Mat displayImage = processPegImage(aOriginalImage, 0);
 
         for (ProcessedImageListener listener : mUpdateListeners)
         {
@@ -72,5 +74,11 @@ public class VisionAlgorithm extends BaseJavaAlgorithm implements IVisionAlgorit
     public void addListener(ProcessedImageListener imageListener)
     {
         mUpdateListeners.add(imageListener);
+    }
+
+    @Override
+    protected void sendTargetInformation(Collection<TapeLocation> targetInfos, boolean aAmbigious, double aDistance, double aAngleToPeg,
+            double aLatencySec)
+    {
     }
 }
