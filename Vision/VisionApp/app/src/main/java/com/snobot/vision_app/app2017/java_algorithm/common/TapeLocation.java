@@ -72,19 +72,23 @@ public class TapeLocation
                 + mDistanceFromVert + ", mAspectRatio=" + mAspectRatio + "]";
     }
 
-    public MatOfPoint getContour() {
+    public MatOfPoint getContour()
+    {
         return mContour;
     }
 
-    public double getAngle() {
+    public double getAngle()
+    {
         return mAngle;
     }
 
-    public double getAspectRatio() {
+    public double getAspectRatio()
+    {
         return mAspectRatio;
     }
 
-    public double getPreferredDistance() {
+    public double getPreferredDistance()
+    {
         return mDistanceFromVert;
     }
 }
