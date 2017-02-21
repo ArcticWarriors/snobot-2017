@@ -56,6 +56,13 @@ public class TargetUpdateMessage
             mAngle = -Double.parseDouble(aJson.get("angle").toString());
             mDistance = Double.parseDouble(aJson.get("distance").toString());
             mAbmigious = Boolean.parseBoolean(aJson.get("ambiguous").toString());
+            
+            // TODO fix in app! (or i guess this is right, fix above still
+            //TODO fix spelling
+            if(mAbmigious)
+            {
+                mAngle *= -1;
+            }
         }
 
         /**

@@ -4,6 +4,7 @@ import com.snobot.lib.modules.IUpdateableModule;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.joystick.IOperatorJoystick;
+import com.snobot2017.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
@@ -17,15 +18,17 @@ public class LightManager implements IUpdateableModule
     private Relay mBlueRelay;
     private IOperatorJoystick mOperatorJoystick;
     private ISnobotActor mSnobotActor;
+    private VisionManager mVisionManager;
     private int mFlashCounter;
 
-    public LightManager(IOperatorJoystick aOperatorJoystick, ISnobotActor aSnobotActor, Relay aRelay, Relay anotherRelay)
+    public LightManager(IOperatorJoystick aOperatorJoystick, ISnobotActor aSnobotActor, VisionManager aVisionManager, Relay aRelay, Relay anotherRelay)
     {
         mGreenRelay = aRelay;
         mBlueRelay = anotherRelay;
         
         mOperatorJoystick = aOperatorJoystick;
         mSnobotActor = aSnobotActor;
+        mVisionManager = aVisionManager;
         mFlashCounter = 0;
     }
     
@@ -43,7 +46,7 @@ public class LightManager implements IUpdateableModule
         
         if(!mSnobotActor.isInAction())
         {
-            if(mOperatorJoystick.blueLightOn())
+            if(mVisionManager.seesTarget())
             {
                 mBlueRelay.set(sLIGHT_ON_VALUE);
             }
@@ -51,6 +54,14 @@ public class LightManager implements IUpdateableModule
             {
                 mBlueRelay.set(sLIGHT_OFF_VALUE);
             }
+//            if(mOperatorJoystick.blueLightOn())
+//            {
+//                mBlueRelay.set(sLIGHT_ON_VALUE);
+//            }
+//            else
+//            {
+//                mBlueRelay.set(sLIGHT_OFF_VALUE);
+//            }
         }
         else
         {

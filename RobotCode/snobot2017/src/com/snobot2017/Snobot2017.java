@@ -93,7 +93,7 @@ public class Snobot2017 extends ASnobot
         ////////////////////////////////////////////////////////////
 
         // Drive Train
-        boolean useCan = true;
+        boolean useCan = false;
         if (useCan)
         {
             CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
@@ -143,7 +143,7 @@ public class Snobot2017 extends ASnobot
         // LED Manager
         Relay greenLight = new Relay(PortMappings2017.sRELAY_GREEN_LED);
         Relay blueLight = new Relay(PortMappings2017.sRELAY_BLUE_LED);
-        mLightManager = new LightManager(operatorJoystick, mSnobotActor, greenLight, blueLight);
+        mLightManager = new LightManager(operatorJoystick, mSnobotActor, mVisionManager, greenLight, blueLight);
         addModule(mLightManager);
 
         // Sphincter

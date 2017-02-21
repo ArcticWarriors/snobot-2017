@@ -186,6 +186,12 @@ public class VisionManager implements ISubsystem
 
     }
 
+
+    public boolean seesTarget()
+    {
+        return !mLatestTargetInformation.isEmpty();
+    }
+
     @Override
     public void updateSmartDashboard()
     {
