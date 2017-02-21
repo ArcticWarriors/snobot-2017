@@ -127,7 +127,7 @@ public abstract class BaseJavaAlgorithm {
             Iterator<TapeLocation> targetIterator = targetInfos.iterator();
             TapeLocation target = targetIterator.next();
 
-            angle_to_the_peg = 0;
+            angle_to_the_peg = target.getAngle();
             distance = target.getPreferredDistance();
         }
 
