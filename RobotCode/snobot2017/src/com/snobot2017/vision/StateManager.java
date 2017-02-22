@@ -53,9 +53,12 @@ public class StateManager
             
             for (TargetInfo cameraTarget : latestTargetUpdate.getTargets())
             {
-                double targetDistance = cameraTarget.getDistance();
-                double targetAngle = cameraTarget.getAngle();
-                targetAngle += stateAtTime.mAngle;
+                double cameraDistance = cameraTarget.getDistance();
+                double cameraAngle = cameraTarget.getAngle();
+                cameraAngle += stateAtTime.mAngle;
+
+                double targetDistance = Math.sqrt(((cameraDistance * cameraDistance)-(24*Math.cos(cameraAngle)+144))); // andrew
+                double targetAngle = 180 - Math.asin((cameraDistance * Math.sin(cameraAngle) / (targetDistance))); // andrews
 
                 double angleRads = Math.toRadians(targetAngle);
 
