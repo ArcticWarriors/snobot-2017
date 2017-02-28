@@ -57,11 +57,12 @@ public class StateManager
                 double cameraAngle = cameraTarget.getAngle();
                 cameraAngle += stateAtTime.mAngle;
 
-                double targetDistance = Math.sqrt(((cameraDistance * cameraDistance)-(24*Math.cos(cameraAngle)+144))); // andrew
-                double targetAngle = 180 - Math.asin((cameraDistance * Math.sin(cameraAngle) / (targetDistance))); // andrews
-
+                double targetDistance = Math.sqrt((cameraDistance*cameraDistance) + 144 - (24*cameraDistance*(Math.cos(cameraAngle)))); // andrew
+                double targetAngle = 180 - (Math.toDegrees(Math.asin((cameraDistance*Math.sin(cameraAngle))/targetDistance)));
+                
                 double angleRads = Math.toRadians(targetAngle);
-
+                
+                System.out.println("\n\n\n\n" + targetDistance + ", Angle: " + targetAngle);
                 TargetLocation targetLocation = new TargetLocation();
                 targetLocation.mX = stateAtTime.mRobotX + targetDistance * Math.sin(angleRads);
                 targetLocation.mY = stateAtTime.mRobotY + targetDistance * Math.cos(angleRads);
