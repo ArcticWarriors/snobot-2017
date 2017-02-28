@@ -134,12 +134,13 @@ public class CameraSimulator implements ISimulatorUpdater
 
         JSONArray targetJson = new JSONArray();
 
-        for (TargetInfo targetInfo : targets)
+        for (int i = 0; i < targets.size(); ++i)
         {
+            TargetInfo targetInfo = targets.get(i);
             JSONObject targetInfoJson = new JSONObject();
             targetInfoJson.put("angle", targetInfo.mAngle);
             targetInfoJson.put("distance", targetInfo.mDistance);
-            targetInfoJson.put("ambiguous", false);
+            targetInfoJson.put("ambiguous", i != 0);
             targetJson.add(targetInfoJson);
         }
 

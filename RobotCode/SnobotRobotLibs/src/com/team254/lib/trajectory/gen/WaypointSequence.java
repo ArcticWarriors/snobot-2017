@@ -34,6 +34,13 @@ public class WaypointSequence
         public double x;
         public double y;
         public double theta;
+
+        @Override
+        public String toString()
+        {
+            return "Waypoint [x=" + x + ", y=" + y + ", theta=" + Math.toDegrees(theta) + "]";
+        }
+
     }
 
     List<Waypoint> mWaypoints;
@@ -56,5 +63,11 @@ public class WaypointSequence
     public Waypoint getWaypoint(int index)
     {
         return mWaypoints.get(index);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "WaypointSequence [mWaypoints=" + mWaypoints + "]";
     }
 }

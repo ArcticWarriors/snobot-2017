@@ -245,24 +245,26 @@ public class CommandParser extends ACommandParser
         switch (startPosition)
         {
         case RedRight:
-            scoreFilename = "RedRightScoreGear.csv";
-            boilFilename = "RedRightGearToBoiler.csv";
+            scoreFilename = "StartToGear/RedRightScoreGear.csv";
+            boilFilename = "GearToBoiler/RedRightGearToBoiler.csv";
             break;
         case RedMiddle:
-            scoreFilename = "RedMiddleScoreGear.csv";
+            scoreFilename = "StartToGear/RedMiddleScoreGear.csv";
+            boilFilename = "GearToBoiler/RedMiddleGearToBoiler.csv";
             break;
         case RedLeft:
-            scoreFilename = "RedLeftScoreGear.csv";
+            scoreFilename = "StartToGear/RedLeftScoreGear.csv";
             break;
         case BlueRight:
-            scoreFilename = "BlueRightScoreGear.csv";
+            scoreFilename = "StartToGear/BlueRightScoreGear.csv";
             break;
         case BlueMiddle:
-            scoreFilename = "BlueMiddleScoreGear.csv";
+            scoreFilename = "StartToGear/BlueMiddleScoreGear.csv";
+            boilFilename = "GearToBoiler/BlueMiddleGearToBoiler.csv";
             break;
         case BlueLeft:
-            scoreFilename = "BLueLeftScoreGear.csv";
-            boilFilename = "BlueLeftGearToBoiler.csv";
+            scoreFilename = "StartToGear/BLueLeftScoreGear.csv";
+            boilFilename = "GearToBoiler/BlueLeftGearToBoiler.csv";
             break;
         default:
             break;
@@ -305,22 +307,22 @@ public class CommandParser extends ACommandParser
         switch (startPosition)
         {
         case RedLeft:
-            fileName = "RedLeftScoreGear.csv";
+            fileName = "StartToGear/RedLeftScoreGear.csv";
             break;
         case RedMiddle:
-            fileName = "RedMiddleScoreGear.csv";
+            fileName = "StartToGear/RedMiddleScoreGear.csv";
             break;
         case RedRight:
-            fileName = "RedRightScoreGear.csv";
+            fileName = "StartToGear/RedRightScoreGear.csv";
             break;
         case BlueRight:
-            fileName = "BlueRightScoreGear.csv";
+            fileName = "StartToGear/BlueRightScoreGear.csv";
             break;
         case BlueMiddle:
-            fileName = "BlueMiddleScoreGear.csv";
+            fileName = "StartToGear/BlueMiddleScoreGear.csv";
             break;
         case BlueLeft:
-            fileName = "BlueLeftScoreGear.csv";
+            fileName = "StartToGear/BlueLeftScoreGear.csv";
             break;
         default:
             break;
@@ -366,61 +368,61 @@ public class CommandParser extends ACommandParser
         case RedLeft:
             if (doClose)
             {
-                fileName = "RedLeftToHopperFive.csv";
+                fileName = "StartToHopper/RedLeftToHopperFive.csv";
             }
             else
             {
-                fileName = "RedLeftToHopperFour.csv";
+                fileName = "StartToHopper/RedLeftToHopperFour.csv";
             }
             break;
         case RedMiddle:
             if (doClose)
             {
-                fileName = "RedMiddleToHopperOne.csv";
+                fileName = "StartToHopper/RedMiddleToHopperOne.csv";
             }
             else
             {
-                fileName = "RedMiddleToHopperFive.csv";
+                fileName = "StartToHopper/RedMiddleToHopperFive.csv";
             }
             break;
         case RedRight:
             if (doClose)
             {
-                fileName = "RedRightToHopperOne.csv";
+                fileName = "StartToHopper/RedRightToHopperOne.csv";
             }
             else
             {
-                fileName = "RedRightToHopperTwo.csv";
+                fileName = "StartToHopper/RedRightToHopperTwo.csv";
             }
             break;
         case BlueRight:
             if (doClose)
             {
-                fileName = "BlueRightToHopperFour.csv";
+                fileName = "StartToHopper/BlueRightToHopperFour.csv";
             }
             else
             {
-                fileName = "BlueRightToHopperFive.csv";
+                fileName = "StartToHopper/BlueRightToHopperFive.csv";
             }
             break;
         case BlueMiddle:
             if (doClose)
             {
-                fileName = "BlueMiddleToHopperThree.csv";
+                fileName = "StartToHopper/BlueMiddleToHopperThree.csv";
             }
             else
             {
-                fileName = "BlueMiddleToHopperFour.csv";
+                fileName = "StartToHopper/BlueMiddleToHopperFour.csv";
             }
             break;
         case BlueLeft:
             if (doClose)
             {
-                fileName = "BlueLeftToHopperThree.csv";
+                fileName = "StartToHopper/BlueLeftToHopperThree.csv";
             }
             else
             {
-                fileName = "BlueLeftToHopperTwo.csv";
+                fileName = "StartToHopper/BlueLeftToHopperTwo.csv";
             }
             break;
         default:
@@ -455,27 +457,27 @@ public class CommandParser extends ACommandParser
         switch (startPosition)
         {
         case RedLeft:
-            scoreFilename = "RedLeftScoreGear.csv";
-            hopperFilename = "RedLeftScoreGearGetHopper.csv";
+            scoreFilename = "StartToGear/RedLeftScoreGear.csv";
+            hopperFilename = "GearToHopper/RedLeftScoreGearGetHopper.csv";
             break;
         case RedRight:
-            scoreFilename = "RedRightScoreGear.csv";
-            hopperFilename = "RedRightScoreGearGetHopper.csv";
+            scoreFilename = "StartToGear/RedRightScoreGear.csv";
+            hopperFilename = "GearToHopper/RedRightScoreGearGetHopper.csv";
             break;
         case BlueRight:
-            scoreFilename = "BlueRightScoreGear.csv";
-            hopperFilename = "BlueRightScoreGearGetHopper.csv";
+            scoreFilename = "StartToGear/BlueRightScoreGear.csv";
+            hopperFilename = "GearToHopper/BlueRightScoreGearGetHopper.csv";
             break;
         case BlueLeft:
-            scoreFilename = "BlueLeftScoreGear.csv";
-            hopperFilename = "BlueLeftScoreGearGetHopper.csv";
+            scoreFilename = "StartToGear/BlueLeftScoreGear.csv";
+            hopperFilename = "GearToHopper/BlueLeftScoreGearGetHopper.csv";
             break;
 
         case RedMiddle:
-            scoreFilename = "RedMiddleScoreGear.csv";
+            scoreFilename = "StartToGear/RedMiddleScoreGear.csv";
             break;
         case BlueMiddle:
-            scoreFilename = "BlueMiddleScoreGear.csv";
+            scoreFilename = "StartToGear/BlueMiddleScoreGear.csv";
             break;
 
         // Intentional fall through, nothing to do

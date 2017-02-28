@@ -7,7 +7,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
 {
     private void getRedLeftScoreGearGetHopper(String directory, double kWheelbaseWidth)
     {
-        final String path_name = "RedLeftScoreGearGetHopper";
+        final String path_name = "GearToHopper/RedLeftScoreGearGetHopper";
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(new Waypoint(-NON_CENTER_GEAR_X_OFFSET, -NON_CENTER_CENTER_GEAR_Y, 45));
@@ -19,7 +19,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
     
     private void getRedRightScoreGearGetHopper(String directory, double kWheelbaseWidth)
     {
-        final String path_name = "RedRightScoreGearGetHopper";
+        final String path_name = "GearToHopper/RedRightScoreGearGetHopper";
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_GEAR);
@@ -30,7 +30,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
     
     private void getBlueRightScoreGearGetHopper(String directory, double kWheelbaseWidth)
     {
-        final String path_name = "BlueRightScoreGearGetHopper";
+        final String path_name = "GearToHopper/BlueRightScoreGearGetHopper";
 
 
         WaypointSequence p = new WaypointSequence();
@@ -43,7 +43,7 @@ public class GenerateGearToHopperPaths extends BasePathGenerator
     
     private void getBlueLeftScoreGearGetHopper(String directory, double kWheelbaseWidth)
     {
-        final String path_name = "BlueLeftScoreGearGetHopper";
+        final String path_name = "GearToHopper/BlueLeftScoreGearGetHopper";
 
 
         WaypointSequence p = new WaypointSequence();

@@ -7,7 +7,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
 
     private void getScoreGearBlueLeft(String aDirectory, double aWheelbaseWidth)
     {
-        final String path_name = "BlueLeftScoreGear";
+        final String path_name = "StartToGear/BlueLeftScoreGear";
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_LEFT_START);
@@ -18,7 +18,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
     
     private void getScoreGearBlueCenter(String aDirectory, double aWheelbaseWidth)
     {
-        final String path_name = "BlueMiddleScoreGear";
+        final String path_name = "StartToGear/BlueMiddleScoreGear";
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_CENTER_START);
@@ -29,7 +29,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
     
     private void getScoreGearBlueRight(String aDirectory, double aWheelbaseWidth)
     {
-        final String path_name = "BlueRightScoreGear";
+        final String path_name = "StartToGear/BlueRightScoreGear";
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_RIGHT_START);
@@ -40,7 +40,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
 
     private void getScoreGearRedLeft(String aDirectory, double aWheelbaseWidth)
     {
-        final String path_name = "RedLeftScoreGear";
+        final String path_name = "StartToGear/RedLeftScoreGear";
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_LEFT_START);
@@ -51,7 +51,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
 
     private void getScoreGearRedMiddle(String aDirectory, double aWheelbaseWidth)
     {
-        final String path_name = "RedMiddleScoreGear";
+        final String path_name = "StartToGear/RedMiddleScoreGear";
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_CENTER_START);
@@ -62,7 +62,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
 
     private void getScoreGearRedRight(String aDirectory, double aWheelbaseWidth)
     {
-        final String path_name = "RedRightScoreGear";
+        final String path_name = "StartToGear/RedRightScoreGear";
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_START);

@@ -65,6 +65,7 @@ public class BasePathGenerator
 
     protected static final TrajectoryGenerator.Config GEAR_SPEED_CONFIG = new TrajectoryGenerator.Config();
     protected static final TrajectoryGenerator.Config GEAR_SPEED_BACKWARDS_CONFIG = new TrajectoryGenerator.Config();
+    protected static final TrajectoryGenerator.Config FAST_HOPPER_SPEED_CONFIG = new TrajectoryGenerator.Config();
 
     // Boiler Locations
     protected static final Waypoint RED_BOILER = new Waypoint(163.13, -334.81, -45);
@@ -83,6 +84,12 @@ public class BasePathGenerator
         GEAR_SPEED_BACKWARDS_CONFIG.max_jerk = 480;
         GEAR_SPEED_BACKWARDS_CONFIG.max_vel = 36;
         GEAR_SPEED_BACKWARDS_CONFIG.isBackwards = true;
+
+        FAST_HOPPER_SPEED_CONFIG.dt = .02;
+        FAST_HOPPER_SPEED_CONFIG.max_acc = 80;
+        FAST_HOPPER_SPEED_CONFIG.max_jerk = 480;
+        FAST_HOPPER_SPEED_CONFIG.max_vel = 72;
+        FAST_HOPPER_SPEED_CONFIG.isBackwards = false;
 
     }
 
@@ -148,6 +155,16 @@ public class BasePathGenerator
         Waypoint hackPoint = new Waypoint(toCopy);
         hackPoint.x += aDy;
         hackPoint.theta += aDTheta;
+
+        return hackPoint;
+    }
+
+    protected Waypoint modifyPoint(Waypoint toCopy, double aDx, double aDy, double aDTheta)
+    {
+        Waypoint hackPoint = new Waypoint(toCopy);
+        hackPoint.x += aDy; // switched on purpose
+        hackPoint.y += aDx;
+        hackPoint.theta += Math.toRadians(aDTheta);
 
         return hackPoint;
     }

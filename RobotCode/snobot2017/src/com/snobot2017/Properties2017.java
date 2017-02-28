@@ -36,6 +36,7 @@ public class Properties2017
     public static final DoubleProperty sRIGHT_ENCODER_DIST_PER_PULSE = new DoubleProperty("DriveEncoderRightDPP", 0.00564998);
 
     // Autonomous
+    public static final StringProperty sAUTON_FILE_FILTER = new StringProperty("AutonFileFilter", "");
     public static final StringProperty sAUTON_DIRECTORY;
     public static final StringProperty sAUTON_PATH_DIRECTORY;
 

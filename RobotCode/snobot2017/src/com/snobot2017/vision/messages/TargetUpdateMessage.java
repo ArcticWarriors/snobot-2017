@@ -40,7 +40,7 @@ public class TargetUpdateMessage
 
         public TargetInfo(double aAngle, double aDistance)
         {
-            this(0, 0, true);
+            this(aAngle, aDistance, true);
         }
 
         public TargetInfo(double aAngle, double aDistance, boolean aAmbigious)
@@ -52,17 +52,9 @@ public class TargetUpdateMessage
 
         public TargetInfo(JSONObject aJson)
         {
-            // TODO PJ - ANgle should be flipped in app
-            mAngle = -Double.parseDouble(aJson.get("angle").toString());
+            mAngle = Double.parseDouble(aJson.get("angle").toString());
             mDistance = Double.parseDouble(aJson.get("distance").toString());
             mAbmigious = Boolean.parseBoolean(aJson.get("ambiguous").toString());
-            
-            // TODO fix in app! (or i guess this is right, fix above still
-            //TODO fix spelling
-            if(mAbmigious)
-            {
-                mAngle *= -1;
-            }
         }
 
         /**
