@@ -219,4 +219,9 @@ public class Snobot2017 extends ASnobot
     {
         return mSnobotActor;
     }
+
+    public VisionManager getVisionManager()
+    {
+        return mVisionManager;
+    }
 }

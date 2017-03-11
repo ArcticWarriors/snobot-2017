@@ -31,7 +31,7 @@ public class TargetUpdateMessage
          * Indicates the the target location is reported with a very low
          * confidence
          */
-        private boolean mAbmigious;
+        private boolean mAmbiguous;
 
         public TargetInfo()
         {
@@ -47,14 +47,14 @@ public class TargetUpdateMessage
         {
             mAngle = aAngle;
             mDistance = aDistance;
-            mAbmigious = aAmbigious;
+            mAmbiguous = aAmbigious;
         }
 
         public TargetInfo(JSONObject aJson)
         {
             mAngle = Double.parseDouble(aJson.get("angle").toString());
             mDistance = Double.parseDouble(aJson.get("distance").toString());
-            mAbmigious = Boolean.parseBoolean(aJson.get("ambiguous").toString());
+            mAmbiguous = Boolean.parseBoolean(aJson.get("ambiguous").toString());
         }
 
         /**
@@ -79,7 +79,7 @@ public class TargetUpdateMessage
 
         public boolean isAmbigious()
         {
-            return mAbmigious;
+            return mAmbiguous;
         }
 
     }

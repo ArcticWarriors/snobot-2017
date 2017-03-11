@@ -39,6 +39,7 @@ public class Properties2017
     public static final StringProperty sAUTON_FILE_FILTER = new StringProperty("AutonFileFilter", "");
     public static final StringProperty sAUTON_DIRECTORY;
     public static final StringProperty sAUTON_PATH_DIRECTORY;
+    public static final DoubleProperty sTRAJECTORY_OVERRIDE_PERCENTAGE = new DoubleProperty("TrajectoryOverridePercentage", .7);
 
     // Light Manager
     public static final IntegerProperty sFLASH_LIGHT_LOOPS = new IntegerProperty("LightFlashLoops", 2);
