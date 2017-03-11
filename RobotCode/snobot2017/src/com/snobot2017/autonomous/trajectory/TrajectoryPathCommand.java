@@ -78,7 +78,7 @@ public class TrajectoryPathCommand extends Command
     }
 
     @Override
-    protected void execute()
+    public void execute()
     {
         double dt = .02;
 
@@ -116,8 +116,13 @@ public class TrajectoryPathCommand extends Command
         mLastRightDistance = distanceR;
     }
 
+    public double getPercentComplete()
+    {
+        return 1.0 * followerLeft.getCurrentSegment() / followerLeft.getNumSegments();
+    }
+
     @Override
-    protected boolean isFinished()
+    public boolean isFinished()
     {
         boolean finished = followerLeft.isFinishedTrajectory();
         if (finished)

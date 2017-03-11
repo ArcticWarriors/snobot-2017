@@ -192,6 +192,11 @@ public class VisionManager implements ISubsystem
         return !mLatestTargetInformation.isEmpty();
     }
 
+    public List<TargetLocation> getLatestTargetInformation()
+    {
+        return mLatestTargetInformation;
+    }
+
     @Override
     public void updateSmartDashboard()
     {
