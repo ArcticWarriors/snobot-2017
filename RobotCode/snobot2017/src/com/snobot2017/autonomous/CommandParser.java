@@ -157,12 +157,12 @@ public class CommandParser extends ACommandParser
             }
             case AutonomousCommandNames.sSCORE_GEAR_DUMP_HOPPER:
             {
-                newCommand = createGetHoppersAndGetGearWithTrajectoryCommand(false, args);
+                newCommand = createScoreGearDumpHopper(false, args);
                 break;
             }
             case AutonomousCommandNames.sSCORE_GEAR_SCORE_FUEL:
             {
-                newCommand = createScoreFuelWithTrajectoryCommand(false);
+                newCommand = createScoreGearScoreFuel(false);
                 break;
             }
 
@@ -174,12 +174,12 @@ public class CommandParser extends ACommandParser
             }
             case AutonomousCommandNames.sSCORE_GEAR_WITH_CAM_DUMP_HOPPER:
             {
-                newCommand = createGetHoppersAndGetGearWithTrajectoryCommand(true, args);
+                newCommand = createScoreGearDumpHopper(true, args);
                 break;
             }
             case AutonomousCommandNames.sSCORE_GEAR_WITH_CAM_SCORE_FUEL:
             {
-                newCommand = createScoreFuelWithTrajectoryCommand(true);
+                newCommand = createScoreGearScoreFuel(true);
                 break;
             }
 
@@ -252,7 +252,7 @@ public class CommandParser extends ACommandParser
         return output;
     }
 
-    private Command createScoreFuelWithTrajectoryCommand(boolean aUseCamera)
+    private Command createScoreGearScoreFuel(boolean aUseCamera)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
         if (startPosition == null)
@@ -477,12 +477,21 @@ public class CommandParser extends ACommandParser
         }
     }
 
-    private Command createGetHoppersAndGetGearWithTrajectoryCommand(boolean aUseCamera, List<String> args)
+    private Command createScoreGearDumpHopper(boolean aUseCamera, List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
         if (startPosition == null)
         {
             return null;
+        }
+
+        boolean doClose = true;
+        if (args.size() > 1)
+        {
+            if (args.get(1).equals("Far"))
+            {
+                doClose = false;
+            }
         }
 
         String scoreFilename = null;
@@ -492,19 +501,52 @@ public class CommandParser extends ACommandParser
         {
         case RedLeft:
             scoreFilename = "StartToGear/RedLeftScoreGear.csv";
-            hopperFilename = "GearToHopper/RedLeftScoreGearGetHopper.csv";
+
+            if (doClose)
+            {
+                hopperFilename = "GearToHopper/RedLeftScoreGearGetHopperFive.csv";
+            }
+            else
+            {
+                hopperFilename = "GearToHopper/RedLeftScoreGearGetHopperFour.csv";
+            }
+
             break;
         case RedRight:
             scoreFilename = "StartToGear/RedRightScoreGear.csv";
-            hopperFilename = "GearToHopper/RedRightScoreGearGetHopper.csv";
+
+            if (doClose)
+            {
+                hopperFilename = "GearToHopper/RedRightScoreGearGetHopperOne.csv";
+            }
+            else
+            {
+                hopperFilename = "GearToHopper/RedRightScoreGearGetHopperTwo.csv";
+            }
             break;
         case BlueRight:
             scoreFilename = "StartToGear/BlueRightScoreGear.csv";
-            hopperFilename = "GearToHopper/BlueRightScoreGearGetHopper.csv";
+
+            if (doClose)
+            {
+                hopperFilename = "GearToHopper/BlueRightScoreGearGetHopperFour.csv";
+            }
+            else
+            {
+                hopperFilename = "GearToHopper/BlueRightScoreGearGetHopperFive.csv";
+            }
             break;
         case BlueLeft:
             scoreFilename = "StartToGear/BlueLeftScoreGear.csv";
-            hopperFilename = "GearToHopper/BlueLeftScoreGearGetHopper.csv";
+
+            if (doClose)
+            {
+                hopperFilename = "GearToHopper/BlueLeftScoreGearGetHopperThree.csv";
+            }
+            else
+            {
+                hopperFilename = "GearToHopper/BlueLeftScoreGearGetHoppertwo.csv";
+            }
             break;
 
         case RedMiddle:
