@@ -5,19 +5,20 @@ import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class FuelPooper implements IFuelPooper
 {
     private IOperatorJoystick mJoystick;
-    private Servo mSphincterRight;
-    private Servo mSphincterLeft;
+    private DoubleSolenoid mSphincterRight;
+    private DoubleSolenoid mSphincterLeft;
     private ILogger mLogger;
 
     private boolean mIsShincterOpen;
 
-    public FuelPooper(IOperatorJoystick aJoystick, Servo aRightSphincter, Servo aLeftSphincter, ILogger aLogger)
+    public FuelPooper(IOperatorJoystick aJoystick, DoubleSolenoid aRightSphincter, DoubleSolenoid aLeftSphincter, ILogger aLogger)
     {
         mSphincterRight = aRightSphincter;
         mSphincterLeft = aLeftSphincter;
@@ -75,16 +76,16 @@ public class FuelPooper implements IFuelPooper
     public void openSphincter()
     {
         mIsShincterOpen = true;
-        mSphincterRight.set(Properties2017.sSPCHINCTER_RIGHT_OPEN.getValue());
-        mSphincterLeft.set(Properties2017.sSPCHINCTER_LEFT_OPEN.getValue());
+        mSphincterRight.set(DoubleSolenoid.Value.kReverse);
+        mSphincterLeft.set(DoubleSolenoid.Value.kReverse);
     }
 
     @Override
     public void closeSphincter()
     {
         mIsShincterOpen = false;
-        mSphincterRight.set(Properties2017.sSPCHINCTER_RIGHT_CLOSED.getValue());
-        mSphincterLeft.set(Properties2017.sSPCHINCTER_LEFT_CLOSED.getValue());
+        mSphincterRight.set(DoubleSolenoid.Value.kForward);
+        mSphincterLeft.set(DoubleSolenoid.Value.kForward);
     }
 
 }

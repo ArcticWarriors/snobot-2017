@@ -11,6 +11,7 @@ import com.snobot2017.vision.VisionManager;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.io.TextFileDeserializer;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TrajectoryWithVisionOverride extends Command
@@ -18,6 +19,7 @@ public class TrajectoryWithVisionOverride extends Command
     private TrajectoryPathCommand mTrajectoryCommand;
     private VisionManager mVisionManager;
     private ISnobotActor mSnobotActor;
+    private Timer mActingTimer;
     private boolean mOverridingTrajectory;
     private boolean mFinished;
 
@@ -32,6 +34,7 @@ public class TrajectoryWithVisionOverride extends Command
         mSnobotActor = aSnobot.getSnobotActor();
         mOverridingTrajectory = false;
         mFinished = false;
+        mActingTimer = new Timer();
     }
 
     @Override
@@ -40,6 +43,10 @@ public class TrajectoryWithVisionOverride extends Command
         if (mOverridingTrajectory)
         {
             mFinished = mSnobotActor.executeControlMode();
+            if(mActingTimer.get() > 4)
+            {
+                mFinished = true;
+            }
         }
         else
         {
@@ -55,6 +62,7 @@ public class TrajectoryWithVisionOverride extends Command
                 TargetLocation target = targets.get(0);
                 mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 mOverridingTrajectory = true;
+                mActingTimer.start();
             }
         }
     }

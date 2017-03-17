@@ -152,7 +152,7 @@ public class CommandParser extends ACommandParser
             // Score Gear with Trajectory
             case AutonomousCommandNames.sSCORE_GEAR:
             {
-                newCommand = createScoreGearWithTrajectoryCommand(false);
+                newCommand = createScoreGearWithTrajectoryCommand(false, args);
                 break;
             }
             case AutonomousCommandNames.sSCORE_GEAR_DUMP_HOPPER:
@@ -169,7 +169,7 @@ public class CommandParser extends ACommandParser
             // Gear with Camera
             case AutonomousCommandNames.sSCORE_GEAR_WITH_CAM:
             {
-                newCommand = createScoreGearWithTrajectoryCommand(true);
+                newCommand = createScoreGearWithTrajectoryCommand(true, args);
                 break;
             }
             case AutonomousCommandNames.sSCORE_GEAR_WITH_CAM_DUMP_HOPPER:
@@ -284,7 +284,7 @@ public class CommandParser extends ACommandParser
             boilFilename = "GearToBoiler/BlueMiddleGearToBoiler.csv";
             break;
         case BlueLeft:
-            scoreFilename = "StartToGear/BLueLeftScoreGear.csv";
+            scoreFilename = "StartToGear/BlueLeftScoreGear.csv";
             boilFilename = "GearToBoiler/BlueLeftGearToBoiler.csv";
             break;
         default:
@@ -322,7 +322,7 @@ public class CommandParser extends ACommandParser
         return output;
     }
 
-    private Command createScoreGearWithTrajectoryCommand(boolean aUseCamera)
+    private Command createScoreGearWithTrajectoryCommand(boolean aUseCamera, List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
         if (startPosition == null)
@@ -331,6 +331,19 @@ public class CommandParser extends ACommandParser
         }
 
         String fileName = null;
+        double backwardsTime = 2;
+        double backwardsSpeed = -.3;
+        
+        if(args.size() >= 2)
+        {
+            backwardsSpeed = Double.parseDouble(args.get(1));
+        }
+        if(args.size() >= 3)
+        {
+            backwardsTime = Double.parseDouble(args.get(2));
+        }
+        
+        
 
         switch (startPosition)
         {
@@ -368,7 +381,7 @@ public class CommandParser extends ACommandParser
                 group.addSequential(createTrajectoryCommand(fileName));
             }
             group.addSequential(this.parsePlaceGearCommand(1.2));
-            group.addSequential(this.parseStupidDriveStraightCommand(3, -.1));
+            group.addSequential(this.parseStupidDriveStraightCommand(backwardsTime, backwardsSpeed));
             return group;
         }
         else

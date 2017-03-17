@@ -18,6 +18,7 @@ public class Properties2017
     public static final IntegerProperty sVISION_COMMS_PORT = new IntegerProperty("VisionCommsPort", 8254);
     public static final BooleanProperty sENABLE_VISION = new BooleanProperty("EnableVision", true);
     public static final DoubleProperty sCAMERA_LENS_DIST_FROM_CENTER = new DoubleProperty("CameraLensOfset", 12); // inches
+    public static final DoubleProperty sVISION_IGNORE_DISTANCE = new DoubleProperty("VisionIgnoreDistance", 10);
 
     // Logger
     public static final IntegerProperty sLOG_COUNT = new IntegerProperty("LogCount", 25);

@@ -43,18 +43,26 @@ public class TargetUpdateMessage
             this(aAngle, aDistance, true);
         }
 
+        public TargetInfo(JSONObject aJson)
+        {
+            this(
+                    Double.parseDouble(aJson.get("angle").toString()), 
+                    Double.parseDouble(aJson.get("distance").toString()), 
+                    Boolean.parseBoolean(aJson.get("ambiguous").toString()));
+//            mAngle = ;
+//            mDistance = Double.parseDouble(aJson.get("distance").toString());
+//            mAmbiguous = Boolean.parseBoolean(aJson.get("ambiguous").toString());
+        }
+
         public TargetInfo(double aAngle, double aDistance, boolean aAmbigious)
         {
             mAngle = aAngle;
             mDistance = aDistance;
             mAmbiguous = aAmbigious;
-        }
-
-        public TargetInfo(JSONObject aJson)
-        {
-            mAngle = Double.parseDouble(aJson.get("angle").toString());
-            mDistance = Double.parseDouble(aJson.get("distance").toString());
-            mAmbiguous = Boolean.parseBoolean(aJson.get("ambiguous").toString());
+            if(mAmbiguous)
+            {
+                mAngle *= -1; // should be done on camera
+            }
         }
 
         /**

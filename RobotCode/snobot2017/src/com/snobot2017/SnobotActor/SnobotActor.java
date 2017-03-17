@@ -340,7 +340,7 @@ public class SnobotActor implements ISnobotActor
         double leftSpeed = distanceError * distanceKp + angleError * turnKp;
         double rightSpeed = distanceError * distanceKp - angleError * turnKp;
 
-//        System.out.println("DE: " + distanceError + ", AE: " + angleError + ", L: " + leftSpeed + ", R: " + rightSpeed);
+        System.out.println("DE: " + distanceError + ", AE: " + angleError + ", L: " + leftSpeed + ", R: " + rightSpeed);
 
         boolean isFinished = false;
         if (mInDeadbandHelper.isFinished(Math.abs(distanceError) < mSmoothControlParams.mDeadband))
