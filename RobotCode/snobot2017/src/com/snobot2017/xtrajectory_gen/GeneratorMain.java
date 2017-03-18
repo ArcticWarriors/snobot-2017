@@ -18,9 +18,9 @@ public class GeneratorMain
 
         final double kWheelbaseWidth = 24;
 
-        new GenerateGearToBoilerPaths().generatePaths(directory, kWheelbaseWidth);
-        // new GenerateStartToGearPaths().generatePaths(directory,
-        // kWheelbaseWidth);
+//        new GenerateGearToBoilerPaths().generatePaths(directory, kWheelbaseWidth);
+         new GenerateStartToGearPaths().generatePaths(directory,
+         kWheelbaseWidth);
         // new GenerateStartToHopperBlue().generatePaths(directory,
         // kWheelbaseWidth);
         // new GenerateStartToHopperRed().generatePaths(directory,

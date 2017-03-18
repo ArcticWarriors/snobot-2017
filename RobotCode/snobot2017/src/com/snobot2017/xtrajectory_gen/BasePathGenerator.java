@@ -76,7 +76,7 @@ public class BasePathGenerator
         GEAR_SPEED_CONFIG.dt = .02;
         GEAR_SPEED_CONFIG.max_acc = 80;
         GEAR_SPEED_CONFIG.max_jerk = 480;
-        GEAR_SPEED_CONFIG.max_vel = 36;
+        GEAR_SPEED_CONFIG.max_vel = 20;
         GEAR_SPEED_CONFIG.isBackwards = false;
 
         GEAR_SPEED_BACKWARDS_CONFIG.dt = .02;

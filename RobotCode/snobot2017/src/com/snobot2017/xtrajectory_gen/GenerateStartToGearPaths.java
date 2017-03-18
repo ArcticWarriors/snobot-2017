@@ -1,6 +1,7 @@
 package com.snobot2017.xtrajectory_gen;
 
 import com.team254.lib.trajectory.gen.WaypointSequence;
+import com.team254.lib.trajectory.gen.WaypointSequence.Waypoint;
 
 public class GenerateStartToGearPaths extends BasePathGenerator
 {
@@ -11,6 +12,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_LEFT_START);
+        p.addWaypoint(new Waypoint(100, 270,-200));
         p.addWaypoint(BLUE_LEFT_GEAR);
 
         generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
@@ -33,6 +35,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(BLUE_RIGHT_START);
+        p.addWaypoint(new Waypoint(-100, 270,200));
         p.addWaypoint(BLUE_RIGHT_GEAR);
 
         generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
@@ -44,6 +47,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_LEFT_START);
+        p.addWaypoint(new Waypoint(-100, -270,-20));
         p.addWaypoint(RED_LEFT_GEAR);
 
         generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);
@@ -66,6 +70,7 @@ public class GenerateStartToGearPaths extends BasePathGenerator
 
         WaypointSequence p = new WaypointSequence();
         p.addWaypoint(RED_RIGHT_START);
+        p.addWaypoint(new Waypoint(100, -270,20));
         p.addWaypoint(RED_RIGHT_GEAR);
 
         generate(GEAR_SPEED_CONFIG, p, aDirectory, path_name, aWheelbaseWidth);

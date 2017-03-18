@@ -172,6 +172,7 @@ public class Snobot2017 extends ASnobot
     {
         super.teleopInit();
         mSnobotActor.cancelAction();
+        mGearBoss.moveGearHigh();
     }
     
     @Override
