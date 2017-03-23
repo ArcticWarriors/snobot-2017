@@ -15,7 +15,7 @@ import com.team254.lib.trajectory.io.TextFileSerializer;
 public class BasePathGenerator
 {
 
-    protected static final double ROBOT_LENGTH = 3 * 12;
+    protected static final double ROBOT_LENGTH = 20;
     protected static final double ROBOT_WIDTH = 2 * 12;
 
     // Raw Staring locations
@@ -27,7 +27,7 @@ public class BasePathGenerator
     // Gear Locations
     protected static final double NON_CENTER_GEAR_X_OFFSET = 48;
     
-    protected static final double CENTER_GEAR_Y = START_Y - 7 * 12;
+    protected static final double CENTER_GEAR_Y = START_Y - 8 * 12;
     protected static final double NON_CENTER_CENTER_GEAR_Y = 197.5;
 
     // Raw hopper locations
@@ -65,20 +65,31 @@ public class BasePathGenerator
 
     protected static final TrajectoryGenerator.Config GEAR_SPEED_CONFIG = new TrajectoryGenerator.Config();
     protected static final TrajectoryGenerator.Config GEAR_SPEED_BACKWARDS_CONFIG = new TrajectoryGenerator.Config();
+    protected static final TrajectoryGenerator.Config FAST_HOPPER_SPEED_CONFIG = new TrajectoryGenerator.Config();
+
+    // Boiler Locations
+    protected static final Waypoint RED_BOILER = new Waypoint(163.13, -334.81, -45);
+    protected static final Waypoint BLUE_BOILER = new Waypoint(163.13, 334.81, -135);
 
     static
     {
         GEAR_SPEED_CONFIG.dt = .02;
-        GEAR_SPEED_CONFIG.max_acc = 120;
+        GEAR_SPEED_CONFIG.max_acc = 80;
         GEAR_SPEED_CONFIG.max_jerk = 480;
-        GEAR_SPEED_CONFIG.max_vel = 60;
+        GEAR_SPEED_CONFIG.max_vel = 20;
         GEAR_SPEED_CONFIG.isBackwards = false;
 
         GEAR_SPEED_BACKWARDS_CONFIG.dt = .02;
-        GEAR_SPEED_BACKWARDS_CONFIG.max_acc = 120;
+        GEAR_SPEED_BACKWARDS_CONFIG.max_acc = 80;
         GEAR_SPEED_BACKWARDS_CONFIG.max_jerk = 480;
-        GEAR_SPEED_BACKWARDS_CONFIG.max_vel = 60;
+        GEAR_SPEED_BACKWARDS_CONFIG.max_vel = 36;
         GEAR_SPEED_BACKWARDS_CONFIG.isBackwards = true;
+
+        FAST_HOPPER_SPEED_CONFIG.dt = .02;
+        FAST_HOPPER_SPEED_CONFIG.max_acc = 80;
+        FAST_HOPPER_SPEED_CONFIG.max_jerk = 480;
+        FAST_HOPPER_SPEED_CONFIG.max_vel = 72;
+        FAST_HOPPER_SPEED_CONFIG.isBackwards = false;
 
     }
 
@@ -144,6 +155,16 @@ public class BasePathGenerator
         Waypoint hackPoint = new Waypoint(toCopy);
         hackPoint.x += aDy;
         hackPoint.theta += aDTheta;
+
+        return hackPoint;
+    }
+
+    protected Waypoint modifyPoint(Waypoint toCopy, double aDx, double aDy, double aDTheta)
+    {
+        Waypoint hackPoint = new Waypoint(toCopy);
+        hackPoint.x += aDy; // switched on purpose
+        hackPoint.y += aDx;
+        hackPoint.theta += Math.toRadians(aDTheta);
 
         return hackPoint;
     }

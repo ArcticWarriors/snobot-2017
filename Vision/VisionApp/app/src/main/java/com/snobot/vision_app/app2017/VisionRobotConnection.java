@@ -1,18 +1,21 @@
 package com.snobot.vision_app.app2017;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStatusBroadcastReceiver;
 import com.snobot.vision_app.app2017.messages.HeartbeatMessage;
 import com.snobot.vision_app.app2017.messages.TargetUpdateMessage;
 import com.snobot.vision_app.utils.RobotConnection;
+import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStateListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.core.Mat;
 
 /**
  * Created by PJ on 11/24/2016.
@@ -39,11 +42,6 @@ public class VisionRobotConnection extends RobotConnection {
 
     public VisionRobotConnection(IVisionActivity aCameraActivity) {
         super();
-        mCameraActivity = aCameraActivity;
-    }
-
-    public VisionRobotConnection(IVisionActivity aCameraActivity, String host, int port) {
-        super(host, port);
         mCameraActivity = aCameraActivity;
     }
 
@@ -91,12 +89,14 @@ public class VisionRobotConnection extends RobotConnection {
 
     @Override
     protected void onRobotConnected() {
-        Log.i(sTAG, "Connected");
+        Intent i = new Intent(RobotConnectionStatusBroadcastReceiver.ACTION_ROBOT_CONNECTED);
+        ((Context) mCameraActivity).sendBroadcast(i);
     }
 
     @Override
     protected void onRobotDisconnected() {
-        Log.i(sTAG, "Disconnected");
+        Intent i = new Intent(RobotConnectionStatusBroadcastReceiver.ACTION_ROBOT_DISCONNECTED);
+        ((Context) mCameraActivity).sendBroadcast(i);
     }
 
     @Override
@@ -122,7 +122,9 @@ public class VisionRobotConnection extends RobotConnection {
     {
         try
         {
-            send(new TargetUpdateMessage(aTargets, aLatencySec).getJson());
+            JSONObject message = new TargetUpdateMessage(aTargets, aLatencySec).getJson();
+            Log.i(sTAG, message.toString());
+            send(message);
         }
         catch (JSONException e)
         {

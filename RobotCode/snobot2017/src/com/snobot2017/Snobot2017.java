@@ -1,12 +1,12 @@
 package com.snobot2017;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.LogManager;
 
 import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
-import com.snobot.lib.LogFormatter;
+import com.snobot.lib.logging.ILogger;
+import com.snobot.lib.logging.LogFormatter;
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.SnobotActor.SnobotActor;
 import com.snobot2017.autologger.AutoLogger;
@@ -16,11 +16,13 @@ import com.snobot2017.climbing.IClimbing;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.drivetrain.SnobotCanDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
+import com.snobot2017.fuel_pooper.FuelPooper;
+import com.snobot2017.fuel_pooper.IFuelPooper;
 import com.snobot2017.gearboss.IGearBoss;
 import com.snobot2017.gearboss.SnobotGearBoss;
-import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
+import com.snobot2017.light_manager.LightManager;
 import com.snobot2017.positioner.IPositioner;
 import com.snobot2017.positioner.Positioner;
 import com.snobot2017.vision.VisionManager;
@@ -29,7 +31,8 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -52,10 +55,13 @@ public class Snobot2017 extends ASnobot
 
     // Vision
     private VisionManager mVisionManager;
+    private LightManager mLightManager;
 
     // Logger
     private AutoLogger mAutoLogger;
-    private DateFormat mAutoLogDateFormat;
+
+    // Sphincter
+    private IFuelPooper mPooper;
 
     // SnobotActor
     private ISnobotActor mSnobotActor;
@@ -68,18 +74,24 @@ public class Snobot2017 extends ASnobot
     {
         LogManager.getLogManager().getLogger("").getHandlers()[0].setFormatter(new LogFormatter());
 
-        // Joystick
+        ILogger logger = getLogger();
+
+        ////////////////////////////////////////////////////////////
+        // Initialize joysticks
+        ////////////////////////////////////////////////////////////
         Joystick driverJoystickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
 
-        IDriverJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, mLogger);
-        mSubsystems.add(driverJoystick);
+        SnobotDriveXbaxJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, logger, mAutonFactory);
+        addModule(driverJoystick);
 
-        SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, mLogger);
-        mSubsystems.add(operatorJoystick);
-        
-        
-        
+        SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, logger);
+        addModule(operatorJoystick);
+
+        ////////////////////////////////////////////////////////////
+        // Initialize subsystems
+        ////////////////////////////////////////////////////////////
+
         // Drive Train
         boolean useCan = false;
         if (useCan)
@@ -89,13 +101,7 @@ public class Snobot2017 extends ASnobot
             CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
             CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
 
-            mDriveTrain = new SnobotCanDriveTrain(
-                    driveLeftMotorA, 
-                    driveLeftMotorB, 
-                    driveRightMotorA, 
-                    driveRightMotorB, 
-                    driverJoystick, 
-                    mLogger);
+            mDriveTrain = new SnobotCanDriveTrain(driveLeftMotorA, driveLeftMotorB, driveRightMotorA, driveRightMotorB, driverJoystick, logger);
         }
         else
         {
@@ -103,56 +109,62 @@ public class Snobot2017 extends ASnobot
             SpeedController driveRightMotor = new VictorSP(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
             Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
             Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
-    
-            mDriveTrain = new SnobotDriveTrain(
-                    driveLeftMotor, 
-                    driveRightMotor,
-                    leftDriveEncoder, 
-                    rightDriveEncoder, 
-                    driverJoystick, 
-                    mLogger);
-        }
-        mSubsystems.add(mDriveTrain);
-        
 
+            mDriveTrain = new SnobotDriveTrain(driveLeftMotor, driveRightMotor, leftDriveEncoder, rightDriveEncoder, driverJoystick, logger);
+        }
+        addModule(mDriveTrain);
 
         // Climbing
         SpeedController climbingMotor = new VictorSP(PortMappings2017.sCLIMB_PWM_PORT);
-        mClimber = new Climbing(climbingMotor, mLogger, operatorJoystick);
-        mSubsystems.add(mClimber);
+        mClimber = new Climbing(climbingMotor, logger, operatorJoystick);
+        addModule(mClimber);
 
         // GearBoss
-        DoubleSolenoid gearSolonoid = new DoubleSolenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A, PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B);
-        mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, mLogger);
-        mSubsystems.add(mGearBoss);
+        DoubleSolenoid gearSolonoid = new DoubleSolenoid(
+                PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A,
+                PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B);
+        mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, logger);
+        addModule(mGearBoss);
 
         // Positioner
         Gyro gyro = new ADXRS450_Gyro();
-        mPositioner = new Positioner(gyro, mDriveTrain, mLogger);
-        mSubsystems.add(mPositioner);
+        mPositioner = new Positioner(gyro, mDriveTrain, logger);
+        addModule(mPositioner);
 
         // SnobotActor
         mSnobotActor = new SnobotActor(mDriveTrain, mPositioner);
-        mSubsystems.add(mSnobotActor);
+        addModule(mSnobotActor);
         mDriveTrain.setSnobotActor(mSnobotActor);
 
         // Vision
-        mVisionManager = new VisionManager(mPositioner, mSnobotActor, operatorJoystick);
-        mSubsystems.add(mVisionManager);
+        mVisionManager = new VisionManager(mPositioner, mSnobotActor, driverJoystick);
+        addModule(mVisionManager);
 
-        // Autonomous
-        mAutonFactory = new AutonomousFactory(this);
+        // LED Manager
+        Relay greenLight = new Relay(PortMappings2017.sRELAY_GREEN_LED);
+        Relay blueLight = new Relay(PortMappings2017.sRELAY_BLUE_LED);
+        mLightManager = new LightManager(operatorJoystick, mSnobotActor, mVisionManager, greenLight, blueLight);
+        addModule(mLightManager);
+
+        // Sphincter
+        DoubleSolenoid rightSphincter = new DoubleSolenoid(2, 3);
+        DoubleSolenoid leftSphincter = new DoubleSolenoid(4, 5);
+        mPooper = new FuelPooper(operatorJoystick, rightSphincter, leftSphincter, logger);
+        addModule(mPooper);
+
+        // Autolog
+        mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystick, mDriveTrain);
+        addModule(mAutoLogger);
+
+        ////////////////////////////////////////////////////////////
+        // Initialize Autonomous
+        ////////////////////////////////////////////////////////////
+        mAutonFactory = new AutonomousFactory(this, driverJoystick);
 
         // Call last
-        mLogger.startLogging(
-                new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), 
-                Properties2017.sLOG_COUNT.getValue(),
+        logger.startLogging(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"),
                 Properties2017.sLOG_FILE_PATH.getValue());
-        //autolog
-        mAutoLogDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
-        mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_COUNT.getValue(), Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystickRaw, mDriveTrain);
-        mSubsystems.add(mAutoLogger);
-        init();
+        initializeLogHeaders();
     }
 
     @Override
@@ -160,23 +172,16 @@ public class Snobot2017 extends ASnobot
     {
         super.teleopInit();
         mSnobotActor.cancelAction();
-    }
-    		
-    @Override
-    public void init()
-    {
-        super.init();
+        mGearBoss.moveGearHigh();
     }
     
-    PowerDistributionPanel pdp = new PowerDistributionPanel();
-    
     @Override
-    public void update()
+    public void autonomousInit()
     {
-    	super.update();
-    	// System.out.println(pdp.getCurrent(13));
-    }    
-
+        super.autonomousInit();
+        mGearBoss.moveGearHigh();
+    }
+    
     @Override
     protected CommandGroup createAutonomousCommand()
     {
@@ -192,7 +197,7 @@ public class Snobot2017 extends ASnobot
     {
         return this.mDriveTrain;
     }
-    
+
     /**
      * Returns the IGearBoss for the robot
      * 
@@ -221,5 +226,10 @@ public class Snobot2017 extends ASnobot
     public ISnobotActor getSnobotActor()
     {
         return mSnobotActor;
+    }
+
+    public VisionManager getVisionManager()
+    {
+        return mVisionManager;
     }
 }

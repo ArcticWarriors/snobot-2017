@@ -24,6 +24,13 @@ public class RobotDrawer extends JPanel
     private static final double sGEAR_HEIGHT = 25;
     private static final double sGEAR_BOSS_WIDTH = 10;
     private static final double sGEAR_BOSS_HEIGHT = 15;
+    private static final double FUEL_LOWER_START = 1; // inch
+    private static final double FUEL_LOWER_END = 7 + sROBOT_HEIGHT; // inch
+    private static final double FUEL_FLAP_SIZE = 6;
+
+    // Size to draw, in inches
+    private static final double sDRAWING_WIDTH = sROBOT_WIDTH + 30;
+    private static final double sDRAWING_HEIGHT = (sROBOT_HEIGHT + sGEAR_HEIGHT + sGEAR_BOSS_HEIGHT) + 30;
 
     // Drawing Locations in pixels
     private static final double sCHASSIS_X_START = 10;
@@ -54,6 +61,7 @@ public class RobotDrawer extends JPanel
     // Robot State
     private double mSpoolSpeed;
     private boolean mGearBossIsUp;
+    private boolean mSpchingerOpen;
     private boolean mInAction;
     private boolean mCycleFlash = false;
     private String mActorStateName = "";
@@ -78,7 +86,10 @@ public class RobotDrawer extends JPanel
 
     private void drawRobotBase(Graphics2D g2d)
     {
-        Rectangle2D robotBase = new Rectangle2D.Double(sCHASSIS_X_START * mScaleFactor, sCHASSIS_Y_START * mScaleFactor, sROBOT_WIDTH * mScaleFactor,
+        Rectangle2D robotBase = new Rectangle2D.Double(
+                sCHASSIS_X_START * mScaleFactor, 
+                sCHASSIS_Y_START * mScaleFactor, 
+                sROBOT_WIDTH * mScaleFactor,
                 sROBOT_HEIGHT * mScaleFactor);
 
         g2d.setColor(sROBOT_BASE_COLOR);
@@ -97,7 +108,10 @@ public class RobotDrawer extends JPanel
             color = sROBOT_SPOOL_COLOR;
         }
 
-        Ellipse2D spool = new Ellipse2D.Double(sSPOOL_X_START * mScaleFactor, sSPOOL_Y_START * mScaleFactor, sSPOOL_RADIUS * mScaleFactor,
+        Ellipse2D spool = new Ellipse2D.Double(
+                sSPOOL_X_START * mScaleFactor, 
+                sSPOOL_Y_START * mScaleFactor, 
+                sSPOOL_RADIUS * mScaleFactor,
                 sSPOOL_RADIUS * mScaleFactor);
 
         g2d.setColor(color);
@@ -106,7 +120,10 @@ public class RobotDrawer extends JPanel
 
     private void drawGearFunnel(Graphics2D g2d)
     {
-        Rectangle2D gearBoss = new Rectangle2D.Double(sGEAR_X_START * mScaleFactor, sGEAR_Y_START * mScaleFactor, sGEAR_WIDTH * mScaleFactor,
+        Rectangle2D gearBoss = new Rectangle2D.Double(
+                sGEAR_X_START * mScaleFactor, 
+                sGEAR_Y_START * mScaleFactor, 
+                sGEAR_WIDTH * mScaleFactor,
                 sGEAR_HEIGHT * mScaleFactor);
 
         g2d.setColor(sROBOT_GEARFUNNEL_COLOR);
@@ -127,11 +144,45 @@ public class RobotDrawer extends JPanel
             // in pixels
             mGear_Boss_Y_Start = 62;
         }
-        Rectangle2D gearBoss = new Rectangle2D.Double(sGEAR_BOSS_X_START * mScaleFactor, mGear_Boss_Y_Start * mScaleFactor,
-                sGEAR_BOSS_WIDTH * mScaleFactor, sGEAR_BOSS_HEIGHT * mScaleFactor);
+        Rectangle2D gearBoss = new Rectangle2D.Double(
+                sGEAR_BOSS_X_START * mScaleFactor, 
+                mGear_Boss_Y_Start * mScaleFactor,
+                sGEAR_BOSS_WIDTH * mScaleFactor, 
+                sGEAR_BOSS_HEIGHT * mScaleFactor);
 
         g2d.setColor(sROBOT_GEARBOX_COLOR);
         g2d.fill(gearBoss);
+    }
+
+    protected void drawFuel(Graphics2D g2d)
+    {
+        g2d.setColor(Color.black);
+
+        int fuelHolderStartX = (int) ((sGEAR_X_START + sGEAR_BOSS_WIDTH) * mScaleFactor);
+        int fuelHolderEndX = (int) ((sCHASSIS_X_START + sROBOT_WIDTH) * mScaleFactor);
+        int fuelHolderStartY = (int) ((sGEAR_Y_START + FUEL_LOWER_START) * mScaleFactor);
+        int fuelHolderEndY = (int) ((sGEAR_Y_START + FUEL_LOWER_END) * mScaleFactor);
+        int fuelBottomeY = (int) ((sROBOT_HEIGHT + sGEAR_HEIGHT + sGEAR_BOSS_HEIGHT - FUEL_LOWER_END) * mScaleFactor) + fuelHolderEndY;
+
+        int flapClosedEndY = fuelHolderEndY;
+        int flapClosedStartY = fuelHolderEndY - (int) ((FUEL_FLAP_SIZE) * mScaleFactor);
+        int flapOpenEndX = fuelHolderEndX + (int) ((FUEL_FLAP_SIZE) * mScaleFactor);
+
+        g2d.drawLine(fuelHolderStartX, fuelHolderStartY, fuelHolderEndX, fuelHolderEndY);
+        g2d.drawLine(
+                fuelHolderEndX, 
+                fuelHolderEndY, 
+                fuelHolderEndX,
+                fuelBottomeY);
+
+        if (mSpchingerOpen)
+        {
+            g2d.drawLine(fuelHolderEndX, flapClosedEndY, flapOpenEndX, flapClosedEndY);
+        }
+        else
+        {
+            g2d.drawLine(fuelHolderEndX, flapClosedStartY, fuelHolderEndX, flapClosedEndY);
+        }
     }
 
     protected void drawActorState(Graphics2D g2d)
@@ -169,8 +220,8 @@ public class RobotDrawer extends JPanel
 
     public void updateSize()
     {
-        double horizontalScaleFactor = (getWidth() / sROBOT_WIDTH);
-        double verticalScaleFactor = (getHeight() / sROBOT_HEIGHT);
+        double horizontalScaleFactor = (getWidth() / sDRAWING_WIDTH);
+        double verticalScaleFactor = (getHeight() / sDRAWING_HEIGHT);
 
         double minScaleFactor = Math.min(horizontalScaleFactor, verticalScaleFactor);
 
@@ -191,6 +242,7 @@ public class RobotDrawer extends JPanel
         drawSpool(g2d);
         drawGearFunnel(g2d);
         drawGearBoss(g2d);
+        drawFuel(g2d);
     }
 
     public double getSpoolMotorSpeed()
@@ -228,4 +280,15 @@ public class RobotDrawer extends JPanel
         mActorActionName = actorActionName;
 
     }
+
+    public boolean isFuelFlapIsUp()
+    {
+        return mSpchingerOpen;
+    }
+
+    public void setFuelSpchingerOpen(boolean aSpchingerOpen)
+    {
+        mSpchingerOpen = aSpchingerOpen;
+    }
+
 }

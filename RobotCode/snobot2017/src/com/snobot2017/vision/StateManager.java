@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import com.snobot2017.Properties2017;
 import com.snobot2017.vision.messages.TargetUpdateMessage;
 import com.snobot2017.vision.messages.TargetUpdateMessage.TargetInfo;
 
@@ -46,10 +47,13 @@ public class StateManager
         mMostRecentTargetLocations.clear();
 
         double timestamp = latestTargetUpdate.getTimestamp();
+        
+        double cameraOffset = Properties2017.sCAMERA_LENS_DIST_FROM_CENTER.getValue();
 
         if (canCalculate(timestamp))
         {
             SavedRobotState stateAtTime = getStateHistory(timestamp);
+            double robotAngleRad = Math.toRadians(stateAtTime.mAngle);
             
             for (TargetInfo cameraTarget : latestTargetUpdate.getTargets())
             {
@@ -62,6 +66,16 @@ public class StateManager
                 TargetLocation targetLocation = new TargetLocation();
                 targetLocation.mX = stateAtTime.mRobotX + targetDistance * Math.sin(angleRads);
                 targetLocation.mY = stateAtTime.mRobotY + targetDistance * Math.cos(angleRads);
+                targetLocation.mAmbigious = cameraTarget.isAmbigious();
+
+                double offset_dx = cameraOffset * Math.cos(robotAngleRad);
+                double offset_dy = cameraOffset * Math.sin(robotAngleRad);
+                
+                System.out.println("dx = " + offset_dx + ", dy =" + offset_dy);
+
+                targetLocation.mX += offset_dx;
+                targetLocation.mY += offset_dy;
+                
                 mMostRecentTargetLocations.add(targetLocation);
             }
         }

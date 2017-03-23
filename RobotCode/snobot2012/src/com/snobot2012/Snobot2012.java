@@ -1,8 +1,6 @@
 
 package com.snobot2012;
 
-import java.util.ArrayList;
-
 import com.snobot.lib.ASnobot;
 import com.snobot.lib.PropertyManager;
 import com.snobot2012.drivetrain.SnobotDriveTrain;
@@ -75,15 +73,11 @@ public class Snobot2012 extends ASnobot
         mLowerIntakeMotor = new Talon(PortMap.sLOWER_INTAKE_MOTOR);
         mIntake = new SnobotIntake(mLowerIntakeMotor, mUpperIntakeMotor, mOperatorController);
 
-    	
-        mSubsystems = new ArrayList<>();
-    	mSubsystems.add(mDriveTrain);
-        mSubsystems.add(mShooter);
-        mSubsystems.add(mIntake);
+        addModule(mDriveTrain);
+        addModule(mShooter);
+        addModule(mIntake);
 
-    	
-        init();
-        rereadPreferences();
+        initializeLogHeaders();
 
         // Now all the preferences should be loaded, make sure they are all
         // saved

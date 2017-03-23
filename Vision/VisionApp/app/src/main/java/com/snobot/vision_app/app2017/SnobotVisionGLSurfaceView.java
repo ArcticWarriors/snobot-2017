@@ -1,5 +1,6 @@
 package com.snobot.vision_app.app2017;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -27,7 +28,7 @@ import java.nio.IntBuffer;
  * Created by PJ on 1/23/2017.
  */
 
-public class SnobotVisionGLSurfaceView extends VisionTrackerGLSurfaceView{
+public class SnobotVisionGLSurfaceView extends VisionTrackerGLSurfaceView {
 
     private JavaVisionAlgorithm mVisionAlgorithm;
 
@@ -81,7 +82,8 @@ public class SnobotVisionGLSurfaceView extends VisionTrackerGLSurfaceView{
     }
 
     @Override
-    protected TextView getFpsTextView() {
-        return null;
+    protected TextView getFpsTextView()
+    {
+        return (TextView) ((Activity) getContext()).findViewById(R.id.fps_text_view);
     }
 }

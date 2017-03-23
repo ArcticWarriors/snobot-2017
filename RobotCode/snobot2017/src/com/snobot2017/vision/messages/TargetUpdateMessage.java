@@ -27,22 +27,42 @@ public class TargetUpdateMessage
          */
         private double mDistance;
 
+        /**
+         * Indicates the the target location is reported with a very low
+         * confidence
+         */
+        private boolean mAmbiguous;
+
         public TargetInfo()
         {
-            mAngle = 0;
-            mDistance = 0;
+            this(0, 0);
         }
 
         public TargetInfo(double aAngle, double aDistance)
         {
-            mAngle = aAngle;
-            mDistance = aDistance;
+            this(aAngle, aDistance, true);
         }
 
         public TargetInfo(JSONObject aJson)
         {
-            mAngle = Double.parseDouble(aJson.get("angle").toString());
-            mDistance = Double.parseDouble(aJson.get("distance").toString());
+            this(
+                    Double.parseDouble(aJson.get("angle").toString()), 
+                    Double.parseDouble(aJson.get("distance").toString()), 
+                    Boolean.parseBoolean(aJson.get("ambiguous").toString()));
+//            mAngle = ;
+//            mDistance = Double.parseDouble(aJson.get("distance").toString());
+//            mAmbiguous = Boolean.parseBoolean(aJson.get("ambiguous").toString());
+        }
+
+        public TargetInfo(double aAngle, double aDistance, boolean aAmbigious)
+        {
+            mAngle = aAngle;
+            mDistance = aDistance;
+            mAmbiguous = aAmbigious;
+            if(mAmbiguous)
+            {
+                mAngle *= -1; // should be done on camera
+            }
         }
 
         /**
@@ -63,6 +83,11 @@ public class TargetUpdateMessage
         public double getDistance()
         {
             return mDistance;
+        }
+
+        public boolean isAmbigious()
+        {
+            return mAmbiguous;
         }
 
     }

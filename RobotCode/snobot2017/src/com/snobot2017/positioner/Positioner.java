@@ -1,8 +1,8 @@
 package com.snobot2017.positioner;
 
-import com.snobot.lib.ISubsystem;
-import com.snobot.lib.Logger;
 import com.snobot.lib.Utilities;
+import com.snobot.lib.logging.ILogger;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.drivetrain.IDriveTrain;
 
@@ -21,7 +21,7 @@ public class Positioner implements ISubsystem, IPositioner
 {
     private Timer mTimer;
     private IDriveTrain mDriveTrain;
-    private Logger mLogger;
+    private ILogger mLogger;
     private Gyro mGyro;
 
     private double mXPosition;
@@ -34,8 +34,6 @@ public class Positioner implements ISubsystem, IPositioner
     private double mSpeed;
     private double mStartAngle;
 
-    // private
-
     /**
      * Creates a new Positioner object.
      * 
@@ -46,7 +44,7 @@ public class Positioner implements ISubsystem, IPositioner
      * @param aLogger
      *            The robot's Logger.
      */
-    public Positioner(Gyro aGyro, IDriveTrain aDriveTrain, Logger aLogger)
+    public Positioner(Gyro aGyro, IDriveTrain aDriveTrain, ILogger aLogger)
     {
         mXPosition = 0;
         mYPosition = 0;
@@ -66,7 +64,7 @@ public class Positioner implements ISubsystem, IPositioner
      * Starts timer and adds headers to Logger.
      */
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mTimer.start();
 
@@ -88,7 +86,7 @@ public class Positioner implements ISubsystem, IPositioner
         double orientationRadians = Math.toRadians(mOrientation);
 
         // ChangeInDistance and X/Y
-        mTotalDistance = (mDriveTrain.getRightDistance() + mDriveTrain.getLeftDistance()) / 2.0f;
+      mTotalDistance = (mDriveTrain.getRightDistance() + mDriveTrain.getLeftDistance()) / 2.0f;
         double deltaDistance = mTotalDistance - mLastDistance;
         mXPosition += deltaDistance * Math.sin(orientationRadians);
         mYPosition += deltaDistance * Math.cos(orientationRadians);
@@ -147,12 +145,6 @@ public class Positioner implements ISubsystem, IPositioner
 
     @Override
     public void control()
-    {
-        // Nothing
-    }
-
-    @Override
-    public void rereadPreferences()
     {
         // Nothing
     }

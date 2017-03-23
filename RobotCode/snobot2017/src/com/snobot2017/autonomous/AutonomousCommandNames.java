@@ -8,7 +8,7 @@ public class AutonomousCommandNames
     public static final String sWAIT_COMMAND = "Wait";
 
     // Subsystems
-    public static final String sSCORE_GEAR_COMMAND = "ScoreGear";
+    public static final String sPLACE_GEAR_COMMAND = "PlaceGear";
 
     // Stupid
     public static final String sSTUPID_DRIVE_STRAIGHT_COMMAND = "StupidDriveStraight";
@@ -24,9 +24,16 @@ public class AutonomousCommandNames
     public static final String sDRIVE_PATH_STRAIGHT = "DrivePathStraight";
     public static final String sDRIVE_PATH_TURN = "DrivePathTurn";
     public static final String sDRIVE_TRAJECTORY = "DriveTrajectory";
-    public static final String sSCORE_GEAR_TRAJECTORY = "ScoreGearTraj";
-    public static final String sSTART_HOPPER_TRAJ = "GetHopper";
-    public static final String sGET_HOPPER_AND_GEAR = "GetHopperAndGear";
     public static final String sGO_TO_POSITION_SMOOTHLY = "GoToPositionSmoothly";
-    
+
+    // Combined modes
+    public static final String sDUMP_HOPPER = "DumpHopper";
+
+    public static final String sSCORE_GEAR = "ScoreGear";
+    public static final String sSCORE_GEAR_DUMP_HOPPER = "ScoreGearDumpHopper";
+    public static final String sSCORE_GEAR_SCORE_FUEL = "ScoreGearScoreFuel";
+
+    public static final String sSCORE_GEAR_WITH_CAM = "ScoreGearWithCamera";
+    public static final String sSCORE_GEAR_WITH_CAM_DUMP_HOPPER = "ScoreGearWithCameraDumpHopper";
+    public static final String sSCORE_GEAR_WITH_CAM_SCORE_FUEL = "ScoreGearWithCameraScoreFuel";
 }

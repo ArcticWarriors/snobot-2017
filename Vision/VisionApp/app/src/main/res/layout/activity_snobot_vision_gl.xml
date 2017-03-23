@@ -3,13 +3,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0099cc"
+    android:keepScreenOn="true"
     tools:context="com.snobot.vision_app.app2017.SnobotVisionGLActivity">
+
 
     <com.snobot.vision_app.app2017.SnobotVisionGLSurfaceView
         android:id="@+id/texture"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="25dp"
+            android:background="@color/app_disconnected"
+            android:id="@+id/connectionState" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation = "vertical" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fps_text_view"
+                    android:text="@string/fps_text" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Show view options"
+                android:id="@+id/viewSelectButton"
+                android:layout_gravity="right"
+                android:onClick="showViewOptions"
+                android:src="@android:drawable/ic_menu_view"
+                android:background="@android:color/transparent"
+                android:paddingBottom="10dp"
+                android:paddingEnd="5dp"
+                android:layout_weight=".05" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Vision Settings"
+                android:id="@+id/hsvEditButton"
+                android:onClick="openBottomSheet"
+                android:src="@android:drawable/ic_menu_manage"
+                android:background="@android:color/transparent"
+                android:layout_gravity="end"
+                android:paddingBottom="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight=".05" />
+        </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>

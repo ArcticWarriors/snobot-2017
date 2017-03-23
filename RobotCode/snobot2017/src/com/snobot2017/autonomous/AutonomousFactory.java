@@ -6,6 +6,7 @@ import com.snobot.lib.autonomous.SnobotAutonCrawler;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
+import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.positioner.IPositioner;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -44,6 +45,8 @@ public class AutonomousFactory
         public final double mX;
         public final double mY;
         public final double mAngle;
+        
+
 
         private StartingPositions(String aDisplayName, double aX, double aY, double aAngle)
         {
@@ -60,7 +63,7 @@ public class AutonomousFactory
         }
     }
     
-    public AutonomousFactory(Snobot2017 aSnobot)
+    public AutonomousFactory(Snobot2017 aSnobot, IDriverJoystick aDriverJoystick)
     {
         mPositionChooser = new SendableChooser<StartingPositions>();
         mCommandParser = new CommandParser(aSnobot, mPositionChooser);
@@ -68,7 +71,8 @@ public class AutonomousFactory
         
         mPositioner = aSnobot.getPositioner();
 
-        mAutonModeChooser = new SnobotAutonCrawler("").loadAutonFiles(Properties2017.sAUTON_DIRECTORY.getValue() + "/");
+        mAutonModeChooser = new SnobotAutonCrawler(Properties2017.sAUTON_FILE_FILTER.getValue())
+                .loadAutonFiles(Properties2017.sAUTON_DIRECTORY.getValue() + "/");
 
         SmartDashboard.putData(SmartDashBoardNames.sAUTON_CHOOSER, mAutonModeChooser);
         

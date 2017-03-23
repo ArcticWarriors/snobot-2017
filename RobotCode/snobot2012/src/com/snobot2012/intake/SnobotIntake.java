@@ -1,6 +1,6 @@
 package com.snobot2012.intake;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot2012.SmartDashboardNames;
 import com.snobot2012.ui.OperatorJoystick;
 
@@ -21,7 +21,7 @@ public class SnobotIntake implements ISubsystem
         mIntakeJoystick = aJoystick;
     }
 
-    public void init()
+    public void initializeLogHeaders()
     {
 
     }
@@ -36,11 +36,6 @@ public class SnobotIntake implements ISubsystem
     {
         mIntakeMotorLower.set(mIntakeJoystick.useIntakeLower());
         mIntakeMotorUpper.set(mIntakeJoystick.useIntakeUpper());
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
     }
 
     @Override

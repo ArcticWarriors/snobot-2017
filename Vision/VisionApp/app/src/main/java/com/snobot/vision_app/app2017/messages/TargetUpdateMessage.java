@@ -19,14 +19,16 @@ public class TargetUpdateMessage
     {
         private double mAngle;
         private double mDistance;
+        private boolean mAmbiguous;
 
         public TargetInfo(){
-            this(0, 0);
+            this(0, 0, false);
         }
 
-        public TargetInfo(double aAngle, double aDistance) {
+        public TargetInfo(double aAngle, double aDistance, boolean aAmbiguous) {
             mAngle = aAngle;
             mDistance = aDistance;
+            mAmbiguous = aAmbiguous;
         }
     }
 
@@ -42,6 +44,7 @@ public class TargetUpdateMessage
             JSONObject targetInfoJson = new JSONObject();
             targetInfoJson.put("angle", targetInfo.mAngle);
             targetInfoJson.put("distance", targetInfo.mDistance);
+            targetInfoJson.put("ambiguous", targetInfo.mAmbiguous);
             targetJson.put(targetInfoJson);
         }
 

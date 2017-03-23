@@ -2,14 +2,26 @@ package com.snobot.vision_app.app2017;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.Pair;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStateListener;
+import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStatusBroadcastReceiver;
 import com.snobot.vision_app.app2017.java_algorithm.JavaVisionAlgorithm;
-import com.snobot.vision_app.opengl_renderer.VisionTrackerGLSurfaceView;
 import com.snobot.vision_app.utils.MjpgServer;
 
 import org.opencv.android.OpenCVLoader;
@@ -18,24 +30,28 @@ import org.opencv.android.OpenCVLoader;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class SnobotVisionGLActivity extends Activity implements VisionRobotConnection.IVisionActivity {
+public class SnobotVisionGLActivity extends Activity implements VisionRobotConnection.IVisionActivity, RobotConnectionStateListener {
     private static final String TAG = "CameraActivity";
     private static final int REQUEST_CAMERA_PERMISSION = 200;
 
-    private static VisionRobotConnection sRobotConnection;
+    private VisionRobotConnection mRobotConnection;
 
     private SnobotVisionGLSurfaceView mView;
     private JavaVisionAlgorithm mAlgorithm;
+
+    private VisionAlgorithmPreferences mPreferences;
+
+    private RobotConnectionStatusBroadcastReceiver mRobotConnectionBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(sRobotConnection == null)
-        {
-            sRobotConnection = new VisionRobotConnection(this);
-            sRobotConnection.start();
-        }
+        mRobotConnection = new VisionRobotConnection(this);
+        mRobotConnection.start();
+
+        mPreferences = new VisionAlgorithmPreferences(this);
+        mRobotConnectionBroadcastReceiver = new RobotConnectionStatusBroadcastReceiver(this, this);
 
         if (!OpenCVLoader.initDebug()) {
             Log.e(this.getClass().getSimpleName(), "  OpenCVLoader.initDebug(), not working.");
@@ -68,6 +84,12 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mRobotConnectionBroadcastReceiver);
+    }
+
     private void openCamera() {
         MjpgServer.getInstance();
 
@@ -77,7 +99,8 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
             return;
         }
 
-        mAlgorithm = new JavaVisionAlgorithm(sRobotConnection);
+        mAlgorithm = new JavaVisionAlgorithm(mRobotConnection, mPreferences);
+        mAlgorithm.setDisplayType(JavaVisionAlgorithm.DisplayType.MarkedUpImage);
 
         mView = (SnobotVisionGLSurfaceView) findViewById(R.id.texture);
         mView.setCameraTextureListener(mView);
@@ -85,9 +108,77 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
     }
 
     @Override
-    public void useCamera(int aCameraId) {
+    public void useCamera(int aCameraId)
+    {
         mAlgorithm.setCameraDirection(aCameraId);
         mView.setCameraIndex(aCameraId);
+    }
+
+
+    public void openBottomSheet(View v)
+    {
+        final View view = getLayoutInflater().inflate(R.layout.algorithm_settings, null);
+        LinearLayout container = (LinearLayout) view.findViewById(R.id.popup_window);
+        container.getBackground().setAlpha(20);
+
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(view);
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        final EditText hueMin = (EditText) view.findViewById(R.id.hueMinValue);
+        final EditText hueMax = (EditText) view.findViewById(R.id.hueMaxValue);
+        final EditText satMin = (EditText) view.findViewById(R.id.satMinValue);
+        final EditText satMax = (EditText) view.findViewById(R.id.satMaxValue);
+        final EditText lumMin = (EditText) view.findViewById(R.id.lumMinValue);
+        final EditText lumMax = (EditText) view.findViewById(R.id.lumMaxValue);
+
+        populateRangePair(hueMin, hueMax, mPreferences.getHueThreshold());
+        populateRangePair(satMin, satMax, mPreferences.getSatThreshold());
+        populateRangePair(lumMin, lumMax, mPreferences.getLumThreshold());
+
+        Button restoreButton = (Button) view.findViewById(R.id.restoreAlgorithimDefaultsButton);
+        restoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPreferences.restoreDefaults();
+                dialog.dismiss();
+            }
+        });
+
+        Button saveButton = (Button) view.findViewById(R.id.saveAlgorithmSettingsButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPreferences.setHueThreshold(getRangePair(hueMin, hueMax));
+                mPreferences.setSatThreshold(getRangePair(satMin, satMax));
+                mPreferences.setLumThreshold(getRangePair(lumMin, lumMax));
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private Pair<Integer, Integer> getRangePair(EditText aMinText, EditText aMaxText)
+    {
+        int min = Integer.parseInt(aMinText.getText().toString());
+        int max = Integer.parseInt(aMaxText.getText().toString());
+
+        return new Pair<>(min, max);
+    }
+
+    private void populateRangePair(EditText aMinText, EditText aMaxText, Pair<Integer, Integer> aThreshold)
+    {
+        aMinText.setText("" + aThreshold.first);
+        aMaxText.setText("" + aThreshold.second);
+    }
+
+    public void showViewOptions(View v)
+    {
+
     }
 
     @Override
@@ -109,5 +200,19 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
             default:
                 return super.dispatchKeyEvent(event);
         }
+    }
+
+    @Override
+    public void robotConnected() {
+        View  connectionStateView = findViewById(R.id.connectionState);
+        Toast.makeText(this, "Connected to Robot", Toast.LENGTH_SHORT).show();
+        connectionStateView.setBackgroundColor(ContextCompat.getColor(this, R.color.app_connected));
+    }
+
+    @Override
+    public void robotDisconnected() {
+        View  connectionStateView = findViewById(R.id.connectionState);
+        Toast.makeText(this, "Lost connection to Robot", Toast.LENGTH_SHORT).show();
+        connectionStateView.setBackgroundColor(ContextCompat.getColor(this, R.color.app_disconnected));
     }
 }

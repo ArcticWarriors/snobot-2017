@@ -2,6 +2,7 @@ package com.snobot2017.SnobotActor;
 
 import com.snobot.lib.InDeadbandHelper;
 import com.snobot.lib.Utilities;
+import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.positioner.IPositioner;
@@ -53,20 +54,18 @@ public class SnobotActor implements ISnobotActor
         double mGoalX;
         double mGoalY;
         double mDeadband;
-        double mSpeed;
 
-        SmoothControlParams(double aGoalX, double aGoalY, double aSpeed)
+        SmoothControlParams(double aGoalX, double aGoalY)
         {
             mGoalX = aGoalX;
             mGoalY = aGoalY;
             mDeadband = 6; // inches
-            mSpeed = aSpeed;
         }
     }
 
     private enum ControlMode
     {
-        Off, Distance, Turning, PositionInSteps, SmoothTurning
+        Off, Distance, Turning, PositionInSteps, PositionSmooth
     }
 
     private enum GoToPositionSubsteps
@@ -91,11 +90,11 @@ public class SnobotActor implements ISnobotActor
         mControlMode = ControlMode.Off;
         mDistanceControlParams = new DistanceControlParams(0, 0);
         mTurningControlParams = new TurnControlParams(0, 0);
-        mSmoothControlParams = new SmoothControlParams(0, 0, 0);
+        mSmoothControlParams = new SmoothControlParams(0, 0);
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
 
     }
@@ -143,11 +142,12 @@ public class SnobotActor implements ISnobotActor
     }
 
     @Override
-    public void setDriveSmoothlyToPositionGoal(double aX, double aY, double aSpeed)
+    public void setGoToPositionSmoothlyGoal(double aX, double aY)
     {
-        mControlMode = ControlMode.SmoothTurning;
+        mControlMode = ControlMode.PositionSmooth;
 
-        mSmoothControlParams = new SmoothControlParams(aX, aY, aSpeed);
+        mSmoothControlParams = new SmoothControlParams(aX, aY);
+        System.out.println("Setting go to position " + aX + ", " + aY);
     }
 
     @Override
@@ -169,7 +169,7 @@ public class SnobotActor implements ISnobotActor
         case PositionInSteps:
             finished = driveToPositionInSteps();
             break;
-        case SmoothTurning:
+        case PositionSmooth:
             finished = driveSmoothlyToPosition();
             break;
         default:
@@ -184,48 +184,8 @@ public class SnobotActor implements ISnobotActor
         return finished;
     }
 
-    private boolean driveSmoothlyToPosition()
-    {
-
-        double dx = mSmoothControlParams.mGoalX - mPositioner.getXPosition();
-        double dy = mSmoothControlParams.mGoalY - mPositioner.getYPosition();
-
-        double distanceAway = Math.sqrt(dx * dx + dy * dy);
-        double goalAngle = Math.toDegrees(Math.atan2(dx, dy)); // Switched on
-                                                               // purpose
-
-        double AngleError = ((mPositioner.getOrientationDegrees() % 360) - goalAngle) % 360;
-        boolean isFinished = false;
-        System.out.println("Smooth " + AngleError + " " + goalAngle + " dx " + dx + " dy " + dy + "  goalx " + mSmoothControlParams.mGoalX + " goaly "
-                + mSmoothControlParams.mGoalY);
-        double leftSpeed = (.3 - AngleError * .001);
-        double rightSpeed = (.3 + AngleError * .001);
-
-        if (mInDeadbandHelper.isFinished(Math.abs(distanceAway) < mDistanceControlParams.mDeadband))
-        {
-            mDriveTrain.setLeftRightSpeed(0, 0);
-            isFinished = true;
-        }
-        else if (distanceAway > 0)
-        {
-            mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
-        }
-        else
-        {
-            mDriveTrain.setLeftRightSpeed(-leftSpeed, -rightSpeed);
-        }
-
-        return isFinished;
-    }
-
     @Override
     public void control()
-    {
-
-    }
-
-    @Override
-    public void rereadPreferences()
     {
 
     }
@@ -245,11 +205,11 @@ public class SnobotActor implements ISnobotActor
         case PositionInSteps:
             actionName = "Go To Position";
             break;
+        case PositionSmooth:
+            actionName = "Smoothly Drive To Position";
+            break;
         case Off:
         default:
-            break;
-        case SmoothTurning:
-            actionName = "Smoothly Drive To Position";
             break;
 
         }
@@ -361,6 +321,40 @@ public class SnobotActor implements ISnobotActor
         }
 
         return finished;
+    }
+
+    private boolean driveSmoothlyToPosition()
+    {
+        double dx = mSmoothControlParams.mGoalX - mPositioner.getXPosition();
+        double dy = mSmoothControlParams.mGoalY - mPositioner.getYPosition();
+
+        double distanceError = Math.sqrt(dx * dx + dy * dy);
+        distanceError += Properties2017.sSNOBOT_FUDGE_FACTOR.getValue();
+    
+        double angleToTarget = Math.toDegrees(Math.atan2(dx, dy)); // dx and dy are switched on purpose to make 0 degrees refer to up
+        double angleError = angleToTarget - mPositioner.getOrientationDegrees();
+        angleError = Utilities.boundAngleNeg180to180Degrees(angleError);
+
+        double distanceKp = Properties2017.sDRIVE_TO_POSITION_DISTANCE_KP.getValue();
+        double turnKp = Properties2017.sDRIVE_TO_POSITION_ANGLE_KP.getValue();
+
+        double leftSpeed = distanceError * distanceKp + angleError * turnKp;
+        double rightSpeed = distanceError * distanceKp - angleError * turnKp;
+
+        System.out.println("DE: " + distanceError + ", AE: " + angleError + ", L: " + leftSpeed + ", R: " + rightSpeed);
+
+        boolean isFinished = false;
+        if (mInDeadbandHelper.isFinished(Math.abs(distanceError) < mSmoothControlParams.mDeadband))
+        {
+            mDriveTrain.setLeftRightSpeed(0, 0);
+            isFinished = true;
+        }
+        else
+        {
+            mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
+        }
+
+        return isFinished;
     }
 
     @Override

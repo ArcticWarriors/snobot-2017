@@ -69,7 +69,7 @@ public class MjpegReceiver
 
     private byte[] parseImage(InputStream stream, ByteArrayOutputStream imageBuffer) throws IOException
     {
-        System.out.println("Buffer size : " + stream.available());
+//        System.out.println("Buffer size : " + stream.available());
         imageBuffer.reset();
         for (int i = 0; i < START_BYTES.length;)
         {
@@ -83,7 +83,7 @@ public class MjpegReceiver
                 i = 0;
             }
         }
-        System.out.println("Got start bytes...");
+//        System.out.println("Got start bytes...");
 
         for (int i = 0; i < START_BYTES.length; ++i)
         {
@@ -92,6 +92,11 @@ public class MjpegReceiver
 
         for (int i = 0; i < END_BYTES.length;)
         {
+            if (imageBuffer.size() > 1000000)
+            {
+                imageBuffer.close();
+                return null;
+            }
             int b = stream.read();
             imageBuffer.write(b);
             if (b == END_BYTES[i])

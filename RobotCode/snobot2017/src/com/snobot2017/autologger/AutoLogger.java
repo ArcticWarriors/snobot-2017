@@ -7,15 +7,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.snobot.lib.ISubsystem;
-import com.snobot.lib.ui.LatchedButton;
-import com.snobot.lib.ui.ToggleButton;
-import com.snobot.lib.ui.XboxButtonMap;
+import com.snobot.lib.logging.ALogger;
+import com.snobot.lib.modules.IUpdateableModule;
 import com.snobot2017.drivetrain.IDriveTrain;
-import com.snobot2017.joystick.IDriverJoystick;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import com.snobot2017.joystick.IAutoLoggerJoystick;
 
 /**
  * Class for logger
@@ -24,7 +19,7 @@ import edu.wpi.first.wpilibj.XboxController;
  *
  */
 
-public class AutoLogger implements ISubsystem
+public class AutoLogger extends ALogger implements IUpdateableModule
 {
     // Current Date and Time
     private String mLogDate;
@@ -33,31 +28,24 @@ public class AutoLogger implements ISubsystem
     private FileWriter mLogWriter;
 
     // A count that increases every teleop cycle
-    private int mCurrentLogCount;
-    private boolean mLogNow = false;
+    private boolean mIsRecording;
     private DateFormat mDateFormat;
     private IDriveTrain mDriveTrain;
-    
-    private LatchedButton mDriverYButton;
-
-    // A count that is used to indicate when to log (set by preferences)
-    private int mConfigLogCount;
 
     // File Path set by preferences
     private String mLogFilePath;
     
-    private Joystick mDriverJoystick;
+    private IAutoLoggerJoystick mJoystick;
 
     // Constructor
-    public AutoLogger(int aLogConfigCount, String aLogPath, Joystick aDriverJoystick, IDriveTrain aDriveTrain)
+    public AutoLogger(String aLogPath, IAutoLoggerJoystick aDriverJoystick, IDriveTrain aDriveTrain)
     {
-        mConfigLogCount = aLogConfigCount;
         mLogFilePath = aLogPath;
-        mDriverJoystick = aDriverJoystick;
+        mJoystick = aDriverJoystick;
         mDriveTrain = aDriveTrain;
-        mDriverYButton = new LatchedButton();
         mDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmssSSS");
         mLogDate = mDateFormat.format(new Date());
+        mIsRecording = false;
     }
 
     /**
@@ -65,23 +53,25 @@ public class AutoLogger implements ISubsystem
      * 
      * @throws IOException
      */
-    public void init()
+    public void initializeLogHeaders()
     {
     }
     
     private void startLog()
     {
-        mCurrentLogCount = 0;
+        System.out.println("---------------------------------------");
+        System.out.println("Staring auto logger");
+        System.out.println("---------------------------------------");
 
         try
         {
             File dir = new File(mLogFilePath);
             if (!dir.exists())
             {
-                dir.mkdirs();
+                System.err.println("ERROR CREATING AUTO LOGGER: Path to '" + mLogFilePath + "' does not exist.  Bailing");
+                return;
             }
             mLogWriter = new FileWriter(mLogFilePath + "RobotLog_" + mLogDate + "_log.csv");
-            System.out.println(mLogFilePath + "RobotLog_" + mLogDate + "_log.csv");
             mLogWriter.write("Date and Time");
 
         }
@@ -89,124 +79,6 @@ public class AutoLogger implements ISubsystem
         {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Adds a new header to represent logged data
-     * 
-     * @param aHeader
-     */
-    public void addHeader(String aHeader)
-    {
-        try
-        {
-            if (mLogWriter != null)
-            {
-                mLogWriter.write("," + aHeader);
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            this.stop();
-            mLogWriter = null;
-        }
-    }
-
-    /**
-     * Stops accepting new headers
-     */
-    public void endHeader()
-    {
-        try
-        {
-            if (mLogWriter != null)
-            {
-                mLogWriter.write("\n");
-                mLogWriter.flush();
-            }
-
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            this.stop();
-            mLogWriter = null;
-        }
-    }
-
-    /**
-     * Begins accepting new log entries
-     */
-    public void startLogEntry(String aLogDate)
-    {
-        try
-        {
-            if (mLogWriter != null)
-            {
-                mLogWriter.write(aLogDate);
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            this.stop();
-            mLogWriter = null;
-        }
-    }
-
-    /**
-     * Updates log information
-     * 
-     * @param aEntry
-     */
-    public void updateLogger(String aEntry)
-    {
-        try
-        {
-            if (mLogWriter != null)
-            {
-                mLogWriter.write("," + aEntry);
-            }
-
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            this.stop();
-            mLogWriter = null;
-        }
-    }
-
-    /**
-     * Updates log information
-     * 
-     * @param aEntry
-     */
-    public void updateLogger(int aEntry)
-    {
-        updateLogger("" + aEntry);
-    }
-
-    /**
-     * Updates log information
-     * 
-     * @param aEntry
-     */
-    public void updateLogger(double aEntry)
-    {
-        updateLogger("" + aEntry);
-    }
-
-    /**
-     * Updates log information
-     * 
-     * @param aEntry
-     */
-    public void updateLogger(boolean aEntry)
-    {
-        // Convert boolean to a number, then log
-        updateLogger(aEntry ? 1 : 0);
     }
 
     /**
@@ -230,114 +102,35 @@ public class AutoLogger implements ISubsystem
         }
     }
 
-    /**
-     * Closes file-stream
-     */
-    public void stop()
+    @Override
+    public void update()
     {
-        try
+        if (mJoystick.isRecording())
         {
-            if (mLogWriter != null)
+            if (mIsRecording)
             {
-                mLogWriter.close();
+                System.out.println("---------------------------------------");
+                System.out.println("Ending auto logger");
+                System.out.println("---------------------------------------");
+                mIsRecording = false;
+                this.endLogger();
+            }
+            else
+            {
+                mIsRecording = true;
+                this.startLog();
+                this.addHeader("LeftMotorSpeed");
+                this.addHeader("RightMotorSpeed");
+                this.endHeader();
             }
         }
-        catch (IOException e)
+        if (mIsRecording)
         {
-            e.printStackTrace();
-            this.stop();
-            mLogWriter = null;
-        }
-    }
-
-    /**
-     * Lets robot check for when to log
-     */
-    public boolean logNow()
-    {
-        if (mCurrentLogCount < mConfigLogCount)
-        {
-            mCurrentLogCount++;
-            return false;
-        }
-        else
-        {
-            mCurrentLogCount = 0;
-            return true;
-        }
-    }
-
-    /**
-     * flushes the file
-     */
-    public void flush()
-    {
-        try
-        {
-            if (mLogWriter != null)
-            {
-                mLogWriter.flush();
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            this.stop();
-            mLogWriter = null;
-        }
-    }
-
-	@Override
-	public void update() 
-	{
-		if(mDriverYButton.update(mDriverJoystick.getRawButton(XboxButtonMap.Y_BUTTON)))
-		{
-			if(mLogNow)
-			{
-				mLogNow = false;
-				this.endLogger();
-			}
-			else
-			{
-			mLogNow = true;
-	        this.startLog();
-	        this.addHeader("LeftMotorSpeed");
-	        this.addHeader("RightMotorSpeed");
-			this.endHeader();
-			}
-		}
-		if(mLogNow)
-		{
-			String logDate = mDateFormat.format(new Date());
-            this.startLogEntry(logDate);
+            startRow();
             updateLogger(mDriveTrain.getLeftMotorSpeed());
             updateLogger(mDriveTrain.getRightMotorSpeed());
-            this.endLogger();
-		}
-		
-	}
+            endLogger();
+        }
 
-	@Override
-	public void control() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void rereadPreferences() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateSmartDashboard() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateLog() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 }

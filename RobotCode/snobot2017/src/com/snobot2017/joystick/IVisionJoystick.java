@@ -1,13 +1,13 @@
 package com.snobot2017.joystick;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.IJoystick;
 
 /**
  * Joystick for interacting with the vision app
  * @author jbnol
  *
  */
-public interface IVisionJoystick extends ISubsystem
+public interface IVisionJoystick extends IJoystick
 {
     /**
      * @return true if App View should be changed
@@ -37,7 +37,7 @@ public interface IVisionJoystick extends ISubsystem
      * 
      * @return
      */
-    boolean driveToPeg();
+    boolean driveToPositionInSteps();
 
     /**
      * Tell the operator joystick that any active snobotActor actions are
@@ -51,5 +51,5 @@ public interface IVisionJoystick extends ISubsystem
      * 
      * @return true if in driveSmoothlyToPositionState
      */
-    boolean DriveSmoothlyToPosition();
+    boolean driveSmoothlyToPosition();
 }

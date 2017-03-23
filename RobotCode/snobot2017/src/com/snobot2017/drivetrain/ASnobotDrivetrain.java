@@ -1,6 +1,6 @@
 package com.snobot2017.drivetrain;
 
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.ILogger;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.joystick.IDriverJoystick;
@@ -21,7 +21,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     protected final SpeedControllerType mRightMotor;
     protected final IDriverJoystick mDriverJoystick;
 
-    protected final Logger mLogger;
+    protected final ILogger mLogger;
 
     protected final RobotDrive mRobotDrive;
 
@@ -42,7 +42,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
             SpeedControllerType aFrontRightMotor,
             SpeedControllerType aRearRightMotor, 
             IDriverJoystick aDriverJoystick, 
-            Logger aLogger)
+            ILogger aLogger)
     {
         mLeftMotor = aFrontLeftMotor;
         mRightMotor = aFrontRightMotor;
@@ -63,7 +63,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("LeftEncoderDistance");
         mLogger.addHeader("RightEncoderDistance");
@@ -78,12 +78,6 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
         {
             setLeftRightSpeed(mDriverJoystick.getLeftSpeed(), mDriverJoystick.getRightSpeed());
         }
-    }
-    
-    @Override
-    public void rereadPreferences()
-    {
-        // Nothing
     }
 
     @Override

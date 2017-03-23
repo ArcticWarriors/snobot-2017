@@ -1,6 +1,7 @@
 package com.snobot2017.climbing;
 
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.ILogger;
+import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
 
@@ -18,7 +19,7 @@ public class Climbing implements IClimbing
 
     private SpeedController mClimbingMotor;
     private IOperatorJoystick mJoystick;
-    private Logger mLogger;
+    private ILogger mLogger;
     private double mMotorSpeed;
 
     /**
@@ -28,7 +29,7 @@ public class Climbing implements IClimbing
      * @param aLogger
      * @param aJoystick
      */
-    public Climbing(SpeedController aClimbingMotor, Logger aLogger, IOperatorJoystick aJoystick)
+    public Climbing(SpeedController aClimbingMotor, ILogger aLogger, IOperatorJoystick aJoystick)
     {
         mClimbingMotor = aClimbingMotor;
         mLogger = aLogger;
@@ -36,7 +37,7 @@ public class Climbing implements IClimbing
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("RotationSpeed");
     }
@@ -73,12 +74,6 @@ public class Climbing implements IClimbing
     }
 
     @Override
-    public void rereadPreferences()
-    {
-        // Nothing
-    }
-
-    @Override
     public void updateSmartDashboard()
     {
         SmartDashboard.putNumber(SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, mMotorSpeed);
@@ -99,8 +94,7 @@ public class Climbing implements IClimbing
     @Override
     public void catchRope()
     {
-        // TODO noll - make a property instead
-        double speed = SmartDashboard.getNumber(SmartDashBoardNames.sROBOT_CATCHING_ROPE_SPEED, 0.5);
+        double speed = Properties2017.sROBOT_CATCHING_ROPE_SPEED.getValue();
         mClimbingMotor.set(speed);
         mLogger.updateLogger(speed);
     }
@@ -108,8 +102,7 @@ public class Climbing implements IClimbing
     @Override
     public void climbRope()
     {
-        // TODO noll - make a property instead
-        double speed = SmartDashboard.getNumber(SmartDashBoardNames.sROBOT_CLIMBING_ROPE_SPEED, 1.0);
+        double speed = Properties2017.sROBOT_CLIMBING_ROPE_SPEED.getValue();
         mClimbingMotor.set(speed);
         mLogger.updateLogger(speed);
     }

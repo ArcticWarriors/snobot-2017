@@ -17,7 +17,7 @@ import org.opencv.core.Core;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.vision.IVisionAlgorithm;
-import com.snobot.vision_app.app2017.java_algorithm.VisionAlgorithm2;
+import com.snobot.vision_app.app2017.java_algorithm.VisionAlgorithm;
 
 public class DesktopMain
 {
@@ -59,7 +59,7 @@ public class DesktopMain
             System.out.println(file);
             BufferedImage image = ImageIO.read(new File(file));
 
-            IVisionAlgorithm algorithm = new VisionAlgorithm2();
+            IVisionAlgorithm algorithm = new VisionAlgorithm();
             VisionTestPanel testPanel = new VisionTestPanel(algorithm, thresholdsFile);
             testPanel.setOriginalImage(image);
 

@@ -1,6 +1,6 @@
 package com.snobot2017.climbing;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 
 /**
  * Interface used for controling the climber

@@ -1,6 +1,6 @@
 package com.snobot2017.SnobotActor;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 
 public interface ISnobotActor extends ISubsystem
 {
@@ -38,6 +38,17 @@ public interface ISnobotActor extends ISubsystem
     void setGoToPositionInStepsGoal(double aX, double aY, double aSpeed);
 
     /**
+     * Sets the goal for going to an XY coordinate and drives/turns to point at
+     * the same time.
+     * 
+     * @param aX
+     *            The X Position to go to, in inches
+     * @param aY
+     *            The Y Position to go to, in inches
+     */
+    void setGoToPositionSmoothlyGoal(double aX, double aY);
+
+    /**
      * Executes the currently selected control mode. Returns true when it is
      * finished. If no control mode is running, it will return true
      * 
@@ -56,6 +67,4 @@ public interface ISnobotActor extends ISubsystem
      * Cancels any running actions
      */
     void cancelAction();
-
-    void setDriveSmoothlyToPositionGoal(double aX, double aY, double aSpeed);
 }

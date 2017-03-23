@@ -43,12 +43,12 @@ public class NativeAdbBridge extends BaseAdbBridge
 
                     if (line.contains("adb"))
                     {
-                        System.out.println("Found running ADB, killing it");
+                        sLOGGER.warning("Found running ADB, killing it");
                         Runtime.getRuntime().exec("taskkill /F /IM adb.exe");
                         // killProcess.wait(1000);
                     }
                 }
-                System.out.println("Killed old ADB's");
+                sLOGGER.info("Killed old ADB's");
             }
             catch (IOException e)
             {

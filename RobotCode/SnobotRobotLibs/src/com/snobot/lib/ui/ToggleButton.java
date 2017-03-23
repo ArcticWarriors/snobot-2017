@@ -7,7 +7,12 @@ public class ToggleButton
 
     public ToggleButton()
     {
-        mSwitchState = false;
+        this(false);
+    }
+
+    public ToggleButton(boolean aDefaultState)
+    {
+        mSwitchState = aDefaultState;
     }
 
     public boolean update(boolean aCurrentState)
@@ -20,6 +25,17 @@ public class ToggleButton
         mLastSwitchState = aCurrentState;
         return mSwitchState;
 
+    }
+
+    public boolean getState()
+    {
+        return mSwitchState;
+    }
+
+    public void setState(boolean aState)
+    {
+        mSwitchState = aState;
+        mLastSwitchState = false;
     }
 
 }

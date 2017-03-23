@@ -6,7 +6,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot.lib.vision.MjpegForwarder;
 import com.snobot.lib.vision.MjpegReceiver;
 import com.snobot2017.PortMappings2017;
@@ -26,7 +26,7 @@ public class VisionManager implements ISubsystem
     private ISnobotActor mSnobotActor;
     private IPositioner mPositioner;
     private StateManager mStateManager;
-    private List<TargetLocation> mTargetInformation;
+    private List<TargetLocation> mLatestTargetInformation;
     private String mTargetMessage;
     
     public VisionManager(IPositioner aPositioner, ISnobotActor aSnobotActor, IVisionJoystick aOperatorJoystick)
@@ -42,7 +42,7 @@ public class VisionManager implements ISubsystem
         mOperatorJoystick = aOperatorJoystick;
 
         mStateManager = new StateManager();
-        mTargetInformation = new ArrayList<>();
+        mLatestTargetInformation = new ArrayList<>();
         mTargetMessage = "";
 
         MjpegForwarder forwarder = new MjpegForwarder(PortMappings2017.sAPP_MJPEG_FORWARDED_PORT);
@@ -53,7 +53,7 @@ public class VisionManager implements ISubsystem
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         // mVisionServer.restartApp();
 
@@ -80,10 +80,9 @@ public class VisionManager implements ISubsystem
     private void updateTargetInformation(double aTimestamp)
     {
         mStateManager.updateCameraFindings(mVisionServer.getLatestTargetUpdate());
-        mTargetInformation.clear();
+        mLatestTargetInformation.clear();
 
         SavedRobotState robotState = mStateManager.getStateHistory(aTimestamp);
-        //System.out.println("Robot state " + robotState);
 
         JSONObject targetUpdateJson = new JSONObject();
         JSONArray targets = new JSONArray();
@@ -94,11 +93,13 @@ public class VisionManager implements ISubsystem
             TargetLocation target = new TargetLocation();
             target.mX = targetInfo.mX;
             target.mY = targetInfo.mY;
-            mTargetInformation.add(target);
+            target.mAmbigious = targetInfo.mAmbigious;
+            mLatestTargetInformation.add(target);
 
             JSONObject jsonTarget = new JSONObject();
             jsonTarget.put("x", target.mX);
             jsonTarget.put("y", target.mY);
+            jsonTarget.put("ambiguous", target.mAmbigious);
             targets.add(jsonTarget);
         }
 
@@ -108,6 +109,29 @@ public class VisionManager implements ISubsystem
 
 
         mTargetMessage = targetUpdateJson.toJSONString();
+        double tooCloseDistance = Properties2017.sVISION_TOO_CLOSE_DISTANCE.getValue();
+        double tooFarDistance = Properties2017.sVISION_TOO_FAR_DISTANCE.getValue();
+        
+
+        if(mSnobotActor.isInAction())
+        {
+            if (!mLatestTargetInformation.isEmpty())
+            {
+                TargetLocation target = mLatestTargetInformation.get(0);
+                double dx = target.mX - robotState.mRobotX;
+                double dy = target.mY - robotState.mRobotY;
+                double distance = Math.sqrt(dx * dx + dy * dy);
+                if(!target.mAmbigious && distance > tooCloseDistance && distance < tooFarDistance)
+                {
+                    mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
+                }
+                else
+                {
+                    System.out.println("Ignoring update, " + distance);
+                    mLatestTargetInformation.clear();
+                }
+            }
+        }
     }
 
     @Override
@@ -130,14 +154,15 @@ public class VisionManager implements ISubsystem
             mVisionServer.restartApp();
         }
 
-        if (mOperatorJoystick.driveToPeg())
+        if (mOperatorJoystick.driveToPositionInSteps())
         {
             if (!mSnobotActor.isInAction())
             {
-                if(!mTargetInformation.isEmpty())
+                if(!mLatestTargetInformation.isEmpty())
                 {
-                    TargetLocation target = mTargetInformation.get(0);
-                    mSnobotActor.setGoToPositionInStepsGoal(target.mX, target.mY, .3);
+                    // On the first update, send the target even if it is ambiguous
+                    TargetLocation target = mLatestTargetInformation.get(0);
+                    mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 }
             }
             boolean finished = mSnobotActor.executeControlMode();
@@ -146,14 +171,15 @@ public class VisionManager implements ISubsystem
                 mOperatorJoystick.turnOffActions();
             }
         }
-        else if (mOperatorJoystick.DriveSmoothlyToPosition())
+        else if (mOperatorJoystick.driveSmoothlyToPosition())
         {
             if (!mSnobotActor.isInAction())
             {
-                if (!mTargetInformation.isEmpty())
+                if (!mLatestTargetInformation.isEmpty())
                 {
-                    TargetLocation target = mTargetInformation.get(0);
-                    mSnobotActor.setDriveSmoothlyToPositionGoal(target.mX, target.mY, .3);
+                    // On the first update, send the target even if it is ambiguous
+                    TargetLocation target = mLatestTargetInformation.get(0);
+                    mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 }
             }
 
@@ -171,10 +197,15 @@ public class VisionManager implements ISubsystem
 
     }
 
-    @Override
-    public void rereadPreferences()
-    {
 
+    public boolean seesTarget()
+    {
+        return !mLatestTargetInformation.isEmpty();
+    }
+
+    public List<TargetLocation> getLatestTargetInformation()
+    {
+        return mLatestTargetInformation;
     }
 
     @Override

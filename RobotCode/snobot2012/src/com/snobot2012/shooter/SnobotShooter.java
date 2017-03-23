@@ -1,6 +1,6 @@
 package com.snobot2012.shooter;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot.lib.ui.LatchedButton;
 import com.snobot2012.SmartDashboardNames;
 import com.snobot2012.ui.OperatorJoystick;
@@ -30,7 +30,7 @@ public class SnobotShooter implements ISubsystem
 	}
 	
 	@Override
-	public void init() {
+	public void initializeLogHeaders() {
 	}
 
 	@Override
@@ -72,10 +72,6 @@ public class SnobotShooter implements ISubsystem
 			mShooterSolenoid.set(false);
 		}
 		
-	}
-	@Override
-    public void rereadPreferences()
-    {
 	}
 
 	@Override

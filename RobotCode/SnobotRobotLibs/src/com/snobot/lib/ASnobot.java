@@ -3,6 +3,14 @@ package com.snobot.lib;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.snobot.lib.logging.ILogger;
+import com.snobot.lib.logging.Logger;
+import com.snobot.lib.modules.IControllableModule;
+import com.snobot.lib.modules.ILoggableModule;
+import com.snobot.lib.modules.ISmartDashboardUpdaterModule;
+import com.snobot.lib.modules.ISubsystem;
+import com.snobot.lib.modules.IUpdateableModule;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -10,17 +18,45 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public abstract class ASnobot extends IterativeRobot implements ISubsystem
 {
 
-    protected List<ISubsystem> mSubsystems;
+    private List<IUpdateableModule> mUpdateableModules;
+    private List<IControllableModule> mControllableModules;
+    private List<ILoggableModule> mLoggableModules;
+    private List<ISmartDashboardUpdaterModule> mSmartDashboardModules;
 
-    protected Logger mLogger;
+    private Logger mLogger;
 
     // Autonomous
     private CommandGroup mAutonCommand;
 
     public ASnobot()
     {
-        mSubsystems = new ArrayList<>();
+        mUpdateableModules = new ArrayList<>();
+        mControllableModules = new ArrayList<>();
+        mLoggableModules = new ArrayList<>();
+        mSmartDashboardModules = new ArrayList<>();
+
         mLogger = new Logger();
+    }
+
+    protected void addModule(Object aModule)
+    {
+        if (aModule instanceof IUpdateableModule)
+        {
+            mUpdateableModules.add((IUpdateableModule) aModule);
+        }
+        if (aModule instanceof IControllableModule)
+        {
+            mControllableModules.add((IControllableModule) aModule);
+        }
+        if (aModule instanceof ILoggableModule)
+        {
+            mLoggableModules.add((ILoggableModule) aModule);
+        }
+        if (aModule instanceof ISmartDashboardUpdaterModule)
+        {
+            mSmartDashboardModules.add((ISmartDashboardUpdaterModule) aModule);
+        }
+
     }
 
     /**
@@ -84,12 +120,12 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
-        mLogger.init();
-        for (ISubsystem iSubsystem : mSubsystems)
+        mLogger.initializeLogger();
+        for (ILoggableModule iSubsystem : mLoggableModules)
         {
-            iSubsystem.init();
+            iSubsystem.initializeLogHeaders();
         }
         mLogger.endHeader();
         mAutonCommand = createAutonomousCommand();
@@ -98,7 +134,7 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     @Override
     public void update()
     {
-        for (ISubsystem iSubsystem : mSubsystems)
+        for (IUpdateableModule iSubsystem : mUpdateableModules)
         {
             iSubsystem.update();
 
@@ -108,7 +144,7 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     @Override
     public void control()
     {
-        for (ISubsystem iSubsystem : mSubsystems)
+        for (IControllableModule iSubsystem : mControllableModules)
         {
             iSubsystem.control();
         }
@@ -121,11 +157,11 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
         {
             mLogger.startRow();
 
-            for (ISubsystem iSubsystem : mSubsystems)
+            for (ILoggableModule iSubsystem : mLoggableModules)
             {
                 iSubsystem.updateLog();
             }
-            mLogger.endLogger();
+            mLogger.endRow();
         }
 
     }
@@ -133,25 +169,16 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     @Override
     public void updateSmartDashboard()
     {
-        for (ISubsystem iSubsystem : mSubsystems)
+        for (ISmartDashboardUpdaterModule iSubsystem : mSmartDashboardModules)
         {
             iSubsystem.updateSmartDashboard();
         }
     }
 
     @Override
-    public void rereadPreferences()
-    {
-        for (ISubsystem iSubsystem : mSubsystems)
-        {
-            iSubsystem.rereadPreferences();
-        }
-    }
-
-    @Override
     public void stop()
     {
-        for (ISubsystem iSubsystem : mSubsystems)
+        for (IControllableModule iSubsystem : mControllableModules)
         {
             iSubsystem.stop();
         }
@@ -164,6 +191,11 @@ public abstract class ASnobot extends IterativeRobot implements ISubsystem
     public void testPeriodic()
     {
 
+    }
+
+    protected ILogger getLogger()
+    {
+        return mLogger;
     }
 
     protected abstract CommandGroup createAutonomousCommand();

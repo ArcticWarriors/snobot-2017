@@ -17,16 +17,22 @@ public class Properties2017
     public static final StringProperty sADB_LOCATION;
     public static final IntegerProperty sVISION_COMMS_PORT = new IntegerProperty("VisionCommsPort", 8254);
     public static final BooleanProperty sENABLE_VISION = new BooleanProperty("EnableVision", true);
-
+    public static final DoubleProperty sCAMERA_LENS_DIST_FROM_CENTER = new DoubleProperty("CameraLensOfset", 12); // inches
+    public static final DoubleProperty sVISION_TOO_CLOSE_DISTANCE = new DoubleProperty("VisionTooCLose", 10);
+    public static final DoubleProperty sVISION_TOO_FAR_DISTANCE = new DoubleProperty("VisionTooFar", 60);
+    
     // Logger
     public static final IntegerProperty sLOG_COUNT = new IntegerProperty("LogCount", 25);
     public static final StringProperty sLOG_FILE_PATH;
 
     // AutoLogger
-    public static final IntegerProperty sAUTO_LOG_COUNT = new IntegerProperty("AutoLogCount", 1);
     public static final StringProperty sAUTO_LOG_FILE_PATH;
-    public static final StringProperty sAUTO_LOG_RUN_PATH = new StringProperty("autologs/" + Properties2017.class.getCanonicalName() + "/");
     public static final StringProperty sREPLAY_PATH;
+    
+    // Snobot Actor
+    public static final DoubleProperty sDRIVE_TO_POSITION_DISTANCE_KP = new DoubleProperty("SnobotActorDriveToPositionDistanceKp", .1);
+    public static final DoubleProperty sDRIVE_TO_POSITION_ANGLE_KP = new DoubleProperty("SnobotActorDriveToPositionAngleKp", 0.2);
+    public static final DoubleProperty sSNOBOT_FUDGE_FACTOR = new DoubleProperty("ActorFudgeFactor", 12);
 
     // Drivetrain
     public static final DoubleProperty sLEFT_ENCODER_DIST_PER_PULSE = new DoubleProperty("DriveEncoderLeftDPP", -0.00564998);
@@ -35,7 +41,12 @@ public class Properties2017
     // Autonomous
     public static final StringProperty sAUTON_DIRECTORY;
     public static final StringProperty sAUTON_PATH_DIRECTORY;
- 
+    public static final StringProperty sAUTON_FILE_FILTER = new StringProperty("AutonFileFilter", "");
+    public static final DoubleProperty sTRAJECTORY_OVERRIDE_PERCENTAGE = new DoubleProperty("TrajectoryOverridePercentage", .7);
+
+    // Light Manager
+    public static final IntegerProperty sFLASH_LIGHT_LOOPS = new IntegerProperty("LightFlashLoops", 2);
+
     // Drive path
     public static final DoubleProperty sDRIVE_PATH_KP = new DoubleProperty("DrivePathKP", 0.001);
     public static final DoubleProperty sDRIVE_PATH_KD = new DoubleProperty("DrivePathKD", 0);
@@ -50,7 +61,19 @@ public class Properties2017
 
     // Trajectory Driving
     public static final DoubleProperty sSPLINE_TURN_FACTOR = new DoubleProperty("SplineTurnFactor", 0.1);
-    
+
+    // Climbing
+    public static final DoubleProperty sROBOT_CATCHING_ROPE_SPEED = new DoubleProperty("RopeCatchingSpeed", 0.5);
+    public static final DoubleProperty sROBOT_CLIMBING_ROPE_SPEED = new DoubleProperty("RopeClimbingSpeed", 1.0);
+
+    // Fuel Pooper
+    public static final DoubleProperty sSPCHINCTER_RIGHT_OPEN = new DoubleProperty("SphincterRightOpen", 1.0);
+    public static final DoubleProperty sSPCHINCTER_LEFT_OPEN = new DoubleProperty("SphincterLeftOpen", 1.0);
+    public static final DoubleProperty sSPCHINCTER_RIGHT_CLOSED = new DoubleProperty("SphincterRightClosed", 0.0);
+    public static final DoubleProperty sSPCHINCTER_LEFT_CLOSED = new DoubleProperty("SphincterLeftClosed", 0.0);
+    public static final DoubleProperty sDRIVE_PATH_WITH_GYRO_KP = new DoubleProperty("DrivePathWithGyroKP", 0.01);
+    public static final DoubleProperty sSIDE_AUTO_TURN_SPEED = new DoubleProperty("SideAutoTurnSpeed", 0.4);
+
     static
     {
         String logPath;
@@ -66,15 +89,14 @@ public class Properties2017
             resourcesDir = "../../RobotCode/snobot2017/resources/";
             autoLogPath = "autologs/" + Properties2017.class.getCanonicalName() + "/";
             replayPath = resourcesDir + "replays/";
-            
-            
+
             System.out.println("Using simulation constants");
         }
         else
         {
             logPath = "/u/logs/";
             adbLocation = "/tmp/adb";
-            resourcesDir = "/home/lvuser/2016Resources/";
+            resourcesDir = "/home/lvuser/2017Resources/";
             autoLogPath = "/u/autologs/";
             replayPath = resourcesDir + "replays/";
 

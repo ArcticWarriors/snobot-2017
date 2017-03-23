@@ -15,8 +15,19 @@ import com.snobot.lib.motion_profile.StaticSetpointIterator;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
+import com.snobot2017.SnobotActor.ISnobotActor;
+import com.snobot2017.SnobotActor.SnobotActor;
 import com.snobot2017.autonomous.AutonomousFactory.StartingPositions;
+import com.snobot2017.autonomous.commands.DriveStraightADistance;
+import com.snobot2017.autonomous.commands.GoToPositionInSteps;
+import com.snobot2017.autonomous.commands.GoToPositionSmoothly;
+import com.snobot2017.autonomous.commands.Replay;
+import com.snobot2017.autonomous.commands.ScoreGear;
+import com.snobot2017.autonomous.commands.StupidDriveStraight;
+import com.snobot2017.autonomous.commands.TrajectoryWithVisionOverride;
+import com.snobot2017.autonomous.commands.TurnWithDegrees;
 import com.snobot2017.autonomous.path.DriveStraightPath;
+import com.snobot2017.autonomous.path.DriveStraightPathWithGyro;
 import com.snobot2017.autonomous.path.DriveTurnPath;
 import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
 import com.team254.lib.trajectory.Path;
@@ -46,14 +57,13 @@ public class CommandParser extends ACommandParser
      * 
      * @param aSnobot
      *            The robot using the CommandParser.
-     * @param aPositionChooser 
+     * @param aPositionChooser
      * @param aStartPosition
      */
     public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser)
     {
         super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
                 SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
-
         mSnobot = aSnobot;
         mPositionChooser = aPositionChooser;
 
@@ -70,6 +80,7 @@ public class CommandParser extends ACommandParser
     {
         String commandName = args.get(0);
         Command newCommand = null;
+        
         try
         {
             switch (commandName)
@@ -89,9 +100,9 @@ public class CommandParser extends ACommandParser
                 newCommand = parseStupidDriveStraightCommand(args);
                 break;
             }
-            case AutonomousCommandNames.sSCORE_GEAR_COMMAND:
+            case AutonomousCommandNames.sPLACE_GEAR_COMMAND:
             {
-                newCommand = parseScoreGearCommand(args);
+                newCommand = parsePlaceGearCommand(args);
                 break;
             }
             case AutonomousCommandNames.sDRIVE_STRAIGHT_A_DISTANCE:
@@ -121,28 +132,12 @@ public class CommandParser extends ACommandParser
             }
             case AutonomousCommandNames.sREPLAY:
             {
-            	newCommand = parseReplayCommand(args);
-            	break;
+                newCommand = parseReplayCommand(args);
+                break;
             }
             case AutonomousCommandNames.sGO_TO_POSITION_SMOOTH_IN_STEPS:
             {
                 newCommand = parseGoToPositionInStepsCommand(args);
-                break;
-            }
-
-            case AutonomousCommandNames.sSCORE_GEAR_TRAJECTORY:
-            {
-                newCommand = createScoreGearWithTrajectoryCommand();
-                break;
-            }
-            case AutonomousCommandNames.sSTART_HOPPER_TRAJ:
-            {
-                newCommand = createGetHoppersWithTrajectoryCommand(args);
-                break;
-            }
-            case AutonomousCommandNames.sGET_HOPPER_AND_GEAR:
-            {
-                newCommand = createGetHoppersAndGetGearWithTrajectoryCommand(args);
                 break;
             }
             case AutonomousCommandNames.sGO_TO_POSITION_SMOOTHLY:
@@ -150,6 +145,47 @@ public class CommandParser extends ACommandParser
                 newCommand = parseGoToPositionSmoothlyCommand(args);
                 break;
             }
+
+            case AutonomousCommandNames.sDUMP_HOPPER:
+            {
+                newCommand = createGetHoppersWithTrajectoryCommand(args);
+                break;
+            }
+
+            // Score Gear with Trajectory
+            case AutonomousCommandNames.sSCORE_GEAR:
+            {
+                newCommand = createScoreGearWithTrajectoryCommand(false, args);
+                break;
+            }
+            case AutonomousCommandNames.sSCORE_GEAR_DUMP_HOPPER:
+            {
+                newCommand = createScoreGearDumpHopper(false, args);
+                break;
+            }
+            case AutonomousCommandNames.sSCORE_GEAR_SCORE_FUEL:
+            {
+                newCommand = createScoreGearScoreFuel(false);
+                break;
+            }
+
+            // Gear with Camera
+            case AutonomousCommandNames.sSCORE_GEAR_WITH_CAM:
+            {
+                newCommand = createScoreGearWithTrajectoryCommand(true, args);
+                break;
+            }
+            case AutonomousCommandNames.sSCORE_GEAR_WITH_CAM_DUMP_HOPPER:
+            {
+                newCommand = createScoreGearDumpHopper(true, args);
+                break;
+            }
+            case AutonomousCommandNames.sSCORE_GEAR_WITH_CAM_SCORE_FUEL:
+            {
+                newCommand = createScoreGearScoreFuel(true);
+                break;
+            }
+
             default:
                 addError("Received unexpected command name '" + commandName + "'");
             }
@@ -170,13 +206,8 @@ public class CommandParser extends ACommandParser
     {
         double x = Double.parseDouble(args.get(1));
         double y = Double.parseDouble(args.get(2));
-        double speed = .5;
-        if (args.size() > 3)
-        {
-            speed = Double.parseDouble(args.get(3));
-        }
 
-        return new GoToPositionSmoothly(x, y, speed, mSnobot.getSnobotActor());
+        return new GoToPositionSmoothly(x, y, mSnobot.getSnobotActor());
     }
 
     private Command createTurnPathCommand(List<String> args)
@@ -186,13 +217,7 @@ public class CommandParser extends ACommandParser
                 Double.parseDouble(args.get(3)), // Max Acceleration
                 sEXPECTED_DT);
 
-        ISetpointIterator dudeSetpointIterator;
-
-        // TODO create dynamic iterator, way to switch
-        if (true)
-        {
-            dudeSetpointIterator = new StaticSetpointIterator(dudePathConfig);
-        }
+        ISetpointIterator dudeSetpointIterator = new StaticSetpointIterator(dudePathConfig);
 
         return new DriveTurnPath(mSnobot.getDriveTrain(), mSnobot.getPositioner(), dudeSetpointIterator);
     }
@@ -204,15 +229,9 @@ public class CommandParser extends ACommandParser
                 Double.parseDouble(args.get(3)), // Max Acceleration
                 sEXPECTED_DT);
 
-        ISetpointIterator dudeSetpointIterator;
-
-        // TODO create dynamic iterator, way to switch
-        if (true)
-        {
-            PathGenerator dudePathGenerator = new PathGenerator();
-            List<PathSetpoint> dudeList = dudePathGenerator.generate(dudePathConfig);
-            dudeSetpointIterator = new StaticSetpointIterator(dudeList);
-        }
+        PathGenerator dudePathGenerator = new PathGenerator();
+        List<PathSetpoint> dudeList = dudePathGenerator.generate(dudePathConfig);
+        ISetpointIterator dudeSetpointIterator = new StaticSetpointIterator(dudeList);
 
         return new DriveStraightPath(mSnobot.getDriveTrain(), mSnobot.getPositioner(), dudeSetpointIterator);
     }
@@ -236,43 +255,142 @@ public class CommandParser extends ACommandParser
         return output;
     }
 
-    private Command createScoreGearWithTrajectoryCommand()
+    private Command createScoreGearScoreFuel(boolean aUseCamera)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
         if (startPosition == null)
         {
             return null;
         }
-        
+
+        String scoreFilename = null;
+        String boilFilename = null;
+
+        switch (startPosition)
+        {
+        case RedRight:
+            scoreFilename = "StartToGear/RedRightScoreGear.csv";
+            boilFilename = "GearToBoiler/RedRightGearToBoiler.csv";
+            break;
+        case RedMiddle:
+            scoreFilename = "StartToGear/RedMiddleScoreGear.csv";
+            boilFilename = "GearToBoiler/RedMiddleGearToBoiler.csv";
+            break;
+        case RedLeft:
+            scoreFilename = "StartToGear/RedLeftScoreGear.csv";
+            break;
+        case BlueRight:
+            scoreFilename = "StartToGear/BlueRightScoreGear.csv";
+            break;
+        case BlueMiddle:
+            scoreFilename = "StartToGear/BlueMiddleScoreGear.csv";
+            boilFilename = "GearToBoiler/BlueMiddleGearToBoiler.csv";
+            break;
+        case BlueLeft:
+            scoreFilename = "StartToGear/BlueLeftScoreGear.csv";
+            boilFilename = "GearToBoiler/BlueLeftGearToBoiler.csv";
+            break;
+        default:
+            break;
+        }
+        CommandGroup output = new CommandGroup();
+
+        if (scoreFilename != null)
+        {
+            if (aUseCamera)
+            {
+                output.addSequential(new TrajectoryWithVisionOverride(mSnobot, scoreFilename));
+            }
+            else
+            {
+                output.addSequential(createTrajectoryCommand(scoreFilename));
+            }
+            output.addSequential(parsePlaceGearCommand(3));
+
+            if (boilFilename != null)
+            {
+                output.addSequential(createTrajectoryCommand(boilFilename));
+            }
+            else
+            {
+                output.addSequential(parseStupidDriveStraightCommand(1.1, -.3));
+            }
+
+        }
+        else
+        {
+            addError("Invalid scoring filename");
+        }
+
+        return output;
+    }
+
+    private Command createScoreGearWithTrajectoryCommand(boolean aUseCamera, List<String> args)
+    {
+        StartingPositions startPosition = mPositionChooser.getSelected();
+        if (startPosition == null)
+        {
+            return null;
+        }
+
         String fileName = null;
+        double smackbackTime = .25;
+        double smackforwardTime = .5;
+        double backwardsTime = 2;
+        double backwardsSpeed = -.3;
         
+        if(args.size() >= 2)
+        {
+            backwardsSpeed = Double.parseDouble(args.get(1));
+        }
+        if(args.size() >= 3)
+        {
+            backwardsTime = Double.parseDouble(args.get(2));
+        }
+        
+        
+
         switch (startPosition)
         {
         case RedLeft:
-            fileName = "RedLeftScoreGear.csv";
+            fileName = "StartToGear/RedLeftScoreGear.csv";
             break;
         case RedMiddle:
-            fileName = "RedMiddleScoreGear.csv";
+            fileName = "StartToGear/RedMiddleScoreGear.csv";
             break;
         case RedRight:
-            fileName = "RedRightScoreGear.csv";
+            fileName = "StartToGear/RedRightScoreGear.csv";
             break;
         case BlueRight:
-            fileName = "BlueRightScoreGear.csv";
+            fileName = "StartToGear/BlueRightScoreGear.csv";
             break;
         case BlueMiddle:
-            fileName = "BlueMiddleScoreGear.csv";
+            fileName = "StartToGear/BlueMiddleScoreGear.csv";
             break;
         case BlueLeft:
-            fileName = "BlueLeftScoreGear.csv";
+            fileName = "StartToGear/BlueLeftScoreGear.csv";
             break;
         default:
-            break;   
+            break;
         }
        
+        CommandGroup group = new CommandGroup();
         if (fileName != null)
         {
-            return createTrajectoryCommand(fileName);
+            if (aUseCamera)
+            {
+                group.addSequential(new WaitCommand(.25));
+                group.addSequential(new TrajectoryWithVisionOverride(mSnobot, fileName));
+            }
+            else
+            {
+                group.addSequential(createTrajectoryCommand(fileName));
+            }
+            //group.addSequential(this.parsePlaceGearCommand(.8));
+            //group.addSequential(this.parseStupidDriveStraightCommand(smackbackTime, .3));
+//            group.addSequential(this.parseStupidDriveStraightCommand(smackforwardTime, .6));
+//            group.addSequential(this.parseStupidDriveStraightCommand(backwardsTime, backwardsSpeed));
+            return group;
         }
         else
         {
@@ -280,7 +398,7 @@ public class CommandParser extends ACommandParser
             return null;
         }
     }
-    
+
     private Command createGetHoppersWithTrajectoryCommand(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
@@ -288,7 +406,7 @@ public class CommandParser extends ACommandParser
         {
             return null;
         }
-        
+
         boolean doClose = true;
         if (args.size() > 1)
         {
@@ -299,78 +417,78 @@ public class CommandParser extends ACommandParser
         }
 
         String fileName = null;
-        
+
         switch (startPosition)
         {
         case RedLeft:
             if (doClose)
             {
-                fileName = "RedLeftToHopperFive.csv";
+                fileName = "StartToHopper/RedLeftToHopperFive.csv";
             }
             else
             {
-                fileName = "RedLeftToHopperFour.csv";
+                fileName = "StartToHopper/RedLeftToHopperFour.csv";
             }
             break;
         case RedMiddle:
             if (doClose)
             {
-                fileName = "RedMiddleToHopperOne.csv";
+                fileName = "StartToHopper/RedMiddleToHopperOne.csv";
             }
             else
             {
-                fileName = "RedMiddleToHopperFive.csv";
+                fileName = "StartToHopper/RedMiddleToHopperFive.csv";
             }
             break;
         case RedRight:
             if (doClose)
             {
-                fileName = "RedRightToHopperOne.csv";
+                fileName = "StartToHopper/RedRightToHopperOne.csv";
             }
             else
             {
-                fileName = "RedRightToHopperTwo.csv";
+                fileName = "StartToHopper/RedRightToHopperTwo.csv";
             }
             break;
         case BlueRight:
             if (doClose)
             {
-                fileName = "BlueRightToHopperFour.csv";
+                fileName = "StartToHopper/BlueRightToHopperFour.csv";
             }
             else
             {
-                fileName = "BlueRightToHopperFive.csv";
+                fileName = "StartToHopper/BlueRightToHopperFive.csv";
             }
             break;
         case BlueMiddle:
             if (doClose)
             {
-                fileName = "BlueMiddleToHopperThree.csv";
+                fileName = "StartToHopper/BlueMiddleToHopperThree.csv";
             }
             else
             {
-                fileName = "BlueMiddleToHopperFour.csv";
+                fileName = "StartToHopper/BlueMiddleToHopperFour.csv";
             }
             break;
         case BlueLeft:
             if (doClose)
             {
-                fileName = "BlueLeftToHopperThree.csv";
+                fileName = "StartToHopper/BlueLeftToHopperThree.csv";
             }
             else
             {
-                fileName = "BlueLeftToHopperTwo.csv";
+                fileName = "StartToHopper/BlueLeftToHopperTwo.csv";
             }
             break;
         default:
-            break;   
+            break;
         }
-       
+
         if (fileName != null)
         {
             CommandGroup output = new CommandGroup();
             output.addSequential(createTrajectoryCommand(fileName));
-            output.addSequential(parseScoreGearCommand(3));
+            output.addSequential(parsePlaceGearCommand(3));
             return output;
         }
         else
@@ -379,8 +497,8 @@ public class CommandParser extends ACommandParser
             return null;
         }
     }
-    
-    private Command createGetHoppersAndGetGearWithTrajectoryCommand(List<String> args)
+
+    private Command createScoreGearDumpHopper(boolean aUseCamera, List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
         if (startPosition == null)
@@ -388,47 +506,96 @@ public class CommandParser extends ACommandParser
             return null;
         }
 
+        boolean doClose = true;
+        if (args.size() > 1)
+        {
+            if (args.get(1).equals("Far"))
+            {
+                doClose = false;
+            }
+        }
+
         String scoreFilename = null;
         String hopperFilename = null;
-        
+
         switch (startPosition)
         {
         case RedLeft:
-            scoreFilename = "RedLeftScoreGear.csv";
-            hopperFilename = "RedLeftScoreGearGetHopper.csv";
+            scoreFilename = "StartToGear/RedLeftScoreGear.csv";
+
+            if (doClose)
+            {
+                hopperFilename = "GearToHopper/RedLeftScoreGearGetHopperFive.csv";
+            }
+            else
+            {
+                hopperFilename = "GearToHopper/RedLeftScoreGearGetHopperFour.csv";
+            }
+
             break;
         case RedRight:
-            scoreFilename = "RedRightScoreGear.csv";
-            hopperFilename = "RedRightScoreGearGetHopper.csv";
+            scoreFilename = "StartToGear/RedRightScoreGear.csv";
+
+            if (doClose)
+            {
+                hopperFilename = "GearToHopper/RedRightScoreGearGetHopperOne.csv";
+            }
+            else
+            {
+                hopperFilename = "GearToHopper/RedRightScoreGearGetHopperTwo.csv";
+            }
             break;
         case BlueRight:
-            scoreFilename = "BlueRightScoreGear.csv";
-            hopperFilename = "BlueRightScoreGearGetHopper.csv";
+            scoreFilename = "StartToGear/BlueRightScoreGear.csv";
+
+            if (doClose)
+            {
+                hopperFilename = "GearToHopper/BlueRightScoreGearGetHopperFour.csv";
+            }
+            else
+            {
+                hopperFilename = "GearToHopper/BlueRightScoreGearGetHopperFive.csv";
+            }
             break;
         case BlueLeft:
-            scoreFilename = "BlueLeftScoreGear.csv";
-            hopperFilename = "BlueLeftScoreGearGetHopper.csv";
+            scoreFilename = "StartToGear/BlueLeftScoreGear.csv";
+
+            if (doClose)
+            {
+                hopperFilename = "GearToHopper/BlueLeftScoreGearGetHopperThree.csv";
+            }
+            else
+            {
+                hopperFilename = "GearToHopper/BlueLeftScoreGearGetHoppertwo.csv";
+            }
             break;
 
         case RedMiddle:
-            scoreFilename = "RedMiddleScoreGear.csv";
+            scoreFilename = "StartToGear/RedMiddleScoreGear.csv";
             break;
         case BlueMiddle:
-            scoreFilename = "BlueMiddleScoreGear.csv";
+            scoreFilename = "StartToGear/BlueMiddleScoreGear.csv";
             break;
 
         // Intentional fall through, nothing to do
         case Origin:
         default:
-            break;   
+            break;
         }
 
         CommandGroup output = new CommandGroup();
 
         if (scoreFilename != null)
         {
-            output.addSequential(createTrajectoryCommand(scoreFilename));
-            output.addSequential(parseScoreGearCommand(3));
+            if (aUseCamera)
+            {
+                output.addSequential(new TrajectoryWithVisionOverride(mSnobot, scoreFilename));
+            }
+            else
+            {
+                output.addSequential(createTrajectoryCommand(scoreFilename));
+            }
+            output.addSequential(parsePlaceGearCommand(3));
 
             if (hopperFilename != null)
             {
@@ -438,20 +605,50 @@ public class CommandParser extends ACommandParser
             {
                 output.addSequential(parseStupidDriveStraightCommand(1.1, -.3));
             }
+
         }
         else
         {
-            mErrorText += "Invalid scoring filename";
+            addError("Invalid scoring filename");
         }
-       
+
         return output;
     }
-    
+
     /**
      * 
      * @param args
      * @return
      */
+    // TODO: This is messed up.
+    private Command parseScoreGearWithCameraAndGyroNoTraj()
+    {
+        StartingPositions startPosition = mPositionChooser.getSelected();
+        CommandGroup group = new CommandGroup();
+        ISnobotActor snobotActor = mSnobot.getSnobotActor();
+        
+        switch(startPosition)
+        {
+        case RedLeft:
+            group.addSequential(this.parseDriveStraightPathWithGyro());
+            group.addSequential(new TurnWithDegrees(45, Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), mSnobot.getSnobotActor()));
+            break;
+		default:
+			break; 
+        }
+		return group;
+    }
+    
+    private Command parseDriveStraightPathWithGyro()
+    {
+    	// TODO: What goes here?
+        ISetpointIterator setpointIterator = null;
+        return new DriveStraightPathWithGyro(
+        		mSnobot.getDriveTrain(), 
+        		mSnobot.getPositioner(), 
+        		setpointIterator);
+    }
+    
     private Command parseTurnWithDegrees(List<String> args)
     {
         double speed = Double.parseDouble(args.get(1));
@@ -466,13 +663,13 @@ public class CommandParser extends ACommandParser
         return new DriveStraightADistance(distance, speed, mSnobot.getSnobotActor());
     }
 
-    private Command parseScoreGearCommand(List<String> args)
+    private Command parsePlaceGearCommand(List<String> args)
     {
         double time = Double.parseDouble(args.get(1));
-        return parseScoreGearCommand(time);
+        return parsePlaceGearCommand(time);
     }
 
-    private Command parseScoreGearCommand(double aTime)
+    private Command parsePlaceGearCommand(double aTime)
     {
         return new ScoreGear(mSnobot.getGearBoss(), aTime);
     }

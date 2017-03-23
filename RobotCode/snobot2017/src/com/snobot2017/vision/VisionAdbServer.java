@@ -10,6 +10,7 @@ import com.snobot.lib.adb.IAdbBridge;
 import com.snobot.lib.adb.NativeAdbBridge;
 import com.snobot.lib.adb.RioDroidAdbBridge;
 import com.snobot.lib.external_connection.RobotConnectionServer;
+import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.vision.messages.HeartbeatMessage;
 import com.snobot2017.vision.messages.IterateDisplayImageMessage;
@@ -62,7 +63,7 @@ public class VisionAdbServer extends RobotConnectionServer
     @Override
     public void handleMessage(String aMessage, double aTimestamp)
     {
-        Level logLevel = Level.FINE;
+        Level logLevel = Level.FINER;
 
         try
         {
@@ -77,6 +78,7 @@ public class VisionAdbServer extends RobotConnectionServer
             }
             else if (sTARGET_UPDATE_MESSAGE.equals(type))
             {
+                logLevel = Level.FINE;
                 mLatestTargetUpdate = new TargetUpdateMessage(jsonObject, getTimestamp());
                 mFreshImage = true;
             }
@@ -97,8 +99,9 @@ public class VisionAdbServer extends RobotConnectionServer
     @Override
     public double getTimestamp()
     {
-        // return System.currentTimeMillis() * 1e-3;
-        return HAL.getMatchTime();
+         return System.currentTimeMillis() * 1e-3;
+//        return HAL.getMatchTime();
+//    	return Hal.get
     }
 
     @Override
@@ -116,6 +119,8 @@ public class VisionAdbServer extends RobotConnectionServer
     public void restartApp()
     {
         mAdb.restartApp();
+        mAdb.reversePortForward(PortMappings2017.sADB_BIND_PORT, PortMappings2017.sADB_BIND_PORT);
+        mAdb.portForward(PortMappings2017.sAPP_MJPEG_PORT, PortMappings2017.sAPP_MJPEG_PORT);
     }
 
     public void restartAdb()

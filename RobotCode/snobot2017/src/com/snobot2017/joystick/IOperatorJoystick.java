@@ -1,6 +1,6 @@
 package com.snobot2017.joystick;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.IJoystick;
 
 /**
  * Joystick for interacting with the Gear Boss
@@ -8,19 +8,12 @@ import com.snobot.lib.ISubsystem;
  * @author jbnol
  *
  */
-public interface IOperatorJoystick extends ISubsystem
+public interface IOperatorJoystick extends IJoystick
 {
     enum GearBossPositions
     {
         NONE, UP, DOWN
     }
-
-    /**
-     * Returns the speed for the climbing mechanism
-     * 
-     * @return Climbing Speed
-     */
-    double getTakeOffSpeed();
 
     /**
      * Is the catch rope button pressed?
@@ -37,6 +30,27 @@ public interface IOperatorJoystick extends ISubsystem
     boolean isClimb();
 
     /**
+     * Is the green light toggle on?
+     * 
+     * @return whether the green lights should be on
+     */
+    boolean greenLightOn();
+
+    /**
+     * Should the green light be on?
+     * 
+     * @return True if the light should be on
+     */
+    boolean blueLightOn();
+
+    /**
+     * Is the sphincter open?
+     * 
+     * @return true if the sphincter is open
+     */
+    boolean isPooperOpen();
+
+    /**
      * Returns UP if up button is pressed, DOWN, if down button is pressed, and
      * NONE, if neither buttons are pressed
      * 
@@ -44,4 +58,12 @@ public interface IOperatorJoystick extends ISubsystem
      *         do nothing
      */
     GearBossPositions moveGearBossToPosition();
+
+    /**
+     * Indicates the joystick should be rumbling
+     * 
+     * @param aRumble
+     *            True to rumble
+     */
+    void setShouldRumble(boolean aRumble);
 }

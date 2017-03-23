@@ -1,6 +1,6 @@
 package com.snobot2017.gearboss;
 
-import com.snobot.lib.Logger;
+import com.snobot.lib.logging.ILogger;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
 
@@ -20,10 +20,10 @@ public class SnobotGearBoss implements IGearBoss
 
     private DoubleSolenoid mGearSolenoid;
     private IOperatorJoystick mOperatorJoystick;
-    private Logger mLogger;
+    private ILogger mLogger;
     private boolean mGearIsUp;
 
-    public SnobotGearBoss(DoubleSolenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick, Logger aLogger)
+    public SnobotGearBoss(DoubleSolenoid aGearSolenoid, IOperatorJoystick aOperatorJoystick, ILogger aLogger)
     {
         mGearSolenoid = aGearSolenoid;
         mOperatorJoystick = aOperatorJoystick;
@@ -33,7 +33,7 @@ public class SnobotGearBoss implements IGearBoss
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
         mLogger.addHeader("SolenoidPosition");
     }
@@ -42,6 +42,7 @@ public class SnobotGearBoss implements IGearBoss
     public void update()
     {
         mGearIsUp = mGearSolenoid.get() == sGEAR_UP_VALUE;
+        mOperatorJoystick.setShouldRumble(!mGearIsUp);
     }
 
     @Override
@@ -64,12 +65,6 @@ public class SnobotGearBoss implements IGearBoss
             break;
         }
         }
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
-        // Nothing
     }
 
     @Override

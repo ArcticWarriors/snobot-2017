@@ -1,6 +1,6 @@
 package com.snobot2012.drivetrain;
 
-import com.snobot.lib.ISubsystem;
+import com.snobot.lib.modules.ISubsystem;
 import com.snobot2012.SmartDashboardNames;
 import com.snobot2012.ui.DriverJoystick;
 
@@ -46,9 +46,9 @@ public class SnobotDriveTrain implements ISubsystem
     }
 
     @Override
-    public void init()
+    public void initializeLogHeaders()
     {
-        rereadPreferences();
+
     }
 
     @Override
@@ -61,12 +61,6 @@ public class SnobotDriveTrain implements ISubsystem
     public void control()
     {
         mRobotDrive.setLeftRightMotorOutputs(mJoystick.getLeftThrottle(), mJoystick.getRightThrottle());
-    }
-
-    @Override
-    public void rereadPreferences()
-    {
-        
     }
 
     @Override
