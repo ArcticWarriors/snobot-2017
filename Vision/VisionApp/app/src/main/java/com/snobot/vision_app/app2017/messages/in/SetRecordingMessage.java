@@ -12,7 +12,7 @@ public class SetRecordingMessage
     private boolean mRecord;
 
     public SetRecordingMessage(JSONObject aJson) throws JSONException {
-        mRecord = Boolean.parseBoolean((String) aJson.get("record"));
+        mRecord = (Boolean) aJson.get("record");
     }
 
     public boolean shouldRecord()

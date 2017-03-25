@@ -14,14 +14,17 @@ public class NativeAdbBridge extends BaseAdbBridge
     protected final Path mAdbLocation;
     protected final boolean mValidAdb;
 
-    public NativeAdbBridge(String aAdbLocation, String aAppPackage, String aAppMainActivity)
+    public NativeAdbBridge(String aAdbLocation, String aAppPackage, String aAppMainActivity, boolean aKillOldAdbs)
     {
         super(aAppPackage, aAppMainActivity);
 
         mAdbLocation = Paths.get(aAdbLocation);
         mValidAdb = Files.exists(mAdbLocation);
         
-        killOldAdbs();
+        if (aKillOldAdbs)
+        {
+            killOldAdbs();
+        }
 
         if (!mValidAdb)
         {

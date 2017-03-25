@@ -32,7 +32,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -173,6 +172,7 @@ public class Snobot2017 extends ASnobot
         super.teleopInit();
         mSnobotActor.cancelAction();
         mGearBoss.moveGearHigh();
+        mVisionManager.startRecordingImages();
     }
     
     @Override
@@ -180,6 +180,14 @@ public class Snobot2017 extends ASnobot
     {
         super.autonomousInit();
         mGearBoss.moveGearHigh();
+        mVisionManager.startRecordingImages();
+    }
+
+    @Override
+    public void disabledInit()
+    {
+        super.disabledInit();
+        mVisionManager.stopRecordingImages();
     }
     
     @Override

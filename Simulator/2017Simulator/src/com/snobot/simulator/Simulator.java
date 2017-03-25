@@ -123,19 +123,22 @@ public class Simulator
                 {
                     HAL.waitForProgramStart();
 
-                    mSimulator.createSimulatorComponents();
-                    mSimulator.setRobot(mRobot);
-                    System.out.println("Created simulator : " + mSimulatorClassName);
-
-                    RobotStateSingleton.get().addLoopListener(new RobotStateSingleton.LoopListener()
+                    if (mSimulator != null)
                     {
+                        mSimulator.createSimulatorComponents();
+                        mSimulator.setRobot(mRobot);
+                        System.out.println("Created simulator : " + mSimulatorClassName);
 
-                        @Override
-                        public void looped()
+                        RobotStateSingleton.get().addLoopListener(new RobotStateSingleton.LoopListener()
                         {
-                            mSimulator.update();
-                        }
-                    });
+
+                            @Override
+                            public void looped()
+                            {
+                                mSimulator.update();
+                            }
+                        });
+                    }
 
                     SimulatorFrame frame = new SimulatorFrame();
                     frame.pack();

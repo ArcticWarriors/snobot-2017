@@ -14,11 +14,11 @@ import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.vision.messages.HeartbeatMessage;
 import com.snobot2017.vision.messages.IterateDisplayImageMessage;
+import com.snobot2017.vision.messages.RecordingMessage;
 import com.snobot2017.vision.messages.SetCameraDirectionMessage;
 import com.snobot2017.vision.messages.TargetUpdateMessage;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.hal.HAL;
 
 public class VisionAdbServer extends RobotConnectionServer
 {
@@ -47,7 +47,7 @@ public class VisionAdbServer extends RobotConnectionServer
 
         if(RobotBase.isSimulation())
         {
-            mAdb = new NativeAdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY);
+            mAdb = new NativeAdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY, Properties2017.sKILL_OLD_ADBS);
         }
         else
         {
@@ -137,6 +137,16 @@ public class VisionAdbServer extends RobotConnectionServer
     public void setCameraDirection(CameraFacingDirection aDirection)
     {
         send(new SetCameraDirectionMessage(aDirection).getJson());
+    }
+
+    public void sendStartRecordingMessage()
+    {
+        send(new RecordingMessage(true).getJson());
+    }
+
+    public void sendStopRecordingMessage()
+    {
+        send(new RecordingMessage(false).getJson());
     }
 
     public void iterateShownImage()

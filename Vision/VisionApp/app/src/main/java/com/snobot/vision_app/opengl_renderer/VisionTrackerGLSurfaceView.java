@@ -80,7 +80,7 @@ public abstract class VisionTrackerGLSurfaceView extends BetterCameraGLSurfaceVi
 
     @Override
     public boolean onCameraTexture(int texIn, int texOut, int width, int height, long image_timestamp) {
-        Log.d(LOGTAG, "onCameraTexture - Timestamp " + image_timestamp + ", current time " + System.nanoTime() / 1E9);
+//        Log.d(LOGTAG, "onCameraTexture - Timestamp " + image_timestamp + ", current time " + System.nanoTime() / 1E9);
         // FPS
         frameCounter++;
         if (frameCounter >= 30) {

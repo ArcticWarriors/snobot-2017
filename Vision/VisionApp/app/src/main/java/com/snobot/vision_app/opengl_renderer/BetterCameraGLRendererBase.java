@@ -114,7 +114,7 @@ public abstract class BetterCameraGLRendererBase implements GLSurfaceView.Render
         @Override
         public void onCaptureStarted(CameraCaptureSession session, CaptureRequest request, long timestamp, long frameNumber) {
             super.onCaptureStarted(session, request, timestamp, frameNumber);
-            Log.d(LOGTAG, "onCaptureStarted - Timestamp " + timestamp + ", current time " + System.nanoTime() / 1E9);
+//            Log.d(LOGTAG, "onCaptureStarted - Timestamp " + timestamp + ", current time " + System.nanoTime() / 1E9);
             mCaptureTimes.add(new FrameTimestampToCaptureStartTime(timestamp, System.nanoTime()));
         }
     };
