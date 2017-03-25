@@ -329,6 +329,7 @@ public class SnobotActor implements ISnobotActor
         double dy = mSmoothControlParams.mGoalY - mPositioner.getYPosition();
 
         double distanceError = Math.sqrt(dx * dx + dy * dy);
+        distanceError += Properties2017.sSNOBOT_FUDGE_FACTOR.getValue();
     
         double angleToTarget = Math.toDegrees(Math.atan2(dx, dy)); // dx and dy are switched on purpose to make 0 degrees refer to up
         double angleError = angleToTarget - mPositioner.getOrientationDegrees();
@@ -340,7 +341,7 @@ public class SnobotActor implements ISnobotActor
         double leftSpeed = distanceError * distanceKp + angleError * turnKp;
         double rightSpeed = distanceError * distanceKp - angleError * turnKp;
 
-//        System.out.println("DE: " + distanceError + ", AE: " + angleError + ", L: " + leftSpeed + ", R: " + rightSpeed);
+        System.out.println("DE: " + distanceError + ", AE: " + angleError + ", L: " + leftSpeed + ", R: " + rightSpeed);
 
         boolean isFinished = false;
         if (mInDeadbandHelper.isFinished(Math.abs(distanceError) < mSmoothControlParams.mDeadband))

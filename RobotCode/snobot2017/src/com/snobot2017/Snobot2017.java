@@ -147,8 +147,8 @@ public class Snobot2017 extends ASnobot
         addModule(mLightManager);
 
         // Sphincter
-        Servo rightSphincter = new Servo(PortMappings2017.sFUEL_PWM_RIGHT);
-        Servo leftSphincter = new Servo(PortMappings2017.sFUEL_PWM_LEFT);
+        DoubleSolenoid rightSphincter = new DoubleSolenoid(2, 3);
+        DoubleSolenoid leftSphincter = new DoubleSolenoid(4, 5);
         mPooper = new FuelPooper(operatorJoystick, rightSphincter, leftSphincter, logger);
         addModule(mPooper);
 
@@ -172,8 +172,16 @@ public class Snobot2017 extends ASnobot
     {
         super.teleopInit();
         mSnobotActor.cancelAction();
+        mGearBoss.moveGearHigh();
     }
-
+    
+    @Override
+    public void autonomousInit()
+    {
+        super.autonomousInit();
+        mGearBoss.moveGearHigh();
+    }
+    
     @Override
     protected CommandGroup createAutonomousCommand()
     {

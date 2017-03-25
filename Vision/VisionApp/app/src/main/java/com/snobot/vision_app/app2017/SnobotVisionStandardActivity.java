@@ -155,20 +155,14 @@ public class SnobotVisionStandardActivity extends Activity implements VisionRobo
     }
 
     @Override
+    public void setRecording(boolean aRecord) {
+        String toastText = aRecord ? "Recording video" : "Not recording video";
+        Toast.makeText(this, toastText, Toast.LENGTH_SHORT);
+        visionAlgorithm.setRecording(aRecord);
+    }
+
+    @Override
     public void handleImage(Bitmap aBitmap) {
-
-        if(visionAlgorithm != null) {
-            Mat userImage = visionAlgorithm.processImage(aBitmap, System.nanoTime());
-
-
-            Bitmap bitmap = Bitmap.createBitmap(userImage.cols(), userImage.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(userImage, bitmap);
-
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, os);
-
-            MjpgServer.getInstance().update(os.toByteArray());
-        }
-        Log.i(TAG, "Captured image");
+        // Handled elsewhere
     }
 }

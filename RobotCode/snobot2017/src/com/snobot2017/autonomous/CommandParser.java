@@ -15,6 +15,8 @@ import com.snobot.lib.motion_profile.StaticSetpointIterator;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
+import com.snobot2017.SnobotActor.ISnobotActor;
+import com.snobot2017.SnobotActor.SnobotActor;
 import com.snobot2017.autonomous.AutonomousFactory.StartingPositions;
 import com.snobot2017.autonomous.commands.DriveStraightADistance;
 import com.snobot2017.autonomous.commands.GoToPositionInSteps;
@@ -25,6 +27,7 @@ import com.snobot2017.autonomous.commands.StupidDriveStraight;
 import com.snobot2017.autonomous.commands.TrajectoryWithVisionOverride;
 import com.snobot2017.autonomous.commands.TurnWithDegrees;
 import com.snobot2017.autonomous.path.DriveStraightPath;
+import com.snobot2017.autonomous.path.DriveStraightPathWithGyro;
 import com.snobot2017.autonomous.path.DriveTurnPath;
 import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
 import com.team254.lib.trajectory.Path;
@@ -152,7 +155,7 @@ public class CommandParser extends ACommandParser
             // Score Gear with Trajectory
             case AutonomousCommandNames.sSCORE_GEAR:
             {
-                newCommand = createScoreGearWithTrajectoryCommand(false);
+                newCommand = createScoreGearWithTrajectoryCommand(false, args);
                 break;
             }
             case AutonomousCommandNames.sSCORE_GEAR_DUMP_HOPPER:
@@ -169,7 +172,7 @@ public class CommandParser extends ACommandParser
             // Gear with Camera
             case AutonomousCommandNames.sSCORE_GEAR_WITH_CAM:
             {
-                newCommand = createScoreGearWithTrajectoryCommand(true);
+                newCommand = createScoreGearWithTrajectoryCommand(true, args);
                 break;
             }
             case AutonomousCommandNames.sSCORE_GEAR_WITH_CAM_DUMP_HOPPER:
@@ -284,7 +287,7 @@ public class CommandParser extends ACommandParser
             boilFilename = "GearToBoiler/BlueMiddleGearToBoiler.csv";
             break;
         case BlueLeft:
-            scoreFilename = "StartToGear/BLueLeftScoreGear.csv";
+            scoreFilename = "StartToGear/BlueLeftScoreGear.csv";
             boilFilename = "GearToBoiler/BlueLeftGearToBoiler.csv";
             break;
         default:
@@ -322,7 +325,7 @@ public class CommandParser extends ACommandParser
         return output;
     }
 
-    private Command createScoreGearWithTrajectoryCommand(boolean aUseCamera)
+    private Command createScoreGearWithTrajectoryCommand(boolean aUseCamera, List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
         if (startPosition == null)
@@ -331,6 +334,21 @@ public class CommandParser extends ACommandParser
         }
 
         String fileName = null;
+        double smackbackTime = .25;
+        double smackforwardTime = .5;
+        double backwardsTime = 2;
+        double backwardsSpeed = -.3;
+        
+        if(args.size() >= 2)
+        {
+            backwardsSpeed = Double.parseDouble(args.get(1));
+        }
+        if(args.size() >= 3)
+        {
+            backwardsTime = Double.parseDouble(args.get(2));
+        }
+        
+        
 
         switch (startPosition)
         {
@@ -361,14 +379,17 @@ public class CommandParser extends ACommandParser
         {
             if (aUseCamera)
             {
+                group.addSequential(new WaitCommand(.25));
                 group.addSequential(new TrajectoryWithVisionOverride(mSnobot, fileName));
             }
             else
             {
                 group.addSequential(createTrajectoryCommand(fileName));
             }
-            group.addSequential(this.parsePlaceGearCommand(1.2));
-            group.addSequential(this.parseStupidDriveStraightCommand(3, -.1));
+            //group.addSequential(this.parsePlaceGearCommand(.8));
+            //group.addSequential(this.parseStupidDriveStraightCommand(smackbackTime, .3));
+//            group.addSequential(this.parseStupidDriveStraightCommand(smackforwardTime, .6));
+//            group.addSequential(this.parseStupidDriveStraightCommand(backwardsTime, backwardsSpeed));
             return group;
         }
         else
@@ -599,6 +620,28 @@ public class CommandParser extends ACommandParser
      * @param args
      * @return
      */
+    
+    private Command parseScoreGearWithCameraAndGyroNoTraj()
+    {
+        StartingPositions startPosition = mPositionChooser.getSelected();
+        CommandGroup group = new CommandGroup();
+        ISnobotActor snobotActor = mSnobot.getSnobotActor();
+        
+        switch(startPosition)
+        {
+        case Redleft
+            group.addSequential(this.parseDriveStraightPathWithGyro());
+            group.addSequential(new TurnWithDegrees(45, Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), mSnobot.getSnobotActor()));
+            break; 
+        }
+    }
+    
+    private Command parseDriveStraightPathWithGyro()
+    {
+        ISetPointIterator setpointIterator
+        return new DriveStraightPathWithGyro(mSnobot.getDriveTrain(), mSnobot.getPositioner(), new ISetpointIterator);
+    }
+    
     private Command parseTurnWithDegrees(List<String> args)
     {
         double speed = Double.parseDouble(args.get(1));

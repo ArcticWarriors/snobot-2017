@@ -8,10 +8,11 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStatusBroadcastReceiver;
-import com.snobot.vision_app.app2017.messages.HeartbeatMessage;
-import com.snobot.vision_app.app2017.messages.TargetUpdateMessage;
+import com.snobot.vision_app.app2017.messages.in.CameraDirectionMessage;
+import com.snobot.vision_app.app2017.messages.in.SetRecordingMessage;
+import com.snobot.vision_app.app2017.messages.out.HeartbeatMessage;
+import com.snobot.vision_app.app2017.messages.out.TargetUpdateMessage;
 import com.snobot.vision_app.utils.RobotConnection;
-import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStateListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +29,8 @@ public class VisionRobotConnection extends RobotConnection {
     // Incoming Messages
     private static final String sHEARTBEAT_MESSAGE_TYPE = "heartbeat";
     private static final String sITERATE_SHOWN_IMAGE_MESSAGE_TYPE = "iterate_display_image";
-    private static final String sCAMERA_DETECTION_MESSAGE_TYPE = "camera_direction";
+    private static final String sCAMERA_DIRECTION_MESSAGE_TYPE = "camera_direction";
+    private static final String sRECORD_IMAGES_MESSAGE_TYPE = "record_images";
 
     private final IVisionActivity mCameraActivity;
 
@@ -37,6 +39,8 @@ public class VisionRobotConnection extends RobotConnection {
         void useCamera(int aCameraId);
 
         void iterateDisplayType();
+
+        void setRecording(boolean aRecord);
     }
 
 
@@ -57,18 +61,17 @@ public class VisionRobotConnection extends RobotConnection {
             {
                 mLastHeartbeatReceiveTime = System.currentTimeMillis();
             }
-            else if(sCAMERA_DETECTION_MESSAGE_TYPE.equals(type))
+            else if(sCAMERA_DIRECTION_MESSAGE_TYPE.equals(type))
             {
                 Log.i(sTAG, message);
-                String direction = (String) jsonObject.get("direction");
-                if("Front".equals(direction))
-                {
-                    mCameraActivity.useCamera(CameraBridgeViewBase.CAMERA_ID_FRONT);
-                }
-                else
-                {
-                    mCameraActivity.useCamera(CameraBridgeViewBase.CAMERA_ID_BACK);
-                }
+                CameraDirectionMessage dirMessage = new CameraDirectionMessage(jsonObject);
+                mCameraActivity.useCamera(dirMessage.getCameraDirection());
+            }
+            else if (sRECORD_IMAGES_MESSAGE_TYPE.equals(type))
+            {
+                Log.i(sTAG, message);
+                SetRecordingMessage recordingMessage = new SetRecordingMessage(jsonObject);
+                mCameraActivity.setRecording(recordingMessage.shouldRecord());
             }
             else if (sITERATE_SHOWN_IMAGE_MESSAGE_TYPE.equals(type))
             {

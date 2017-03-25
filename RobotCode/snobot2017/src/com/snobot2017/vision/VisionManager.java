@@ -109,15 +109,26 @@ public class VisionManager implements ISubsystem
 
 
         mTargetMessage = targetUpdateJson.toJSONString();
+        double tooCloseDistance = Properties2017.sVISION_TOO_CLOSE_DISTANCE.getValue();
+        double tooFarDistance = Properties2017.sVISION_TOO_FAR_DISTANCE.getValue();
+        
 
         if(mSnobotActor.isInAction())
         {
             if (!mLatestTargetInformation.isEmpty())
             {
                 TargetLocation target = mLatestTargetInformation.get(0);
-                if(!target.mAmbigious)
+                double dx = target.mX - robotState.mRobotX;
+                double dy = target.mY - robotState.mRobotY;
+                double distance = Math.sqrt(dx * dx + dy * dy);
+                if(!target.mAmbigious && distance > tooCloseDistance && distance < tooFarDistance)
                 {
                     mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
+                }
+                else
+                {
+                    System.out.println("Ignoring update, " + distance);
+                    mLatestTargetInformation.clear();
                 }
             }
         }

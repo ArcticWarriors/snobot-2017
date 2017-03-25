@@ -6,11 +6,14 @@ import com.snobot2017.Properties2017;
 import com.snobot2017.Snobot2017;
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
+import com.snobot2017.drivetrain.IDriveTrain;
+import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.vision.TargetLocation;
 import com.snobot2017.vision.VisionManager;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.io.TextFileDeserializer;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TrajectoryWithVisionOverride extends Command
@@ -18,6 +21,8 @@ public class TrajectoryWithVisionOverride extends Command
     private TrajectoryPathCommand mTrajectoryCommand;
     private VisionManager mVisionManager;
     private ISnobotActor mSnobotActor;
+    private IDriveTrain mDrivetrain;
+    private Timer mActingTimer;
     private boolean mOverridingTrajectory;
     private boolean mFinished;
 
@@ -30,8 +35,10 @@ public class TrajectoryWithVisionOverride extends Command
         mTrajectoryCommand = new TrajectoryPathCommand(aSnobot.getDriveTrain(), aSnobot.getPositioner(), p);
         mVisionManager = aSnobot.getVisionManager();
         mSnobotActor = aSnobot.getSnobotActor();
+        mDrivetrain = aSnobot.getDriveTrain();
         mOverridingTrajectory = false;
         mFinished = false;
+        mActingTimer = new Timer();
     }
 
     @Override
@@ -39,10 +46,18 @@ public class TrajectoryWithVisionOverride extends Command
     {
         if (mOverridingTrajectory)
         {
-            mFinished = mSnobotActor.executeControlMode();
+            if(mActingTimer.get() < 3)
+            {
+                mFinished = mSnobotActor.executeControlMode();
+            }
+            else
+            {
+                mFinished = true;
+            }
         }
         else
         {
+            
             System.out.println("Doing trajectory");
             mTrajectoryCommand.execute();
             mFinished = mTrajectoryCommand.isFinished();
@@ -55,6 +70,7 @@ public class TrajectoryWithVisionOverride extends Command
                 TargetLocation target = targets.get(0);
                 mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 mOverridingTrajectory = true;
+                mActingTimer.start();
             }
         }
     }

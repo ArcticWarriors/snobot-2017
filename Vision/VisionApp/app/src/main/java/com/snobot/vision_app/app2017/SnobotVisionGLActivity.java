@@ -3,10 +3,13 @@ package com.snobot.vision_app.app2017;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -186,6 +189,11 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         mAlgorithm.iterateDisplayType();
     }
 
+    @Override
+    public void setRecording(boolean aRecord) {
+        mAlgorithm.setRecording(aRecord);
+    }
+
     //Attempt at using Volume Buttons to take pictures.
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -207,6 +215,7 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         View  connectionStateView = findViewById(R.id.connectionState);
         Toast.makeText(this, "Connected to Robot", Toast.LENGTH_SHORT).show();
         connectionStateView.setBackgroundColor(ContextCompat.getColor(this, R.color.app_connected));
+        mAlgorithm.setRobotConnected(true);
     }
 
     @Override
@@ -214,5 +223,6 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         View  connectionStateView = findViewById(R.id.connectionState);
         Toast.makeText(this, "Lost connection to Robot", Toast.LENGTH_SHORT).show();
         connectionStateView.setBackgroundColor(ContextCompat.getColor(this, R.color.app_disconnected));
+        mAlgorithm.setRobotConnected(false);
     }
 }

@@ -1,4 +1,4 @@
-package com.snobot.vision_app.app2017.messages;
+package com.snobot.vision_app.app2017.messages.out;
 
 import org.json.JSONException;
 import org.json.JSONObject;
