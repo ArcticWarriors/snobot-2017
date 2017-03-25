@@ -47,7 +47,7 @@ public class VisionAdbServer extends RobotConnectionServer
 
         if(RobotBase.isSimulation())
         {
-            mAdb = new NativeAdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY);
+            mAdb = new NativeAdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY, Properties2017.sKILL_OLD_ADBS);
         }
         else
         {

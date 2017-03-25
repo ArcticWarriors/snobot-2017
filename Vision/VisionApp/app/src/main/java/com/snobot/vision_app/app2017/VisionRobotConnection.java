@@ -1,8 +1,13 @@
 package com.snobot.vision_app.app2017;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -126,7 +131,7 @@ public class VisionRobotConnection extends RobotConnection {
         try
         {
             JSONObject message = new TargetUpdateMessage(aTargets, aLatencySec).getJson();
-            Log.i(sTAG, message.toString());
+//            Log.i(sTAG, message.toString());
             send(message);
         }
         catch (JSONException e)

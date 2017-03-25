@@ -3,6 +3,7 @@ package com.snobot.vision_app.app2017;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -190,8 +191,16 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
     }
 
     @Override
-    public void setRecording(boolean aRecord) {
+    public void setRecording(final boolean aRecord) {
         mAlgorithm.setRecording(aRecord);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String toast = aRecord ? "Recording Images" : "Not Recording Images";
+                Toast.makeText(SnobotVisionGLActivity.this, toast, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //Attempt at using Volume Buttons to take pictures.
