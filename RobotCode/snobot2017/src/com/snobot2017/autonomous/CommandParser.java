@@ -705,8 +705,8 @@ public class CommandParser extends ACommandParser
     private Command parseDriveStraightPathWithGyroFromStartingPosition(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
-        double lMaxVelocity = Double.parseDouble(args.get(2));
-        double lMaxAcceleration = Double.parseDouble(args.get(3));
+        double lMaxVelocity = Double.parseDouble(args.get(1));
+        double lMaxAcceleration = Double.parseDouble(args.get(2));
         return new DriveStraightPathWithGyroFromStartingPosition(mSnobot.getDriveTrain(), mSnobot.getPositioner(), startPosition, lMaxVelocity,
                 lMaxAcceleration, sEXPECTED_DT);
     }

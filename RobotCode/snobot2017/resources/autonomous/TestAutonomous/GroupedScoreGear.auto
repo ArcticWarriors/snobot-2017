@@ -1,0 +1,12 @@
+# This command file does not have a special handler in the CommandParser.
+# Each line is handled individually and handled in the CommandParser.
+# Parallel actions are separated by "|", "#" starts a comment line.
+# Blank lines are skipped.
+
+DriveStraightPathWithGyroFromStartingPosition 60 60
+RaiseGear 1.5
+TurnToPegAfterPathFromStartingPosition 
+DriveToPegUsingVision 6
+StupidDriveStraight 0.25 0.5
+PlaceGear 2.0
+StupidDriveStraight 1 -0.5
