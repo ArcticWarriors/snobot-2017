@@ -14,10 +14,10 @@ filter: !!com.snobot.vision_app.app2017.java_algorithm.common.FilterParams
   maxContoursSolidity: 100.0
   
   minHeight: 0.0
-  maxHeight: 480
+  maxHeight: 250
   
-  minWidth: 0
-  maxWidth: 640
+  minWidth: 5
+  maxWidth: 100
   
   minRatio: 0.0
   maxRatio: 1000.0
@@ -25,5 +25,26 @@ filter: !!com.snobot.vision_app.app2017.java_algorithm.common.FilterParams
   minVertices: 0.0
   maxVertices: 1000000.0
   
-  minArea: 125.0
+  minArea: 250.0
   minPerimeter: 0.0
+  
+  
+  
+  
+  
+ # minHeight: 0.0
+ # maxHeight: 250
+ # 
+ # minWidth: 0
+ # maxWidth: 1000.0
+ # 
+ # minRatio: 0.0
+ # maxRatio: 1000.0
+ # 
+ # minVertices: 0.0
+ # maxVertices: 1000000.0
+ # 
+ # minArea: 125.0
+ # minPerimeter: 0.0
+  
+  

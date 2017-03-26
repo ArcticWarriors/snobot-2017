@@ -1,20 +1,26 @@
 package com.snobot.vision_app.app2017.java_algorithm.common;
 
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfInt;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * Created by PJ on 2/20/2017.
@@ -35,13 +41,27 @@ public abstract class BaseJavaAlgorithm {
 
     private static final Scalar sCENTER_LINE_COLOR = new Scalar(0, 255, 0);
     private static final Scalar sBLACK_COLOR = new Scalar(0, 0, 0);
-    private static final Scalar sWHITE_COLOR = new Scalar( 255, 255, 255);
+    private static final Scalar sWHITE_COLOR = new Scalar(255, 255, 255);
 
     private static final Scalar[] sCONTOUR_COLORS = new Scalar[]{
             new Scalar(0, 0, 255),
             new Scalar(255, 0, 0),
             new Scalar(0, 255, 255)
     };
+
+    private static final Map<FilterResult, Scalar> sFILTERED_COLORS;
+
+    static
+    {
+        sFILTERED_COLORS = new HashMap<>();
+        sFILTERED_COLORS.put(FilterResult.BadWidth, new Scalar(255, 255, 255));
+        sFILTERED_COLORS.put(FilterResult.BadHeight, new Scalar(190, 190, 190));
+        sFILTERED_COLORS.put(FilterResult.BadVertices, new Scalar(130, 130, 130));
+        sFILTERED_COLORS.put(FilterResult.BadArea, sBLACK_COLOR);
+        sFILTERED_COLORS.put(FilterResult.BadPerimeter, sBLACK_COLOR);
+        sFILTERED_COLORS.put(FilterResult.BadSolidarity, sBLACK_COLOR);
+        sFILTERED_COLORS.put(FilterResult.BadAspectRatio, sBLACK_COLOR);
+    }
 
     private static final DecimalFormat sDF = new DecimalFormat("0.0000");
 
@@ -52,15 +72,31 @@ public abstract class BaseJavaAlgorithm {
         MarkedUpImage
     }
 
+    private enum FilterResult
+    {
+        Success, BadWidth, BadHeight, BadVertices, BadArea, BadPerimeter, BadSolidarity, BadAspectRatio
+    }
+
     protected GripPegAlgorithm mPegGripAlgorithm;
     protected GripRopeAlgorithm mRopeGripAlgorithm;
     protected DisplayType mDisplayType;
+    protected FilterParams mFilterParams;
+
+    // Saved for speed
+    private List<FilterPair> mRealTargets;
+    private List<FilterPair> mFilteredTargets;
+    private Set<TapeLocation> mTargetInfos;
 
     public BaseJavaAlgorithm()
     {
         mPegGripAlgorithm = new GripPegAlgorithm();
         mRopeGripAlgorithm = new GripRopeAlgorithm();
-        mDisplayType = DisplayType.OriginalImage;
+        mDisplayType = DisplayType.MarkedUpImage;
+        mFilterParams = new FilterParams();
+
+        mRealTargets = new ArrayList<>();
+        mFilteredTargets = new ArrayList<>();
+        mTargetInfos = new TreeSet<>(new TargetComparators.AspectRatioComparator());
     }
 
     public void setDisplayType(DisplayType aDisplayType)
@@ -68,17 +104,30 @@ public abstract class BaseJavaAlgorithm {
         mDisplayType = aDisplayType;
     }
 
+    public void setFilterParams(FilterParams aFilterParams)
+    {
+        mFilterParams = aFilterParams;
+    }
 
     protected Mat processPegImage(Mat aOriginalImage, long aSystemTimeNs)
     {
         mPegGripAlgorithm.process(aOriginalImage);
 
-        ArrayList<MatOfPoint> contours = mPegGripAlgorithm.filterContoursOutput();
-        Set<TapeLocation> targetInfos = new TreeSet<>(new TargetComparators.AspectRatioComparator());
+        List<FilterPair> contours = filterContours(mPegGripAlgorithm.findContoursOutput());
+        mTargetInfos.clear();
+        mFilteredTargets.clear();
 
         for (int i = 0; i < contours.size(); ++i)
         {
-            MatOfPoint contour = contours.get(i);
+            FilterPair filterPair = contours.get(i);
+
+            if (filterPair.mResult != FilterResult.Success)
+            {
+                mFilteredTargets.add(filterPair);
+                continue;
+            }
+
+            MatOfPoint contour = filterPair.mContour;
             Rect rect = Imgproc.boundingRect(contour);
             double aspectRatio = rect.width * 1.0 / rect.height;
 
@@ -93,7 +142,7 @@ public abstract class BaseJavaAlgorithm {
             double percentOffCenter = distanceFromCenterPixel / sIMAGE_WIDTH * 100;
             double yawAngle = percentOffCenter * sHORIZONTAL_FOV_ANGLE;
 
-            targetInfos.add(new TapeLocation(contours.get(i), yawAngle, distanceFromHorz, distanceFromVert, aspectRatio));
+            mTargetInfos.add(new TapeLocation(contour, yawAngle, distanceFromHorz, distanceFromVert, aspectRatio));
         }
 
         // Reported numbers
@@ -102,9 +151,9 @@ public abstract class BaseJavaAlgorithm {
         boolean ambgiuous = true;
 
         double centroid_of_image_X = sIMAGE_WIDTH/2;
-        if(targetInfos.size()>=2)
+        if (mTargetInfos.size() >= 2)
         {
-            Iterator<TapeLocation> targetIterator = targetInfos.iterator();
+            Iterator<TapeLocation> targetIterator = mTargetInfos.iterator();
 
             TapeLocation target1 = targetIterator.next();
             TapeLocation target2 = targetIterator.next();
@@ -122,9 +171,9 @@ public abstract class BaseJavaAlgorithm {
             distance = (target1.getPreferredDistance() + target2.getPreferredDistance()) / 2;
             ambgiuous = false;
         }
-        else if(targetInfos.size() == 1)
+        else if (mTargetInfos.size() == 1)
         {
-            Iterator<TapeLocation> targetIterator = targetInfos.iterator();
+            Iterator<TapeLocation> targetIterator = mTargetInfos.iterator();
             TapeLocation target = targetIterator.next();
 
             angle_to_the_peg = target.getAngle();
@@ -143,7 +192,7 @@ public abstract class BaseJavaAlgorithm {
             }
             case MarkedUpImage:
             {
-                displayImage = getMarkedUpPegImage(aOriginalImage, targetInfos, distance, angle_to_the_peg);
+            displayImage = getMarkedUpPegImage(aOriginalImage, mTargetInfos, mFilteredTargets, distance, angle_to_the_peg);
                 break;
             }
             case OriginalImage:
@@ -156,7 +205,7 @@ public abstract class BaseJavaAlgorithm {
 
         long currentTime = System.nanoTime();
         double latencySec = (currentTime - aSystemTimeNs) / 1e9;
-        sendTargetInformation(targetInfos, ambgiuous, distance, angle_to_the_peg, latencySec);
+        sendTargetInformation(mTargetInfos, ambgiuous, distance, angle_to_the_peg, latencySec);
 
         return displayImage;
     }
@@ -186,7 +235,8 @@ public abstract class BaseJavaAlgorithm {
         return output;
     }
 
-    private Mat getMarkedUpPegImage(Mat aOriginal, Collection<TapeLocation> aTargetInfos, double aDistance, double aOverallAngle)
+    private Mat getMarkedUpPegImage(Mat aOriginal, Collection<TapeLocation> aTargetInfos, List<FilterPair> aFilteredTargets, double aDistance,
+            double aOverallAngle)
     {
         Mat displayImage = new Mat();
         aOriginal.copyTo(displayImage);
@@ -214,6 +264,12 @@ public abstract class BaseJavaAlgorithm {
             ++ctr;
         }
 
+        for (FilterPair targetInfo : aFilteredTargets)
+        {
+            Scalar contourColor = sFILTERED_COLORS.get(targetInfo.mResult);
+            Imgproc.drawContours(displayImage, Arrays.asList(targetInfo.mContour), 0, contourColor, 3);
+        }
+
         if (aTargetInfos.isEmpty())
         {
             Imgproc.putText(displayImage, "No image detected", new Point(20, 50), Core.FONT_HERSHEY_COMPLEX, .6, sBLACK_COLOR);
@@ -223,4 +279,82 @@ public abstract class BaseJavaAlgorithm {
     }
 
     protected abstract void sendTargetInformation(Collection<TapeLocation> targetInfos, boolean aAmbigious, double aDistance, double aAngleToPeg, double aLatencySec);
+
+    private class FilterPair
+    {
+        private MatOfPoint mContour;
+        private FilterResult mResult;
+
+        public FilterPair(MatOfPoint aContour, FilterResult aResult)
+        {
+            mContour = aContour;
+            mResult = aResult;
+        }
+    }
+
+    /**
+     * Filters out contours that do not meet certain criteria.
+     * 
+     * @param inputContours
+     *            is the input list of contours
+     */
+    private List<FilterPair> filterContours(List<MatOfPoint> inputContours)
+    {
+        final MatOfInt hull = new MatOfInt();
+        mRealTargets.clear();
+        // operation
+        for (int i = 0; i < inputContours.size(); i++)
+        {
+            FilterResult filterResult = FilterResult.Success;
+
+            final MatOfPoint contour = inputContours.get(i);
+            final Rect bb = Imgproc.boundingRect(contour);
+            if (bb.width < mFilterParams.minWidth || bb.width > mFilterParams.maxWidth)
+            {
+                filterResult = FilterResult.BadWidth;
+                // System.out.println("Bad Width: " + bb.width);
+            }
+            if (bb.height < mFilterParams.minHeight || bb.height > mFilterParams.maxHeight)
+            {
+                filterResult = FilterResult.BadHeight;
+            }
+            final double area = Imgproc.contourArea(contour);
+            if (area < mFilterParams.minArea)
+            {
+                filterResult = FilterResult.BadArea;
+                // System.out.println("Bad Area: " + area);
+            }
+            if (Imgproc.arcLength(new MatOfPoint2f(contour.toArray()), true) < mFilterParams.minPerimeter)
+            {
+                filterResult = FilterResult.BadPerimeter;
+            }
+            Imgproc.convexHull(contour, hull);
+            MatOfPoint mopHull = new MatOfPoint();
+            mopHull.create((int) hull.size().height, 1, CvType.CV_32SC2);
+            for (int j = 0; j < hull.size().height; j++)
+            {
+                int index = (int) hull.get(j, 0)[0];
+                double[] point = new double[]
+                { contour.get(index, 0)[0], contour.get(index, 0)[1] };
+                mopHull.put(j, 0, point);
+            }
+            final double solid = 100 * area / Imgproc.contourArea(mopHull);
+            if (solid < mFilterParams.minContoursSolidity || solid > mFilterParams.maxContoursSolidity)
+            {
+                filterResult = FilterResult.BadSolidarity;
+            }
+            if (contour.rows() < mFilterParams.minVertices || contour.rows() > mFilterParams.maxVertices)
+            {
+                filterResult = FilterResult.BadVertices;
+            }
+            final double ratio = bb.width / (double) bb.height;
+            if (ratio < mFilterParams.minRatio || ratio > mFilterParams.maxRatio)
+            {
+                filterResult = FilterResult.BadAspectRatio;
+            }
+            mRealTargets.add(new FilterPair(contour, filterResult));
+        }
+
+        return mRealTargets;
+    }
 }
