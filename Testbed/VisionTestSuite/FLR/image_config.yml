@@ -1,6 +1,6 @@
 
 one_at_a_time: true
-threshold_config: peg_test_20170126/threshold_config.yml
+threshold_config: FLR/threshold_config.yml
 images: 
     - ../../Vision/Images/FLR/astjd5.jpg
     - ../../Vision/Images/FLR/cobble.jpg
