@@ -3,6 +3,7 @@ package com.snobot.vision_app.app2017;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.FloatProperty;
 import android.util.Pair;
 
 /**
@@ -18,12 +19,14 @@ public class VisionAlgorithmPreferences
     private static final int sDEFAULT_LUM_MIN = 42;
     private static final int sDEFAULT_LUM_MAX = 255;
 
-    private static final int sDEFAULT_FILTER_WIDTH_MIN = 0;
-    private static final int sDEFAULT_FILTER_WIDTH_MAX = 640;
+    private static final int sDEFAULT_FILTER_WIDTH_MIN = 5;
+    private static final int sDEFAULT_FILTER_WIDTH_MAX = 120;
     private static final int sDEFAULT_FILTER_HEIGHT_MIN = 0;
-    private static final int sDEFAULT_FILTER_HEIGHT_MAX = 480;
+    private static final int sDEFAULT_FILTER_HEIGHT_MAX = 250;
     private static final int sDEFAULT_FILTER_VERTICES_MIN = 0;
     private static final int sDEFAULT_FILTER_VERTICES_MAX = 200;
+    private static final float sDEFAULT_FILTER_RATIO_MIN = 0;
+    private static final float sDEFAULT_FILTER_RATIO_MAX = 2;
 
     private Pair<Integer, Integer> mHueRange;
     private Pair<Integer, Integer> mSatRange;
@@ -32,6 +35,7 @@ public class VisionAlgorithmPreferences
     private Pair<Integer, Integer> mFilterWidthRange;
     private Pair<Integer, Integer> mFilterHeightRange;
     private Pair<Integer, Integer> mFilterVerticesRange;
+    private Pair<Float, Float> mFilterRatioRange;
 
     private SharedPreferences mPreferences;
 
@@ -62,46 +66,63 @@ public class VisionAlgorithmPreferences
         setFilterVerticesRange(new Pair<>(
                 mPreferences.getInt("FilterVerticesMin", sDEFAULT_FILTER_VERTICES_MIN),
                 mPreferences.getInt("FilterVerticesMax", sDEFAULT_FILTER_VERTICES_MAX)));
+
+        setFilterRatioRange(new Pair<>(
+                mPreferences.getFloat("FilterRatioMin", sDEFAULT_FILTER_RATIO_MIN),
+                mPreferences.getFloat("FilterRatioMax", sDEFAULT_FILTER_RATIO_MAX)));
     }
 
     public void setHueThreshold(Pair<Integer, Integer> aThreshold)
     {
         mHueRange = aThreshold;
-        saveRange("Hue", mHueRange);
+        saveIntRange("Hue", mHueRange);
     }
 
     public void setSatThreshold(Pair<Integer, Integer> aThreshold)
     {
         mSatRange = aThreshold;
-        saveRange("Sat", mSatRange);
+        saveIntRange("Sat", mSatRange);
     }
 
     public void setLumThreshold(Pair<Integer, Integer> aThreshold)
     {
         mLumRange = aThreshold;
-        saveRange("Lum", mLumRange);
+        saveIntRange("Lum", mLumRange);
     }
 
     public void setFilterWidthRange(Pair<Integer, Integer> aFilterWidthRange) {
         mFilterWidthRange = aFilterWidthRange;
-        saveRange("FilterWidth", mFilterWidthRange);
+        saveIntRange("FilterWidth", mFilterWidthRange);
     }
 
     public void setFilterHeightRange(Pair<Integer, Integer> aFilterHeightRange) {
         mFilterHeightRange = aFilterHeightRange;
-        saveRange("FilterHeight", mFilterHeightRange);
+        saveIntRange("FilterHeight", mFilterHeightRange);
     }
 
     public void setFilterVerticesRange(Pair<Integer, Integer> aFilterVerticesRange) {
         mFilterVerticesRange = aFilterVerticesRange;
-        saveRange("FilterVertices", mFilterVerticesRange);
+        saveIntRange("FilterVertices", mFilterVerticesRange);
     }
 
-    private void saveRange(String aName, Pair<Integer, Integer> aRange)
+    public void setFilterRatioRange(Pair<Float, Float> aFilterRatioRange) {
+        mFilterRatioRange = aFilterRatioRange;
+        saveFloatRange("FilterRatio", mFilterRatioRange);
+    }
+
+    private void saveIntRange(String aName, Pair<Integer, Integer> aRange)
     {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putInt(aName + "Min", aRange.first);
         editor.putInt(aName + "Max", aRange.second);
+        editor.apply();
+    }
+
+    private void saveFloatRange(String aName, Pair<Float, Float> aRange)
+    {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putFloat(aName + "Min", aRange.first);
+        editor.putFloat(aName + "Max", aRange.second);
         editor.apply();
     }
 
@@ -129,6 +150,9 @@ public class VisionAlgorithmPreferences
         return mFilterVerticesRange;
     }
 
+    public Pair<Float, Float> getFilterRatioRange() {
+        return mFilterRatioRange;
+    }
 
     public void restoreHslDefaults() {
 
@@ -146,6 +170,7 @@ public class VisionAlgorithmPreferences
         setFilterWidthRange(new Pair<>(sDEFAULT_FILTER_WIDTH_MIN, sDEFAULT_FILTER_WIDTH_MAX));
         setFilterHeightRange(new Pair<>(sDEFAULT_FILTER_HEIGHT_MIN, sDEFAULT_FILTER_HEIGHT_MAX));
         setFilterVerticesRange(new Pair<>(sDEFAULT_FILTER_VERTICES_MIN, sDEFAULT_FILTER_VERTICES_MAX));
+        setFilterRatioRange(new Pair<>(sDEFAULT_FILTER_RATIO_MIN, sDEFAULT_FILTER_RATIO_MAX));
     }
 
 

@@ -358,6 +358,7 @@ public abstract class BaseJavaAlgorithm {
                 filterResult = FilterResult.BadVertices;
             }
             final double ratio = bb.width / (double) bb.height;
+            // System.out.println("Ratio: " + ratio);
             if (ratio < mFilterParams.minRatio || ratio > mFilterParams.maxRatio)
             {
                 filterResult = FilterResult.BadAspectRatio;

@@ -5,74 +5,130 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|center"
-    android:background="@android:color/white"
+    android:background="@android:color/black"
     android:padding="10dp"
     android:orientation="vertical">
 
-    <GridLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:columnCount="2">
 
-        <TextView
-            android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="W"
-            android:paddingRight="10dp"
-            android:paddingTop="23dp" />
+            android:orientation="vertical" >
 
-        <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
-            android:id="@+id/width_settings"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            rsb:absoluteMaxValue="640"
-            rsb:absoluteMinValue="0" />
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:padding="10dp"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="H"
-            android:paddingRight="10dp"
-            android:paddingTop="23dp" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Width"
+                    android:paddingRight="10dp"
+                    android:paddingTop="23dp" />
 
-        <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
-            android:id="@+id/height_settings"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            rsb:absoluteMaxValue="480"
-            rsb:absoluteMinValue="0" />
+                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+                    android:id="@+id/width_settings"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    rsb:absoluteMaxValue="200"
+                    rsb:absoluteMinValue="0" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="V"
-            android:paddingRight="10dp"
-            android:paddingTop="23dp" />
+            </LinearLayout>
 
-        <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
-            android:id="@+id/num_vertices_settings"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            rsb:absoluteMaxValue="200"
-            rsb:absoluteMinValue="0" />
-    </GridLayout>
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:padding="10dp"
+                android:orientation="horizontal">
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:id="@+id/save_filter_settings"
-        android:layout_gravity="center_horizontal" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Height"
+                    android:paddingRight="10dp"
+                    android:paddingTop="23dp" />
+
+                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+                    android:id="@+id/height_settings"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    rsb:absoluteMaxValue="480"
+                    rsb:absoluteMinValue="0" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:padding="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Vertices"
+                    android:paddingRight="10dp"
+                    android:paddingTop="23dp" />
+
+                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+                    android:id="@+id/num_vertices_settings"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    rsb:absoluteMaxValue="200"
+                    rsb:absoluteMinValue="0" />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:padding="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Ratio"
+                    android:paddingRight="10dp"
+                    android:paddingTop="23dp" />
+
+                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+                    android:id="@+id/ratio_settings"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    rsb:absoluteMaxValue="5.0"
+                    rsb:absoluteMinValue="0.0" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:id="@+id/save_filter_settings"
+                android:layout_gravity="center_horizontal" />
 
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Restore Defaults"
-        android:id="@+id/restore_filter_settings"
-        android:layout_gravity="center_horizontal" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Restore Defaults"
+                android:id="@+id/restore_filter_settings"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

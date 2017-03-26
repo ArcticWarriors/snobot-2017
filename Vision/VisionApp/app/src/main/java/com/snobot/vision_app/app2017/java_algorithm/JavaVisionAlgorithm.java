@@ -65,6 +65,7 @@ public class JavaVisionAlgorithm extends BaseJavaAlgorithm
         Pair<Integer, Integer> filterWidth = mPreferences.getFilterWidthThreshold();
         Pair<Integer, Integer> filterHeight = mPreferences.getFilterHeightThreshold();
         Pair<Integer, Integer> filterVertices = mPreferences.getFilterVerticesThreshold();
+        Pair<Float, Float> filterRatio = mPreferences.getFilterRatioRange();
 
         mFilterParams.minWidth = filterWidth.first;
         mFilterParams.maxWidth = filterWidth.second;
@@ -72,6 +73,8 @@ public class JavaVisionAlgorithm extends BaseJavaAlgorithm
         mFilterParams.maxHeight = filterHeight.second;
         mFilterParams.minVertices = filterVertices.first;
         mFilterParams.maxVertices = filterVertices.second;
+        mFilterParams.minRatio = filterRatio.first;
+        mFilterParams.maxRatio = filterRatio.second;
 
         mPegGripAlgorithm.setHslThreshold(hue.first, hue.second, sat.first, sat.second, lum.first, lum.second);
 

@@ -176,10 +176,12 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         final RangeSeekBar<Integer> widthSeek = (RangeSeekBar<Integer>) view.findViewById(R.id.width_settings);
         final RangeSeekBar<Integer> heightSeek = (RangeSeekBar<Integer>) view.findViewById(R.id.height_settings);
         final RangeSeekBar<Integer> verticesSeek = (RangeSeekBar<Integer>) view.findViewById(R.id.num_vertices_settings);
+        final RangeSeekBar<Float> ratioSeek = (RangeSeekBar<Float>) view.findViewById(R.id.ratio_settings);
 
         populateRangePair(widthSeek, mPreferences.getFilterWidthThreshold());
         populateRangePair(heightSeek, mPreferences.getFilterHeightThreshold());
         populateRangePair(verticesSeek, mPreferences.getFilterVerticesThreshold());
+        populateRangePair(ratioSeek, mPreferences.getFilterRatioRange());
 
         Button restoreButton = (Button) view.findViewById(R.id.restore_filter_settings);
         restoreButton.setOnClickListener(new View.OnClickListener() {
@@ -197,17 +199,18 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
                 mPreferences.setFilterWidthRange(getRangePair(widthSeek));
                 mPreferences.setFilterHeightRange(getRangePair(heightSeek));
                 mPreferences.setFilterVerticesRange(getRangePair(verticesSeek));
+                mPreferences.setFilterRatioRange(getRangePair(ratioSeek));
                 dialog.dismiss();
             }
         });
     }
 
-    private Pair<Integer, Integer> getRangePair(RangeSeekBar<Integer> aRangeBar)
+    private <T extends Number> Pair<T, T> getRangePair(RangeSeekBar<T> aRangeBar)
     {
         return new Pair<>(aRangeBar.getSelectedMinValue(), aRangeBar.getSelectedMaxValue());
     }
 
-    private void populateRangePair(RangeSeekBar<Integer> aRangeBar, Pair<Integer, Integer> aThreshold)
+    private <T extends Number> void populateRangePair(RangeSeekBar<T> aRangeBar, Pair<T, T> aThreshold)
     {
         aRangeBar.setSelectedMinValue(aThreshold.first);
         aRangeBar.setSelectedMaxValue(aThreshold.second);
