@@ -8,6 +8,7 @@ import android.util.Pair;
 import com.snobot.vision_app.app2017.VisionAlgorithmPreferences;
 import com.snobot.vision_app.app2017.VisionRobotConnection;
 import com.snobot.vision_app.app2017.java_algorithm.common.BaseJavaAlgorithm;
+import com.snobot.vision_app.app2017.java_algorithm.common.GripPegAlgorithm;
 import com.snobot.vision_app.app2017.java_algorithm.common.TapeLocation;
 import com.snobot.vision_app.app2017.messages.out.TargetUpdateMessage;
 
@@ -60,7 +61,21 @@ public class JavaVisionAlgorithm extends BaseJavaAlgorithm
         Pair<Integer, Integer> hue = mPreferences.getHueThreshold();
         Pair<Integer, Integer> sat = mPreferences.getSatThreshold();
         Pair<Integer, Integer> lum = mPreferences.getLumThreshold();
+
+        Pair<Integer, Integer> filterWidth = mPreferences.getFilterWidthThreshold();
+        Pair<Integer, Integer> filterHeight = mPreferences.getFilterHeightThreshold();
+        Pair<Integer, Integer> filterVertices = mPreferences.getFilterVerticesThreshold();
+
+        GripPegAlgorithm.FilterParams filterParams = mPegGripAlgorithm.getFilterParams();
+        filterParams.filterContoursMinWidth = filterWidth.first;
+        filterParams.filterContoursMaxWidth = filterWidth.second;
+        filterParams.filterContoursMinHeight = filterHeight.first;
+        filterParams.filterContoursMaxHeight = filterHeight.second;
+        filterParams.filterContoursMinVertices = filterVertices.first;
+        filterParams.filterContoursMaxVertices = filterVertices.second;
+
         mPegGripAlgorithm.setHslThreshold(hue.first, hue.second, sat.first, sat.second, lum.first, lum.second);
+        mPegGripAlgorithm.setFilterParams(filterParams);
 
         Bitmap bitmap = Bitmap.createBitmap(aMat.cols(), aMat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(aMat, bitmap);

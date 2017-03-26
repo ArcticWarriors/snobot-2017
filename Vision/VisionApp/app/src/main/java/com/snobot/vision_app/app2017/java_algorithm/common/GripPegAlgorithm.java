@@ -36,6 +36,22 @@ public class GripPegAlgorithm {
     double[] hslThresholdHue = {64.74820143884892, 98.87445018342426};
     double[] hslThresholdSaturation = {123.29111287241389, 255.0};
     double[] hslThresholdLuminance = {69.36069788237208, 255.0};
+	FilterParams filterParams = new FilterParams();
+
+	public static class FilterParams
+	{
+		public double filterContoursMinArea = 125.0;
+		public double filterContoursMinPerimeter = 0.0;
+		public double filterContoursMinWidth = 28.0;
+		public double filterContoursMaxWidth = 60.0;
+		public double filterContoursMinHeight = 0.0;
+		public double filterContoursMaxHeight = 250.0;
+		public double[] filterContoursSolidity = {0, 100};
+		public double filterContoursMaxVertices = 1000000.0;
+		public double filterContoursMinVertices = 0.0;
+		public double filterContoursMinRatio = 0.0;
+		public double filterContoursMaxRatio = 1000.0;
+	}
 
 
 	/**
@@ -80,17 +96,18 @@ public class GripPegAlgorithm {
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-		double filterContoursMinArea = 125.0;
-		double filterContoursMinPerimeter = 0.0;
-		double filterContoursMinWidth = 28.0;
-		double filterContoursMaxWidth = 60.0;
-		double filterContoursMinHeight = 0.0;
-		double filterContoursMaxHeight = 250.0;
-		double[] filterContoursSolidity = {0, 100};
-		double filterContoursMaxVertices = 1000000.0;
-		double filterContoursMinVertices = 0.0;
-		double filterContoursMinRatio = 0.0;
-		double filterContoursMaxRatio = 1000.0;
+
+		double filterContoursMinArea       = filterParams.filterContoursMinArea;
+		double filterContoursMinPerimeter  = filterParams.filterContoursMinPerimeter;
+		double filterContoursMinWidth      = filterParams.filterContoursMinWidth;
+		double filterContoursMaxWidth      = filterParams.filterContoursMaxWidth;
+		double filterContoursMinHeight     = filterParams.filterContoursMinHeight;
+		double filterContoursMaxHeight     = filterParams.filterContoursMaxHeight;
+		double[] filterContoursSolidity    = filterParams.filterContoursSolidity;
+		double filterContoursMaxVertices   = filterParams.filterContoursMaxVertices;
+		double filterContoursMinVertices   = filterParams.filterContoursMinVertices;
+		double filterContoursMinRatio      = filterParams.filterContoursMinRatio;
+		double filterContoursMaxRatio      = filterParams.filterContoursMaxRatio;
 		filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
 
 	}
@@ -279,14 +296,24 @@ public class GripPegAlgorithm {
 		}
 	}
 
-    public void setHslThreshold(int aHueMin, int aHueMax, int aSatMin, int aSatMax, int aLumMin, int aLumMax)
-    {
-        hslThresholdHue[0] = aHueMin;
-        hslThresholdHue[1] = aHueMax;
-        hslThresholdSaturation[0] = aSatMin;
-        hslThresholdSaturation[1] = aSatMax;
-        hslThresholdLuminance[0] = aLumMin;
-        hslThresholdLuminance[1] = aLumMax;
-    }
+	public void setHslThreshold(int aHueMin, int aHueMax, int aSatMin, int aSatMax, int aLumMin, int aLumMax)
+	{
+		hslThresholdHue[0] = aHueMin;
+		hslThresholdHue[1] = aHueMax;
+		hslThresholdSaturation[0] = aSatMin;
+		hslThresholdSaturation[1] = aSatMax;
+		hslThresholdLuminance[0] = aLumMin;
+		hslThresholdLuminance[1] = aLumMax;
+	}
+
+	public void setFilterParams(FilterParams filterParams)
+	{
+		this.filterParams = filterParams;
+	}
+
+	public FilterParams getFilterParams()
+	{
+		return filterParams;
+	}
 }
 

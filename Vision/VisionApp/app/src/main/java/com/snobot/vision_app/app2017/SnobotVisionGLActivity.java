@@ -3,14 +3,10 @@ package com.snobot.vision_app.app2017;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -19,7 +15,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -27,6 +22,7 @@ import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStateList
 import com.snobot.vision_app.app2017.broadcastReceivers.RobotConnectionStatusBroadcastReceiver;
 import com.snobot.vision_app.app2017.java_algorithm.JavaVisionAlgorithm;
 import com.snobot.vision_app.utils.MjpgServer;
+import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
 
 import org.opencv.android.OpenCVLoader;
 
@@ -118,11 +114,11 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         mView.setCameraIndex(aCameraId);
     }
 
-
-    public void openBottomSheet(View v)
+    @SuppressWarnings("unchecked")
+    public void openHsvSettingsSheet(View v)
     {
-        final View view = getLayoutInflater().inflate(R.layout.algorithm_settings, null);
-        LinearLayout container = (LinearLayout) view.findViewById(R.id.popup_window);
+        final View view = getLayoutInflater().inflate(R.layout.hsl_settings, null);
+        LinearLayout container = (LinearLayout) view.findViewById(R.id.hsl_settings_window);
         container.getBackground().setAlpha(20);
 
 
@@ -134,22 +130,19 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
-        final EditText hueMin = (EditText) view.findViewById(R.id.hueMinValue);
-        final EditText hueMax = (EditText) view.findViewById(R.id.hueMaxValue);
-        final EditText satMin = (EditText) view.findViewById(R.id.satMinValue);
-        final EditText satMax = (EditText) view.findViewById(R.id.satMaxValue);
-        final EditText lumMin = (EditText) view.findViewById(R.id.lumMinValue);
-        final EditText lumMax = (EditText) view.findViewById(R.id.lumMaxValue);
+        final RangeSeekBar<Integer> hueSeek = (RangeSeekBar<Integer>) view.findViewById(R.id.hueSeekBar);
+        final RangeSeekBar<Integer> satSeek = (RangeSeekBar<Integer>) view.findViewById(R.id.satSeekBar);
+        final RangeSeekBar<Integer> lumSeek = (RangeSeekBar<Integer>) view.findViewById(R.id.lumSeekBar);
 
-        populateRangePair(hueMin, hueMax, mPreferences.getHueThreshold());
-        populateRangePair(satMin, satMax, mPreferences.getSatThreshold());
-        populateRangePair(lumMin, lumMax, mPreferences.getLumThreshold());
+        populateRangePair(hueSeek, mPreferences.getHueThreshold());
+        populateRangePair(satSeek, mPreferences.getSatThreshold());
+        populateRangePair(lumSeek, mPreferences.getLumThreshold());
 
         Button restoreButton = (Button) view.findViewById(R.id.restoreAlgorithimDefaultsButton);
         restoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreferences.restoreDefaults();
+                mPreferences.restoreHslDefaults();
                 dialog.dismiss();
             }
         });
@@ -158,31 +151,66 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreferences.setHueThreshold(getRangePair(hueMin, hueMax));
-                mPreferences.setSatThreshold(getRangePair(satMin, satMax));
-                mPreferences.setLumThreshold(getRangePair(lumMin, lumMax));
+                mPreferences.setHueThreshold(getRangePair(hueSeek));
+                mPreferences.setSatThreshold(getRangePair(satSeek));
+                mPreferences.setLumThreshold(getRangePair(lumSeek));
                 dialog.dismiss();
             }
         });
     }
 
-    private Pair<Integer, Integer> getRangePair(EditText aMinText, EditText aMaxText)
+    public void openFilterSettingsBottomSheet(View v)
     {
-        int min = Integer.parseInt(aMinText.getText().toString());
-        int max = Integer.parseInt(aMaxText.getText().toString());
+        final View view = getLayoutInflater().inflate(R.layout.filter_settings, null);
+        LinearLayout container = (LinearLayout) view.findViewById(R.id.filter_settings_window);
+        container.getBackground().setAlpha(20);
 
-        return new Pair<>(min, max);
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(view);
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        final RangeSeekBar<Integer> widthSeek = (RangeSeekBar<Integer>) view.findViewById(R.id.width_settings);
+        final RangeSeekBar<Integer> heightSeek = (RangeSeekBar<Integer>) view.findViewById(R.id.height_settings);
+        final RangeSeekBar<Integer> verticesSeek = (RangeSeekBar<Integer>) view.findViewById(R.id.num_vertices_settings);
+
+        populateRangePair(widthSeek, mPreferences.getFilterWidthThreshold());
+        populateRangePair(heightSeek, mPreferences.getFilterHeightThreshold());
+        populateRangePair(verticesSeek, mPreferences.getFilterVerticesThreshold());
+
+        Button restoreButton = (Button) view.findViewById(R.id.restore_filter_settings);
+        restoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPreferences.restoreFilterDefaults();
+                dialog.dismiss();
+            }
+        });
+
+        Button saveButton = (Button) view.findViewById(R.id.save_filter_settings);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPreferences.setFilterWidthRange(getRangePair(widthSeek));
+                mPreferences.setFilterHeightRange(getRangePair(heightSeek));
+                mPreferences.setFilterVerticesRange(getRangePair(verticesSeek));
+                dialog.dismiss();
+            }
+        });
     }
 
-    private void populateRangePair(EditText aMinText, EditText aMaxText, Pair<Integer, Integer> aThreshold)
+    private Pair<Integer, Integer> getRangePair(RangeSeekBar<Integer> aRangeBar)
     {
-        aMinText.setText("" + aThreshold.first);
-        aMaxText.setText("" + aThreshold.second);
+        return new Pair<>(aRangeBar.getSelectedMinValue(), aRangeBar.getSelectedMaxValue());
     }
 
-    public void showViewOptions(View v)
+    private void populateRangePair(RangeSeekBar<Integer> aRangeBar, Pair<Integer, Integer> aThreshold)
     {
-
+        aRangeBar.setSelectedMinValue(aThreshold.first);
+        aRangeBar.setSelectedMaxValue(aThreshold.second);
     }
 
     @Override
