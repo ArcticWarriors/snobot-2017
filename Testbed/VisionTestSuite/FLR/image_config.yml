@@ -1,0 +1,14 @@
+
+one_at_a_time: true
+threshold_config: peg_test_20170126/threshold_config.yml
+images: 
+    - ../../Vision/Images/FLR/astjd5.jpg
+    - ../../Vision/Images/FLR/cobble.jpg
+    - ../../Vision/Images/FLR/lastmin.jpg
+    - ../../Vision/Images/FLR/pie.jpg
+    - ../../Vision/Images/FLR/sat4.jpg
+    - ../../Vision/Images/FLR/saturatedimage.jpg
+    - ../../Vision/Images/FLR/satureated2.jpg
+    - ../../Vision/Images/FLR/saut3.jpg
+    - ../../Vision/Images/FLR/toofar.jpg
+    - ../../Vision/Images/FLR/waytoofar.jpg

@@ -1,6 +1,6 @@
 
 one_at_a_time: true
-threshold_config: peg_test_20170202/threshold_config.yml
+threshold_config: peg_test_20170209/threshold_config.yml
 images: 
 
     - ../../Vision/Images\test_images_20170209\2ft_0deg.jpg

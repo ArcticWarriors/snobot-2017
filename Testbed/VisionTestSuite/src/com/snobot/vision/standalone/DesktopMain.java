@@ -22,7 +22,7 @@ import com.snobot.vision_app.app2017.java_algorithm.VisionAlgorithm;
 public class DesktopMain
 {
 //    private static final String sDEFAULT_IMAGE_PATH = "peg_test_20170126/image_config.yml";
-    private static final String sDEFAULT_IMAGE_PATH = "peg_test_20170209/image_config.yml";
+    private static final String sDEFAULT_IMAGE_PATH = "FLR/image_config.yml";
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws IOException

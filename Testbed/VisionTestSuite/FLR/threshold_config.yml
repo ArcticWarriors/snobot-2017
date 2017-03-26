@@ -2,11 +2,12 @@ thresholds:
   min: !!com.snobot.vision.HslThreshold
     hue: 27
     lum: 44
-    sat: 172
+    sat: 110
   max: !!com.snobot.vision.HslThreshold
     hue: 92
     lum: 255
     sat: 255
+
 
 filter: !!com.snobot.vision_app.app2017.java_algorithm.common.FilterParams
   maxContoursSolidity: 100.0

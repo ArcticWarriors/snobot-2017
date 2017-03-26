@@ -24,6 +24,7 @@ import com.snobot.vision.HslThreshold;
 import com.snobot.vision.IVisionAlgorithm;
 import com.snobot.vision.standalone.panels.HslTuningPanel;
 import com.snobot.vision.standalone.panels.ImagePreviewPanel;
+import com.snobot.vision_app.app2017.java_algorithm.common.FilterParams;
 
 public class VisionTestPanel extends JPanel
 {
@@ -46,8 +47,10 @@ public class VisionTestPanel extends JPanel
             Map<String, Map<String, Object>> thresholdConfig = (Map<String, Map<String, Object>>) yaml.load(new FileInputStream(thresholdConfigFile));
             HslThreshold minThreshold = (HslThreshold) thresholdConfig.get("thresholds").get("min");
             HslThreshold maxThreshold = (HslThreshold) thresholdConfig.get("thresholds").get("max");
+            FilterParams filterParams = (FilterParams) thresholdConfig.get("filter");
 
             tuningPanel.setThresholds(minThreshold, maxThreshold);
+            algorithm.setFilterParams(filterParams);
         }
         catch (FileNotFoundException ex)
         {
@@ -97,6 +100,7 @@ public class VisionTestPanel extends JPanel
 
             Map<String, Object> config = new HashMap<String, Object>();
             config.put("thresholds", thresholdConfig);
+            config.put("filter", new FilterParams());
 
             DumperOptions options = new DumperOptions();
             options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
