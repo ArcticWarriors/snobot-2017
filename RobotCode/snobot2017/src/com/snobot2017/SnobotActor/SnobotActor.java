@@ -329,31 +329,73 @@ public class SnobotActor implements ISnobotActor
 
     private boolean driveSmoothlyToPosition()
     {
+        /*************** Proportional filter values **************************/
+        double distanceKp = Properties2017.sDRIVE_TO_POSITION_DISTANCE_KP.getValue();
+        double turnKp = Properties2017.sDRIVE_TO_POSITION_ANGLE_KP.getValue();
+        // Overriding for testing.
+        distanceKp = 0.03;
+        turnKp = 0.8;
+        // Additional values we use and should probably add to the properties
+        // Complimentary Filter factor
+        double filterA = 0.4;
+        // The distance away from the target that we stop correcting for angle
+        // errors.
+        // should probably be more (2x) than the dead band because while
+        // hovering in the
+        // deadband the angle error would be overly proportionally affecting the
+        // speed
+        // adjustments.
+        double angleChangeCutoff = 12.0;
+
+        /*************** Distance error calculation **************************/
+        // Note this calculation gives absolute distance error to target
+        // but that means that 6 before, 6 after and 6 to the side of the
+        // target all look the same to this method. They are not the same!
+        // So maybe this needs to be fixed.
         double dx = mSmoothControlParams.mGoalX - mPositioner.getXPosition();
         double dy = mSmoothControlParams.mGoalY - mPositioner.getYPosition();
 
         double distanceError = Math.sqrt(dx * dx + dy * dy);
         // distanceError += Properties2017.sSNOBOT_FUDGE_FACTOR.getValue();
 
-        double angleToTarget = Math.toDegrees(Math.atan2(dx, dy)); // dx and dy
-                                                                   // are
-                                                                   // switched
-                                                                   // on purpose
-                                                                   // to make 0
-                                                                   // degrees
-                                                                   // refer to
-                                                                   // up
+        /******************* Determine normalized angle error ****************/
+        // dx and dy are switched on purpose to make 0 degrees refer to up.
+        double angleToTarget = Math.toDegrees(Math.atan2(dx, dy));
         double angleError = angleToTarget - mPositioner.getOrientationDegrees();
-        angleError = Utilities.boundAngleNeg180to180Degrees(angleError);
+        double rawAngleError = Utilities.boundAngleNeg180to180Degrees(angleError);
+        // dividing by 180 to get a normalized value between -1 and 1 (for -180
+        // and 180)
+        double adjustedAngleError = Utilities.boundAngleNeg180to180Degrees(angleError) / 180.0;
 
-        double distanceKp = Properties2017.sDRIVE_TO_POSITION_DISTANCE_KP.getValue();
-        double turnKp = Properties2017.sDRIVE_TO_POSITION_ANGLE_KP.getValue();
+        /**************** Determining the angle and distance speeds **********/
+        // Not changing angle speed factor after X (12) inches
+        // angle speed factor already limited to -1 and 1 because of
+        // normalization above.
+        double angleErrorSpeed = ((distanceError < angleChangeCutoff) ? 0 : adjustedAngleError * turnKp);
+        // Limit the distance speed factor to 0 to 1 (remember distance error is
+        // always positive).
+        double distanceErrorSpeed = Math.min(1, (distanceError * distanceKp));
 
-        double leftSpeed = distanceError * distanceKp + angleError * turnKp;
-        double rightSpeed = distanceError * distanceKp - angleError * turnKp;
+        /********** Complimentary Filter for left and right speed ************/
+        // filterA determines percentage of distance verses angle correction to
+        // use in adjustments.
+        // double filterA = .40; From above.
+        double leftAdjustment = filterA * distanceErrorSpeed + (1 - filterA) * angleErrorSpeed;
+        double rightAdjustment = filterA * distanceErrorSpeed - (1 - filterA) * angleErrorSpeed;
+        /*********************************************************************/
 
-        System.out.println("DE: " + distanceError + ", AE: " + angleError + ", L: " + leftSpeed + ", R: " + rightSpeed);
+        /*************** Set left and right speed ****************************/
+        // Not used. Replaced by complimentary filter adjusted speeds.
+        // Note that these speeds should always be between -1 and 1 due to the
+        // filter. ( Actually probably between -filterA and 1.)
+        double leftSpeed = distanceErrorSpeed + angleErrorSpeed;
+        double rightSpeed = distanceErrorSpeed - angleErrorSpeed;
 
+        System.out.println("DE: " + distanceError + ", DB: " + mSmoothControlParams.mDeadband + ", DES: " + distanceErrorSpeed + ", ATT: "
+                + angleToTarget + ", RAE: " + rawAngleError + ", AAE: " + adjustedAngleError + ", AE: " + angleError + ", AES: " + angleErrorSpeed
+                + ", L: " + leftSpeed + ", R: " + rightSpeed);
+
+        /************** Check if finished ************************************/
         boolean isFinished = false;
         if (mInDeadbandHelper.isFinished(Math.abs(distanceError) < mSmoothControlParams.mDeadband))
         {
@@ -364,7 +406,8 @@ public class SnobotActor implements ISnobotActor
         }
         else
         {
-            mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
+            // mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
+            mDriveTrain.setLeftRightSpeed(leftAdjustment, rightAdjustment);
         }
 
         return isFinished;

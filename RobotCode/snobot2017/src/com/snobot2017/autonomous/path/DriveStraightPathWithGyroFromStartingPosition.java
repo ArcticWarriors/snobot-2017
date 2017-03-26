@@ -64,10 +64,10 @@ public class DriveStraightPathWithGyroFromStartingPosition extends Command
             endpoint = 90;
             break;
         case RedMiddle:
-            endpoint = 24;
+            endpoint = 12;
             break;
         case BlueMiddle:
-            endpoint = 24;
+            endpoint = 12;
             break;
         // Intended fall through - do nothing in these unexpected cases
         case Origin:

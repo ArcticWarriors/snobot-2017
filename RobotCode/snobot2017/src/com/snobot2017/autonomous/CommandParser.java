@@ -656,23 +656,39 @@ public class CommandParser extends ACommandParser
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
 
-        CommandGroup group1 = new CommandGroup();
-        group1.addParallel(new RaiseGear(mSnobot.getGearBoss(), 1.5));
+        // Overall command group
+        CommandGroup group = new CommandGroup();
+
+        // Command group moves gear box up and drives path at the same time.
+        CommandGroup groupUpAndMove = new CommandGroup();
+        groupUpAndMove.addParallel(new RaiseGear(mSnobot.getGearBoss(), 1.5));
         double lMaxVelocity = Double.parseDouble(args.get(2));
         double lMaxAcceleration = Double.parseDouble(args.get(3));
-        group1.addParallel(new DriveStraightPathWithGyroFromStartingPosition(mSnobot.getDriveTrain(), mSnobot.getPositioner(), startPosition,
+        groupUpAndMove.addParallel(new DriveStraightPathWithGyroFromStartingPosition(mSnobot.getDriveTrain(), mSnobot.getPositioner(), startPosition,
                 lMaxVelocity, lMaxAcceleration, sEXPECTED_DT));
+        group.addSequential(groupUpAndMove);
 
-        CommandGroup group = new CommandGroup();
-        group.addSequential(group1);
+        // Turn to the peg. This command requires that
+        // DriveStraightPathWithGyroFromStartingPosition is used first.
         group.addSequential(
                 new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition, mSnobot.getSnobotActor()));
 
-        group.addSequential(new WaitCommand(0.5));
+        // A wait just for testing.
+        // group.addSequential(new WaitCommand(0.5));
 
+        // Now drive to the peg using the camera only.
         group.addSequential(new DriveToPegUsingVision(mSnobot.getVisionManager(), mSnobot.getSnobotActor(), 6));
-        group.addSequential(new ScoreGear(mSnobot.getGearBoss(), 1.5));
+
+        // We want to give a little extra umph so drive straight for just a bit
+        // more.
+        group.addSequential(new StupidDriveStraight(mSnobot.getDriveTrain(), .25, 0.5));
+
+        // Put the gear box down. Wait 2 seconds total.
+        group.addSequential(new ScoreGear(mSnobot.getGearBoss(), 2.0));
+
+        // Now back up to let the gear go.
         group.addSequential(new StupidDriveStraight(mSnobot.getDriveTrain(), 1, -0.5));
+
         return group;
     }
 
