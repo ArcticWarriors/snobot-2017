@@ -26,7 +26,7 @@ public class VisionAlgorithm extends BaseJavaAlgorithm implements IVisionAlgorit
 
     public void setThresholds(HslThreshold aMin, HslThreshold aMax)
     {
-        mPegGripAlgorithm.setThreshold(aMin, aMax);
+        mPegGripAlgorithm.setHslThreshold(aMin.hue, aMax.hue, aMin.sat, aMax.sat, aMin.lum, aMax.lum);
 
         if (mCurrentImage != null)
         {

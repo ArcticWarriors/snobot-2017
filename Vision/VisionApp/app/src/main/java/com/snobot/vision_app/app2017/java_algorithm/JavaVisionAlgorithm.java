@@ -66,16 +66,14 @@ public class JavaVisionAlgorithm extends BaseJavaAlgorithm
         Pair<Integer, Integer> filterHeight = mPreferences.getFilterHeightThreshold();
         Pair<Integer, Integer> filterVertices = mPreferences.getFilterVerticesThreshold();
 
-        GripPegAlgorithm.FilterParams filterParams = mPegGripAlgorithm.getFilterParams();
-        filterParams.filterContoursMinWidth = filterWidth.first;
-        filterParams.filterContoursMaxWidth = filterWidth.second;
-        filterParams.filterContoursMinHeight = filterHeight.first;
-        filterParams.filterContoursMaxHeight = filterHeight.second;
-        filterParams.filterContoursMinVertices = filterVertices.first;
-        filterParams.filterContoursMaxVertices = filterVertices.second;
+        mFilterParams.minWidth = filterWidth.first;
+        mFilterParams.maxWidth = filterWidth.second;
+        mFilterParams.minHeight = filterHeight.first;
+        mFilterParams.maxHeight = filterHeight.second;
+        mFilterParams.minVertices = filterVertices.first;
+        mFilterParams.maxVertices = filterVertices.second;
 
         mPegGripAlgorithm.setHslThreshold(hue.first, hue.second, sat.first, sat.second, lum.first, lum.second);
-        mPegGripAlgorithm.setFilterParams(filterParams);
 
         Bitmap bitmap = Bitmap.createBitmap(aMat.cols(), aMat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(aMat, bitmap);
