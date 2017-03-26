@@ -145,9 +145,8 @@ public class SnobotActor implements ISnobotActor
     public void setGoToPositionSmoothlyGoal(double aX, double aY)
     {
         mControlMode = ControlMode.PositionSmooth;
-
         mSmoothControlParams = new SmoothControlParams(aX, aY);
-        System.out.println("Setting go to position " + aX + ", " + aY);
+        System.out.println("setGoToPositionSmoothlyGoal " + aX + ", " + aY);
     }
 
     @Override
@@ -248,6 +247,8 @@ public class SnobotActor implements ISnobotActor
             error = Utilities.boundAngleNeg180to180Degrees(error);
         }
 
+        System.out.println("TurnToAngle: " + mTurningControlParams.mGoalAngle + ", " + mPositioner.getOrientationDegrees() + ", " + turnMeasure);
+
         if (turnMeasure <= 180)
         {
             mDriveTrain.setLeftRightSpeed(mTurningControlParams.mTurningSpeed, -mTurningControlParams.mTurningSpeed);
@@ -260,6 +261,9 @@ public class SnobotActor implements ISnobotActor
         if (mInDeadbandHelper.isFinished(Math.abs(error) < mTurningControlParams.mDeadband))
         {
             mDriveTrain.setLeftRightSpeed(0, 0);
+            System.out.println("TurnToAngle: turnToAngle: FINISHED");
+            mDriveTrain.stop();
+            cancelAction();
             return true;
         }
 
@@ -329,9 +333,16 @@ public class SnobotActor implements ISnobotActor
         double dy = mSmoothControlParams.mGoalY - mPositioner.getYPosition();
 
         double distanceError = Math.sqrt(dx * dx + dy * dy);
-        distanceError += Properties2017.sSNOBOT_FUDGE_FACTOR.getValue();
-    
-        double angleToTarget = Math.toDegrees(Math.atan2(dx, dy)); // dx and dy are switched on purpose to make 0 degrees refer to up
+        // distanceError += Properties2017.sSNOBOT_FUDGE_FACTOR.getValue();
+
+        double angleToTarget = Math.toDegrees(Math.atan2(dx, dy)); // dx and dy
+                                                                   // are
+                                                                   // switched
+                                                                   // on purpose
+                                                                   // to make 0
+                                                                   // degrees
+                                                                   // refer to
+                                                                   // up
         double angleError = angleToTarget - mPositioner.getOrientationDegrees();
         angleError = Utilities.boundAngleNeg180to180Degrees(angleError);
 
@@ -346,8 +357,10 @@ public class SnobotActor implements ISnobotActor
         boolean isFinished = false;
         if (mInDeadbandHelper.isFinished(Math.abs(distanceError) < mSmoothControlParams.mDeadband))
         {
-            mDriveTrain.setLeftRightSpeed(0, 0);
+            System.out.println("***************** driveSmoothlyToPosition Finished!!! *******************");
+            mDriveTrain.stop();
             isFinished = true;
+            cancelAction();
         }
         else
         {
@@ -362,6 +375,12 @@ public class SnobotActor implements ISnobotActor
     {
         mControlMode = ControlMode.Off;
         mGoToPositionSubstep = GoToPositionSubsteps.NoAction;
+    }
+
+    @Override
+    public void setSmoothGoalDeadband(double aDeadbandDistance)
+    {
+        mSmoothControlParams.mDeadband = aDeadbandDistance;
     }
 
 }

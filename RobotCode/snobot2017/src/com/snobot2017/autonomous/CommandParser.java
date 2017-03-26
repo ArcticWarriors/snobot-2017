@@ -15,19 +15,21 @@ import com.snobot.lib.motion_profile.StaticSetpointIterator;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
-import com.snobot2017.SnobotActor.ISnobotActor;
-import com.snobot2017.SnobotActor.SnobotActor;
 import com.snobot2017.autonomous.AutonomousFactory.StartingPositions;
 import com.snobot2017.autonomous.commands.DriveStraightADistance;
+import com.snobot2017.autonomous.commands.DriveToPegUsingVision;
 import com.snobot2017.autonomous.commands.GoToPositionInSteps;
 import com.snobot2017.autonomous.commands.GoToPositionSmoothly;
+import com.snobot2017.autonomous.commands.RaiseGear;
 import com.snobot2017.autonomous.commands.Replay;
 import com.snobot2017.autonomous.commands.ScoreGear;
 import com.snobot2017.autonomous.commands.StupidDriveStraight;
 import com.snobot2017.autonomous.commands.TrajectoryWithVisionOverride;
+import com.snobot2017.autonomous.commands.TurnToPegAfterPathFromStartingPosition;
 import com.snobot2017.autonomous.commands.TurnWithDegrees;
 import com.snobot2017.autonomous.path.DriveStraightPath;
 import com.snobot2017.autonomous.path.DriveStraightPathWithGyro;
+import com.snobot2017.autonomous.path.DriveStraightPathWithGyroFromStartingPosition;
 import com.snobot2017.autonomous.path.DriveTurnPath;
 import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
 import com.team254.lib.trajectory.Path;
@@ -48,7 +50,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 public class CommandParser extends ACommandParser
 {
     private static final double sEXPECTED_DT = .02;
-
     protected Snobot2017 mSnobot;
     protected SendableChooser<StartingPositions> mPositionChooser;
 
@@ -80,7 +81,7 @@ public class CommandParser extends ACommandParser
     {
         String commandName = args.get(0);
         Command newCommand = null;
-        
+
         try
         {
             switch (commandName)
@@ -105,6 +106,11 @@ public class CommandParser extends ACommandParser
                 newCommand = parsePlaceGearCommand(args);
                 break;
             }
+            case AutonomousCommandNames.sRAISE_GEAR_COMMAND:
+            {
+                newCommand = parseRaiseGearCommand(args);
+                break;
+            }
             case AutonomousCommandNames.sDRIVE_STRAIGHT_A_DISTANCE:
             {
                 newCommand = parseDriveStraightADistance(args);
@@ -113,6 +119,11 @@ public class CommandParser extends ACommandParser
             case AutonomousCommandNames.sTURN_WITH_DEGREES:
             {
                 newCommand = parseTurnWithDegrees(args);
+                break;
+            }
+            case AutonomousCommandNames.sTURN_TO_PEG_AFTER_PATH_FROM_STARTING_POSITION:
+            {
+                newCommand = parseTurnToPegAfterPathFromStartingPosition(args);
                 break;
             }
             case AutonomousCommandNames.sDRIVE_PATH_STRAIGHT:
@@ -145,7 +156,26 @@ public class CommandParser extends ACommandParser
                 newCommand = parseGoToPositionSmoothlyCommand(args);
                 break;
             }
-
+            case AutonomousCommandNames.sSCORE_GEAR_WITH_CAMERA_AND_GYRO_NO_TRAJ:
+            {
+                newCommand = parseScoreGearWithCameraAndGyroNoTraj(args);
+                break;
+            }
+            case AutonomousCommandNames.sDRIVE_TO_PEG_USING_VISION:
+            {
+                newCommand = parseDriveToPegUsingVisionCommand(args);
+                break;
+            }
+            case AutonomousCommandNames.sDRIVE_STRAIGHT_PATH_WITH_GYRO:
+            {
+                newCommand = parseDriveStraightPathWithGyro(args);
+                break;
+            }
+            case AutonomousCommandNames.sDRIVE_STRAIGHT_PATH_WITH_GYRO_FROM_STARTING_POSITION:
+            {
+                newCommand = parseDriveStraightPathWithGyroFromStartingPosition(args);
+                break;
+            }
             case AutonomousCommandNames.sDUMP_HOPPER:
             {
                 newCommand = createGetHoppersWithTrajectoryCommand(args);
@@ -334,21 +364,19 @@ public class CommandParser extends ACommandParser
         }
 
         String fileName = null;
-        double smackbackTime = .25;
-        double smackforwardTime = .5;
-        double backwardsTime = 2;
-        double backwardsSpeed = -.3;
-        
-        if(args.size() >= 2)
-        {
-            backwardsSpeed = Double.parseDouble(args.get(1));
-        }
-        if(args.size() >= 3)
-        {
-            backwardsTime = Double.parseDouble(args.get(2));
-        }
-        
-        
+        // double smackbackTime = .25;
+        // double smackforwardTime = .5;
+        // double backwardsTime = 2;
+        // double backwardsSpeed = -.3;
+        //
+        // if (args.size() >= 2)
+        // {
+        // backwardsSpeed = Double.parseDouble(args.get(1));
+        // }
+        // if (args.size() >= 3)
+        // {
+        // backwardsTime = Double.parseDouble(args.get(2));
+        // }
 
         switch (startPosition)
         {
@@ -373,7 +401,7 @@ public class CommandParser extends ACommandParser
         default:
             break;
         }
-       
+
         CommandGroup group = new CommandGroup();
         if (fileName != null)
         {
@@ -386,10 +414,13 @@ public class CommandParser extends ACommandParser
             {
                 group.addSequential(createTrajectoryCommand(fileName));
             }
-            //group.addSequential(this.parsePlaceGearCommand(.8));
-            //group.addSequential(this.parseStupidDriveStraightCommand(smackbackTime, .3));
-//            group.addSequential(this.parseStupidDriveStraightCommand(smackforwardTime, .6));
-//            group.addSequential(this.parseStupidDriveStraightCommand(backwardsTime, backwardsSpeed));
+            // group.addSequential(this.parsePlaceGearCommand(.8));
+            // group.addSequential(this.parseStupidDriveStraightCommand(smackbackTime,
+            // .3));
+            // group.addSequential(this.parseStupidDriveStraightCommand(smackforwardTime,
+            // .6));
+            // group.addSequential(this.parseStupidDriveStraightCommand(backwardsTime,
+            // backwardsSpeed));
             return group;
         }
         else
@@ -616,37 +647,70 @@ public class CommandParser extends ACommandParser
     }
 
     /**
+     * Parses the Score Gear with Camera and Gyroscope with Path command.
      * 
      * @param args
-     * @return
+     * @return A command group with all the commands for this action
      */
-    
-    private Command parseScoreGearWithCameraAndGyroNoTraj()
+    private Command parseScoreGearWithCameraAndGyroNoTraj(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
+
+        CommandGroup group1 = new CommandGroup();
+        group1.addParallel(new RaiseGear(mSnobot.getGearBoss(), 1.5));
+        double lMaxVelocity = Double.parseDouble(args.get(2));
+        double lMaxAcceleration = Double.parseDouble(args.get(3));
+        group1.addParallel(new DriveStraightPathWithGyroFromStartingPosition(mSnobot.getDriveTrain(), mSnobot.getPositioner(), startPosition,
+                lMaxVelocity, lMaxAcceleration, sEXPECTED_DT));
+
         CommandGroup group = new CommandGroup();
-        ISnobotActor snobotActor = mSnobot.getSnobotActor();
-        
-        switch(startPosition)
-        {
-        case Redleft
-            group.addSequential(this.parseDriveStraightPathWithGyro());
-            group.addSequential(new TurnWithDegrees(45, Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), mSnobot.getSnobotActor()));
-            break; 
-        }
+        group.addSequential(group1);
+        group.addSequential(
+                new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition, mSnobot.getSnobotActor()));
+
+        group.addSequential(new WaitCommand(0.5));
+
+        group.addSequential(new DriveToPegUsingVision(mSnobot.getVisionManager(), mSnobot.getSnobotActor(), 6));
+        group.addSequential(new ScoreGear(mSnobot.getGearBoss(), 1.5));
+        group.addSequential(new StupidDriveStraight(mSnobot.getDriveTrain(), 1, -0.5));
+        return group;
     }
-    
-    private Command parseDriveStraightPathWithGyro()
+
+    private Command parseDriveStraightPathWithGyro(List<String> args)
     {
-        ISetPointIterator setpointIterator
-        return new DriveStraightPathWithGyro(mSnobot.getDriveTrain(), mSnobot.getPositioner(), new ISetpointIterator);
+        PathConfig dudePathConfig = new PathConfig(Double.parseDouble(args.get(1)), // Endpoint
+                Double.parseDouble(args.get(2)), // Max Velocity
+                Double.parseDouble(args.get(3)), // Max Acceleration
+                sEXPECTED_DT);
+        ISetpointIterator dudeSetpointIterator = new StaticSetpointIterator(dudePathConfig);
+        return new DriveStraightPathWithGyro(mSnobot.getDriveTrain(), mSnobot.getPositioner(), dudeSetpointIterator);
     }
-    
+
+    private Command parseDriveStraightPathWithGyroFromStartingPosition(List<String> args)
+    {
+        StartingPositions startPosition = mPositionChooser.getSelected();
+        double lMaxVelocity = Double.parseDouble(args.get(2));
+        double lMaxAcceleration = Double.parseDouble(args.get(3));
+        return new DriveStraightPathWithGyroFromStartingPosition(mSnobot.getDriveTrain(), mSnobot.getPositioner(), startPosition, lMaxVelocity,
+                lMaxAcceleration, sEXPECTED_DT);
+    }
+
+    private Command parseDriveToPegUsingVisionCommand(List<String> args)
+    {
+        return new DriveToPegUsingVision(mSnobot.getVisionManager(), mSnobot.getSnobotActor(), 6);
+    }
+
     private Command parseTurnWithDegrees(List<String> args)
     {
         double speed = Double.parseDouble(args.get(1));
         double angle = Double.parseDouble(args.get(2));
         return new TurnWithDegrees(speed, angle, mSnobot.getSnobotActor());
+    }
+
+    private Command parseTurnToPegAfterPathFromStartingPosition(List<String> args)
+    {
+        StartingPositions startPosition = mPositionChooser.getSelected();
+        return new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition, mSnobot.getSnobotActor());
     }
 
     private Command parseDriveStraightADistance(List<String> args)
@@ -665,6 +729,12 @@ public class CommandParser extends ACommandParser
     private Command parsePlaceGearCommand(double aTime)
     {
         return new ScoreGear(mSnobot.getGearBoss(), aTime);
+    }
+
+    private Command parseRaiseGearCommand(List<String> args)
+    {
+        double time = Double.parseDouble(args.get(1));
+        return new RaiseGear(mSnobot.getGearBoss(), time);
     }
 
     private Command parseStupidDriveStraightCommand(List<String> args)

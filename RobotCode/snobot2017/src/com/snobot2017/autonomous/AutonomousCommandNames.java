@@ -9,6 +9,7 @@ public class AutonomousCommandNames
 
     // Subsystems
     public static final String sPLACE_GEAR_COMMAND = "PlaceGear";
+    public static final String sRAISE_GEAR_COMMAND = "RaiseGear";
 
     // Stupid
     public static final String sSTUPID_DRIVE_STRAIGHT_COMMAND = "StupidDriveStraight";
@@ -17,6 +18,7 @@ public class AutonomousCommandNames
 
     // Smarter
     public static final String sTURN_WITH_DEGREES = "TurnWithDegrees";
+    public static final String sTURN_TO_PEG_AFTER_PATH_FROM_STARTING_POSITION = "TurnToPegAfterPathFromStartingPosition";
     public static final String sDRIVE_STRAIGHT_A_DISTANCE = "DriveStraightADistance";
     public static final String sGO_TO_POSITION_SMOOTH_IN_STEPS = "GoToPositionInSteps";
 
@@ -25,6 +27,9 @@ public class AutonomousCommandNames
     public static final String sDRIVE_PATH_TURN = "DrivePathTurn";
     public static final String sDRIVE_TRAJECTORY = "DriveTrajectory";
     public static final String sGO_TO_POSITION_SMOOTHLY = "GoToPositionSmoothly";
+    public static final String sDRIVE_TO_PEG_USING_VISION = "DriveToPegUsingVision";
+    public static final String sDRIVE_STRAIGHT_PATH_WITH_GYRO = "DriveStraightPathWithGyro";
+    public static final String sDRIVE_STRAIGHT_PATH_WITH_GYRO_FROM_STARTING_POSITION = "DriveStraightPathWithGyroFromStartingPosition";
 
     // Combined modes
     public static final String sDUMP_HOPPER = "DumpHopper";
@@ -36,4 +41,5 @@ public class AutonomousCommandNames
     public static final String sSCORE_GEAR_WITH_CAM = "ScoreGearWithCamera";
     public static final String sSCORE_GEAR_WITH_CAM_DUMP_HOPPER = "ScoreGearWithCameraDumpHopper";
     public static final String sSCORE_GEAR_WITH_CAM_SCORE_FUEL = "ScoreGearWithCameraScoreFuel";
+    public static final String sSCORE_GEAR_WITH_CAMERA_AND_GYRO_NO_TRAJ = "ScoreGearWithCameraAndGyroNoTraj";
 }

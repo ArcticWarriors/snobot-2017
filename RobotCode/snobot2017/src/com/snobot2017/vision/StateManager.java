@@ -47,14 +47,14 @@ public class StateManager
         mMostRecentTargetLocations.clear();
 
         double timestamp = latestTargetUpdate.getTimestamp();
-        
+
         double cameraOffset = Properties2017.sCAMERA_LENS_DIST_FROM_CENTER.getValue();
 
         if (canCalculate(timestamp))
         {
             SavedRobotState stateAtTime = getStateHistory(timestamp);
             double robotAngleRad = Math.toRadians(stateAtTime.mAngle);
-            
+
             for (TargetInfo cameraTarget : latestTargetUpdate.getTargets())
             {
                 double targetDistance = cameraTarget.getDistance();
@@ -70,12 +70,13 @@ public class StateManager
 
                 double offset_dx = cameraOffset * Math.cos(robotAngleRad);
                 double offset_dy = cameraOffset * Math.sin(robotAngleRad);
-                
-                System.out.println("dx = " + offset_dx + ", dy =" + offset_dy);
+
+                // System.out.println("dx = " + offset_dx + ", dy =" +
+                // offset_dy);
 
                 targetLocation.mX += offset_dx;
                 targetLocation.mY += offset_dy;
-                
+
                 mMostRecentTargetLocations.add(targetLocation);
             }
         }

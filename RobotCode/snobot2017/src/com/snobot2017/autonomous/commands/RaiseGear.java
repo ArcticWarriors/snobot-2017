@@ -7,10 +7,10 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 /**
  * Drops the gear boss down
  * 
- * @author Nora
+ * @author Team174
  *
  */
-public class ScoreGear extends TimedCommand
+public class RaiseGear extends TimedCommand
 {
     private IGearBoss mGearBoss;
 
@@ -22,7 +22,7 @@ public class ScoreGear extends TimedCommand
      * @param aTimeOut
      *            The time to lower the gear
      */
-    public ScoreGear(IGearBoss aGearBoss, double aTimeOut)
+    public RaiseGear(IGearBoss aGearBoss, double aTimeOut)
     {
         super(aTimeOut);
         mGearBoss = aGearBoss;
@@ -31,18 +31,18 @@ public class ScoreGear extends TimedCommand
     @Override
     protected void initialize()
     {
-        System.out.println("ScoreGear: Lower Gear");
+        System.out.println("RaiseGear: Raise Gear");
     }
 
     @Override
     protected void execute()
     {
-        mGearBoss.moveGearLow();
+        mGearBoss.moveGearHigh();
     }
 
     @Override
     protected void end()
     {
-        System.out.println("ScoreGear: End");
+        System.out.println("RaiseGear: End");
     }
 }
