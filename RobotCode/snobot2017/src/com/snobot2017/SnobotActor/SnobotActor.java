@@ -333,11 +333,11 @@ public class SnobotActor implements ISnobotActor
         double distanceKp = Properties2017.sDRIVE_TO_POSITION_DISTANCE_KP.getValue();
         double turnKp = Properties2017.sDRIVE_TO_POSITION_ANGLE_KP.getValue();
         // Overriding for testing.
-        distanceKp = 0.03;
+        distanceKp = 0.02;
         turnKp = 0.8;
         // Additional values we use and should probably add to the properties
         // Complimentary Filter factor
-        double filterA = 0.4;
+        double filterA = 0.40;
         // The distance away from the target that we stop correcting for angle
         // errors.
         // should probably be more (2x) than the dead band because while
@@ -377,23 +377,44 @@ public class SnobotActor implements ISnobotActor
         double distanceErrorSpeed = Math.min(1, (distanceError * distanceKp));
 
         /********** Complimentary Filter for left and right speed ************/
+        // "Complimentary Filter" option:
         // filterA determines percentage of distance verses angle correction to
         // use in adjustments.
         // double filterA = .40; From above.
+        // This option is provides speed always <= 1. Straight away drive speed
+        // limited to FilterA.
+        // This option can take distance or angle errors take precedence
+        // depending on value of filterA. But only really useful if filterA is
+        // small (angle error is more important). However, in this case, max
+        // forward speed is greatly reduced (max is filterA) on a straight away.
         double leftAdjustment = filterA * distanceErrorSpeed + (1 - filterA) * angleErrorSpeed;
         double rightAdjustment = filterA * distanceErrorSpeed - (1 - filterA) * angleErrorSpeed;
+
+        /****** Proportional by angle error for left and right speed **********/
+        // Proportional by angle error option:
+        // filterA determines percentage of distance verses angle correction to
+        // use in adjustments.
+        // This option is provides speed always <= 1. Straight away drive speed
+        // not limited (maxs at 1).
+        // This option takes angle error speed as the primary driver when large
+        // but lets distance take over when angle error is small.
+        double filter_p = 1 - Math.abs(angleErrorSpeed);
+        double leftAdjustment_p = filter_p * distanceErrorSpeed + angleErrorSpeed;
+        double rightAdjustment_p = filter_p * distanceErrorSpeed - angleErrorSpeed;
+
         /*********************************************************************/
 
         /*************** Set left and right speed ****************************/
-        // Not used. Replaced by complimentary filter adjusted speeds.
-        // Note that these speeds should always be between -1 and 1 due to the
-        // filter. ( Actually probably between -filterA and 1.)
+        // Original Option:
+        // This option might result in a max speed of up to 2 which loses
+        // information and may not take angle error into account under some,
+        // commonly occuring, circumstances.
         double leftSpeed = distanceErrorSpeed + angleErrorSpeed;
         double rightSpeed = distanceErrorSpeed - angleErrorSpeed;
 
         System.out.println("DE: " + distanceError + ", DB: " + mSmoothControlParams.mDeadband + ", DES: " + distanceErrorSpeed + ", ATT: "
                 + angleToTarget + ", RAE: " + rawAngleError + ", AAE: " + adjustedAngleError + ", AE: " + angleError + ", AES: " + angleErrorSpeed
-                + ", L: " + leftSpeed + ", R: " + rightSpeed);
+                + ", L: " + leftSpeed + ", R: " + rightSpeed + ", Lp: " + leftAdjustment_p + ", Rp: " + rightAdjustment_p);
 
         /************** Check if finished ************************************/
         boolean isFinished = false;
@@ -406,8 +427,14 @@ public class SnobotActor implements ISnobotActor
         }
         else
         {
+            // Original Option
             // mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
-            mDriveTrain.setLeftRightSpeed(leftAdjustment, rightAdjustment);
+
+            // "Complimentary Filter" Option
+            // mDriveTrain.setLeftRightSpeed(leftAdjustment, rightAdjustment);
+
+            // Proportional to angle error Option.
+            mDriveTrain.setLeftRightSpeed(leftAdjustment_p, rightAdjustment_p);
         }
 
         return isFinished;

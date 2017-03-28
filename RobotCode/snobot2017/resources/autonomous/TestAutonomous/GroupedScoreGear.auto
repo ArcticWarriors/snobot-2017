@@ -8,5 +8,6 @@ RaiseGear 1.5
 TurnToPegAfterPathFromStartingPosition 
 DriveToPegUsingVision 6
 StupidDriveStraight 0.25 0.5
+Wait 1.0
 PlaceGear 2.0
 StupidDriveStraight 1 -0.5
