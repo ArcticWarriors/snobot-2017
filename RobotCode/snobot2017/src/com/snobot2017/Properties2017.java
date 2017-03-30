@@ -111,7 +111,7 @@ public class Properties2017
 
         sAUTO_LOG_FILE_PATH = new StringProperty("AutoLogFilePath", autoLogPath);
 
-        sAUTON_DIRECTORY = new StringProperty("AutonDir", resourcesDir + "autonomous/");
+        sAUTON_DIRECTORY = new StringProperty("AutonDir", resourcesDir + "autonomous/RealAutonomous/");
         sAUTON_PATH_DIRECTORY = new StringProperty("AutonDirPaths", resourcesDir + "traj");
     }
 }
