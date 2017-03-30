@@ -1,6 +1,7 @@
 package com.snobot2017.autonomous.commands;
 
 import com.snobot2017.drivetrain.IDriveTrain;
+
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
@@ -32,6 +33,12 @@ public class StupidDriveStraight extends TimedCommand
         mDriveTrain = aDriveTrain;
     }
 
+    @Override
+    protected void initialize()
+    {
+        System.out.println("StupidDriveStraight: " + mSpeed);
+    }
+
     /**
      * Sets the speed for both motors to drive straight
      */
@@ -48,6 +55,7 @@ public class StupidDriveStraight extends TimedCommand
     @Override
     public void end()
     {
+        System.out.println("StupidDriveStraight: End");
         mDriveTrain.setLeftRightSpeed(0, 0);
     }
 }

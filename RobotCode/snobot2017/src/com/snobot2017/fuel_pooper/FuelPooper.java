@@ -1,12 +1,10 @@
 package com.snobot2017.fuel_pooper;
 
 import com.snobot.lib.logging.ILogger;
-import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.joystick.IOperatorJoystick;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class FuelPooper implements IFuelPooper

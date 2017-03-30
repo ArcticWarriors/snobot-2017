@@ -67,4 +67,13 @@ public interface ISnobotActor extends ISubsystem
      * Cancels any running actions
      */
     void cancelAction();
+
+    /**
+     * Set the Smooth Control Goal dead band distance. A dead band distance of 0
+     * means no dead band is to be used. A dead band distance less than 0 will
+     * force the goal to be that many (positive) inches further away.
+     * 
+     * @param aDeadbandDistance
+     */
+    void setSmoothGoalDeadband(double aDeadbandDistance);
 }

@@ -14,11 +14,14 @@ public class TurnWithDegrees extends Command
 {
     private ISnobotActor mSnobotActor;
     private boolean mFinished;
+    private double mTurnAngle;
+    private double mSpeed;
 
     /**
-     * Constructor 
+     * Constructor
      * 
-     * @param aSpeed The speed to drive
+     * @param aSpeed
+     *            The speed to drive
      * @param aTurnAngle
      * @param aDriveTrain
      * @param aPositioner
@@ -27,8 +30,16 @@ public class TurnWithDegrees extends Command
     {
         mSnobotActor = aSnobotActor;
         mSnobotActor.setTurnGoal(aTurnAngle, aSpeed);
+        mSpeed = aSpeed;
+        mTurnAngle = aTurnAngle;
 
         mFinished = false;
+    }
+
+    @Override
+    protected void initialize()
+    {
+        System.out.println("TurnWithDegrees: " + mSpeed + ", " + mTurnAngle);
     }
 
     @Override
@@ -41,6 +52,11 @@ public class TurnWithDegrees extends Command
     protected boolean isFinished()
     {
         return mFinished;
-        
+    }
+
+    @Override
+    protected void end()
+    {
+        System.out.println("TurnWithDegrees: END");
     }
 }
