@@ -37,7 +37,7 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
-public class Snobot2017 extends ASnobot
+public class Snobot2017 extends ASnobot implements ISnobotState
 {
     // Robot Subsystems
     private IDriveTrain mDriveTrain;
@@ -119,8 +119,7 @@ public class Snobot2017 extends ASnobot
         addModule(mClimber);
 
         // GearBoss
-        DoubleSolenoid gearSolonoid = new DoubleSolenoid(
-                PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A,
+        DoubleSolenoid gearSolonoid = new DoubleSolenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A,
                 PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B);
         mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, logger);
         addModule(mGearBoss);
@@ -136,7 +135,7 @@ public class Snobot2017 extends ASnobot
         mDriveTrain.setSnobotActor(mSnobotActor);
 
         // Vision
-        mVisionManager = new VisionManager(mPositioner, mSnobotActor, driverJoystick);
+        mVisionManager = new VisionManager(mPositioner, mSnobotActor, driverJoystick, this);
         addModule(mVisionManager);
 
         // LED Manager
@@ -161,8 +160,7 @@ public class Snobot2017 extends ASnobot
         mAutonFactory = new AutonomousFactory(this, driverJoystick);
 
         // Call last
-        logger.startLogging(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"),
-                Properties2017.sLOG_FILE_PATH.getValue());
+        logger.startLogging(new SimpleDateFormat("yyyyMMdd_hhmmssSSS"), Properties2017.sLOG_FILE_PATH.getValue());
         initializeLogHeaders();
     }
 
@@ -174,7 +172,7 @@ public class Snobot2017 extends ASnobot
         mGearBoss.moveGearHigh();
         mVisionManager.startRecordingImages();
     }
-    
+
     @Override
     public void autonomousInit()
     {
@@ -189,7 +187,7 @@ public class Snobot2017 extends ASnobot
         super.disabledInit();
         mVisionManager.stopRecordingImages();
     }
-    
+
     @Override
     protected CommandGroup createAutonomousCommand()
     {
@@ -240,4 +238,5 @@ public class Snobot2017 extends ASnobot
     {
         return mVisionManager;
     }
+
 }

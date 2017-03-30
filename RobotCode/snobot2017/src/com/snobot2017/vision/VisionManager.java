@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import com.snobot.lib.modules.ISubsystem;
 import com.snobot.lib.vision.MjpegForwarder;
 import com.snobot.lib.vision.MjpegReceiver;
+import com.snobot2017.ISnobotState;
 import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
@@ -28,18 +29,19 @@ public class VisionManager implements ISubsystem
     private StateManager mStateManager;
     private List<TargetLocation> mLatestTargetInformation;
     private String mTargetMessage;
-    
-    public VisionManager(IPositioner aPositioner, ISnobotActor aSnobotActor, IVisionJoystick aOperatorJoystick)
+    private ISnobotState mSnobotState;
+
+    public VisionManager(IPositioner aPositioner, ISnobotActor aSnobotActor, IVisionJoystick aOperatorJoystick, ISnobotState aSnobotState)
     {
         if (Properties2017.sENABLE_VISION.getValue())
         {
-            mVisionServer = new VisionAdbServer(PortMappings2017.sADB_BIND_PORT, PortMappings2017.sAPP_MJPEG_PORT,
-                    PortMappings2017.sAPP_MJPEG_PORT);
+            mVisionServer = new VisionAdbServer(PortMappings2017.sADB_BIND_PORT, PortMappings2017.sAPP_MJPEG_PORT, PortMappings2017.sAPP_MJPEG_PORT);
         }
 
         mPositioner = aPositioner;
         mSnobotActor = aSnobotActor;
         mOperatorJoystick = aOperatorJoystick;
+        mSnobotState = aSnobotState;
 
         mStateManager = new StateManager();
         mLatestTargetInformation = new ArrayList<>();
@@ -87,7 +89,6 @@ public class VisionManager implements ISubsystem
         JSONObject targetUpdateJson = new JSONObject();
         JSONArray targets = new JSONArray();
 
-
         for (TargetLocation targetInfo : mStateManager.getTargets())
         {
             TargetLocation target = new TargetLocation();
@@ -107,13 +108,11 @@ public class VisionManager implements ISubsystem
         targetUpdateJson.put("robot_y", robotState.mRobotY);
         targetUpdateJson.put("targets", targets);
 
-
         mTargetMessage = targetUpdateJson.toJSONString();
+
         double tooCloseDistance = Properties2017.sVISION_TOO_CLOSE_DISTANCE.getValue();
         double tooFarDistance = Properties2017.sVISION_TOO_FAR_DISTANCE.getValue();
-        
-
-        if(mSnobotActor.isInAction())
+        if (mSnobotState.isOperatorControl() && mSnobotActor.isInAction())
         {
             if (!mLatestTargetInformation.isEmpty())
             {
@@ -121,15 +120,21 @@ public class VisionManager implements ISubsystem
                 double dx = target.mX - robotState.mRobotX;
                 double dy = target.mY - robotState.mRobotY;
                 double distance = Math.sqrt(dx * dx + dy * dy);
-                if(!target.mAmbigious && distance > tooCloseDistance && distance < tooFarDistance)
+                System.out.println("Vision: Distance: " + distance + ", Ambiguous = " + (target.mAmbigious));
+
+                if (!target.mAmbigious && (tooCloseDistance < distance && distance < tooFarDistance))
                 {
                     mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 }
                 else
                 {
-                    System.out.println("Ignoring update, " + distance);
+                    System.out.println("Ignoring update!!!!!!!!");
                     mLatestTargetInformation.clear();
                 }
+            }
+            else
+            {
+                System.out.println("Target list is empty!!!!!!!!!!!!!!!");
             }
         }
     }
@@ -137,11 +142,11 @@ public class VisionManager implements ISubsystem
     @Override
     public void control()
     {
-        if(mOperatorJoystick.iterateAppView())
+        if (mOperatorJoystick.iterateAppView())
         {
             mVisionServer.iterateShownImage();
         }
-        else if(mOperatorJoystick.switchToFrontCamera())
+        else if (mOperatorJoystick.switchToFrontCamera())
         {
             mVisionServer.setCameraDirection(CameraFacingDirection.Front);
         }
@@ -149,7 +154,7 @@ public class VisionManager implements ISubsystem
         {
             mVisionServer.setCameraDirection((CameraFacingDirection.Rear));
         }
-        else if(mOperatorJoystick.restartApp())
+        else if (mOperatorJoystick.restartApp())
         {
             mVisionServer.restartApp();
         }
@@ -158,9 +163,10 @@ public class VisionManager implements ISubsystem
         {
             if (!mSnobotActor.isInAction())
             {
-                if(!mLatestTargetInformation.isEmpty())
+                if (!mLatestTargetInformation.isEmpty())
                 {
-                    // On the first update, send the target even if it is ambiguous
+                    // On the first update, send the target even if it is
+                    // ambiguous
                     TargetLocation target = mLatestTargetInformation.get(0);
                     mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 }
@@ -177,7 +183,8 @@ public class VisionManager implements ISubsystem
             {
                 if (!mLatestTargetInformation.isEmpty())
                 {
-                    // On the first update, send the target even if it is ambiguous
+                    // On the first update, send the target even if it is
+                    // ambiguous
                     TargetLocation target = mLatestTargetInformation.get(0);
                     mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 }
@@ -196,7 +203,6 @@ public class VisionManager implements ISubsystem
         }
 
     }
-
 
     public boolean seesTarget()
     {

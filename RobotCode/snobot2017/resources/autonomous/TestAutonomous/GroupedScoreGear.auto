@@ -1,0 +1,28 @@
+# This command file does not have a special handler in the CommandParser.
+# Each line is handled individually and handled in the CommandParser.
+# Parallel actions are separated by "|", "#" starts a comment line.
+# Blank lines are skipped.
+
+# args:  MaxVelocity MaxAcceleration RedLeft RedRight RedMiddle BlueLeft BlueRight BlueMiddle  
+DriveStraightPathWithGyroFromStartingPosition 60 60 114.3 114.3 30 114.3 114.3 30
+
+# args: Seconds
+RaiseGear 1.5
+
+# args: RedLeft RedRight RedMiddle BlueLeft BlueRight BlueMiddle  
+TurnToPegAfterPathFromStartingPosition 60 -60 0 240 -240 180
+
+# args: DeadBand
+DriveToPegUsingVision 6
+
+# args: Seconds Speed
+StupidDriveStraight 0.25 0.5
+
+# args: Seconds
+Wait 1.0
+
+# args: Seconds
+PlaceGear 2.0
+
+# args: Seconds Speed
+StupidDriveStraight 1 -0.5

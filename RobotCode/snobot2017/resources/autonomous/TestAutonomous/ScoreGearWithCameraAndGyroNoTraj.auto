@@ -1,0 +1,4 @@
+# args (1-3):   NotUsed MaxVelocity MaxAccelleration
+# args (4-9):   DriveRedLeft DriveRedRight DriveRedMiddle DriveBlueLeft DriveBlueRight DriveBlueMiddle 
+# args (10-15): TurnRedLeft TurnRedRight TurnRedMiddle TurnBlueLeft TurnBlueRight TurnBlueMiddle
+ScoreGearWithCameraAndGyroNoTraj 96 60 60 114.3 114.3 30 114.3 114.3 30 60 -60 0 240 -240 180 
