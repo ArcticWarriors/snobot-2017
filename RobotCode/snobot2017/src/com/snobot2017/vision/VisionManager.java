@@ -246,7 +246,8 @@ public class VisionManager implements ISubsystem
 
     public void startRecordingImages(String aName)
     {
-        mVisionServer.sendStartRecordingMessage(aName);
+        String matchInfo = SmartDashboard.getString("MatchNumber", "");
+        mVisionServer.sendStartRecordingMessage(matchInfo + "_" + aName);
     }
 
     public void stopRecordingImages()
