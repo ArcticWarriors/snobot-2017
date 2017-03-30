@@ -139,14 +139,14 @@ public class VisionAdbServer extends RobotConnectionServer
         send(new SetCameraDirectionMessage(aDirection).getJson());
     }
 
-    public void sendStartRecordingMessage()
+    public void sendStartRecordingMessage(String aName)
     {
-        send(new RecordingMessage(true).getJson());
+        send(new RecordingMessage(true, aName).getJson());
     }
 
     public void sendStopRecordingMessage()
     {
-        send(new RecordingMessage(false).getJson());
+        send(new RecordingMessage(false, "").getJson());
     }
 
     public void iterateShownImage()

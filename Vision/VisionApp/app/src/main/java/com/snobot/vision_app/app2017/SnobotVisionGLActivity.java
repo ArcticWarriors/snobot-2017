@@ -222,8 +222,8 @@ public class SnobotVisionGLActivity extends Activity implements VisionRobotConne
     }
 
     @Override
-    public void setRecording(final boolean aRecord) {
-        mAlgorithm.setRecording(aRecord);
+    public void setRecording(final boolean aRecord, final String aName) {
+        mAlgorithm.setRecording(aRecord, aName);
 
         runOnUiThread(new Runnable() {
             @Override

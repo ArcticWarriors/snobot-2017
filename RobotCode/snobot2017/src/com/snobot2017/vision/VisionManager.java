@@ -244,9 +244,9 @@ public class VisionManager implements ISubsystem
 
     }
 
-    public void startRecordingImages()
+    public void startRecordingImages(String aName)
     {
-        mVisionServer.sendStartRecordingMessage();
+        mVisionServer.sendStartRecordingMessage(aName);
     }
 
     public void stopRecordingImages()

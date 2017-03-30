@@ -36,6 +36,7 @@ public class JavaVisionAlgorithm extends BaseJavaAlgorithm
     private VisionRobotConnection mRobotConnection;
     private VisionAlgorithmPreferences mPreferences;
     private String mImageDumpDir;
+    private String mImagPrefix;
     private boolean mRecordingImages;
     private boolean mRobotConnected;
 
@@ -103,8 +104,9 @@ public class JavaVisionAlgorithm extends BaseJavaAlgorithm
         mDisplayType = DisplayType.values()[nextIndex % DisplayType.values().length];
     }
 
-    public void setRecording(boolean recording) {
+    public void setRecording(boolean recording, String aName) {
         this.mRecordingImages = recording;
+        mImagPrefix = aName;
     }
 
     public void setRobotConnected(boolean isConnected)
@@ -140,7 +142,7 @@ public class JavaVisionAlgorithm extends BaseJavaAlgorithm
             dir.mkdirs();
         }
 
-        final File file = new File(dir.getAbsolutePath(), curTime + ".jpg");
+        final File file = new File(dir.getAbsolutePath(), mImagPrefix + "_" + curTime + ".jpg");
 
         Runnable imageSaver = new Runnable() {
             @Override

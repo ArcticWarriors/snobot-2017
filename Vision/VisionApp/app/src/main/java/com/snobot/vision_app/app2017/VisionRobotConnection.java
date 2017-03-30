@@ -45,7 +45,7 @@ public class VisionRobotConnection extends RobotConnection {
 
         void iterateDisplayType();
 
-        void setRecording(boolean aRecord);
+        void setRecording(boolean aRecord, String aName);
     }
 
 
@@ -76,7 +76,7 @@ public class VisionRobotConnection extends RobotConnection {
             {
                 Log.i(sTAG, message);
                 SetRecordingMessage recordingMessage = new SetRecordingMessage(jsonObject);
-                mCameraActivity.setRecording(recordingMessage.shouldRecord());
+                mCameraActivity.setRecording(recordingMessage.shouldRecord(), recordingMessage.getName());
             }
             else if (sITERATE_SHOWN_IMAGE_MESSAGE_TYPE.equals(type))
             {

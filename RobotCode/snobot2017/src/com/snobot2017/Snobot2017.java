@@ -170,7 +170,7 @@ public class Snobot2017 extends ASnobot implements ISnobotState
         super.teleopInit();
         mSnobotActor.cancelAction();
         mGearBoss.moveGearHigh();
-        mVisionManager.startRecordingImages();
+        mVisionManager.startRecordingImages("tele");
     }
 
     @Override
@@ -178,7 +178,7 @@ public class Snobot2017 extends ASnobot implements ISnobotState
     {
         super.autonomousInit();
         mGearBoss.moveGearHigh();
-        mVisionManager.startRecordingImages();
+        mVisionManager.startRecordingImages("auto");
     }
 
     @Override

@@ -6,11 +6,12 @@ public class RecordingMessage
 {
     private JSONObject mJson;
 
-    public RecordingMessage(boolean aRecord)
+    public RecordingMessage(boolean aRecord, String aName)
     {
         mJson = new JSONObject();
         mJson.put("type", "record_images");
         mJson.put("record", aRecord);
+        mJson.put("name", aName);
     }
 
     public JSONObject getJson()
