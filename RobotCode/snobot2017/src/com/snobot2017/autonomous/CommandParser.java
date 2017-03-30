@@ -664,14 +664,27 @@ public class CommandParser extends ACommandParser
         groupUpAndMove.addParallel(new RaiseGear(mSnobot.getGearBoss(), 1.5));
         double lMaxVelocity = Double.parseDouble(args.get(2));
         double lMaxAcceleration = Double.parseDouble(args.get(3));
+        double lDriveRedLeft = Double.parseDouble(args.get(4));
+        double lDriveRedRight = Double.parseDouble(args.get(5));
+        double lDriveRedMiddle = Double.parseDouble(args.get(6));
+        double lDriveBlueLeft = Double.parseDouble(args.get(7));
+        double lDriveBlueRight = Double.parseDouble(args.get(8));
+        double lDriveBlueMiddle = Double.parseDouble(args.get(9));
         groupUpAndMove.addParallel(new DriveStraightPathWithGyroFromStartingPosition(mSnobot.getDriveTrain(), mSnobot.getPositioner(), startPosition,
-                lMaxVelocity, lMaxAcceleration, sEXPECTED_DT));
+                lMaxVelocity, lMaxAcceleration, sEXPECTED_DT, lDriveRedLeft, lDriveRedRight, lDriveRedMiddle, lDriveBlueLeft, lDriveBlueRight,
+                lDriveBlueMiddle));
         group.addSequential(groupUpAndMove);
 
         // Turn to the peg. This command requires that
         // DriveStraightPathWithGyroFromStartingPosition is used first.
-        group.addSequential(
-                new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition, mSnobot.getSnobotActor()));
+        double lTurnRedLeft = Double.parseDouble(args.get(10));
+        double lTurnRedRight = Double.parseDouble(args.get(11));
+        double lTurnRedMiddle = Double.parseDouble(args.get(12));
+        double lTurnBlueLeft = Double.parseDouble(args.get(13));
+        double lTurnBlueRight = Double.parseDouble(args.get(14));
+        double lTurnBlueMiddle = Double.parseDouble(args.get(15));
+        group.addSequential(new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition,
+                mSnobot.getSnobotActor(), lTurnRedLeft, lTurnRedRight, lTurnRedMiddle, lTurnBlueLeft, lTurnBlueRight, lTurnBlueMiddle));
 
         // A wait just for testing.
         // group.addSequential(new WaitCommand(0.5));
@@ -707,8 +720,14 @@ public class CommandParser extends ACommandParser
         StartingPositions startPosition = mPositionChooser.getSelected();
         double lMaxVelocity = Double.parseDouble(args.get(1));
         double lMaxAcceleration = Double.parseDouble(args.get(2));
+        double lRedLeft = Double.parseDouble(args.get(3));
+        double lRedRight = Double.parseDouble(args.get(4));
+        double lRedMiddle = Double.parseDouble(args.get(5));
+        double lBlueLeft = Double.parseDouble(args.get(6));
+        double lBlueRight = Double.parseDouble(args.get(7));
+        double lBlueMiddle = Double.parseDouble(args.get(8));
         return new DriveStraightPathWithGyroFromStartingPosition(mSnobot.getDriveTrain(), mSnobot.getPositioner(), startPosition, lMaxVelocity,
-                lMaxAcceleration, sEXPECTED_DT);
+                lMaxAcceleration, sEXPECTED_DT, lRedLeft, lRedRight, lRedMiddle, lBlueLeft, lBlueRight, lBlueMiddle);
     }
 
     private Command parseDriveToPegUsingVisionCommand(List<String> args)
@@ -726,7 +745,15 @@ public class CommandParser extends ACommandParser
     private Command parseTurnToPegAfterPathFromStartingPosition(List<String> args)
     {
         StartingPositions startPosition = mPositionChooser.getSelected();
-        return new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition, mSnobot.getSnobotActor());
+        double lTurnRedLeft = Double.parseDouble(args.get(1));
+        double lTurnRedRight = Double.parseDouble(args.get(2));
+        double lTurnRedMiddle = Double.parseDouble(args.get(3));
+        double lTurnBlueLeft = Double.parseDouble(args.get(4));
+        double lTurnBlueRight = Double.parseDouble(args.get(5));
+        double lTurnBlueMiddle = Double.parseDouble(args.get(6));
+
+        return new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition, mSnobot.getSnobotActor(),
+                lTurnRedLeft, lTurnRedRight, lTurnRedMiddle, lTurnBlueLeft, lTurnBlueRight, lTurnBlueMiddle);
     }
 
     private Command parseDriveStraightADistance(List<String> args)

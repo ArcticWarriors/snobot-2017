@@ -333,19 +333,26 @@ public class SnobotActor implements ISnobotActor
         double distanceKp = Properties2017.sDRIVE_TO_POSITION_DISTANCE_KP.getValue();
         double turnKp = Properties2017.sDRIVE_TO_POSITION_ANGLE_KP.getValue();
         // Overriding for testing.
-        distanceKp = 0.02;
-        turnKp = 0.8;
+        distanceKp = 0.01;
+
+        // Can be one now because error is already between -1 and 1
+        turnKp = 1.0;
+
         // Additional values we use and should probably add to the properties
         // Complimentary Filter factor
         double filterA = 0.40;
+
         // The distance away from the target that we stop correcting for angle
-        // errors.
-        // should probably be more (2x) than the dead band because while
-        // hovering in the
-        // deadband the angle error would be overly proportionally affecting the
-        // speed
-        // adjustments.
-        double angleChangeCutoff = 12.0;
+        // errors. should probably be more (2x) than the dead band because while
+        // hovering in the deadband the angle error would be overly
+        // proportionally
+        // affecting the speed adjustments.
+        double angleChangeCutoff = 6.0;
+
+        // Minimum speed to drive straight. Might allow us to go a little
+        // further
+        // at the end so we don't stop short.
+        double distanceSpeedMinimum = 0.0;
 
         /*************** Distance error calculation **************************/
         // Note this calculation gives absolute distance error to target
@@ -365,7 +372,9 @@ public class SnobotActor implements ISnobotActor
         double rawAngleError = Utilities.boundAngleNeg180to180Degrees(angleError);
         // dividing by 180 to get a normalized value between -1 and 1 (for -180
         // and 180)
-        double adjustedAngleError = Utilities.boundAngleNeg180to180Degrees(angleError) / 180.0;
+        // double adjustedAngleError =
+        // Utilities.boundAngleNeg180to180Degrees(angleError) / 180.0;
+        double adjustedAngleError = Utilities.boundAngleNeg180to180Degrees(angleError) / 90.0;
 
         /**************** Determining the angle and distance speeds **********/
         // Not changing angle speed factor after X (12) inches
@@ -374,21 +383,21 @@ public class SnobotActor implements ISnobotActor
         double angleErrorSpeed = ((distanceError < angleChangeCutoff) ? 0 : adjustedAngleError * turnKp);
         // Limit the distance speed factor to 0 to 1 (remember distance error is
         // always positive).
-        double distanceErrorSpeed = Math.min(1, (distanceError * distanceKp));
+        double distanceErrorSpeed = Math.min(1, (distanceError * distanceKp) + distanceSpeedMinimum);
 
         /********** Complimentary Filter for left and right speed ************/
         // "Complimentary Filter" option:
         // filterA determines percentage of distance verses angle correction to
         // use in adjustments.
         // double filterA = .40; From above.
-        // This option is provides speed always <= 1. Straight away drive speed
+        // This option provides speed always <= 1. Straight away drive speed
         // limited to FilterA.
         // This option can take distance or angle errors take precedence
         // depending on value of filterA. But only really useful if filterA is
         // small (angle error is more important). However, in this case, max
         // forward speed is greatly reduced (max is filterA) on a straight away.
-        double leftAdjustment = filterA * distanceErrorSpeed + (1 - filterA) * angleErrorSpeed;
-        double rightAdjustment = filterA * distanceErrorSpeed - (1 - filterA) * angleErrorSpeed;
+        double leftAdjustment_a = filterA * distanceErrorSpeed + (1 - filterA) * angleErrorSpeed;
+        double rightAdjustment_a = filterA * distanceErrorSpeed - (1 - filterA) * angleErrorSpeed;
 
         /****** Proportional by angle error for left and right speed **********/
         // Proportional by angle error option:
@@ -408,13 +417,14 @@ public class SnobotActor implements ISnobotActor
         // Original Option:
         // This option might result in a max speed of up to 2 which loses
         // information and may not take angle error into account under some,
-        // commonly occuring, circumstances.
+        // commonly occurring, circumstances.
         double leftSpeed = distanceErrorSpeed + angleErrorSpeed;
         double rightSpeed = distanceErrorSpeed - angleErrorSpeed;
 
         System.out.println("DE: " + distanceError + ", DB: " + mSmoothControlParams.mDeadband + ", DES: " + distanceErrorSpeed + ", ATT: "
                 + angleToTarget + ", RAE: " + rawAngleError + ", AAE: " + adjustedAngleError + ", AE: " + angleError + ", AES: " + angleErrorSpeed
-                + ", L: " + leftSpeed + ", R: " + rightSpeed + ", Lp: " + leftAdjustment_p + ", Rp: " + rightAdjustment_p);
+                + ", L: " + leftSpeed + ", R: " + rightSpeed + ", Lp: " + leftAdjustment_p + ", Rp: " + rightAdjustment_p + ", La: "
+                + leftAdjustment_a + ", Ra: " + rightAdjustment_a);
 
         /************** Check if finished ************************************/
         boolean isFinished = false;
@@ -431,7 +441,8 @@ public class SnobotActor implements ISnobotActor
             // mDriveTrain.setLeftRightSpeed(leftSpeed, rightSpeed);
 
             // "Complimentary Filter" Option
-            // mDriveTrain.setLeftRightSpeed(leftAdjustment, rightAdjustment);
+            // mDriveTrain.setLeftRightSpeed(leftAdjustment_a,
+            // rightAdjustment_a);
 
             // Proportional to angle error Option.
             mDriveTrain.setLeftRightSpeed(leftAdjustment_p, rightAdjustment_p);

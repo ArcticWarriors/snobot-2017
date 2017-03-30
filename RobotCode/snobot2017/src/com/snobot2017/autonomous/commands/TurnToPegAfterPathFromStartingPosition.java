@@ -30,29 +30,30 @@ public class TurnToPegAfterPathFromStartingPosition extends Command
      * @param aDriveTrain
      * @param aPositioner
      */
-    public TurnToPegAfterPathFromStartingPosition(double aSpeed, StartingPositions aStartPosition, ISnobotActor aSnobotActor)
+    public TurnToPegAfterPathFromStartingPosition(double aSpeed, StartingPositions aStartPosition, ISnobotActor aSnobotActor, double aRedLeft,
+            double aRedRight, double aRedMiddle, double aBlueLeft, double aBlueRight, double aBlueMiddle)
     {
         mSnobotActor = aSnobotActor;
 
         switch (aStartPosition)
         {
         case RedLeft:
-            mTurnAngle = 46;
+            mTurnAngle = aRedLeft;
             break;
         case RedRight:
-            mTurnAngle = -46;
+            mTurnAngle = aRedRight;
             break;
         case BlueRight:
-            mTurnAngle = 136;
+            mTurnAngle = aBlueRight;
             break;
         case BlueLeft:
-            mTurnAngle = 226;
+            mTurnAngle = aBlueLeft;
             break;
         case RedMiddle:
-            mTurnAngle = 0;
+            mTurnAngle = aRedMiddle;
             break;
         case BlueMiddle:
-            mTurnAngle = 180;
+            mTurnAngle = aBlueMiddle;
             break;
         case Origin:
         default:

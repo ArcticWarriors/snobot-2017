@@ -37,7 +37,7 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
-public class Snobot2017 extends ASnobot
+public class Snobot2017 extends ASnobot implements ISnobotState
 {
     // Robot Subsystems
     private IDriveTrain mDriveTrain;
@@ -135,7 +135,7 @@ public class Snobot2017 extends ASnobot
         mDriveTrain.setSnobotActor(mSnobotActor);
 
         // Vision
-        mVisionManager = new VisionManager(mPositioner, mSnobotActor, driverJoystick);
+        mVisionManager = new VisionManager(mPositioner, mSnobotActor, driverJoystick, this);
         addModule(mVisionManager);
 
         // LED Manager
@@ -229,4 +229,5 @@ public class Snobot2017 extends ASnobot
     {
         return mVisionManager;
     }
+
 }

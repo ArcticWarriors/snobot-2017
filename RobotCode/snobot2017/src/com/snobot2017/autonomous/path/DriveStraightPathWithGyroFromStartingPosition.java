@@ -37,7 +37,8 @@ public class DriveStraightPathWithGyroFromStartingPosition extends Command
      *            A setpoint iterator for the path follower
      */
     public DriveStraightPathWithGyroFromStartingPosition(IDriveTrain aDriveTrain, IPositioner aPositioner, StartingPositions aStartPosition,
-            double aMaxVelocity, double aMaxAccelleration, double aExpectedDt)
+            double aMaxVelocity, double aMaxAccelleration, double aExpectedDt, double aRedLeft, double aRedRight, double aRedMiddle, double aBlueLeft,
+            double aBlueRight, double aBlueMiddle)
     {
         mDriveTrain = aDriveTrain;
         mPositioner = aPositioner;
@@ -52,22 +53,22 @@ public class DriveStraightPathWithGyroFromStartingPosition extends Command
         switch (aStartPosition)
         {
         case RedLeft:
-            endpoint = 90;
+            endpoint = aRedLeft;
             break;
         case RedRight:
-            endpoint = 90;
+            endpoint = aRedRight;
             break;
         case BlueRight:
-            endpoint = 90;
+            endpoint = aBlueRight;
             break;
         case BlueLeft:
-            endpoint = 90;
+            endpoint = aBlueLeft;
             break;
         case RedMiddle:
-            endpoint = 12;
+            endpoint = aRedMiddle;
             break;
         case BlueMiddle:
-            endpoint = 12;
+            endpoint = aBlueMiddle;
             break;
         // Intended fall through - do nothing in these unexpected cases
         case Origin:
