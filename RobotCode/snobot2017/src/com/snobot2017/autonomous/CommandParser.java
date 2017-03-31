@@ -364,19 +364,19 @@ public class CommandParser extends ACommandParser
         }
 
         String fileName = null;
-        // double smackbackTime = .25;
-        // double smackforwardTime = .5;
-        // double backwardsTime = 2;
-        // double backwardsSpeed = -.3;
-        //
-        // if (args.size() >= 2)
-        // {
-        // backwardsSpeed = Double.parseDouble(args.get(1));
-        // }
-        // if (args.size() >= 3)
-        // {
-        // backwardsTime = Double.parseDouble(args.get(2));
-        // }
+         double smackbackTime = .25;
+         double smackforwardTime = .5;
+         double backwardsTime = 2;
+         double backwardsSpeed = -.3;
+        
+         if (args.size() >= 2)
+         {
+         backwardsSpeed = Double.parseDouble(args.get(1));
+         }
+         if (args.size() >= 3)
+         {
+         backwardsTime = Double.parseDouble(args.get(2));
+         }
 
         switch (startPosition)
         {
@@ -414,13 +414,13 @@ public class CommandParser extends ACommandParser
             {
                 group.addSequential(createTrajectoryCommand(fileName));
             }
-            // group.addSequential(this.parsePlaceGearCommand(.8));
-            // group.addSequential(this.parseStupidDriveStraightCommand(smackbackTime,
-            // .3));
-            // group.addSequential(this.parseStupidDriveStraightCommand(smackforwardTime,
-            // .6));
-            // group.addSequential(this.parseStupidDriveStraightCommand(backwardsTime,
-            // backwardsSpeed));
+             group.addSequential(this.parsePlaceGearCommand(.8));
+             group.addSequential(this.parseStupidDriveStraightCommand(smackbackTime,
+             .3));
+             group.addSequential(this.parseStupidDriveStraightCommand(smackforwardTime,
+             .6));
+             group.addSequential(this.parseStupidDriveStraightCommand(backwardsTime,
+             backwardsSpeed));
             return group;
         }
         else
@@ -690,7 +690,7 @@ public class CommandParser extends ACommandParser
         // group.addSequential(new WaitCommand(0.5));
 
         // Now drive to the peg using the camera only.
-        group.addSequential(new DriveToPegUsingVision(mSnobot.getVisionManager(), mSnobot.getSnobotActor(), 6));
+        group.addSequential(new DriveToPegUsingVision(mSnobot.getVisionManager(), mSnobot.getSnobotActor(), 6, 16));
 
         // We want to give a little extra umph so drive straight for just a bit
         // more.
@@ -732,7 +732,20 @@ public class CommandParser extends ACommandParser
 
     private Command parseDriveToPegUsingVisionCommand(List<String> args)
     {
-        return new DriveToPegUsingVision(mSnobot.getVisionManager(), mSnobot.getSnobotActor(), 6);
+        double timeout = 4;
+        double deadband = 6;
+        
+        if(args.size() >= 2)
+        {
+            timeout = Double.parseDouble(args.get(1));
+        }
+        
+        if(args.size() >= 3)
+        {
+            deadband = Double.parseDouble(args.get(2));
+        }
+        
+        return new DriveToPegUsingVision(mSnobot.getVisionManager(), mSnobot.getSnobotActor(), deadband, timeout);
     }
 
     private Command parseTurnWithDegrees(List<String> args)

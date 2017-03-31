@@ -6,6 +6,7 @@ import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.vision.TargetLocation;
 import com.snobot2017.vision.VisionManager;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -20,18 +21,25 @@ public class DriveToPegUsingVision extends Command
     private ISnobotActor mSnobotActor;
     private boolean mFinished;
     private double mDeadBandDistance;
+    private double mTimeoutTime;
+   
+    private Timer mTimer;
 
-    public DriveToPegUsingVision(VisionManager aVisionManager, ISnobotActor aSnobotActor, double aDeadBandDistance)
+    public DriveToPegUsingVision(VisionManager aVisionManager, ISnobotActor aSnobotActor, double aDeadBandDistance, double aTimeout)
     {
         mSnobotActor = aSnobotActor;
         mVisionManager = aVisionManager;
         mDeadBandDistance = aDeadBandDistance;
+        mTimeoutTime = aTimeout;
+        mTimer = new Timer();
     }
 
     @Override
     protected void initialize()
     {
         System.out.println("DriveToPegUsingVision: Initialize");
+        
+        mTimer.start();
 
         // On initialize make sure the snobot actor is not in any previous
         // actions
@@ -68,6 +76,10 @@ public class DriveToPegUsingVision extends Command
         {
             mFinished = mSnobotActor.executeControlMode();
 
+        }
+        if(mTimer.get() > mTimeoutTime)
+        {
+            mFinished = true;
         }
     }
 
