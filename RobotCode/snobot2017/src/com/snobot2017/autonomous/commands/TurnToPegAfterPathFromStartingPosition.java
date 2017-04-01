@@ -63,8 +63,6 @@ public class TurnToPegAfterPathFromStartingPosition extends Command
             mTurnAngle = 0;
             break;
         }
-
-        mSnobotActor.setTurnGoal(mTurnAngle, aSpeed);
         mSpeed = aSpeed;
         mStartPosition = aStartPosition;
         mFinished = false;
@@ -73,6 +71,7 @@ public class TurnToPegAfterPathFromStartingPosition extends Command
     @Override
     protected void initialize()
     {
+        mSnobotActor.setTurnGoal(mTurnAngle, mSpeed);
         System.out.println("TurnWithDegrees: " + mStartPosition + ", " + mSpeed + ", " + mTurnAngle);
     }
 
