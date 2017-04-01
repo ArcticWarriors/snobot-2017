@@ -55,6 +55,10 @@ public final class SnobotAutonCrawler extends SimpleFileVisitor<Path>
      */
     public SendableChooser<File> loadAutonFiles(String aDir)
     {
+        return loadAutonFiles(aDir, null);
+    }
+    public SendableChooser<File> loadAutonFiles(String aDir, String aDefaultName)
+    {
         SendableChooser<File> output = new SendableChooser<>();
         File autonDr = new File(aDir);
 
@@ -70,7 +74,7 @@ public final class SnobotAutonCrawler extends SimpleFileVisitor<Path>
                 boolean isFirst = true;
                 for (Path p : mPaths)
                 {
-                    if (isFirst)
+                    if ((isFirst && aDefaultName == null) || p.getFileName().equals(aDefaultName))
                     {
                         output.addDefault(p.getFileName().toString(), p.toFile());
                         isFirst = false;

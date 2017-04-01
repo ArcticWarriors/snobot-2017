@@ -74,7 +74,7 @@ public class Properties2017
     public static final DoubleProperty sSPCHINCTER_RIGHT_CLOSED = new DoubleProperty("SphincterRightClosed", 0.0);
     public static final DoubleProperty sSPCHINCTER_LEFT_CLOSED = new DoubleProperty("SphincterLeftClosed", 0.0);
     public static final DoubleProperty sDRIVE_PATH_WITH_GYRO_KP = new DoubleProperty("DrivePathWithGyroKP", 0.01);
-    public static final DoubleProperty sSIDE_AUTO_TURN_SPEED = new DoubleProperty("SideAutoTurnSpeed", 0.4);
+    public static final DoubleProperty sSIDE_AUTO_TURN_SPEED = new DoubleProperty("SideAutoTurnSpeed", 0.1);
 
     static
     {

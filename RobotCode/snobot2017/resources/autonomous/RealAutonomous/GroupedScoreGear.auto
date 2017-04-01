@@ -4,25 +4,38 @@
 # Blank lines are skipped.
 
 # args:  MaxVelocity MaxAcceleration RedLeft RedRight RedMiddle BlueLeft BlueRight BlueMiddle  
-DriveStraightPathWithGyroFromStartingPosition 60 60 114.3 114.3 30 114.3 114.3 30
+DriveStraightPathWithGyroFromStartingPosition 30 30 65 65 10 65 65 10
 
 # args: Seconds
-RaiseGear 1.5
+#RaiseGear 1
 
 # args: RedLeft RedRight RedMiddle BlueLeft BlueRight BlueMiddle  
-TurnToPegAfterPathFromStartingPosition 60 -60 0 240 -240 180
+TurnToPegAfterPathFromStartingPosition 45 -45 0 225 -225 180
+
+# Wait after hack reset position
+Wait .5
+
 
 # args: DeadBand
-DriveToPegUsingVision 6
+DriveToPegUsingVision 4.5 18
 
 # args: Seconds Speed
 StupidDriveStraight 0.25 0.5
 
 # args: Seconds
-Wait 1.0
+#Wait .5
 
 # args: Seconds
-PlaceGear 2.0
+PlaceGear 1.0
 
 # args: Seconds Speed
-StupidDriveStraight 1 -0.5
+StupidDriveStraight 0.25 0.5
+
+# args: Seconds Speed
+StupidDriveStraight 1 -0.25
+
+# args: RedLeft RedRight RedMiddle BlueLeft BlueRight BlueMiddle  
+TurnToPegAfterPathFromStartingPosition -45 45 0 -225 225 180
+
+# args:  MaxVelocity MaxAcceleration RedLeft RedRight RedMiddle BlueLeft BlueRight BlueMiddle  
+DriveStraightPathWithGyroFromStartingPosition 30 30 120 120 0 120 120 0

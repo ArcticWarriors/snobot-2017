@@ -684,7 +684,7 @@ public class CommandParser extends ACommandParser
         double lTurnBlueRight = Double.parseDouble(args.get(14));
         double lTurnBlueMiddle = Double.parseDouble(args.get(15));
         group.addSequential(new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition,
-                mSnobot.getSnobotActor(), lTurnRedLeft, lTurnRedRight, lTurnRedMiddle, lTurnBlueLeft, lTurnBlueRight, lTurnBlueMiddle));
+                mSnobot.getPositioner(), mSnobot.getSnobotActor(), lTurnRedLeft, lTurnRedRight, lTurnRedMiddle, lTurnBlueLeft, lTurnBlueRight, lTurnBlueMiddle));
 
         // A wait just for testing.
         // group.addSequential(new WaitCommand(0.5));
@@ -765,7 +765,9 @@ public class CommandParser extends ACommandParser
         double lTurnBlueRight = Double.parseDouble(args.get(5));
         double lTurnBlueMiddle = Double.parseDouble(args.get(6));
 
-        return new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition, mSnobot.getSnobotActor(),
+        return new TurnToPegAfterPathFromStartingPosition(Properties2017.sSIDE_AUTO_TURN_SPEED.getValue(), startPosition, 
+                mSnobot.getPositioner(),
+                mSnobot.getSnobotActor(),
                 lTurnRedLeft, lTurnRedRight, lTurnRedMiddle, lTurnBlueLeft, lTurnBlueRight, lTurnBlueMiddle);
     }
 

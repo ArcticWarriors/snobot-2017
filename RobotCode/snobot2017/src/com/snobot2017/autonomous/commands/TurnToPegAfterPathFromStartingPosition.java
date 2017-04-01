@@ -2,6 +2,7 @@ package com.snobot2017.autonomous.commands;
 
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.autonomous.AutonomousFactory.StartingPositions;
+import com.snobot2017.positioner.IPositioner;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TurnToPegAfterPathFromStartingPosition extends Command
 {
     private ISnobotActor mSnobotActor;
+    private IPositioner mPositioner;
     private boolean mFinished;
     private double mTurnAngle;
     private double mSpeed;
@@ -30,11 +32,12 @@ public class TurnToPegAfterPathFromStartingPosition extends Command
      * @param aDriveTrain
      * @param aPositioner
      */
-    public TurnToPegAfterPathFromStartingPosition(double aSpeed, StartingPositions aStartPosition, ISnobotActor aSnobotActor, double aRedLeft,
+    public TurnToPegAfterPathFromStartingPosition(double aSpeed, StartingPositions aStartPosition, IPositioner aPositioner, ISnobotActor aSnobotActor, double aRedLeft,
             double aRedRight, double aRedMiddle, double aBlueLeft, double aBlueRight, double aBlueMiddle)
     {
         mSnobotActor = aSnobotActor;
-
+        mPositioner = aPositioner;
+        
         switch (aStartPosition)
         {
         case RedLeft:
@@ -77,6 +80,10 @@ public class TurnToPegAfterPathFromStartingPosition extends Command
     protected void execute()
     {
         mFinished = mSnobotActor.executeControlMode();
+        if(mFinished)
+        {
+            mPositioner.setPosition(0, 0, 0);
+        }
     }
 
     @Override
