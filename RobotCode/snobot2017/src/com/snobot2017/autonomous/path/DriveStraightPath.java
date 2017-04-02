@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveStraightPath extends Command
 {
-    private IDriveTrain mDriveTrain;
-    private IPositioner mPositioner;
+    protected IDriveTrain mDriveTrain;
+    protected IPositioner mPositioner;
     private PathFollower mPathFollower;
     private double mStartDistance;
 
@@ -31,15 +31,19 @@ public class DriveStraightPath extends Command
      */
     public DriveStraightPath(IDriveTrain aDriveTrain, IPositioner aPositioner, ISetpointIterator aSetpointIterator)
     {
+        this(aDriveTrain, aPositioner, aSetpointIterator, 
+                Properties2017.sDRIVE_PATH_KP.getValue(), 
+                Properties2017.sDRIVE_PATH_KV.getValue(), 
+                Properties2017.sDRIVE_PATH_KA.getValue());
+    }
+
+    public DriveStraightPath(IDriveTrain aDriveTrain, IPositioner aPositioner, ISetpointIterator aSetpointIterator,
+            double aKp, double aKv, double aKa)
+    {
         mDriveTrain = aDriveTrain;
         mPositioner = aPositioner;
 
-        double kP = Properties2017.sDRIVE_PATH_KP.getValue();
-        // double kD = Properties2017.sDRIVE_PATH_KD.getValue();
-        double kVelocity = Properties2017.sDRIVE_PATH_KV.getValue();
-        double kAccel = Properties2017.sDRIVE_PATH_KA.getValue();
-
-        mPathFollower = new PathFollower(aSetpointIterator, kVelocity, kAccel, kP);
+        mPathFollower = new PathFollower(aSetpointIterator, aKv, aKa, aKp);
     }
 
     @Override
@@ -49,11 +53,18 @@ public class DriveStraightPath extends Command
         mPathFollower.init();
     }
 
-    @Override
-    protected void execute()
+    protected double calculatePathSpeed()
     {
         double curPos = mPositioner.getTotalDistance() - mStartDistance;
         double motorSpeed = mPathFollower.calcMotorSpeed(curPos);
+
+        return motorSpeed;
+    }
+
+    @Override
+    protected void execute()
+    {
+        double motorSpeed = calculatePathSpeed();
         mDriveTrain.setLeftRightSpeed(motorSpeed, motorSpeed);
     }
 

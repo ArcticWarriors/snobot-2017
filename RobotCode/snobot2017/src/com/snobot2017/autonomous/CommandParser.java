@@ -22,14 +22,14 @@ import com.snobot2017.autonomous.commands.GoToPositionInSteps;
 import com.snobot2017.autonomous.commands.GoToPositionSmoothly;
 import com.snobot2017.autonomous.commands.RaiseGear;
 import com.snobot2017.autonomous.commands.Replay;
-import com.snobot2017.autonomous.commands.ScoreGear;
+import com.snobot2017.autonomous.commands.LowerGear;
 import com.snobot2017.autonomous.commands.StupidDriveStraight;
 import com.snobot2017.autonomous.commands.TrajectoryWithVisionOverride;
-import com.snobot2017.autonomous.commands.TurnToPegAfterPathFromStartingPosition;
 import com.snobot2017.autonomous.commands.TurnWithDegrees;
+import com.snobot2017.autonomous.commands.position_based.DriveStraightPathWithGyroFromStartingPosition;
+import com.snobot2017.autonomous.commands.position_based.TurnToPegAfterPathFromStartingPosition;
 import com.snobot2017.autonomous.path.DriveStraightPath;
 import com.snobot2017.autonomous.path.DriveStraightPathWithGyro;
-import com.snobot2017.autonomous.path.DriveStraightPathWithGyroFromStartingPosition;
 import com.snobot2017.autonomous.path.DriveTurnPath;
 import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
 import com.team254.lib.trajectory.Path;
@@ -697,7 +697,7 @@ public class CommandParser extends ACommandParser
         group.addSequential(new StupidDriveStraight(mSnobot.getDriveTrain(), .25, 0.5));
 
         // Put the gear box down. Wait 2 seconds total.
-        group.addSequential(new ScoreGear(mSnobot.getGearBoss(), 2.0));
+        group.addSequential(new LowerGear(mSnobot.getGearBoss(), 2.0));
 
         // Now back up to let the gear go.
         group.addSequential(new StupidDriveStraight(mSnobot.getDriveTrain(), 1, -0.5));
@@ -786,7 +786,7 @@ public class CommandParser extends ACommandParser
 
     private Command parsePlaceGearCommand(double aTime)
     {
-        return new ScoreGear(mSnobot.getGearBoss(), aTime);
+        return new LowerGear(mSnobot.getGearBoss(), aTime);
     }
 
     private Command parseRaiseGearCommand(List<String> args)

@@ -9,12 +9,26 @@ public class GoToPositionInSteps extends Command
     private boolean mFinished;
     private ISnobotActor mSnobotActor;
 
+    double mX;
+    double mY;
+    double mSpeed;
+
     public GoToPositionInSteps(double aX, double aY, double aSpeed, ISnobotActor aSnobotActor)
     {
         mSnobotActor = aSnobotActor;
         mFinished = false;
 
-        mSnobotActor.setGoToPositionInStepsGoal(aX, aY, aSpeed);
+        mX = aX;
+        mY = aX;
+        mSpeed = aSpeed;
+    }
+
+    @Override
+    protected void initialize()
+    {
+        super.initialize();
+
+        mSnobotActor.setGoToPositionInStepsGoal(mX, mY, mSpeed);
     }
 
     @Override

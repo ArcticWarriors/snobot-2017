@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
  * @author Nora
  *
  */
-public class ScoreGear extends TimedCommand
+public class LowerGear extends TimedCommand
 {
     private IGearBoss mGearBoss;
 
@@ -22,7 +22,7 @@ public class ScoreGear extends TimedCommand
      * @param aTimeOut
      *            The time to lower the gear
      */
-    public ScoreGear(IGearBoss aGearBoss, double aTimeOut)
+    public LowerGear(IGearBoss aGearBoss, double aTimeOut)
     {
         super(aTimeOut);
         mGearBoss = aGearBoss;

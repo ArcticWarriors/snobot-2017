@@ -9,18 +9,24 @@ public class DriveStraightADistance extends Command
     private boolean mFinished;
     private ISnobotActor mSnobotActor;
 
+    private double mDistance;
+    private double mSpeed;
+
     public DriveStraightADistance(double aDistance, double aSpeed, ISnobotActor aSnobotActor)
     {
         mSnobotActor = aSnobotActor;
         mFinished = false;
 
-        mSnobotActor.setDistanceGoal(aDistance, aSpeed);
+        mDistance = aDistance;
+        mSpeed = aSpeed;
     }
 
     @Override
     protected void initialize()
     {
         super.initialize();
+
+        mSnobotActor.setDistanceGoal(mDistance, mSpeed);
     }
 
     @Override

@@ -1,10 +1,9 @@
-package com.snobot2017.autonomous.commands;
+package com.snobot2017.autonomous.commands.position_based;
 
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.autonomous.AutonomousFactory.StartingPositions;
+import com.snobot2017.autonomous.commands.TurnWithDegrees;
 import com.snobot2017.positioner.IPositioner;
-
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * Turns a fixed number of degrees based on the starting position. To be used in
@@ -14,14 +13,9 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author Team174
  *
  */
-public class TurnToPegAfterPathFromStartingPosition extends Command
+public class TurnToPegAfterPathFromStartingPosition extends TurnWithDegrees
 {
-    private ISnobotActor mSnobotActor;
     private IPositioner mPositioner;
-    private boolean mFinished;
-    private double mTurnAngle;
-    private double mSpeed;
-    private StartingPositions mStartPosition;
 
     /**
      * Constructor
@@ -35,65 +29,52 @@ public class TurnToPegAfterPathFromStartingPosition extends Command
     public TurnToPegAfterPathFromStartingPosition(double aSpeed, StartingPositions aStartPosition, IPositioner aPositioner, ISnobotActor aSnobotActor, double aRedLeft,
             double aRedRight, double aRedMiddle, double aBlueLeft, double aBlueRight, double aBlueMiddle)
     {
-        mSnobotActor = aSnobotActor;
-        mPositioner = aPositioner;
+        super(aSpeed, getTurnAngle(aStartPosition, aRedLeft, aRedRight, aRedMiddle, aBlueLeft, aBlueRight, aBlueMiddle), aSnobotActor);
+    }
+
+    private static double getTurnAngle(StartingPositions aStartPosition,
+            double aRedLeft, double aRedRight, double aRedMiddle, 
+            double aBlueLeft, double aBlueRight, double aBlueMiddle)
+    {
+        double turnAngle = 0;
         
         switch (aStartPosition)
         {
         case RedLeft:
-            mTurnAngle = aRedLeft;
+            turnAngle = aRedLeft;
             break;
         case RedRight:
-            mTurnAngle = aRedRight;
+            turnAngle = aRedRight;
             break;
         case BlueRight:
-            mTurnAngle = aBlueRight;
+            turnAngle = aBlueRight;
             break;
         case BlueLeft:
-            mTurnAngle = aBlueLeft;
+            turnAngle = aBlueLeft;
             break;
         case RedMiddle:
-            mTurnAngle = aRedMiddle;
+            turnAngle = aRedMiddle;
             break;
         case BlueMiddle:
-            mTurnAngle = aBlueMiddle;
+            turnAngle = aBlueMiddle;
             break;
         case Origin:
         default:
-            mTurnAngle = 0;
+            turnAngle = 0;
             break;
         }
-        mSpeed = aSpeed;
-        mStartPosition = aStartPosition;
-        mFinished = false;
-    }
-
-    @Override
-    protected void initialize()
-    {
-        mSnobotActor.setTurnGoal(mTurnAngle, mSpeed);
-        System.out.println("TurnWithDegrees: " + mStartPosition + ", " + mSpeed + ", " + mTurnAngle);
+        
+        return turnAngle;
     }
 
     @Override
     protected void execute()
     {
-        mFinished = mSnobotActor.executeControlMode();
+        super.execute();
+
         if(mFinished)
         {
             mPositioner.setPosition(0, 0, 0);
         }
-    }
-
-    @Override
-    protected boolean isFinished()
-    {
-        return mFinished;
-    }
-
-    @Override
-    protected void end()
-    {
-        System.out.println("TurnWithDegrees: END");
     }
 }
