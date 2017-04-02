@@ -16,8 +16,6 @@ import com.snobot2017.climbing.IClimbing;
 import com.snobot2017.drivetrain.IDriveTrain;
 import com.snobot2017.drivetrain.SnobotCanDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
-import com.snobot2017.fuel_pooper.FuelPooper;
-import com.snobot2017.fuel_pooper.IFuelPooper;
 import com.snobot2017.gearboss.IGearBoss;
 import com.snobot2017.gearboss.SnobotGearBoss;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
@@ -37,7 +35,7 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
-public class Snobot2017 extends ASnobot implements ISnobotState
+public class Snobot2017 extends ASnobot
 {
     // Robot Subsystems
     private IDriveTrain mDriveTrain;
@@ -58,9 +56,6 @@ public class Snobot2017 extends ASnobot implements ISnobotState
 
     // Logger
     private AutoLogger mAutoLogger;
-
-    // Sphincter
-    private IFuelPooper mPooper;
 
     // SnobotActor
     private ISnobotActor mSnobotActor;
@@ -143,12 +138,6 @@ public class Snobot2017 extends ASnobot implements ISnobotState
         Relay blueLight = new Relay(PortMappings2017.sRELAY_BLUE_LED);
         mLightManager = new LightManager(operatorJoystick, mSnobotActor, mVisionManager, greenLight, blueLight);
         addModule(mLightManager);
-
-        // Sphincter
-        DoubleSolenoid rightSphincter = new DoubleSolenoid(2, 3);
-        DoubleSolenoid leftSphincter = new DoubleSolenoid(4, 5);
-        mPooper = new FuelPooper(operatorJoystick, rightSphincter, leftSphincter, logger);
-        addModule(mPooper);
 
         // Autolog
         mAutoLogger = new AutoLogger(Properties2017.sAUTO_LOG_FILE_PATH.getValue(), driverJoystick, mDriveTrain);

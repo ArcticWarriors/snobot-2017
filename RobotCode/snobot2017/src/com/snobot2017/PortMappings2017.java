@@ -27,12 +27,6 @@ public class PortMappings2017
     // Solenoid
     public static final int sGEARBOSS_SOLENOID_CHANNEL_A = 0;
     public static final int sGEARBOSS_SOLENOID_CHANNEL_B = 1;
-    public static final int sFUEL_RIGHT_SOLENOID_A = 2;
-    public static final int sFUEL_RIGHT_SOLENOID_B = 3;
-    public static final int sFUEL_LEFT_SOLENOID_A = 2;
-    public static final int sFUEL_LEFT_SOLENOID_B = 3;
-//  public static final int sFUEL_PWM_RIGHT = 2;
-//  public static final int sFUEL_PWM_LEFT = 3;
 
     // Relays
     public static final int sRELAY_GREEN_LED = 0;

@@ -13,20 +13,20 @@ import android.util.Pair;
 public class VisionAlgorithmPreferences
 {
     private static final int sDEFAULT_HUE_MIN = 27;
-    private static final int sDEFAULT_HUE_MAX = 92;
-    private static final int sDEFAULT_SAT_MIN = 172;
+    private static final int sDEFAULT_HUE_MAX = 96;
+    private static final int sDEFAULT_SAT_MIN = 164;
     private static final int sDEFAULT_SAT_MAX = 255;
-    private static final int sDEFAULT_LUM_MIN = 42;
+    private static final int sDEFAULT_LUM_MIN = 110;
     private static final int sDEFAULT_LUM_MAX = 255;
 
-    private static final int sDEFAULT_FILTER_WIDTH_MIN = 5;
-    private static final int sDEFAULT_FILTER_WIDTH_MAX = 120;
-    private static final int sDEFAULT_FILTER_HEIGHT_MIN = 0;
-    private static final int sDEFAULT_FILTER_HEIGHT_MAX = 250;
+    private static final int sDEFAULT_FILTER_WIDTH_MIN = 10;
+    private static final int sDEFAULT_FILTER_WIDTH_MAX = 100;
+    private static final int sDEFAULT_FILTER_HEIGHT_MIN = 30;
+    private static final int sDEFAULT_FILTER_HEIGHT_MAX = 480;
     private static final int sDEFAULT_FILTER_VERTICES_MIN = 0;
     private static final int sDEFAULT_FILTER_VERTICES_MAX = 200;
-    private static final float sDEFAULT_FILTER_RATIO_MIN = 0;
-    private static final float sDEFAULT_FILTER_RATIO_MAX = 2;
+    private static final float sDEFAULT_FILTER_RATIO_MIN = .3f;
+    private static final float sDEFAULT_FILTER_RATIO_MAX = 1f;
 
     private Pair<Integer, Integer> mHueRange;
     private Pair<Integer, Integer> mSatRange;

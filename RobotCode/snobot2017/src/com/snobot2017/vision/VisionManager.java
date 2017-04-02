@@ -9,7 +9,6 @@ import org.json.simple.JSONObject;
 import com.snobot.lib.modules.ISubsystem;
 import com.snobot.lib.vision.MjpegForwarder;
 import com.snobot.lib.vision.MjpegReceiver;
-import com.snobot2017.ISnobotState;
 import com.snobot2017.PortMappings2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
@@ -18,6 +17,7 @@ import com.snobot2017.joystick.IVisionJoystick;
 import com.snobot2017.positioner.IPositioner;
 import com.snobot2017.vision.VisionAdbServer.CameraFacingDirection;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionManager implements ISubsystem
@@ -29,9 +29,9 @@ public class VisionManager implements ISubsystem
     private StateManager mStateManager;
     private List<TargetLocation> mLatestTargetInformation;
     private String mTargetMessage;
-    private ISnobotState mSnobotState;
+    private RobotBase mSnobotState;
 
-    public VisionManager(IPositioner aPositioner, ISnobotActor aSnobotActor, IVisionJoystick aOperatorJoystick, ISnobotState aSnobotState)
+    public VisionManager(IPositioner aPositioner, ISnobotActor aSnobotActor, IVisionJoystick aOperatorJoystick, RobotBase aSnobotState)
     {
         if (Properties2017.sENABLE_VISION.getValue())
         {
@@ -111,7 +111,6 @@ public class VisionManager implements ISubsystem
         mTargetMessage = targetUpdateJson.toJSONString();
 
         double tooCloseDistance = Properties2017.sVISION_TOO_CLOSE_DISTANCE.getValue();
-        double tooFarDistance = Properties2017.sVISION_TOO_FAR_DISTANCE.getValue();
         if (mSnobotState.isOperatorControl() && mSnobotActor.isInAction())
         {
             if (!mLatestTargetInformation.isEmpty())
@@ -122,7 +121,7 @@ public class VisionManager implements ISubsystem
                 double distance = Math.sqrt(dx * dx + dy * dy);
                 System.out.println("Vision: Distance: " + distance + ", Ambiguous = " + (target.mAmbigious));
 
-                if (!target.mAmbigious && (tooCloseDistance < distance && distance < tooFarDistance))
+                if (!target.mAmbigious && (tooCloseDistance < distance))
                 {
                     mSnobotActor.setGoToPositionSmoothlyGoal(target.mX, target.mY);
                 }

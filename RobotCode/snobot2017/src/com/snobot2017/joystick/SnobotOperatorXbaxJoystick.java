@@ -25,9 +25,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     // Gear Boss
     private GearBossPositions mGearBossPos;
 
-    // Sphincter
-    private boolean mSphincterIsOpen;
-
     // Lights
     private ToggleButton mToggleGreenLight;
     private ToggleButton mToggleBlueLight;
@@ -71,9 +68,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
         // Climb
         mClimb = mJoystick.getRawButton(XboxButtonMap.RB_BUTTON);
         mCatch = mJoystick.getRawButton(XboxButtonMap.LB_BUTTON);
-
-        // Sphincter
-        mSphincterIsOpen = mJoystick.getRawButton(XboxButtonMap.Y_BUTTON);
 
         // Light
         mGreenRelayOn = mToggleGreenLight.update(mJoystick.getRawButton(XboxButtonMap.START_BUTTON));
@@ -126,13 +120,6 @@ public class SnobotOperatorXbaxJoystick implements IOperatorJoystick
     public boolean isClimb()
     {
         return mClimb;
-    }
-
-
-    @Override
-    public boolean isPooperOpen()
-    {
-        return mSphincterIsOpen;
     }
 
     @Override

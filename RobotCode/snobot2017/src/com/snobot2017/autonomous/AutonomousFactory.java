@@ -72,7 +72,7 @@ public class AutonomousFactory
         mPositioner = aSnobot.getPositioner();
 
         mAutonModeChooser = new SnobotAutonCrawler(Properties2017.sAUTON_FILE_FILTER.getValue())
-                .loadAutonFiles(Properties2017.sAUTON_DIRECTORY.getValue() + "/");
+                .loadAutonFiles(Properties2017.sAUTON_DIRECTORY.getValue() + "/", Properties2017.sAUTON_DEFAULT_FILE.getValue());
 
         SmartDashboard.putData(SmartDashBoardNames.sAUTON_CHOOSER, mAutonModeChooser);
         

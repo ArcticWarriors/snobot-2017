@@ -74,7 +74,7 @@ public final class SnobotAutonCrawler extends SimpleFileVisitor<Path>
                 boolean isFirst = true;
                 for (Path p : mPaths)
                 {
-                    if ((isFirst && aDefaultName == null) || p.getFileName().equals(aDefaultName))
+                    if ((isFirst && aDefaultName == null) || p.getFileName().toString().equals(aDefaultName))
                     {
                         output.addDefault(p.getFileName().toString(), p.toFile());
                         isFirst = false;

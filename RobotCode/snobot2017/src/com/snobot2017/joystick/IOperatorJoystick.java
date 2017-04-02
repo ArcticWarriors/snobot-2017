@@ -44,13 +44,6 @@ public interface IOperatorJoystick extends IJoystick
     boolean blueLightOn();
 
     /**
-     * Is the sphincter open?
-     * 
-     * @return true if the sphincter is open
-     */
-    boolean isPooperOpen();
-
-    /**
      * Returns UP if up button is pressed, DOWN, if down button is pressed, and
      * NONE, if neither buttons are pressed
      * 
