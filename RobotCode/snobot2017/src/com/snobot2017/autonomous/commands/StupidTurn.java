@@ -22,7 +22,7 @@ public class StupidTurn extends TimedCommand
      * @param aTimeout The time to turn, in seconds
      * @param aDirection 
      */
-    public StupidTurn(double aSpeed, IDriveTrain aDriveTrain, double aTimeout)
+    public StupidTurn(IDriveTrain aDriveTrain, double aTimeout, double aSpeed)
     {
         super(aTimeout);
 

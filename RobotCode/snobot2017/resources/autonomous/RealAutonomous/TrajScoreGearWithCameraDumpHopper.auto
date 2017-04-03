@@ -1,0 +1,11 @@
+# Drive to peg, override if target is seen
+TrajStartToGear true .7
+
+# Score!
+PlaceGear 1.0
+
+# Extra jam forwards
+StupidDriveStraight 0.25 0.5
+
+# Dump Hopper
+TrajGearToHopper

@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 public abstract class ACommandParser
@@ -139,6 +140,12 @@ public abstract class ACommandParser
         }
 
         return parallelCommands;
+    }
+
+    protected Command parseWaitCommand(List<String> args)
+    {
+        double time = Double.parseDouble(args.get(1));
+        return new WaitCommand(time);
     }
 
     /**

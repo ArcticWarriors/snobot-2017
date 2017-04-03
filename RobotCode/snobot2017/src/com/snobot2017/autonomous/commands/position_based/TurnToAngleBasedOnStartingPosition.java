@@ -2,7 +2,7 @@ package com.snobot2017.autonomous.commands.position_based;
 
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.autonomous.AutonomousFactory.StartingPositions;
-import com.snobot2017.autonomous.commands.TurnWithDegrees;
+import com.snobot2017.autonomous.commands.TurnToAngle;
 import com.snobot2017.positioner.IPositioner;
 
 /**
@@ -13,7 +13,7 @@ import com.snobot2017.positioner.IPositioner;
  * @author Team174
  *
  */
-public class TurnToPegAfterPathFromStartingPosition extends TurnWithDegrees
+public class TurnToAngleBasedOnStartingPosition extends TurnToAngle
 {
     private IPositioner mPositioner;
 
@@ -26,10 +26,11 @@ public class TurnToPegAfterPathFromStartingPosition extends TurnWithDegrees
      * @param aDriveTrain
      * @param aPositioner
      */
-    public TurnToPegAfterPathFromStartingPosition(double aSpeed, StartingPositions aStartPosition, IPositioner aPositioner, ISnobotActor aSnobotActor, double aRedLeft,
+    public TurnToAngleBasedOnStartingPosition(double aSpeed, StartingPositions aStartPosition, IPositioner aPositioner, ISnobotActor aSnobotActor, double aRedLeft,
             double aRedRight, double aRedMiddle, double aBlueLeft, double aBlueRight, double aBlueMiddle)
     {
         super(aSpeed, getTurnAngle(aStartPosition, aRedLeft, aRedRight, aRedMiddle, aBlueLeft, aBlueRight, aBlueMiddle), aSnobotActor);
+        mPositioner = aPositioner;
     }
 
     private static double getTurnAngle(StartingPositions aStartPosition,

@@ -14,7 +14,7 @@ import com.snobot2017.positioner.IPositioner;
  * @author Andrew
  *
  */
-public class DriveStraightPathWithGyroFromStartingPosition extends DriveStraightPathWithGyro
+public class DriveStraightPathWithGryoBasedOnStartingPosition extends DriveStraightPathWithGyro
 {
     /**
      * 
@@ -26,7 +26,7 @@ public class DriveStraightPathWithGyroFromStartingPosition extends DriveStraight
      * @param aSetpointIterator
      *            A setpoint iterator for the path follower
      */
-    public DriveStraightPathWithGyroFromStartingPosition(IDriveTrain aDriveTrain, IPositioner aPositioner, StartingPositions aStartPosition,
+    public DriveStraightPathWithGryoBasedOnStartingPosition(IDriveTrain aDriveTrain, IPositioner aPositioner, StartingPositions aStartPosition,
             double aMaxVelocity, double aMaxAccelleration, double aExpectedDt, 
             double aRedLeft, double aRedRight, double aRedMiddle, 
             double aBlueLeft, double aBlueRight, double aBlueMiddle)

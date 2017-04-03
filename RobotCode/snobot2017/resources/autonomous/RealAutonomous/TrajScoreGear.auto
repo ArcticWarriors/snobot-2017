@@ -1,0 +1,11 @@
+# Drive to gear
+TrajStartToGear
+
+# Score!
+PlaceGear 1.0
+
+# Extra jam forwards
+StupidDriveStraight 0.25 0.5
+
+# Back off peg
+StupidDriveStraight 1 -0.25

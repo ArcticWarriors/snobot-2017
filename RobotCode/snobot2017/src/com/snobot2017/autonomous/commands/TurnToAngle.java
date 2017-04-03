@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author Jeff
  *
  */
-public class TurnWithDegrees extends Command
+public class TurnToAngle extends Command
 {
     private ISnobotActor mSnobotActor;
     private double mTurnAngle;
@@ -26,7 +26,7 @@ public class TurnWithDegrees extends Command
      * @param aDriveTrain
      * @param aPositioner
      */
-    public TurnWithDegrees(double aSpeed, double aTurnAngle, ISnobotActor aSnobotActor)
+    public TurnToAngle(double aSpeed, double aTurnAngle, ISnobotActor aSnobotActor)
     {
         mSnobotActor = aSnobotActor;
         mSpeed = aSpeed;

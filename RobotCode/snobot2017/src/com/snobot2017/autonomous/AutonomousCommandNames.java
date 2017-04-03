@@ -13,33 +13,28 @@ public class AutonomousCommandNames
 
     // Stupid
     public static final String sSTUPID_DRIVE_STRAIGHT_COMMAND = "StupidDriveStraight";
-    public static final String sAUTON_COPY = "AutoCopy";
+    public static final String sSTUPID_TURN_COMMAND = "StupidTurn";
     public static final String sREPLAY = "Replay";
 
     // Smarter
-    public static final String sTURN_WITH_DEGREES = "TurnWithDegrees";
-    public static final String sTURN_TO_PEG_AFTER_PATH_FROM_STARTING_POSITION = "TurnToPegAfterPathFromStartingPosition";
+    public static final String sTURN_TO_ANGLE = "TurnToAngle";
     public static final String sDRIVE_STRAIGHT_A_DISTANCE = "DriveStraightADistance";
     public static final String sGO_TO_POSITION_SMOOTH_IN_STEPS = "GoToPositionInSteps";
+    public static final String sGO_TO_POSITION_SMOOTHLY = "GoToPositionSmoothly";
+    public static final String sDRIVE_TO_PEG_USING_VISION = "DriveToPegUsingVision";
 
     // Path + Trajectory
     public static final String sDRIVE_PATH_STRAIGHT = "DrivePathStraight";
     public static final String sDRIVE_PATH_TURN = "DrivePathTurn";
     public static final String sDRIVE_TRAJECTORY = "DriveTrajectory";
-    public static final String sGO_TO_POSITION_SMOOTHLY = "GoToPositionSmoothly";
-    public static final String sDRIVE_TO_PEG_USING_VISION = "DriveToPegUsingVision";
     public static final String sDRIVE_STRAIGHT_PATH_WITH_GYRO = "DriveStraightPathWithGyro";
+
+    // StartingPosition based commands
+    public static final String sTRAJ_START_TO_GEAR = "TrajStartToGear";
+    public static final String sTRAJ_START_TO_HOPPER = "TrajStartToHopper";
+    public static final String sTRAJ_GEAR_TO_HOPPER = "TrajGearToHopper";
+    public static final String sTRAJ_GEAR_TO_FUEL = "TrajGearToFuel";
+    public static final String sTURN_TO_PEG_AFTER_PATH_FROM_STARTING_POSITION = "TurnToPegAfterPathFromStartingPosition";
     public static final String sDRIVE_STRAIGHT_PATH_WITH_GYRO_FROM_STARTING_POSITION = "DriveStraightPathWithGyroFromStartingPosition";
 
-    // Combined modes
-    public static final String sDUMP_HOPPER = "DumpHopper";
-
-    public static final String sSCORE_GEAR = "ScoreGear";
-    public static final String sSCORE_GEAR_DUMP_HOPPER = "ScoreGearDumpHopper";
-    public static final String sSCORE_GEAR_SCORE_FUEL = "ScoreGearScoreFuel";
-
-    public static final String sSCORE_GEAR_WITH_CAM = "ScoreGearWithCamera";
-    public static final String sSCORE_GEAR_WITH_CAM_DUMP_HOPPER = "ScoreGearWithCameraDumpHopper";
-    public static final String sSCORE_GEAR_WITH_CAM_SCORE_FUEL = "ScoreGearWithCameraScoreFuel";
-    public static final String sSCORE_GEAR_WITH_CAMERA_AND_GYRO_NO_TRAJ = "ScoreGearWithCameraAndGyroNoTraj";
 }

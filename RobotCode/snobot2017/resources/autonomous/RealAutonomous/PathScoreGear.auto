@@ -6,24 +6,17 @@
 # args:  MaxVelocity MaxAcceleration RedLeft RedRight RedMiddle BlueLeft BlueRight BlueMiddle  
 DriveStraightPathWithGyroFromStartingPosition 30 30 65 65 10 65 65 10
 
-# args: Seconds
-#RaiseGear 1
-
 # args: RedLeft RedRight RedMiddle BlueLeft BlueRight BlueMiddle  
 TurnToPegAfterPathFromStartingPosition 45 -45 0 225 -225 180
 
 # Wait after hack reset position
 Wait .5
 
-
 # args: DeadBand
 DriveToPegUsingVision 4.5 18
 
 # args: Seconds Speed
 StupidDriveStraight 0.25 0.5
-
-# args: Seconds
-#Wait .5
 
 # args: Seconds
 PlaceGear 1.0
