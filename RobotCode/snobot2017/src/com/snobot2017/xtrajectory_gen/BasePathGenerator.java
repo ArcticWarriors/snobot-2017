@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.snobot2017.Properties2017;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.gen.PathGenerator;
 import com.team254.lib.trajectory.gen.TrajectoryGenerator;
@@ -19,10 +20,10 @@ public class BasePathGenerator
     protected static final double ROBOT_WIDTH = 2 * 12;
 
     // Raw Staring locations
-    protected static final double START_Y = 336 - ROBOT_LENGTH;
+    protected static final double START_Y = Properties2017.sFIELD_LENGTH - ROBOT_LENGTH;
     protected static final double START_X_CENTER = 0;
-    protected static final double START_X_BOILER = 43 + ROBOT_WIDTH;
-    protected static final double START_X_LOADING = 79;
+    protected static final double START_X_BOILER = Properties2017.sBOILER_X_OFFSET;
+    protected static final double START_X_LOADING = Properties2017.sLOADING_X_OFFSET;
 
     // Gear Locations
     protected static final double NON_CENTER_GEAR_X_OFFSET = 48;

@@ -70,6 +70,11 @@ public class Properties2017
     public static final DoubleProperty sDRIVE_PATH_WITH_GYRO_KP = new DoubleProperty("DrivePathWithGyroKP", 0.01);
     public static final DoubleProperty sSIDE_AUTO_TURN_SPEED = new DoubleProperty("SideAutoTurnSpeed", 0.1);
 
+    // Starting Positions
+    public static final double sBOILER_X_OFFSET = 135;
+    public static final double sLOADING_X_OFFSET = 135;
+    public static final double sFIELD_LENGTH = 324;
+
     static
     {
         String logPath;
