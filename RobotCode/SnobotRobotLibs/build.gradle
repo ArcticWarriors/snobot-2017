@@ -1,0 +1,133 @@
+
+
+plugins {
+    id 'java'
+    id 'edu.wpi.first.wpilib.versioning.WPILibVersioningPlugin' version '1.5.1'
+    id 'maven-publish'
+}
+
+apply plugin: 'jacoco'
+apply plugin: 'eclipse'
+
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+    }
+}
+
+sourceSets {
+    main
+    {
+        java
+        {
+            srcDirs = ["${rootDir}/src"]
+        }
+    }
+    
+    test
+    {
+        java
+        {
+            srcDirs = ["${rootDir}/unit_test"]
+        }
+    }
+}
+
+ext.getNtCoreVersion = {
+    return '4.0.0-alpha-1-20170907000421-20-g95bce5d'
+}
+ext.getWpilibjVersion = {
+    return '2017.3.1-20170908015815-103-g57ba589'
+}
+ext.getWpiUtilVersion = {
+    return '2.0.0-20170907010827-33-gef85809'
+}
+ext.getSnobotSimVersion = {
+    return "0.2"
+}
+
+dependencies {
+    // WPILib
+    compile 'edu.wpi.first.wpilibj:wpilibj-java:' + getWpilibjVersion() + ':javaArtifact'
+    compile 'edu.wpi.first.ntcore:ntcore-java:' + getNtCoreVersion()
+    
+    // 3rd Party
+    compile files("3rdPartyLibs/RioDroid.jar")
+    
+    // Testing
+    testCompile 'junit:junit:4.12'
+    testRuntime 'edu.wpi.first.wpiutil:wpiutil-java:' + getWpiUtilVersion()
+    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:' + getNtCoreVersion() + ':all'
+    
+    testCompile    'com.snobot.simulator:snobot_sim_gui:'  + getSnobotSimVersion() + ':all'
+    testRuntime    'com.snobot.simulator:snobot_sim_java:' + getSnobotSimVersion() + ':uber_native-linux'
+    testRuntime    'com.snobot.simulator:snobot_sim_java:' + getSnobotSimVersion() + ':uber_native-windows'
+    
+    // TODO nice to remove these
+    testCompile 'log4j:log4j:1.2.16'
+    testRuntime 'jfree:jcommon:1.0.16'
+    testRuntime 'jfree:jfreechart:1.0.13'
+    testRuntime 'net.java.jinput:jinput:2.0.7'
+    testRuntime 'org.yaml:snakeyaml:1.18'
+    testRuntime 'com.miglayout:miglayout-swing:4.2'
+    
+    
+}
+
+
+jar {
+    dependsOn { classes }
+}
+
+test.ignoreFailures = true
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+    
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it,  exclude: 
+                [
+                'com/team254/lib/trajectory/**',
+                'com/snobot/lib/motion_profile/**',
+                'com/snobot/lib/vision/**',
+                'com/snobot/lib/external_connection/**',
+                'com/snobot/lib/adb/**',
+                ])
+        })
+    }
+}
+
+
+//test.finalizedBy(jacocoTestReport)
+
+
+// Publishing
+ext.publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
+if(hasProperty('maven_repo'))
+{
+    ext.publishing_path = maven_repo
+}
+
+publishing {
+
+   repositories {
+      maven {
+        url publishing_path
+      }
+   }
+    
+   publications {
+      create(MavenPublication ) {
+         groupId 'com.snobot.robot'
+         artifactId 'Snobot2017'
+         version '1.0'
+      }
+   }
+}

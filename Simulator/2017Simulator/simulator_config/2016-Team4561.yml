@@ -1,0 +1,61 @@
+speed_controllers:
+- name: Roller
+  handle: 1
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (B)
+  handle: 2
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Left Shooter
+  handle: 3
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Right Shooter
+  handle: 4
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (A)
+  handle: 5
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (A)
+  handle: 6
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Flashlight
+  handle: 7
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (B)
+  handle: 8
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Left Arm
+  handle: 9
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Right Arm
+  handle: 10
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+quad_encoders:
+- name: Shooter
+  single_handle: 1
+  speed_controller_handle: 3
+- name: Drive Left
+  single_handle: 515
+  speed_controller_handle: 6
+- name: Drive Right
+  single_handle: 1029
+  speed_controller_handle: 2

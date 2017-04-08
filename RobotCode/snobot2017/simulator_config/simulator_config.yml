@@ -1,0 +1,32 @@
+speed_controllers:
+- name: Drive Right
+  handle: 0
+- name: Drive Left
+  handle: 1
+- name: Climber
+  handle: 5
+quad_encoders:
+- name: Left Encoder
+  single_handle: 0
+  speed_controller_handle: 1
+- name: Encoder 1
+  single_handle: 1
+relays:
+- name: Green LED
+  handle: 0
+- name: Blue LED
+  handle: 1
+solenoids:
+- name: Gear (A)
+  handle: 0
+- name: Gear (B)
+  handle: 1
+digital:
+- name: Digital Source6
+  handle: 6
+- name: Digital Source7
+  handle: 7
+- name: Digital Source8
+  handle: 8
+- name: Digital Source9
+  handle: 9

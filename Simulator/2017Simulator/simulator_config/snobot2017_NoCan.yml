@@ -1,0 +1,70 @@
+
+simulate_camera: True
+
+speed_controllers:
+- name: Left Motor
+  handle: com.snobot2017.PortMappings2017.sDRIVE_PWM_LEFT_A_PORT
+
+  motor_sim:
+    type : StaticLoad
+    load : .6 # Random guess
+    conversion_factor: 2.43 # 6 inch wheels / 2 * .81 loss factor
+    motor_model: 
+      motor_type: CIM
+      transmission:
+        num_motors     : 2
+        gear_reduction : 11.43
+        efficiency     : 1
+  
+- name: Right Motor
+  handle: com.snobot2017.PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT
+  
+  motor_sim:
+    type : StaticLoad
+    load : .6 # Random guess
+    conversion_factor: 2.43 # 6 inch wheels / 2 * .81 loss factor
+    motor_model: 
+      inverted: True
+      motor_type: CIM
+      transmission:
+        num_motors     : 2
+        gear_reduction : 11.43
+        efficiency     : 1
+  
+- name: Climb Motor
+  handle: com.snobot2017.PortMappings2017.sCLIMB_PWM_PORT
+  
+  
+quad_encoders:
+- name                    : Left Encoder
+  handle_a                : com.snobot2017.PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A
+  handle_b                : com.snobot2017.PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B
+  speed_controller_handle : com.snobot2017.PortMappings2017.sDRIVE_PWM_LEFT_A_PORT
+  
+- name                    : Right Encoder
+  handle_a                : com.snobot2017.PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A
+  handle_b                : com.snobot2017.PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B
+  speed_controller_handle : com.snobot2017.PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT
+  
+  
+solenoids:
+- name: Gear (A)
+  handle: com.snobot2017.PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A
+- name: Gear (B)
+  handle: com.snobot2017.PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B
+  
+  
+relays:
+- name: Blue LEDs
+  handle: com.snobot2017.PortMappings2017.sRELAY_BLUE_LED
+- name: Green LEDs
+  handle: com.snobot2017.PortMappings2017.sRELAY_GREEN_LED
+
+  
+tank_drives:
+- left_enc_handle_a   : com.snobot2017.PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A
+  left_enc_handle_b   : com.snobot2017.PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B
+  right_enc_handle_a  : com.snobot2017.PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A
+  right_enc_handle_b  : com.snobot2017.PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B
+  gyro_handle         : 100
+  turn_kp             : 33.333333333333333333333333333333

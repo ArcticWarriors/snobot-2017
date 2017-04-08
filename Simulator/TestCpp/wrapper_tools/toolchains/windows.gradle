@@ -1,0 +1,105 @@
+
+
+model {
+
+    toolChains 
+    {
+        visualCpp(VisualCpp) 
+        {
+            // Workaround for VS2015 adapted from https://github.com/couchbase/couchbase-lite-java-native/issues/23
+            def VS_2015_INCLUDE_DIR = "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/ucrt"
+            def VS_2015_LIB_DIR = "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.10240.0/ucrt"
+            
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 408e130... Adding more CAN simulation
+            def jni_include_path = System.properties.'java.home' + "/../include"
+            def jni_dir = new File("${jni_include_path}")
+            if(!jni_dir.exists())
+            {
+                throw new GradleException("Could not find JNI include path ${jni_dir}.  Make sure JAVA_HOME is defined and points to a JDK, and not a JRE")
+            }
+<<<<<<< HEAD
+=======
+            def JAVA_HOME= "C:/Program Files/Java/jdk1.8.0_73"
+>>>>>>> 9bd993d... Linux Simulator
+=======
+>>>>>>> 408e130... Adding more CAN simulation
+
+            eachPlatform {
+                cppCompiler.withArguments { args ->
+                    args << '/EHsc' << '/DNOMINMAX' << '/D_SCL_SECURE_NO_WARNINGS' << '/D_WINSOCK_DEPRECATED_NO_WARNINGS'
+                    if (file(VS_2015_INCLUDE_DIR).exists()) {
+                        args << "/I$VS_2015_INCLUDE_DIR"
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        args << "/I$jni_include_path"
+                        args << "/I$jni_include_path/win32"
+=======
+                        args << "/I$JAVA_HOME/include"
+                        args << "/I$JAVA_HOME/include/win32"
+>>>>>>> 9bd993d... Linux Simulator
+=======
+                        args << "/I$jni_include_path"
+                        args << "/I$jni_include_path/win32"
+>>>>>>> 408e130... Adding more CAN simulation
+                    }
+                }
+                linker.withArguments { args ->
+                    if (file(VS_2015_LIB_DIR).exists()) {
+                        if (platform.architecture.name == 'x86') {
+                            args << "/LIBPATH:$VS_2015_LIB_DIR/x86"
+                        } else {
+                            args << "/LIBPATH:$VS_2015_LIB_DIR/x64"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+def defineExternalLibraries(wpilibBuildPath) {
+    ext.wpilibcIncludePath       = wpilibBuildPath + "/cpp/wpilibc/include"
+    ext.halIncludePath           = wpilibBuildPath + "/cpp/hal/include"
+    ext.wpiIncludePath           = wpilibBuildPath + "/cpp/wpiutil/include"
+    ext.networkTablesIncludePath = wpilibBuildPath + "/cpp/networktables/include"
+    ext.niLibrariesIncludePath   = wpilibBuildPath + "/cpp/ni-libraries/include"
+    
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 408e130... Adding more CAN simulation
+    ext.wpilibcLibraryPath       = wpilibBuildPath + '/native_windows/shared/x64/wpilibc.lib'
+    ext.networkTablesLibraryPath = wpilibBuildPath + '/native_windows/shared/x64/ntcore.lib'
+    ext.wpilibLibraryPath        = wpilibBuildPath + '/native_windows/shared/x64/wpiutil.lib'
+    ext.halLibraryPath           = snobotSimBuildPath + '/native/shared/x64/HALAthena.lib'
+    ext.canTalonLibraryPath      = snobotSimBuildPath + '/native/shared/x64/ctreOverride.lib'
+<<<<<<< HEAD
+}
+
+ext
+{
+    defineExternalLibraries = this.&defineExternalLibraries
+
+}
+=======
+    ext.wpilibcLibraryPath       = wpilibBuildPath + '/native/x64/wpilibc.lib'
+    ext.networkTablesLibraryPath = wpilibBuildPath + '/native/x64/ntcore.lib'
+    ext.wpilibLibraryPath        = wpilibBuildPath + '/native/x64/wpiutil.lib'
+    ext.halLibraryPath           = snobotSimBuildPath + '/native/x64/HALAthena.lib'
+}
+
+>>>>>>> 9bd993d... Linux Simulator
+=======
+}
+
+ext
+{
+    defineExternalLibraries = this.&defineExternalLibraries
+
+}
+>>>>>>> 408e130... Adding more CAN simulation
+
+

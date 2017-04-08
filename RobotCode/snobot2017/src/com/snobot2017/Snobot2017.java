@@ -3,7 +3,6 @@ package com.snobot2017;
 import java.text.SimpleDateFormat;
 import java.util.logging.LogManager;
 
-import com.ctre.CANTalon;
 import com.snobot.lib.ASnobot;
 import com.snobot.lib.logging.ILogger;
 import com.snobot.lib.logging.LogFormatter;
@@ -11,13 +10,9 @@ import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.SnobotActor.SnobotActor;
 import com.snobot2017.autologger.AutoLogger;
 import com.snobot2017.autonomous.AutonomousFactory;
-import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
 import com.snobot2017.drivetrain.IDriveTrain;
-import com.snobot2017.drivetrain.SnobotCanDriveTrain;
-import com.snobot2017.drivetrain.SnobotDriveTrain;
 import com.snobot2017.gearboss.IGearBoss;
-import com.snobot2017.gearboss.SnobotGearBoss;
 import com.snobot2017.joystick.SnobotDriveXbaxJoystick;
 import com.snobot2017.joystick.SnobotOperatorXbaxJoystick;
 import com.snobot2017.light_manager.LightManager;
@@ -26,16 +21,12 @@ import com.snobot2017.positioner.Positioner;
 import com.snobot2017.vision.VisionManager;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
-public class Snobot2017 extends ASnobot
+public class Snobot2017 extends ASnobot implements ISnobot2017
 {
     // Robot Subsystems
     private IDriveTrain mDriveTrain;
@@ -66,6 +57,7 @@ public class Snobot2017 extends ASnobot
      */
     public void robotInit()
     {
+        ModuleFactory moduleFactory = new ModuleFactory();
         LogManager.getLogManager().getLogger("").getHandlers()[0].setFormatter(new LogFormatter());
 
         ILogger logger = getLogger();
@@ -76,7 +68,7 @@ public class Snobot2017 extends ASnobot
         Joystick driverJoystickRaw = new Joystick(0);
         Joystick operatorJoystickRaw = new Joystick(1);
 
-        SnobotDriveXbaxJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, logger, mAutonFactory);
+        SnobotDriveXbaxJoystick driverJoystick = new SnobotDriveXbaxJoystick(driverJoystickRaw, logger);
         addModule(driverJoystick);
 
         SnobotOperatorXbaxJoystick operatorJoystick = new SnobotOperatorXbaxJoystick(operatorJoystickRaw, logger);
@@ -85,38 +77,15 @@ public class Snobot2017 extends ASnobot
         ////////////////////////////////////////////////////////////
         // Initialize subsystems
         ////////////////////////////////////////////////////////////
-
-        // Drive Train
-        boolean useCan = false;
-        if (useCan)
-        {
-            CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
-            CANTalon driveLeftMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_B_PORT);
-            CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
-            CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
-
-            mDriveTrain = new SnobotCanDriveTrain(driveLeftMotorA, driveLeftMotorB, driveRightMotorA, driveRightMotorB, driverJoystick, logger);
-        }
-        else
-        {
-            SpeedController driveLeftMotor = new VictorSP(PortMappings2017.sDRIVE_PWM_LEFT_A_PORT);
-            SpeedController driveRightMotor = new VictorSP(PortMappings2017.sDRIVE_PWM_RIGHT_A_PORT);
-            Encoder leftDriveEncoder = new Encoder(PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_A, PortMappings2017.sLEFT_DRIVE_ENCODER_PORT_B);
-            Encoder rightDriveEncoder = new Encoder(PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_A, PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B);
-
-            mDriveTrain = new SnobotDriveTrain(driveLeftMotor, driveRightMotor, leftDriveEncoder, rightDriveEncoder, driverJoystick, logger);
-        }
+        mDriveTrain = moduleFactory.createDrivetrain(driverJoystick, logger);
         addModule(mDriveTrain);
 
         // Climbing
-        SpeedController climbingMotor = new VictorSP(PortMappings2017.sCLIMB_PWM_PORT);
-        mClimber = new Climbing(climbingMotor, logger, operatorJoystick);
+        mClimber = moduleFactory.createClimber(operatorJoystick, logger);
         addModule(mClimber);
 
         // GearBoss
-        DoubleSolenoid gearSolonoid = new DoubleSolenoid(PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A,
-                PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B);
-        mGearBoss = new SnobotGearBoss(gearSolonoid, operatorJoystick, logger);
+        mGearBoss = moduleFactory.createGearBoss(operatorJoystick, logger);
         addModule(mGearBoss);
 
         // Positioner

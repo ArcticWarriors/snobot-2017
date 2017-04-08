@@ -1,0 +1,38 @@
+language: java
+matrix:
+  include:
+  - os: linux
+    dist: trusty
+    sudo: required
+addons:
+  apt:
+    packages:
+    - g++-multilib
+    - lib32stdc++6
+before_cache:
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+install:
+- pwd
+- git clone --depth=50 --branch=master https://github.com/pjreiniger/maven_repo.git pjreiniger/maven_repo
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+script:
+
+# Build CPP robot
+- cd Simulator/TestCpp
+- ls
+- "./gradlew build --refresh-dependencies"
+
+# Build Simulator Application
+- cd ../../Simulator/2017Simulator
+- ls
+- "./gradlew publish -Pmaven_repo=../../pjreiniger/maven_repo"
+
+# Deploy stuff to "maven"
+# - cd ../../pjreiniger/maven_repo
+# - "./commit_updates.sh"
+env:
+  global:
+    secure: BfWN/Tu+JgCgX2pfzRNVr4eClCE2QNGvqWDZ5dLmsnNBRuCPOd81P6tSIMjLELSlIFI8p+gyW3Q0s5ndfGyqiH42/RdQTtNu4jyXkppUsIQsNlIooxayAWix+EHmC7JnQP0uJVaEZ1/2N7O3VQWfYsbfegoDyqEszEOJsZTFGs2e13B+crOdpSMCN4Zb+2wKTiFuxJHIJ3qZ3U7pmoUnD+eH+WsZ72gZJAI4QVOgsUkSA6kRo5FeU6+CIYB2Xavni1hTcV27g2stLm6s/gXNJymx8fweYMWoq+zhgidH7A6m26g6S3jx/FquyHiRkB6MRjyX8rO9SC7fyDABULSivBxpgdrA2BWg8jcxzAvRZWOuRc79MhMICpUpohHRCxC2XnISQDYt5wItPzuXpyqWXE1AQUb89ifV/8+bjNdJrWyzPz2R8TjvVliQkAPxqwaAHWEixO39lFHdaVPNNKWRQX9e80mfWixsX1Yai487YmgwX8uxUZTFHsOcNvKR2/jtdPo2irzUa7PeH9CyEC+QsPI7eF4yjK/tLkHlbpCxFVmc+psn/CwrB9FweDxrIA4nZgqZGkWpiwIk2wqR/WT3TRGtxwOceJdPbRyY7bOSNkjQo7PIq1dmuUMVD08qg2qhW+KT/CwmED8TGdjTqnD3eLVsI8LGERc6XxyzZYUj1Fc=

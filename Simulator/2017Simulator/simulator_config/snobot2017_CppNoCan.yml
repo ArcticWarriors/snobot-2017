@@ -1,0 +1,64 @@
+
+simulate_camera: True
+
+speed_controllers:
+- name: Left Motor
+  handle: 0
+  motor_sim: *drivetrain_motor_sim_config
+  
+  motor_sim:
+    type : StaticLoad
+    load : .6 # Random guess
+    conversion_factor: 2.43 # 6 inch wheels / 2 * .81 loss factor
+    motor_model: 
+      motor_type: CIM
+      transmission:
+        num_motors     : 2
+        gear_reduction : 11.43
+        efficiency     : 1
+  
+- name: Right Motor
+  handle: 1
+  
+  motor_sim:
+    type : StaticLoad
+    load : .6 # Random guess
+    conversion_factor: 2.43 # 6 inch wheels / 2 * .81 loss factor
+    motor_model: 
+      inverted: True
+      motor_type: CIM
+      transmission:
+        num_motors     : 2
+        gear_reduction : 11.43
+        efficiency     : 1
+  
+- name: Climb Motor
+  handle: 2
+  
+  
+quad_encoders:
+- name                    : Left Encoder
+  handle_a                : 0
+  handle_b                : 1
+  speed_controller_handle : 0
+  
+- name                    : Right Encoder
+  handle_a                : 2
+  handle_b                : 3
+  speed_controller_handle : 1
+  
+  
+solenoids:
+- name: Gear (A)
+  handle: 33554432
+- name: Gear (B)
+  handle: 33554433
+
+  
+tank_drives:
+- left_enc_handle_a   : 0
+  left_enc_handle_b   : 1
+  right_enc_handle_a  : 2
+  right_enc_handle_b  : 3
+  gyro_handle         : 0
+  turn_kp             : 33.333333333333333333333333333333

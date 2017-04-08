@@ -2,6 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="wpilib_src"/>
 	<classpathentry kind="src" path="snobot_sim"/>
+	<classpathentry kind="src" path="ctr"/>
+	<classpathentry kind="src" path="navx_frc"/>
+	<classpathentry kind="src" path="native_wpi_libs"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
@@ -19,10 +22,33 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/templibs/opencv/x64"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="wpilib" sourcepath="wpilib.sources"/>
 	<classpathentry kind="var" path="opencv" sourcepath="opencv.sources"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
 	<classpathentry kind="lib" path="3rdParyLibraries/RIOdroid.jar"/>
 	<classpathentry kind="lib" path="3rdParyLibraries/simple-json/json-simple-1.1.1.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/json-simple-1.1.1.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/RIOdroid.jar"/>
+	<classpathentry kind="lib" path="templibs/ntcore-windows.jar"/>
+	<classpathentry kind="lib" path="3rdParyLibraries/snakeyaml-1.11.jar"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+	<classpathentry kind="lib" path="native_wpi_libs/wpilibj.jar"/>
+=======
+	<classpathentry kind="lib" path="templibs/wpilibj.jar"/>
+	<classpathentry kind="lib" path="3rdParyLibraries/jython-standalone-2.7.0.jar"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+	<classpathentry kind="var" path="wpilib" sourcepath="wpilib.sources"/>
+	<classpathentry kind="lib" path="user_libs/RobotCppSimulator.jar"/>
+>>>>>>> 0485e69... Merge conflict fix
+=======
+	<classpathentry kind="lib" path="templibs/wpilibj.jar"/>
+>>>>>>> 618f25b... Merge conflict fix
+=======
+>>>>>>> 0be1a6e... Adding a python simulator wrapper, and updating the settings dialogs
+=======
+	<classpathentry kind="var" path="wpilib" sourcepath="wpilib.sources"/>
+	<classpathentry kind="lib" path="user_libs/RobotCppSimulator.jar"/>
+>>>>>>> 9bd993d... Linux Simulator
 	<classpathentry kind="output" path="bin"/>
 </classpath>

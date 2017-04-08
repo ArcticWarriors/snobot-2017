@@ -1,0 +1,58 @@
+speed_controllers:
+- name: Intake
+  handle: 1
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left
+  handle: 2
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right
+  handle: 5
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Intake
+  handle: 8
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Intake Lateral
+  handle: 9
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Shooter Right
+  handle: 12
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Shooter Left
+  handle: 13
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+quad_encoders:
+- name: Drive Left
+  single_handle: 515
+  speed_controller_handle: 2
+- name: Drive Right
+  single_handle: 1029
+  speed_controller_handle: 5
+- name: Shooter
+  single_handle: 1543
+  speed_controller_handle: 12
+relays:
+- name: Compressor
+  handle: 0
+solenoids:
+- name: Solenoid 4
+  handle: 4
+- name: Solenoid 5
+  handle: 5
+- name: Solenoid 6
+  handle: 6
+- name: Solenoid 7
+  handle: 7

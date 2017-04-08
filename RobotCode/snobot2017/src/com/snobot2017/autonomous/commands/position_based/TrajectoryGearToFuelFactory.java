@@ -1,7 +1,7 @@
 package com.snobot2017.autonomous.commands.position_based;
 
+import com.snobot2017.ISnobot2017;
 import com.snobot2017.Properties2017;
-import com.snobot2017.Snobot2017;
 import com.snobot2017.autonomous.AutonomousFactory.StartingPositions;
 import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
 import com.team254.lib.trajectory.Path;
@@ -9,7 +9,7 @@ import com.team254.lib.trajectory.io.TextFileDeserializer;
 
 public class TrajectoryGearToFuelFactory
 {
-    public static TrajectoryPathCommand createCommand(Snobot2017 aSnobot, StartingPositions aStartPosition)
+    public static TrajectoryPathCommand createCommand(ISnobot2017 aSnobot, StartingPositions aStartPosition)
     {
         String boilFilename = null;
 

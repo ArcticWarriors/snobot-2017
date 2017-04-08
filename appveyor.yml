@@ -1,0 +1,25 @@
+version: 1.0.{build}
+image: Visual Studio 2015
+build_script:
+- ps: >-
+    cd RobotCode/SnobotRobotLibs
+    
+    dir
+    
+    cmd /c gradlew.bat build jacocoTestReport
+    
+after_build:
+- cmd: "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+- cmd: pip install codecov
+- cmd: cd ../..
+- cmd: dir
+- cmd: codecov -f "RobotCode/snobot2017/build/reports/jacoco/test/jacocoTestReport.xml"
+- cmd: codecov -f "RobotCode/SnobotRobotLibs/build/reports/jacoco/test/jacocoTestReport.xml"
+
+artifacts:
+- path: Simulator/TestCpp/build/libs
+  name: TestCppRobot
+  
+- path: Simulator/2017Simulator/build/distributions
+  name: SnobotSimulator
+ 

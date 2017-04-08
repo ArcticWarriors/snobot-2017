@@ -1,0 +1,132 @@
+
+
+
+plugins {
+    id 'java'
+    id 'edu.wpi.first.wpilib.versioning.WPILibVersioningPlugin' version '1.5.1'
+    id 'application'
+    id 'maven-publish'
+}
+
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
+    }
+}
+
+ext.publishing_path = '/home/pj/GitHub/FIRST/2017/maven_repo/'
+if(hasProperty('maven_repo'))
+{
+    ext.publishing_path = maven_repo
+}
+
+sourceSets {
+    main
+    {
+        java
+        {
+            srcDirs = ["${rootDir}/../../RobotCode/snobot2017/src", "${rootDir}/../../RobotCode/SnobotRobotLibs/src"]
+        }
+    }
+}
+
+
+def snobotSimVersion = "0.2"
+
+configurations {
+    zippedDeps
+}
+
+
+dependencies {
+
+    runtime 'edu.wpi.first.ntcore:ntcore-jni:4.0.0-alpha-1-20170907000421-20-g95bce5d:all'
+    
+    // Snobot Sim
+    zippedDeps 'com.snobot.simulator:snobot_sim_gui:'  + snobotSimVersion + ':javadeps@zip'
+    compile    'com.snobot.simulator:snobot_sim_gui:'  + snobotSimVersion + ':all'
+    compile    'com.snobot.simulator:snobot_sim_java:' + snobotSimVersion + ':uber_native-linux'
+    compile    'com.snobot.simulator:snobot_sim_java:' + snobotSimVersion + ':uber_native-windows'
+    
+    // 3rd Party
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    compile files(System.getProperty("user.home") + "/wpilib/user/java/lib/RIOdroid.jar")
+    compile files(System.getProperty("user.home") + "/wpilib/user/java/lib/CTRLib.jar")
+    
+    //compile extractDependencies.outputs.files
+    compile fileTree(dir: "sim_deps", includes: ['**/*.jar'])
+}
+
+
+task extractDependencies(type: Copy) {
+    
+    from zipTree(configurations.zippedDeps.singleFile)
+    into file("sim_deps")
+}
+
+compileJava.dependsOn extractDependencies
+
+configurations.compile.files.each { file ->
+    
+    if(!file.toString().replace("\\", "/").contains("sim_deps")) {
+        copy {
+            from file
+            into "sim_deps/dependencies/"
+        }
+    }
+}
+
+jar {
+    dependsOn { classes }
+    
+    manifest {
+      attributes(
+        'Main-Class': 'com.snobot.simulator.Main'
+      )
+    }
+}
+
+clean {
+    delete fileTree("sim_deps") {
+        include "**/*.jar"
+    }
+}
+
+// Include more stuff in the application
+distributions {
+    main {
+        contents {
+            //from("dependencies") {
+            //    into "lib"
+            //    include "*.dll"
+            //    include "*.so"
+            //}
+        }
+    }
+    
+}
+
+publishing {
+
+   repositories {
+      maven {
+      	url publishing_path
+      }
+   }
+	
+   publications {
+      create(MavenPublication ) {
+         artifact distZip
+         
+         groupId 'com.snobot.simulator'
+         artifactId 'Simulator'
+         version '1.0'
+      }
+   }
+}
+
+mainClassName = "com.snobot.simulator.Main"
+applicationDefaultJvmArgs = ["-Djava.library.path=libs"]

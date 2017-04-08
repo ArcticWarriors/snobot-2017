@@ -13,14 +13,11 @@ import com.snobot2017.joystick.IDriverJoystick;
 public class SnobotCanDriveTrain extends ASnobotDrivetrain<CANTalon>
 {
     public SnobotCanDriveTrain(
-            CANTalon aLeftMotorA, 
-            CANTalon aLeftMotorB, 
-            CANTalon aRightMotorA, 
-            CANTalon aRightMotorB, 
+            CANTalon aLeftMotor, CANTalon aRightMotor,
             IDriverJoystick aDriverJoystick, 
             ILogger aLogger)
     {
-        super(aLeftMotorA, aLeftMotorB, aRightMotorA, aRightMotorB, aDriverJoystick, aLogger);
+        super(aLeftMotor, aRightMotor, aDriverJoystick, aLogger);
     }
 
     @Override

@@ -71,8 +71,10 @@ public class AutonomousFactory
         
         mPositioner = aSnobot.getPositioner();
 
-        mAutonModeChooser = new SnobotAutonCrawler(Properties2017.sAUTON_FILE_FILTER.getValue())
-                .loadAutonFiles(Properties2017.sAUTON_DIRECTORY.getValue() + "/", Properties2017.sAUTON_DEFAULT_FILE.getValue());
+        SnobotAutonCrawler autonCrawler = new SnobotAutonCrawler(Properties2017.sAUTON_FILE_FILTER.getValue());
+        autonCrawler.loadAutonFiles(Properties2017.sAUTON_DIRECTORY.getValue() + "/");
+
+        mAutonModeChooser = autonCrawler.createSendableChooser(Properties2017.sAUTON_DEFAULT_FILE.getValue());
 
         SmartDashboard.putData(SmartDashBoardNames.sAUTON_CHOOSER, mAutonModeChooser);
         
@@ -134,8 +136,8 @@ public class AutonomousFactory
         };
         
         mAutoModeTable.addTableListener(SmartDashBoardNames.sSAVE_AUTON, saveListener, true);
-        mAutonModeChooser.getTable().addTableListener(buildAutonListener);
-        mPositionChooser.getTable().addTableListener(setPositionListener);
+        // mAutonModeChooser.getTable().addTableListener(buildAutonListener);
+        // mPositionChooser.getTable().addTableListener(setPositionListener);
     }
 
     private void setPosition()

@@ -3,11 +3,18 @@ package com.snobot.simulator;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.snobot.simulator.module_wrapper.SpeedControllerWrapper;
+import com.snobot.simulator.module_wrapper.SpeedControllerWrapperJni;
+import com.snobot.simulator.robot_container.IRobotClassContainer;
 
-import edu.wpi.first.wpilibj.RobotBase;
-
+<<<<<<< HEAD
+<<<<<<< HEAD
+public class ASimulator implements ISimulatorUpdater
+=======
 public abstract class ASimulator implements ISimulatorUpdater
+>>>>>>> 6761f30... Making the simulator able to run CPP projects 
+=======
+public class ASimulator implements ISimulatorUpdater
+>>>>>>> 9fafcd1... Adding a port of the robot code in CPP
 {
     private static final Object sUPDATE_MUTEX = new Object();
 
@@ -21,7 +28,10 @@ public abstract class ASimulator implements ISimulatorUpdater
         updateMotorsThread.start();
     }
 
-    protected abstract void createSimulatorComponents();
+    protected void createSimulatorComponents(String aConfigFile)
+    {
+        new SimulatorConfigReader().loadConfig(aConfigFile);
+    }
 
     @Override
     public void update()
@@ -36,7 +46,7 @@ public abstract class ASimulator implements ISimulatorUpdater
     }
 
     @Override
-    public void setRobot(RobotBase aRobot)
+    public void setRobot(IRobotClassContainer aRobot)
     {
         for (ISimulatorUpdater simulator : mSimulatorComponenets)
         {
@@ -54,10 +64,7 @@ public abstract class ASimulator implements ISimulatorUpdater
             {
                 synchronized (sUPDATE_MUTEX)
                 {
-                    for (SpeedControllerWrapper x : SensorActuatorRegistry.get().getSpeedControllers().values())
-                    {
-                        x.update(sMOTOR_UPDATE_FREQUENCY);
-                    }
+                    SpeedControllerWrapperJni.updateAllSpeedControllers(sMOTOR_UPDATE_FREQUENCY);
                 }
 
                 try

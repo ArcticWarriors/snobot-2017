@@ -9,11 +9,21 @@ import org.json.simple.JSONObject;
 
 import com.snobot.lib.Utilities;
 import com.snobot.simulator.ISimulatorUpdater;
-import com.snobot2017.Snobot2017;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+import com.snobot.simulator.RobotStateSingletonJni;
+=======
+import com.snobot.simulator.RobotStateSingleton;
+>>>>>>> 6761f30... Making the simulator able to run CPP projects 
+=======
+import com.snobot.simulator.RobotStateSingletonJni;
+>>>>>>> 48caa8b... Updating to match libraries
+=======
+>>>>>>> deb4f8f... Squashing a bunch of commits
+import com.snobot.simulator.robot_container.IRobotClassContainer;
+import com.snobot.simulator.robot_container.JavaRobotContainer;
 import com.snobot2017.positioner.IPositioner;
-
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.hal.HAL;
 
 public class CameraSimulator implements ISimulatorUpdater
 {
@@ -87,8 +97,10 @@ public class CameraSimulator implements ISimulatorUpdater
 
     public CameraSimulator()
     {
-        mLoopsBetweenUpdates = (int) Math.ceil((1.0 / sFRAMES_PER_SECOND) / HAL.getCycleTime());
-        mLoopsStale = (int) Math.ceil((sLATENCY_MS * 1e-3) / HAL.getCycleTime());
+        // double loopTime = RobotStateSingletonJni.getCycleTime();
+        double loopTime = .02;
+        mLoopsBetweenUpdates = (int) Math.ceil((1.0 / sFRAMES_PER_SECOND) / loopTime);
+        mLoopsStale = (int) Math.ceil((sLATENCY_MS * 1e-3) / loopTime);
         mRobotPositionHistory = new TreeMap<>();
         mLoopCtr = 0;
 
@@ -215,9 +227,11 @@ public class CameraSimulator implements ISimulatorUpdater
     }
 
     @Override
-    public void setRobot(RobotBase aRobot)
+    public void setRobot(IRobotClassContainer aRobot)
     {
-        mPositioner = ((Snobot2017) aRobot).getPositioner();
+        JavaRobotContainer container = (JavaRobotContainer) aRobot;
+        // mPositioner = ((Snobot2017)
+        // container.getJavaRobot()).getPositioner();
     }
 
 }

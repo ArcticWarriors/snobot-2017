@@ -1,0 +1,15 @@
+.gradle
+.settings
+build
+<<<<<<< HEAD
+<<<<<<< HEAD
+/Debug/
+<<<<<<< HEAD
+=======
+>>>>>>> b5fb176... Adding a CPP project to test the simulator with
+=======
+/Debug/
+>>>>>>> 6761f30... Making the simulator able to run CPP projects 
+=======
+/external_dependencies/
+>>>>>>> f83a468... Adding appveyor

@@ -1,5 +1,12 @@
 package com.snobot.lib.ui;
 
+/**
+ * A toggle button requires one click to go HIGH, and then will remain HIGH
+ * until it is selected again
+ * 
+ * @author PJ
+ *
+ */
 public class ToggleButton
 {
     private boolean mSwitchState;

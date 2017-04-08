@@ -18,8 +18,6 @@ import com.snobot2017.vision.messages.RecordingMessage;
 import com.snobot2017.vision.messages.SetCameraDirectionMessage;
 import com.snobot2017.vision.messages.TargetUpdateMessage;
 
-import edu.wpi.first.wpilibj.RobotBase;
-
 public class VisionAdbServer extends RobotConnectionServer
 {
     private static final String sAPP_PACKAGE = "snobot.com.visionapp";
@@ -45,7 +43,8 @@ public class VisionAdbServer extends RobotConnectionServer
     {
         super(aAppBindPort, sTIMEOUT_PERIOD);
 
-        if(RobotBase.isSimulation())
+        // TODO update
+        if (true)
         {
             mAdb = new NativeAdbBridge(Properties2017.sADB_LOCATION.getValue(), sAPP_PACKAGE, sAPP_MAIN_ACTIVITY, Properties2017.sKILL_OLD_ADBS);
         }

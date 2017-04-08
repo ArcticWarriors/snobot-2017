@@ -1,0 +1,76 @@
+speed_controllers:
+- name: Drive Left (A)
+  handle: 0
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (B)
+  handle: 1
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (A)
+  handle: 2
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (B)
+  handle: 3
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Shooter Talon (A)
+  handle: 4
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Shooter Talon (B)
+  handle: 5
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Conveyor (A)
+  handle: 6
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Conveyor (B)
+  handle: 7
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Conveyor (C)
+  handle: 8
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+quad_encoders:
+- name: Drive Left
+  single_handle: -268435456
+- name: Drive Right
+  single_handle: -268435454
+- name: Shooter
+  single_handle: -268435452
+relays:
+- name: Light
+  handle: 33554691
+solenoids:
+- name: Intake (A)
+  handle: 33554433
+- name: Shifter (A)
+  handle: 33554434
+- name: Porky (A)
+  handle: 33554435
+- name: Intake (B)
+  handle: 33554437
+- name: Shifter (B)
+  handle: 33554438
+- name: Porky (B)
+  handle: 33554439
+digital:
+- name: Digital Source0
+  handle: 33554688
+- name: Digital Source1
+  handle: 33554689
+- name: Digital Source2
+  handle: 33554690

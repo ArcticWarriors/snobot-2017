@@ -37,27 +37,16 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     private ISnobotActor mSnobotActor;
 
     public ASnobotDrivetrain(
-            SpeedControllerType aFrontLeftMotor, 
-            SpeedControllerType aRearLeftMotor, 
-            SpeedControllerType aFrontRightMotor,
-            SpeedControllerType aRearRightMotor, 
+            SpeedControllerType aLeftMotor, SpeedControllerType aRightMotor,
             IDriverJoystick aDriverJoystick, 
             ILogger aLogger)
     {
-        mLeftMotor = aFrontLeftMotor;
-        mRightMotor = aFrontRightMotor;
+        mLeftMotor = aLeftMotor;
+        mRightMotor = aRightMotor;
+        mRobotDrive = new RobotDrive(mLeftMotor, mRightMotor);
         
         mDriverJoystick = aDriverJoystick;
         mLogger = aLogger;
-
-        if (aRearLeftMotor != null && aRearRightMotor != null)
-        {
-            mRobotDrive = new RobotDrive(aFrontLeftMotor, aRearLeftMotor, aFrontRightMotor, aRearRightMotor);
-        }
-        else
-        {
-            mRobotDrive = new RobotDrive(aFrontLeftMotor, aFrontRightMotor);
-        }
 
         mRobotDrive.setSafetyEnabled(false);
     }

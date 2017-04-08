@@ -1,0 +1,64 @@
+speed_controllers:
+- name: Right Drive (B)
+  handle: 1
+- name: Right Drive (A)
+  handle: 2
+- name: Conveyor Motor
+  handle: 3
+- name: Right Arm Motor
+  handle: 4
+- name: Left Shooter Motor
+  handle: 5
+- name: Right Shooter Motor
+  handle: 6
+- name: Turret Motor
+  handle: 7
+- name: Left Arm Motor
+  handle: 8
+- name: Intake Motor
+  handle: 9
+- name: Left Drive (A)
+  handle: 10
+- name: Left Drive (B)
+  handle: 11
+quad_encoders:
+- name: Encoder (1, 0)
+  single_handle: 33620480
+- name: Encoder (2, 3)
+  single_handle: 33620739
+- name: Encoder (9, 8)
+  single_handle: 33622536
+solenoids:
+- name: Popper Shooter (B)
+  handle: 33557505
+- name: Popper Hold (B)
+  handle: 33557506
+- name: Shooter Hood (A)
+  handle: 33557507
+- name: Shooter (B)
+  handle: 33557508
+- name: Popper Hold (A)
+  handle: 33557509
+- name: Popper Shooter (A)
+  handle: 33557510
+digital:
+- name: Digital Source0
+  handle: 33554688
+- name: Digital Source1
+  handle: 33554689
+- name: Digital Source2
+  handle: 33554690
+- name: Digital Source3
+  handle: 33554691
+- name: Digital Source4
+  handle: 33554692
+- name: Digital Source5
+  handle: 33554693
+- name: Digital Source6
+  handle: 33554694
+- name: Digital Source7
+  handle: 33554695
+- name: Digital Source8
+  handle: 33554696
+- name: Digital Source9
+  handle: 33554697

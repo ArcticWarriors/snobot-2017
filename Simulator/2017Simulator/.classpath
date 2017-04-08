@@ -1,17 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/2017MockWpi"/>
-	<classpathentry kind="var" path="networktables" sourcepath="networktables.sources">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="2017MockWpi/templibs/ntcore"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/snobot2017"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SnobotRobotLibs"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="/2017MockWpi/3rdParyLibraries/simple-json/json-simple-1.1.1.jar"/>
-	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/TeachingProject"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/_TestRobot"/>
+	<classpathentry kind="lib" path="/2017MockWpi/templibs/ntcore-windows.jar"/>
+	<classpathentry kind="lib" path="/2017MockWpi/3rdParyLibraries/snakeyaml-1.11.jar"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+	<classpathentry combineaccessrules="false" kind="src" path="/RoboSquad2017"/>
+	<classpathentry kind="lib" path="/2017MockWpi/native_wpi_libs/wpilibj.jar"/>
+=======
+	<classpathentry kind="lib" path="/2017MockWpi/templibs/wpilibj.jar"/>
+	<classpathentry kind="lib" path="cpp_robots/RobotCppSimulator.jar"/>
+>>>>>>> 0485e69... Merge conflict fix
+=======
+	<classpathentry kind="lib" path="/2017MockWpi/templibs/wpilibj.jar"/>
+<<<<<<< HEAD
+>>>>>>> 618f25b... Merge conflict fix
+=======
+	<classpathentry kind="lib" path="cpp_robots/RobotCppSimulator.jar"/>
+>>>>>>> 6761f30... Making the simulator able to run CPP projects 
+=======
+	<classpathentry kind="var" path="USERLIBS_DIR/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/jcommon-1.0.16.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/jfreechart-1.0.13.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/jinput-2.0.7.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/jutils-1.0.0.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/miglayout-core-4.2.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/miglayout-swing-4.2.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/ntcore-java-4.0.0-alpha-1-20170907000421-20-g95bce5d.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/opencv-java-3.2.0.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/snakeyaml-1.18.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/snobot_sim_java.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/snobot_sim_utilities.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/wpilibj-java-2017.3.1-20170908015815-103-g57ba589-javaArtifact.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/wpiutil-java-2.0.0-20170907010827-33-gef85809.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/CTRLib.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/hamcrest-core-1.1.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/RioDroid.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/snobot_sim_gui-0.2-all.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/snobot_sim_java-0.2-uber_native-linux.jar"/>
+	<classpathentry kind="lib" path="sim_deps/dependencies/snobot_sim_java-0.2-uber_native-windows.jar"/>
+>>>>>>> deb4f8f... Squashing a bunch of commits
 	<classpathentry kind="output" path="bin"/>
 </classpath>

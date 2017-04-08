@@ -3,6 +3,7 @@ package com.snobot2017;
 
 public class PortMappings2017
 {
+    public static final boolean sUSE_CAN_DRIVETRAIN = false;
 
     // Joysticks
     public static final int sDRIVER_JOYSTICK_PORT = 0;

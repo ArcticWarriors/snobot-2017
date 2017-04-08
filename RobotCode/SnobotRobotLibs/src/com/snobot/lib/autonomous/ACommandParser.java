@@ -10,14 +10,9 @@ import java.util.StringTokenizer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
-import edu.wpi.first.wpilibj.tables.ITable;
 
 public abstract class ACommandParser
 {
-    protected final ITable mAutonTable;
-    protected final String mAutonSdCommandTextName;
-    protected final String mAutonSdCommandParsedTextName;
-
     protected final String mDelimiter;
     protected final String mCommentStart;
 
@@ -25,13 +20,8 @@ public abstract class ACommandParser
     protected boolean mSuccess;
 
     public ACommandParser(
-            ITable aAutonTable,
-            String aAutonSdCommandTextName, String aAutonSdCommandParsedTextName,
             String aDelimiter, String aCommentStart)
     {
-        mAutonTable = aAutonTable;
-        mAutonSdCommandTextName = aAutonSdCommandTextName;
-        mAutonSdCommandParsedTextName = aAutonSdCommandParsedTextName;
         mDelimiter = aDelimiter;
         mCommentStart = aCommentStart;
 
@@ -99,11 +89,7 @@ public abstract class ACommandParser
 
         Command newCommand = parseCommand(args);
 
-        if (newCommand == null)
-        {
-            mSuccess = false;
-        }
-        else
+        if (newCommand != null)
         {
             if (aAddParallel)
             {
@@ -158,6 +144,7 @@ public abstract class ACommandParser
     public CommandGroup readFile(String aFilePath)
     {
         initReading();
+        publishFileName(aFilePath);
 
         CommandGroup output = createNewCommandGroup(aFilePath);
 
@@ -182,6 +169,7 @@ public abstract class ACommandParser
             }
             catch (Exception e)
             {
+                addError("Encountered exception: " + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -195,17 +183,14 @@ public abstract class ACommandParser
         return output;
     }
 
-    protected void publishParsingResults(String aCommandString)
+    public boolean wasParsingSuccessful()
     {
-        if (!mErrorText.isEmpty())
-        {
-            aCommandString += "\n\n# There was an error parsing the commands...\n#\n";
-            aCommandString += mErrorText;
-        }
-
-        mAutonTable.putString(mAutonSdCommandTextName, aCommandString);
-        mAutonTable.putBoolean(mAutonSdCommandParsedTextName, mSuccess);
+        return mSuccess;
     }
+
+    protected abstract void publishFileName(String aFileName);
+
+    protected abstract void publishParsingResults(String aCommandString);
 
     protected abstract Command parseCommand(List<String> args);
 }

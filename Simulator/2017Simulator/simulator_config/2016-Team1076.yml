@@ -1,0 +1,60 @@
+speed_controllers:
+- name: Lidar Servo
+  handle: 33554688
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (A)
+  handle: 1
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (B)
+  handle: 2
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (A)
+  handle: 3
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (B)
+  handle: 4
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Intake
+  handle: 5
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Arm Extend (B)
+  handle: 6
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Arm (A)
+  handle: 7
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Arm (B)
+  handle: 8
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Arm Extend (A)
+  handle: 9
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+solenoids:
+- name: Shifter (A)
+  handle: 33554432
+- name: Intake (A)
+  handle: 33554433
+- name: Shifter (B)
+  handle: 33554434
+- name: Intake (B)
+  handle: 33554435

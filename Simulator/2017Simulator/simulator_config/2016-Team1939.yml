@@ -1,0 +1,48 @@
+speed_controllers:
+- name: Arm
+  handle: 15
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (A)
+  handle: 16
+  motor_sim:
+    type: Simple
+    max_speed: 12.0
+- name: Drive Left (B)
+  handle: 17
+  motor_sim:
+    type: Simple
+    max_speed: 12.0
+- name: Drive Right (B)
+  handle: 18
+  motor_sim:
+    type: Simple
+    max_speed: 12.0
+- name: Drive Right (A)
+  handle: 19
+  motor_sim:
+    type: Simple
+    max_speed: 12.0
+- name: Arm Roller
+  handle: 21
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+quad_encoders:
+- name: Drive Left
+  single_handle: -268435441
+  speed_controller_handle: 16
+- name: Drive Right
+  single_handle: -268435440
+  speed_controller_handle: 18
+- name: CAN Encoder 19
+  single_handle: -268435437
+relays:
+- name: Magnet
+  handle: 33554688
+digital:
+- name: Digital Source0
+  handle: 33554688
+- name: Digital Source1
+  handle: 33554689

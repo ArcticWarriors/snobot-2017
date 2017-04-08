@@ -1,3 +1,6 @@
 /bin/
 /build/
 /dist/
+/temp/
+/simulator_config/joystick_config.properties
+/.gradle

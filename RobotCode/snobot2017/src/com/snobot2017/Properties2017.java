@@ -5,11 +5,9 @@ import com.snobot.lib.PropertyManager.DoubleProperty;
 import com.snobot.lib.PropertyManager.IntegerProperty;
 import com.snobot.lib.PropertyManager.StringProperty;
 
-import edu.wpi.first.wpilibj.RobotBase;
-
 public class Properties2017
 {
-    public static final boolean sKILL_OLD_ADBS = false;
+    public static final boolean sKILL_OLD_ADBS = true;
 
     // **************************************************************
     // Configuration Constants
@@ -78,7 +76,7 @@ public class Properties2017
         String replayPath;
         String autoLogPath;
 
-        if (RobotBase.isSimulation())
+        if (true)
         {
             logPath = "logs/" + Properties2017.class.getCanonicalName() + "/";
             adbLocation = System.getProperty("user.home") + "/AppData/Local/Android/sdk/platform-tools/adb.exe";

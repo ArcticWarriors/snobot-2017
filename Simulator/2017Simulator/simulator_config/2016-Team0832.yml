@@ -1,0 +1,68 @@
+speed_controllers:
+- name: Arm Roller
+  handle: 0
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Arm Motor
+  handle: 1
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (B)
+  handle: 4
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (A)
+  handle: 5
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (A)
+  handle: 6
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (B)
+  handle: 7
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: PAD Left
+  handle: 8
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: PAD Right
+  handle: 9
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Shooter Tilt
+  handle: 10
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+quad_encoders:
+- name: Arm
+  single_handle: -268435455
+  speed_controller_handle: 0
+- name: Drive Left
+  single_handle: -268435451
+  speed_controller_handle: 5
+- name: PAD Left
+  single_handle: -268435448
+  speed_controller_handle: 8
+- name: PAD Right
+  single_handle: -268435447
+- name: Shooter Tilt
+  single_handle: -268435446
+  speed_controller_handle: 10
+relays:
+- name: Ball Control
+  handle: 0
+- name: Light Control
+  handle: 1
+- name: Ball LEDs
+  handle: 2

@@ -1,0 +1,43 @@
+
+quad_encoders:
+- name: Left Encoder
+  handle_a: 4
+  handle_b: 5
+  speed_controller_handle: 4
+
+- name: Right Encoder
+  handle_a: 1
+  handle_b: 2
+  speed_controller_handle: 1
+
+speed_controllers:
+- handle: 4
+  name: Left Motor
+  motor_sim:
+     type: Simple
+     max_speed: 12
+
+- handle: 1
+  name: Right Motor
+  motor_sim:
+     type: Simple
+     max_speed: 12
+
+- handle: 2
+  name: Servo
+
+tank_drives:
+- left_enc_handle_a   : 4
+  left_enc_handle_b   : 5
+  right_enc_handle_a  : 1
+  right_enc_handle_b  : 2
+  gyro_handle         : 0
+  turn_kp             : 10
+  
+- left_enc_handle_a   : 4
+  left_enc_handle_b   : 5
+  right_enc_handle_a  : 1
+  right_enc_handle_b  : 2
+  gyro_handle         : 100
+  turn_kp             : 10
+ 

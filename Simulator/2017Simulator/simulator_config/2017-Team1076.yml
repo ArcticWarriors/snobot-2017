@@ -1,0 +1,31 @@
+speed_controllers:
+- name: Drive Right (A)
+  handle: 1
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (B)
+  handle: 2
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (A)
+  handle: 3
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (B)
+  handle: 4
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Winch (A)
+  handle: 5
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Winch (B)
+  handle: 6
+  motor_sim:
+    type: Simple
+    max_speed: 0.0

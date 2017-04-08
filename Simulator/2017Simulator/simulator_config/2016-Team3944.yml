@@ -1,0 +1,58 @@
+speed_controllers:
+- name: Drive Left (A)
+  handle: 1
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Left (B)
+  handle: 2
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (A)
+  handle: 3
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Drive Right (B)
+  handle: 4
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Shooter (A)
+  handle: 20
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Shooter (B)
+  handle: 21
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Loader
+  handle: 22
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+- name: Lifter
+  handle: 23
+  motor_sim:
+    type: Simple
+    max_speed: 0.0
+quad_encoders:
+- name: Shooter (A)
+  single_handle: -268435436
+  speed_controller_handle: 20
+- name: Shooter (B)
+  single_handle: -268435435
+  speed_controller_handle: 21
+relays:
+- name: Shooter Light
+  handle: 33554688
+digital:
+- name: Digital Source0
+  handle: 33554688
+- name: Digital Source1
+  handle: 33554689
+- name: Digital Source4
+  handle: 33554692

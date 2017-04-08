@@ -1,0 +1,74 @@
+
+simulate_camera: True
+
+speed_controllers:
+- name: Left Motor (A)
+  handle: com.snobot2017.PortMappings2017.sDRIVE_CAN_LEFT_A_PORT
+
+  motor_sim:
+    type : StaticLoad
+    load : .6 # Random guess
+    conversion_factor: 2.43 # 6 inch wheels / 2 * .81 loss factor
+    motor_model: 
+      motor_type: CIM
+      transmission:
+        num_motors     : 2
+        gear_reduction : 11.43
+        efficiency     : 1
+  
+- name: Right Motor (A)
+  handle: com.snobot2017.PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT
+  
+  motor_sim:
+    type : StaticLoad
+    load : .6 # Random guess
+    conversion_factor: 2.43 # 6 inch wheels / 2 * .81 loss factor
+    motor_model: 
+      inverted: True
+      motor_type: CIM
+      transmission:
+        num_motors     : 2
+        gear_reduction : 11.43
+        efficiency     : 1
+  
+- name: Climb Motor
+  handle: com.snobot2017.PortMappings2017.sCLIMB_PWM_PORT
+  
+  # Followers
+- name: Left Motor (B)
+  handle: com.snobot2017.PortMappings2017.sDRIVE_CAN_LEFT_B_PORT
+  
+- name: Right Motor (B)
+  handle: com.snobot2017.PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT
+  
+  
+quad_encoders:
+- name                    : Left Encoder
+  single_handle           : -268435453
+  speed_controller_handle : com.snobot2017.PortMappings2017.sDRIVE_CAN_LEFT_A_PORT
+  
+- name                    : Right Encoder
+  single_handle           : -268435455
+  handle_b                : com.snobot2017.PortMappings2017.sRIGHT_DRIVE_ENCODER_PORT_B
+  speed_controller_handle : com.snobot2017.PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT
+  
+  
+solenoids:
+- name: Gear (A)
+  handle: com.snobot2017.PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_A
+- name: Gear (B)
+  handle: com.snobot2017.PortMappings2017.sGEARBOSS_SOLENOID_CHANNEL_B
+  
+  
+relays:
+- name: Blue LEDs
+  handle: com.snobot2017.PortMappings2017.sRELAY_BLUE_LED
+- name: Green LEDs
+  handle: com.snobot2017.PortMappings2017.sRELAY_GREEN_LED
+
+  
+tank_drives:
+- left_single_handle  : -268435453
+  right_single_handle : -268435455
+  gyro_handle         : 100
+  turn_kp             : 33.333333333333333333333333333333

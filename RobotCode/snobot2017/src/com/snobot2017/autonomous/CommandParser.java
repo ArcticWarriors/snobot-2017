@@ -12,6 +12,7 @@ import com.snobot.lib.motion_profile.PathConfig;
 import com.snobot.lib.motion_profile.PathGenerator;
 import com.snobot.lib.motion_profile.PathSetpoint;
 import com.snobot.lib.motion_profile.StaticSetpointIterator;
+import com.snobot2017.ISnobot2017;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.Snobot2017;
@@ -43,6 +44,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.tables.ITable;
 
 /**
  * Creates commands from a file path and adds them to a CommandGroup.
@@ -53,8 +55,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 public class CommandParser extends ACommandParser
 {
     private static final double sEXPECTED_DT = .02;
-    protected Snobot2017 mSnobot;
+    protected ISnobot2017 mSnobot;
     protected SendableChooser<StartingPositions> mPositionChooser;
+    protected ITable mAutonTable;
 
     /**
      * Creates a CommandParser object.
@@ -66,8 +69,8 @@ public class CommandParser extends ACommandParser
      */
     public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser)
     {
-        super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
-                SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
+        super(" ", "#");
+        mAutonTable = NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME);
         mSnobot = aSnobot;
         mPositionChooser = aPositionChooser;
 
@@ -389,7 +392,7 @@ public class CommandParser extends ACommandParser
     /////////////////////////////////////////////////
     private Command createTrajStartToGearCommand(List<String> args)
     {
-        StartingPositions startPosition = mPositionChooser.getSelected();
+        StartingPositions startPosition = getStartingPosition();
         if (startPosition == null)
         {
             addError("Invalid starting position");
@@ -401,7 +404,7 @@ public class CommandParser extends ACommandParser
 
     private Command createTrajStartToHopper(List<String> args)
     {
-        StartingPositions startPosition = mPositionChooser.getSelected();
+        StartingPositions startPosition = getStartingPosition();
         if (startPosition == null)
         {
             addError("Invalid starting position");
@@ -419,7 +422,7 @@ public class CommandParser extends ACommandParser
 
     private Command createTrajGearToHopper(List<String> args)
     {
-        StartingPositions startPosition = mPositionChooser.getSelected();
+        StartingPositions startPosition = getStartingPosition();
         if (startPosition == null)
         {
             addError("Invalid starting position");
@@ -437,7 +440,7 @@ public class CommandParser extends ACommandParser
 
     private Command createTrajGearToFuel()
     {
-        StartingPositions startPosition = mPositionChooser.getSelected();
+        StartingPositions startPosition = getStartingPosition();
         if (startPosition == null)
         {
             addError("Invalid starting position");
@@ -449,7 +452,7 @@ public class CommandParser extends ACommandParser
 
     private Command parseTurnToPegAfterPathFromStartingPosition(List<String> args)
     {
-        StartingPositions startPosition = mPositionChooser.getSelected();
+        StartingPositions startPosition = getStartingPosition();
         double lTurnRedLeft = Double.parseDouble(args.get(1));
         double lTurnRedRight = Double.parseDouble(args.get(2));
         double lTurnRedMiddle = Double.parseDouble(args.get(3));
@@ -463,7 +466,7 @@ public class CommandParser extends ACommandParser
 
     private Command parseDriveStraightPathWithGyroFromStartingPosition(List<String> args)
     {
-        StartingPositions startPosition = mPositionChooser.getSelected();
+        StartingPositions startPosition = getStartingPosition();
         double lMaxVelocity = Double.parseDouble(args.get(1));
         double lMaxAcceleration = Double.parseDouble(args.get(2));
         double lRedLeft = Double.parseDouble(args.get(3));
@@ -480,16 +483,39 @@ public class CommandParser extends ACommandParser
     // Maintenance
     ////////////////////////////////////////
 
+    protected StartingPositions getStartingPosition()
+    {
+        return mPositionChooser.getSelected();
+    }
+
     @Override
     public CommandGroup readFile(String aFilePath)
     {
-        if (aFilePath == null)
+        return super.readFile(aFilePath);
+    }
+
+    @Override
+    protected void publishFileName(String aFileName)
+    {
+        if (aFileName == null)
         {
-            aFilePath = "NOT FOUND!";
+            aFileName = "NOT FOUND!";
         }
 
-        mAutonTable.putString(SmartDashBoardNames.sAUTON_FILENAME, aFilePath);
-        return super.readFile(aFilePath);
+        mAutonTable.putString(SmartDashBoardNames.sAUTON_FILENAME, aFileName);
+    }
+
+    @Override
+    protected void publishParsingResults(String aCommandString)
+    {
+        if (!mErrorText.isEmpty())
+        {
+            aCommandString += "\n\n# There was an error parsing the commands...\n#\n";
+            aCommandString += mErrorText;
+        }
+        
+        mAutonTable.putString(SmartDashBoardNames.sROBOT_COMMAND_TEXT, aCommandString);
+        mAutonTable.putBoolean(SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, mSuccess);
     }
 
     public void saveAutonMode()

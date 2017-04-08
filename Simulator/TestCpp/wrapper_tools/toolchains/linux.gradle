@@ -1,0 +1,74 @@
+model {
+    toolChains {
+        gcc(Gcc) {
+            target('x86') {
+                cppCompiler.withArguments { args ->
+                    args << '-std=c++11' << '-Wformat=2' << '-Wall' << '-Wextra' << '-Werror' << '-pedantic'
+                    args << '-Wno-psabi' << '-Wno-unused-parameter' << '-fPIC' << '-rdynamic'
+                    //TODO: When the compiler allows us to actually call deprecated functions from within
+                    // deprecated function, remove this line (this will cause calling deprecated functions
+                    // to be treated as a warning rather than an error).
+                    args << '-Wno-error=deprecated-declarations' << '-pthread'
+                    args << '-m32'
+                    args << '-DFRC_SIMULATOR'
+                }
+                linker.withArguments { args ->
+                    args << '-rdynamic' << '-pthread'
+                    args << '-m32'
+                }
+            }
+            target('x64') {
+                cppCompiler.withArguments { args ->
+                    args << '-std=c++11' << '-Wformat=2' << '-Wall' << '-Wextra' << '-Werror' << '-pedantic'
+                    args << '-Wno-psabi' << '-Wno-unused-parameter' << '-fPIC' << '-rdynamic'
+                    //TODO: When the compiler allows us to actually call deprecated functions from within
+                    // deprecated function, remove this line (this will cause calling deprecated functions
+                    // to be treated as a warning rather than an error).
+                    args << '-Wno-error=deprecated-declarations' << '-pthread'
+                }
+                linker.withArguments { args ->
+                    args << '-rdynamic' << '-pthread'
+                }
+            }
+        }
+    }
+}
+
+
+def defineExternalLibraries(wpilibBuildPath) {
+    ext.wpilibcIncludePath       = wpilibBuildPath + "/cpp/wpilibc/include"
+    ext.halIncludePath           = wpilibBuildPath + "/cpp/hal/include"
+    ext.wpiIncludePath           = wpilibBuildPath + "/cpp/wpiutil/include"
+    ext.networkTablesIncludePath = wpilibBuildPath + "/cpp/networktables/include"
+    ext.niLibrariesIncludePath   = wpilibBuildPath + "/cpp/ni-libraries/include"
+    
+<<<<<<< HEAD
+<<<<<<< HEAD
+    ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_linux/shared/x64/libwpilibc.so'
+    ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/amd64/libntcore.so'
+    ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/amd64/libwpiutil.so'
+    ext.halLibraryPath           = snobotSimBuildPath + '/native/shared/x64/libHALAthena.so'
+    ext.canTalonLibraryPath      = snobotSimBuildPath + '/native/shared/libctreOverride.so'
+=======
+    ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native/shared/x64/libwpilibc.so'
+    ext.networkTablesLibraryPath = wpilibBuildPath    + '/native/shared/x64/libntcore.so'
+    ext.wpilibLibraryPath        = wpilibBuildPath    + '/native/shared/amd64/libwpiutil.so'
+    ext.halLibraryPath           = snobotSimBuildPath + '/native/shared/x64/libHALAthena.so'
+    
+    println "FFFFFF"
+>>>>>>> 9bd993d... Linux Simulator
+=======
+    ext.wpilibcLibraryPath       = wpilibBuildPath    + '/native_linux/shared/x64/libwpilibc.so'
+    ext.networkTablesLibraryPath = wpilibBuildPath    + '/native_linux/shared/amd64/libntcore.so'
+    ext.wpilibLibraryPath        = wpilibBuildPath    + '/native_linux/shared/amd64/libwpiutil.so'
+    ext.halLibraryPath           = snobotSimBuildPath + '/native/shared/x64/libHALAthena.so'
+    ext.canTalonLibraryPath      = snobotSimBuildPath + '/native/shared/libctreOverride.so'
+>>>>>>> 2006634... CANTalon sim
+}
+
+ext
+{
+    defineExternalLibraries = this.&defineExternalLibraries
+
+}
+

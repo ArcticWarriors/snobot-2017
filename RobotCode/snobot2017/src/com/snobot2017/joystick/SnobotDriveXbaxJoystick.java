@@ -6,7 +6,6 @@ import com.snobot.lib.ui.LatchedButton;
 import com.snobot.lib.ui.ToggleButton;
 import com.snobot.lib.ui.XboxButtonMap;
 import com.snobot2017.SmartDashBoardNames;
-import com.snobot2017.autonomous.AutonomousFactory;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,7 +36,7 @@ public class SnobotDriveXbaxJoystick implements IDriverJoystick, IAutoLoggerJoys
     private boolean mSwitchToRearCamera;
     private boolean mRestartApp;
 
-    public SnobotDriveXbaxJoystick(Joystick aJoystick, ILogger aLogger, AutonomousFactory aAutonFactory)
+    public SnobotDriveXbaxJoystick(Joystick aJoystick, ILogger aLogger)
     {
 
         mJoystick = aJoystick;

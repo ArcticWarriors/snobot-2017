@@ -1,0 +1,423 @@
+import edu.wpi.first.nativeutils.NativeUtils
+import org.gradle.internal.os.OperatingSystem
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+apply plugin: 'cpp'
+
+if (OperatingSystem.current().isLinux()) 
+{
+    apply from: "wrapper_tools/toolchains/linux.gradle"
+    ext.wpilibBuildPath    = '/home/pj/GitHub/FIRST/2017/TempAllWpi/build'
+    ext.snobotSimBuildPath = '/home/pj/GitHub/FIRST/2017/CppSimulator/build'
+}
+else
+{
+    apply from: "wrapper_tools/toolchains/windows.gradle"
+    ext.wpilibBuildPath    = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/build'
+    ext.snobotSimBuildPath = 'C:/Users/PJ/GitHub/FIRST_2017/WpiUpdates/WpiHalRefactor/build'
+}
+
+defineExternalLibraries(wpilibBuildPath)
+
+=======
+ext.wpilibcIncludePath = "C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/wpilibc"
+ext.halIncludePath = "C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/hal/include"
+ext.niLibrariesIncludePath = "C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/ni-libraries/include"
+
+<<<<<<< HEAD
+ext.wpilibcLibraryPath = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/native/wpilibc/build/libs/wpilibc/static/x86/wpilibc.lib'
+ext.halLibraryPath = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/native/hal/build/libs/hALAthena/static/x86/HALAthena.lib'
+ext.networkTablesLibraryPath = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/prebuildLibraries/Windows/x86/ntcore.lib'
+ext.wpilibLibraryPath = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/prebuildLibraries/Windows/x86/wpiutil.lib'
+>>>>>>> b5fb176... Adding a CPP project to test the simulator with
+=======
+ext.wpilibcLibraryPath = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/native/wpilibc/build/libs/wpilibc/static/x64/wpilibc.lib'
+ext.halLibraryPath = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/native/hal/build/libs/hALAthena/static/x64/HALAthena.lib'
+ext.networkTablesLibraryPath = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/prebuildLibraries/Windows/x64/ntcore.lib'
+ext.wpilibLibraryPath = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/prebuildLibraries/Windows/x64/wpiutil.lib'
+>>>>>>> 6761f30... Making the simulator able to run CPP projects 
+=======
+=======
+apply plugin: 'cpp'
+>>>>>>> 9bd993d... Linux Simulator
+
+if (OperatingSystem.current().isLinux()) 
+{
+    apply from: "wrapper_tools/toolchains/linux.gradle"
+    ext.wpilibBuildPath    = '/home/pj/GitHub/FIRST/2017/TempAllWpi/build'
+    ext.snobotSimBuildPath = '/home/pj/GitHub/FIRST/2017/CppSimulator/build'
+}
+else
+{
+    apply from: "wrapper_tools/toolchains/windows.gradle"
+    ext.wpilibBuildPath    = 'C:/Users/PJ/GitHub/FIRST_2017/xxxTempWpi/build'
+    ext.snobotSimBuildPath = 'C:/Users/PJ/GitHub/FIRST_2017/WpiUpdates/WpiHalRefactor/build'
+}
+
+defineExternalLibraries(wpilibBuildPath)
+
+<<<<<<< HEAD
+ext.wpilibcLibraryPath       = wpilibBuildPath + '/native/x64/wpilibc.lib'
+ext.networkTablesLibraryPath = wpilibBuildPath + '/native/x64/ntcore.lib'
+ext.wpilibLibraryPath        = wpilibBuildPath + '/native/x64/wpiutil.lib'
+ext.halLibraryPath           = snobotSimBuildPath + '/native/x64/HALAthena.lib'
+>>>>>>> 1a6d3d7... C++ Simulator works!
+=======
+>>>>>>> 9bd993d... Linux Simulator
+
+ext.robotName = "Robot"
+=======
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'gradle.plugin.edu.wpi.first:native-utils:1.2.9'
+        classpath 'gradle.plugin.edu.wpi.first.wpilib.versioning:wpilib-version-plugin:1.6'
+    }
+}
+repositories {
+    mavenCentral()
+        maven {
+            url "http://first.wpi.edu/FRC/roborio/maven/development/"
+        }
+}
+
+apply plugin: 'cpp'
+apply plugin: 'visual-studio'
+apply plugin: 'edu.wpi.first.NativeUtils'
+>>>>>>> deb4f8f... Squashing a bunch of commits
+
+apply from: 'config.gradle'
+
+/////////////////////////////////////////
+// Specify WPI Versions
+ext.getHalHeadersVersion = {
+    return 'edu.wpi.first.hal:hal:2017.3.1-20170908015814-103-g57ba589:headers@zip'
+}
+ext.getWpilibjVersion = {
+    return '2017.3.1-20170908015815-103-g57ba589'
+}
+ext.getWpiUtilVersion = {
+    return '2.0.0-20170907010827-33-gef85809'
+}
+ext.getNtCoreVersion = {
+    return '4.0.0-alpha-1-20170907000421-20-g95bce5d'
+}
+ext.getWpilibcVersion = {
+    return '2017.3.1-20170908015815-103-g57ba589'
+}
+/////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////
+// Should get replaced when WPI publishes windows libraries
+////////////////////////////////////////////////////////////
+configurations {
+    wpilibcHeaders
+    wpilibcLibrary
+    halHeaders
+}
+dependencies {
+    wpilibcHeaders 'edu.wpi.first.wpilibc:wpilibc:' + getWpilibcVersion() + ':headers@zip'
+    wpilibcLibrary files('wrapper_tools/temp_libs/wpilibc-ABCD-all.zip')
+    halHeaders getHalHeadersVersion()
+}
+
+task extractHalHeadersZip(type: Copy) {
+    ext.libsdir = "${rootProject.buildDir}/dependencies/hal"
+    from { configurations.halHeaders.collect { zipTree(it) } }
+    into libsdir
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2006634... CANTalon sim
+def checkLibrary(libPath) {
+=======
+task extractWplibcHeadersZip(type: Copy) {
+    ext.libsdir = "${rootProject.buildDir}/dependencies/wpilibc/include"
+    from { configurations.wpilibcHeaders.collect { println it; zipTree(it) } }
+    into libsdir
+}
+task extractWplibcLibraryZip(type: Copy) {
+    ext.libsdir = "${rootProject.buildDir}/dependencies/wpilibc/lib"
+    from { configurations.wpilibcLibrary.collect { zipTree(it); } }
+    into libsdir
+}
+>>>>>>> deb4f8f... Squashing a bunch of commits
+
+ext.addWpilibcToLinker = { linker->
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+    def lib_path = 'build/dependencies/wpilibc/lib/' + os_name + '/x86-64/shared'
+    if (OperatingSystem.current().isWindows())
+    {
+        lib_path += "/wpilibc.lib"
+    }
+    else if (OperatingSystem.current().isLinux())
+    {
+        lib_path += "/libwpilibc.so"
+    }
+    lib_path = new File(lib_path).getAbsolutePath()
+    linker.args lib_path
+}
+
+<<<<<<< HEAD
+
+checkLibrary(wpilibcLibraryPath)
+checkLibrary(halLibraryPath)
+checkLibrary(networkTablesLibraryPath)
+checkLibrary(wpilibLibraryPath)
+checkLibrary(canTalonLibraryPath)
+
+
+<<<<<<< HEAD
+
+
+
+
+model {
+=======
+=======
+>>>>>>> 2006634... CANTalon sim
+
+
+
+
+model {
+<<<<<<< HEAD
+    toolChains 
+    {
+        visualCpp(VisualCpp) 
+        {
+            // Workaround for VS2015 adapted from https://github.com/couchbase/couchbase-lite-java-native/issues/23
+            def VS_2015_INCLUDE_DIR = "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/ucrt"
+            def VS_2015_LIB_DIR = "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.10240.0/ucrt"
+            
+            def JAVA_HOME= "C:/Program Files/Java/jdk1.8.0_73"
+
+            eachPlatform {
+                cppCompiler.withArguments { args ->
+                    args << '/EHsc' << '/DNOMINMAX' << '/D_SCL_SECURE_NO_WARNINGS' << '/D_WINSOCK_DEPRECATED_NO_WARNINGS'
+                    if (file(VS_2015_INCLUDE_DIR).exists()) {
+                        args << "/I$VS_2015_INCLUDE_DIR"
+                        args << "/I$JAVA_HOME/include"
+                        args << "/I$JAVA_HOME/include/win32"
+                    }
+                }
+                linker.withArguments { args ->
+                    if (file(VS_2015_LIB_DIR).exists()) {
+                        if (platform.architecture.name == 'x86') {
+                            args << "/LIBPATH:$VS_2015_LIB_DIR/x86"
+                        } else {
+                            args << "/LIBPATH:$VS_2015_LIB_DIR/x64"
+                        }
+                    }
+                }
+            }
+        }
+    }
+>>>>>>> b5fb176... Adding a CPP project to test the simulator with
+=======
+>>>>>>> 9bd993d... Linux Simulator
+
+    platforms 
+    {
+        x86 {
+            architecture 'x86'
+=======
+ext.addWpilibHalToLinker = { linker->
+    def os_name = org.gradle.internal.os.OperatingSystem.current().getFamilyName();
+    def lib_path = 'wrapper_tools/temp_libs/hal/' + os_name + '/x86-64'
+    if (OperatingSystem.current().isWindows())
+    {
+        lib_path += "/wpiHal.lib"
+    }
+    else if (OperatingSystem.current().isLinux())
+    {
+        lib_path += "/libwpiHal.so"
+    }
+    lib_path = new File(lib_path).getAbsolutePath()
+    linker.args lib_path
+}
+////////////////////////////////////////////////////////////
+
+model {
+    
+    dependencyConfigs {
+        wpiutil(DependencyConfig) {
+            groupId = 'edu.wpi.first.wpiutil'
+            artifactId = 'wpiutil-cpp'
+            headerClassifier = 'headers'
+            ext = 'zip'
+            version = getWpiUtilVersion()
+            sharedConfigs = [ CppRobot: [], simulatorRobotWrapperShared: [] ]
+>>>>>>> deb4f8f... Squashing a bunch of commits
+        }
+        ntcore(DependencyConfig) {
+            groupId = 'edu.wpi.first.ntcore'
+            artifactId = 'ntcore-cpp'
+            headerClassifier = 'headers'
+            ext = 'zip'
+            version = getNtCoreVersion()
+            sharedConfigs = [ CppRobot: [], simulatorRobotWrapperShared: [] ]
+        }
+       //wpilibc(DependencyConfig) {
+       //    groupId = 'edu.wpi.first.wpilibc'
+       //    artifactId = 'wpilibc'
+       //    headerClassifier = 'headers'
+       //    ext = 'zip'
+       //    version = getWpilibcVersion()
+       //    sharedConfigs = [ HALAthena: [] ]
+       //}
+    }
+    
+<<<<<<< HEAD
+    components {
+        CppTest(NativeLibrarySpec) {
+<<<<<<< HEAD
+<<<<<<< HEAD
+            targetPlatform "x64"
+=======
+            targetPlatform "x86"
+>>>>>>> b5fb176... Adding a CPP project to test the simulator with
+=======
+            targetPlatform "x64"
+>>>>>>> 6761f30... Making the simulator able to run CPP projects 
+
+            setupJniIncludes(binaries)
+=======
+    //////////////////////////////////////////////
+    // Remove when WPI publishes windows
+    binaries {
+        all {
+            tasks.withType(CppCompile) {
+                dependsOn extractWplibcHeadersZip
+                dependsOn extractWplibcLibraryZip
+                dependsOn extractHalHeadersZip
+            }
+        }
+        withType(NativeBinarySpec) {
+>>>>>>> deb4f8f... Squashing a bunch of commits
+            
+            if(it.targetPlatform.architecture.name != "athena")
+            {
+<<<<<<< HEAD
+                tasks.withType(CppCompile) 
+                {
+                    dependsOn generateCppRobotWrapper
+                    dependsOn generateWrapperJavaJni
+                    linker.args  wpilibcLibraryPath
+                    linker.args  halLibraryPath
+                    linker.args  networkTablesLibraryPath
+                    linker.args  wpilibLibraryPath
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    linker.args  canTalonLibraryPath
+=======
+>>>>>>> b5fb176... Adding a CPP project to test the simulator with
+=======
+                    linker.args  canTalonLibraryPath
+>>>>>>> 2006634... CANTalon sim
+                }
+=======
+                addWpilibcToLinker(linker)
+                addWpilibHalToLinker(linker)
+>>>>>>> deb4f8f... Squashing a bunch of commits
+            }
+            else
+            {
+<<<<<<< HEAD
+                cpp 
+                {
+                    source 
+                    {
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        srcDirs = ["src", "build/wrapperSource/src", halIncludePath, wpilibcIncludePath]
+                        includes = ["**/*.cpp"]
+                    }
+                    exportedHeaders 
+                    {
+                        srcDirs = ["src", niLibrariesIncludePath, niLibrariesIncludePath, halIncludePath, wpilibcIncludePath, wpiIncludePath, networkTablesIncludePath]
+                        srcDirs System.getProperty("user.home") + "/wpilib/user/cpp/include"
+                        srcDirs.each{
+                            def dir = new File("${it}")
+                            if(!dir.exists())
+                            {
+                                throw new GradleException("Could not find include directory ${it}")
+                            }
+                        }
+=======
+                        srcDirs = ["src", "build/wrapperSource/src", niLibrariesIncludePath, halIncludePath, wpilibcIncludePath + "/athena/include", wpilibcIncludePath + "/shared/include"]
+=======
+                        srcDirs = ["src", "build/wrapperSource/src", halIncludePath, wpilibcIncludePath]
+>>>>>>> 1a6d3d7... C++ Simulator works!
+                        includes = ["**/*.cpp"]
+                    }
+                    exportedHeaders 
+                    {
+<<<<<<< HEAD
+                        srcDirs = ["src", niLibrariesIncludePath, halIncludePath, wpilibcIncludePath + "/athena/include", wpilibcIncludePath + "/shared/include"]
+>>>>>>> b5fb176... Adding a CPP project to test the simulator with
+=======
+                        srcDirs = ["src", niLibrariesIncludePath, niLibrariesIncludePath, halIncludePath, wpilibcIncludePath, wpiIncludePath, networkTablesIncludePath]
+<<<<<<< HEAD
+>>>>>>> 1a6d3d7... C++ Simulator works!
+=======
+                        srcDirs System.getProperty("user.home") + "/wpilib/user/cpp/include"
+                        srcDirs.each{
+                            def dir = new File("${it}")
+                            if(!dir.exists())
+                            {
+                                throw new GradleException("Could not find include directory ${it}")
+                            }
+                        }
+>>>>>>> 2006634... CANTalon sim
+=======
+                buildable = false
+            }
+        }
+        //withType(StaticLibraryBinarySpec) {
+        //    it.buildable = false
+        //}
+    }
+    //////////////////////////////////////////////
+    
+    components {
+        CppRobot(NativeLibrarySpec) {            
+            sources {
+                cpp {
+                    source {
+                        srcDirs = [ "src" ]
+                        includes = ["**/*.cpp"]
+                    }
+                    exportedHeaders {
+                        srcDirs = ["src",
+                                   // Temp
+                                   "${extractWplibcHeadersZip.libsdir}", 
+                                   "${extractHalHeadersZip.libsdir}",
+                                   ]
+>>>>>>> deb4f8f... Squashing a bunch of commits
+                    }
+                }
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.1'
+}
+
+
+apply from: 'wrapper_tools/build_simulator.gradle'

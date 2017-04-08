@@ -2,5 +2,8 @@
 /autologs/
 /logs/
 /user_config
+/temp
+.gradle
+build
 
 hs_*.log
