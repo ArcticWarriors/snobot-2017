@@ -1,5 +1,6 @@
 package com.snobot.coordinate_gui.ui.layers;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -79,6 +80,11 @@ public class LayerManager extends JPanel implements ILayerManager
         addComponentListener(mResizeListener);
         addMouseListener(mMouseListener);
         addMouseMotionListener(mMouseListener);
+
+        // Set background color obnoxiously so we know it is not sized well.
+        // I wanted to make it transparent but then you couldn't select items
+        // under the transparent part and it was confusing to use.
+        setBackground(Color.BLUE);
     }
 
     public void addFieldClickListener(IFieldClickListener aListener)
@@ -116,6 +122,10 @@ public class LayerManager extends JPanel implements ILayerManager
     @Override
     public void paint(Graphics g)
     {
+        // This clears the background so we don't get phantom background objects
+        // on drags
+        super.paintComponent(g);
+
         synchronized (mLock)
         {
             Graphics2D graphics = (Graphics2D) g;
