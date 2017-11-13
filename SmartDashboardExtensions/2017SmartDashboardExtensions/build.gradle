@@ -1,0 +1,35 @@
+
+apply plugin: 'java'
+
+repositories {
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+    maven {
+        name = "WPI"
+        url = "http://first.wpi.edu/FRC/roborio/maven/release"
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src", 
+                       "../SmartDashboardLibs/src", 
+                       "../CoordinateViewerGui/src/2017Gui", 
+                       "../CoordinateViewerGui/src/lib"]
+        }
+    }
+}
+
+dependencies {
+    compile 'jfree:jfreechart:1.0.13'
+    compile 'org.yaml:snakeyaml:1.18'
+    
+    compile 'edu.wpi.first.wpilib:SmartDashboard:2.0.3'
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.1'
+}

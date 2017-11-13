@@ -3,7 +3,6 @@ package com.snobot.sd2017.path_plotter;
 import java.awt.BorderLayout;
 import java.util.StringTokenizer;
 
-import com.snobot.sd.path_plotter.IdealPlotSerializer;
 import com.snobot.sd.path_plotter.PathPlotterPanel;
 import com.snobot.sd.util.AutoUpdateWidget;
 import com.snobot2017.SmartDashBoardNames;

@@ -3,7 +3,6 @@ package com.snobot.sd2017.spline_plotter;
 import java.awt.BorderLayout;
 import java.util.StringTokenizer;
 
-import com.snobot.sd.spline_plotter.IdealSplineSerializer;
 import com.snobot.sd.spline_plotter.SplinePlotterPanel;
 import com.snobot.sd.spline_plotter.SplineSegment;
 import com.snobot.sd.util.AutoUpdateWidget;

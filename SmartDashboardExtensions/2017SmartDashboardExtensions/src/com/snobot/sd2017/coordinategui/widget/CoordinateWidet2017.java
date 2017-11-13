@@ -9,11 +9,13 @@ import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 
 import com.snobot.coordinate_gui.model.Coordinate;
+import com.snobot.coordinate_gui.steamworks.CameraRayLayer.Ray;
+import com.snobot.coordinate_gui.steamworks.CoordinateGui2017;
 import com.snobot.coordinate_gui.ui.renderProps.CoordinateLayerRenderProps;
 import com.snobot.coordinate_gui.ui.renderProps.RobotLayerRenderProps;
-import com.snobot.sd.spline_plotter.IdealSplineSerializer;
+import com.snobot.sd.spline_plotter.SplineSegment;
 import com.snobot.sd.util.AutoUpdateWidget;
-import com.snobot.sd2017.coordinategui.widget.RayLayer.Ray;
+import com.snobot.sd2017.spline_plotter.IdealSplineSerializer;
 import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.smartdashboard.properties.Property;
@@ -79,7 +81,12 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
             @Override
             public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
             {
-                mCoordinateGui.setPath(IdealSplineSerializer.deserializePath(arg2.toString()));
+                List<Coordinate> coordinates = new ArrayList<>();
+                for (SplineSegment splineSegment : IdealSplineSerializer.deserializePath(arg2.toString()))
+                {
+                    coordinates.add(new Coordinate(splineSegment.mAverageX / 12.0, splineSegment.mAverageY / 12.0, splineSegment.mRobotHeading));
+                }
+                mCoordinateGui.setPath(coordinates);
             }
         };
         mTable.addTableListener(SmartDashBoardNames.sSPLINE_IDEAL_POINTS, idealSplineListener, true);

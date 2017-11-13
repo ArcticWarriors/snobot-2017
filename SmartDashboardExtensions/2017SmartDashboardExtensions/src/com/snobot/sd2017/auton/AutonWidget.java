@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.snobot.sd.auton.AutonPanel;
 import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.smartdashboard.gui.StaticWidget;

@@ -10,8 +10,31 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>2017Gui</name>
+			<type>2</type>
+			<location>C:/Users/PJ/Documents/GitHub/frc2017/174/snobot-2017/SmartDashboardExtensions/CoordinateViewerGui/src/2017Gui</location>
+		</link>
+		<link>
+			<name>SmartDashboardLibs-src</name>
+			<type>2</type>
+			<location>C:/Users/PJ/Documents/GitHub/frc2017/174/snobot-2017/SmartDashboardExtensions/SmartDashboardLibs/src</location>
+		</link>
+		<link>
+			<name>lib</name>
+			<type>2</type>
+			<location>C:/Users/PJ/Documents/GitHub/frc2017/174/snobot-2017/SmartDashboardExtensions/CoordinateViewerGui/src/lib</location>
+		</link>
+	</linkedResources>
 </projectDescription>

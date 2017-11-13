@@ -1,0 +1,57 @@
+version: 1.0.{build}
+image: Visual Studio 2015
+build_script:
+- ps: >-
+    
+    dir
+    
+    dir RobotCode
+    
+    dir RobotCode\SnobotRobotLibs
+
+    # Build Library
+    
+    cd RobotCode\SnobotRobotLibs
+    
+    dir
+    
+    cmd /c gradlew.bat build jacocoTestReport
+    
+    # Build robot code
+    
+    dir ..
+    
+    dir ..\snobot2017
+    
+    cd ..\snobot2017
+    
+    dir
+    
+    cmd /c gradlew.bat build jacocoTestReport
+    
+    # Build SmartDashboard
+    
+    dir ..
+    
+    dir ..\..
+    
+    dir ..\..\SmartDashboardExtensions
+    
+    cd ..\..\SmartDashboardExtensions\2017SmartDashboardExtensions
+    
+    dir
+    
+    cmd /c gradlew.bat build
+    
+after_build:
+- cmd: "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+- cmd: pip install codecov
+- cmd: cd ../..
+- cmd: dir
+- cmd: codecov -f "RobotCode/snobot2017/build/reports/jacoco/test/jacocoTestReport.xml"
+- cmd: codecov -f "RobotCode/SnobotRobotLibs/build/reports/jacoco/test/jacocoTestReport.xml"
+
+artifacts:
+- path: SmartDashboardExtensions/2017SmartDashboardExtensions/build/libs
+  name: SmartDashboardExtensions
+ 

@@ -2,6 +2,8 @@ package com.snobot.sd2017.auton;
 
 import javax.swing.JFrame;
 
+import com.snobot.sd.auton.AutonPanel;
+
 public class AutonStandalone
 {
 
