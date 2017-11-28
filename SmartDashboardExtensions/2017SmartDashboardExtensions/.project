@@ -24,17 +24,17 @@
 		<link>
 			<name>2017Gui</name>
 			<type>2</type>
-			<location>C:/Users/PJ/Documents/GitHub/frc2017/174/snobot-2017/SmartDashboardExtensions/CoordinateViewerGui/src/2017Gui</location>
+			<location>C:/Users/PJ/GitHub/FIRST_2017/snobot-2017/SmartDashboardExtensions/CoordinateViewerGui/src/2017Gui</location>
 		</link>
 		<link>
 			<name>SmartDashboardLibs-src</name>
 			<type>2</type>
-			<location>C:/Users/PJ/Documents/GitHub/frc2017/174/snobot-2017/SmartDashboardExtensions/SmartDashboardLibs/src</location>
+			<location>C:/Users/PJ/GitHub/FIRST_2017/snobot-2017/SmartDashboardExtensions/SmartDashboardLibs/src</location>
 		</link>
 		<link>
 			<name>lib</name>
 			<type>2</type>
-			<location>C:/Users/PJ/Documents/GitHub/frc2017/174/snobot-2017/SmartDashboardExtensions/CoordinateViewerGui/src/lib</location>
+			<location>C:/Users/PJ/GitHub/FIRST_2017/snobot-2017/SmartDashboardExtensions/CoordinateViewerGui/src/lib</location>
 		</link>
 	</linkedResources>
 </projectDescription>

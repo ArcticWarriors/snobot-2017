@@ -6,6 +6,7 @@ public class RecordingMessage
 {
     private JSONObject mJson;
 
+    @SuppressWarnings("unchecked")
     public RecordingMessage(boolean aRecord, String aName)
     {
         mJson = new JSONObject();

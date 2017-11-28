@@ -1,0 +1,59 @@
+!!com.snobot.simulator.config.SimulatorConfig
+mAccelerometers: []
+mAnalogIO: []
+mDefaultI2CWrappers: {}
+mDefaultSpiWrappers: {}
+mDigitalIO:
+- mHandle: 6
+  mName: Digital Source6
+- mHandle: 7
+  mName: Digital Source7
+- mHandle: 8
+  mName: Digital Source8
+- mHandle: 9
+  mName: Digital Source9
+mEncoders:
+- mConnectedSpeedControllerHandle: 0
+  mHandle: 0
+  mName: Drive - Left
+- mConnectedSpeedControllerHandle: 1
+  mHandle: 1
+  mName: Drive - Right
+mGyros: []
+mPwm:
+- mHandle: 0
+  mMotorModelConfig:
+    mGearReduction: 1.0
+    mGearboxEfficiency: 1.0
+    mMotorType: CIM
+    mNumMotors: 2
+  mMotorSimConfig: !!com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig
+    mConversionFactor: 1.0
+    mLoad: 1.0
+  mName: Drive - Left
+- mHandle: 1
+  mMotorModelConfig:
+    mGearReduction: 1.0
+    mGearboxEfficiency: 1.0
+    mMotorType: CIM
+    mNumMotors: 2
+  mMotorSimConfig: !!com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig
+    mConversionFactor: 1.0
+    mLoad: 0.0
+  mName: Drive - Right
+- mHandle: 5
+  mMotorModelConfig: null
+  mMotorSimConfig: !!com.snobot.simulator.motor_sim.SimpleMotorSimulationConfig
+    mMaxSpeed: 12.0
+  mName: Climber
+mRelays:
+- mHandle: 0
+  mName: Actor LED
+- mHandle: 1
+  mName: Target LED
+mSimulatorComponents: []
+mSolenoids:
+- mHandle: 0
+  mName: Gearboss (A)
+- mHandle: 1
+  mName: Gearboss (B)

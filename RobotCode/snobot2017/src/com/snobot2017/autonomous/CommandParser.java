@@ -39,9 +39,11 @@ import com.snobot2017.autonomous.trajectory.TrajectoryPathCommand;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.io.TextFileDeserializer;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
@@ -53,8 +55,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 public class CommandParser extends ACommandParser
 {
     private static final double sEXPECTED_DT = .02;
-    protected Snobot2017 mSnobot;
-    protected SendableChooser<StartingPositions> mPositionChooser;
+
+    private final static NetworkTable sAUTON_TABLE = NetworkTableInstance.getDefault().getTable(SmartDashBoardNames.sAUTON_TABLE_NAME);
+
+    protected final Snobot2017 mSnobot;
+    protected final SendableChooser<StartingPositions> mPositionChooser;
+    protected final NetworkTableEntry mAutonFilenameEntry;
 
     /**
      * Creates a CommandParser object.
@@ -66,10 +72,12 @@ public class CommandParser extends ACommandParser
      */
     public CommandParser(Snobot2017 aSnobot, SendableChooser<StartingPositions> aPositionChooser)
     {
-        super(NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME), SmartDashBoardNames.sROBOT_COMMAND_TEXT,
-                SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON, " ", "#");
+        super(sAUTON_TABLE.getEntry(SmartDashBoardNames.sROBOT_COMMAND_TEXT), sAUTON_TABLE.getEntry(SmartDashBoardNames.sSUCCESFULLY_PARSED_AUTON),
+                " ", "#");
         mSnobot = aSnobot;
         mPositionChooser = aPositionChooser;
+
+        mAutonFilenameEntry = sAUTON_TABLE.getEntry(SmartDashBoardNames.sAUTON_FILENAME);
 
     }
 
@@ -488,14 +496,14 @@ public class CommandParser extends ACommandParser
             aFilePath = "NOT FOUND!";
         }
 
-        mAutonTable.putString(SmartDashBoardNames.sAUTON_FILENAME, aFilePath);
+        mAutonFilenameEntry.setString(aFilePath);
         return super.readFile(aFilePath);
     }
 
     public void saveAutonMode()
     {
-        String new_text = mAutonTable.getString(SmartDashBoardNames.sROBOT_COMMAND_TEXT, "");
-        String filename = mAutonTable.getString(SmartDashBoardNames.sAUTON_FILENAME, "auton_file.txt");
+        String new_text = mAutonSdTableTextName.getString("");
+        String filename = mAutonFilenameEntry.getString("auton_file.txt");
 
         System.out.println("*****************************************");
         System.out.println("Saving auton mode to " + filename);
@@ -511,6 +519,6 @@ public class CommandParser extends ACommandParser
         {
             e.printStackTrace();
         }
-        mAutonTable.putBoolean(SmartDashBoardNames.sSAVE_AUTON, false);
+        // mAutonTable.putBoolean(SmartDashBoardNames.sSAVE_AUTON, false);
     }
 }

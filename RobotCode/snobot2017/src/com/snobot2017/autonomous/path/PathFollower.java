@@ -5,8 +5,9 @@ import com.snobot.lib.motion_profile.IdealPlotSerializer;
 import com.snobot.lib.motion_profile.PathSetpoint;
 import com.snobot2017.SmartDashBoardNames;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.tables.ITable;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * Follows an ideal path generated elsewhere
@@ -16,15 +17,18 @@ import edu.wpi.first.wpilibj.tables.ITable;
  */
 public class PathFollower
 {
+    private static final NetworkTable sPATH_NETWORK_TABLE = NetworkTableInstance.getDefault().getTable(SmartDashBoardNames.sPATH_NAMESPACE);
+
     private ISetpointIterator mSetpointIterator;
     private double mKv;
     private double mKa;
     private double mKp;
 
     private int mPathPoint;
-    private ITable mTable;
+    private NetworkTableEntry mIdealPathPoints;
+    private NetworkTableEntry mCurrentPathPoint;
 
-    private double mLastError;
+    // private double mLastError;
     private double mLastPosition;
 
     /**
@@ -45,12 +49,13 @@ public class PathFollower
         mKa = aKA;
         mKp = aKP;
 
-        mTable = NetworkTable.getTable(SmartDashBoardNames.sPATH_NAMESPACE);
+        mIdealPathPoints = sPATH_NETWORK_TABLE.getEntry(SmartDashBoardNames.sPATH_IDEAL_POINTS);
+        mCurrentPathPoint = sPATH_NETWORK_TABLE.getEntry(SmartDashBoardNames.sPATH_POINT);
     }
 
     public void init()
     {
-        mTable.putString(SmartDashBoardNames.sPATH_IDEAL_POINTS, IdealPlotSerializer.serializePath(mSetpointIterator.getIdealPath()));
+        mIdealPathPoints.setString(IdealPlotSerializer.serializePath(mSetpointIterator.getIdealPath()));
     }
 
     public double calcMotorSpeed(double aCurrPosition)
@@ -86,9 +91,9 @@ public class PathFollower
 
             // Update smart dashbaord
             String point_info = mPathPoint + "," + IdealPlotSerializer.serializePathPoint(realPoint);
-            mTable.putString(SmartDashBoardNames.sPATH_POINT, point_info);
+            mCurrentPathPoint.setString(point_info);
 
-            mLastError = error;
+            // mLastError = error;
             mLastPosition = aCurrPosition;
             ++mPathPoint;
 

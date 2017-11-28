@@ -5,8 +5,8 @@ import com.snobot2017.SmartDashBoardNames;
 import com.snobot2017.SnobotActor.ISnobotActor;
 import com.snobot2017.joystick.IDriverJoystick;
 
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -23,7 +23,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
 
     protected final ILogger mLogger;
 
-    protected final RobotDrive mRobotDrive;
+    protected final DifferentialDrive mRobotDrive;
 
     protected double mLeftMotorSpeed;
     protected double mRightMotorSpeed;
@@ -37,27 +37,18 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     private ISnobotActor mSnobotActor;
 
     public ASnobotDrivetrain(
-            SpeedControllerType aFrontLeftMotor, 
-            SpeedControllerType aRearLeftMotor, 
-            SpeedControllerType aFrontRightMotor,
-            SpeedControllerType aRearRightMotor, 
+            SpeedControllerType aLeftMotor, 
+            SpeedControllerType aRightMotor,
             IDriverJoystick aDriverJoystick, 
             ILogger aLogger)
     {
-        mLeftMotor = aFrontLeftMotor;
-        mRightMotor = aFrontRightMotor;
+        mLeftMotor = aLeftMotor;
+        mRightMotor = aRightMotor;
         
         mDriverJoystick = aDriverJoystick;
         mLogger = aLogger;
 
-        if (aRearLeftMotor != null && aRearRightMotor != null)
-        {
-            mRobotDrive = new RobotDrive(aFrontLeftMotor, aRearLeftMotor, aFrontRightMotor, aRearRightMotor);
-        }
-        else
-        {
-            mRobotDrive = new RobotDrive(aFrontLeftMotor, aFrontRightMotor);
-        }
+        mRobotDrive = new DifferentialDrive(aLeftMotor, aRightMotor);
 
         mRobotDrive.setSafetyEnabled(false);
     }
@@ -117,7 +108,7 @@ public abstract class ASnobotDrivetrain<SpeedControllerType extends SpeedControl
     {
         mLeftMotorSpeed = aLeftSpeed;
         mRightMotorSpeed = aRightSpeed;
-        mRobotDrive.setLeftRightMotorOutputs(mLeftMotorSpeed, mRightMotorSpeed);
+        mRobotDrive.tankDrive(mLeftMotorSpeed, mRightMotorSpeed);
     }
 
     @Override

@@ -13,12 +13,15 @@ import com.snobot2017.positioner.IPositioner;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.tables.ITable;
 
 public class TrajectoryPathCommand extends Command
 {
+    private static final NetworkTable sTRAJECTORY_NETWORK_TABLE = NetworkTableInstance.getDefault().getTable(SmartDashBoardNames.sSPLINE_NAMESPACE);
+
     private IDriveTrain mDrivetrain;
     private IPositioner mPositioner;
     private TrajectoryFollower followerLeft = new TrajectoryFollower("left");
@@ -28,13 +31,11 @@ public class TrajectoryPathCommand extends Command
     private double mStartingRightDistance;
     private double mKTurn;
 
-    private ITable mTable;
+    private NetworkTableEntry mIdealTableEntry;
+    private NetworkTableEntry mCurrentTableEntry;
 
     private double mLastLeftDistance;
     private double mLastRightDistance;
-
-    private String mSDIdealName;
-    private String mSDRealName;
 
     public TrajectoryPathCommand(IDriveTrain aDrivetrain, IPositioner aPositioner, Path aPath)
     {
@@ -42,9 +43,8 @@ public class TrajectoryPathCommand extends Command
         mPositioner = aPositioner;
         mPath = aPath;
 
-        mTable = NetworkTable.getTable(SmartDashBoardNames.sSPLINE_NAMESPACE);
-        mSDIdealName = SmartDashBoardNames.sSPLINE_IDEAL_POINTS;
-        mSDRealName = SmartDashBoardNames.sSPLINE_REAL_POINT;
+        mIdealTableEntry = sTRAJECTORY_NETWORK_TABLE.getEntry(SmartDashBoardNames.sSPLINE_IDEAL_POINTS);
+        mCurrentTableEntry = sTRAJECTORY_NETWORK_TABLE.getEntry(SmartDashBoardNames.sSPLINE_REAL_POINT);
 
         double kP = Properties2017.sDRIVE_PATH_KP.getValue();
         double kD = Properties2017.sDRIVE_PATH_KD.getValue();
@@ -62,7 +62,7 @@ public class TrajectoryPathCommand extends Command
         followerLeft.setTrajectory(aPath.getLeftWheelTrajectory());
         followerRight.setTrajectory(aPath.getRightWheelTrajectory());
 
-        if (mTable.getString(mSDIdealName, "").isEmpty())
+        if (mIdealTableEntry.getString("").isEmpty())
         {
             sendIdealPath();
         }
@@ -110,7 +110,7 @@ public class TrajectoryPathCommand extends Command
 
         String point_info = followerLeft.getCurrentSegment() + "," + IdealSplineSerializer.serializePathPoint(segment);
 
-        mTable.putString(mSDRealName, point_info);
+        mCurrentTableEntry.setString(point_info);
 
         mLastLeftDistance = distanceL;
         mLastRightDistance = distanceR;
@@ -170,7 +170,7 @@ public class TrajectoryPathCommand extends Command
             segments.add(segment);
         }
 
-        mTable.putString(mSDIdealName, IdealSplineSerializer.serializePath(segments));
+        mIdealTableEntry.setString(IdealSplineSerializer.serializePath(segments));
     }
 
 }

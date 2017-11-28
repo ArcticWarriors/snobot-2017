@@ -9,12 +9,13 @@ import com.snobot2017.Snobot2017;
 import com.snobot2017.joystick.IDriverJoystick;
 import com.snobot2017.positioner.IPositioner;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.networktables.TableEntryListener;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class AutonomousFactory
 {
@@ -22,7 +23,7 @@ public class AutonomousFactory
     
     protected SendableChooser<File> mAutonModeChooser;
     protected SendableChooser<StartingPositions> mPositionChooser;
-    protected ITable mAutoModeTable;
+//    protected ITable mAutoModeTable;
 
     protected CommandParser mCommandParser;
     
@@ -64,7 +65,7 @@ public class AutonomousFactory
     {
         mPositionChooser = new SendableChooser<StartingPositions>();
         mCommandParser = new CommandParser(aSnobot, mPositionChooser);
-        mAutoModeTable = NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME);
+//        mAutoModeTable = NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME);
         
         mPositioner = aSnobot.getPositioner();
 
@@ -98,41 +99,41 @@ public class AutonomousFactory
 
     private void addListeners()
     {
-        ITableListener buildAutonListener = new ITableListener()
+        TableEntryListener buildAutonListener = new TableEntryListener()
         {
 
             @Override
-            public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
+            public void valueChanged(NetworkTable table, String key, NetworkTableEntry entry, NetworkTableValue value, int flags)
             {
                 createAutonMode();
             }
         };
 
-        ITableListener setPositionListener = new ITableListener()
+        TableEntryListener setPositionListener = new TableEntryListener()
         {
             @Override
-            public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
+            public void valueChanged(NetworkTable table, String key, NetworkTableEntry entry, NetworkTableValue value, int flags)
             {
                 setPosition();
             }
         };
 
-        ITableListener saveListener = new ITableListener()
+        TableEntryListener saveListener = new TableEntryListener()
         {
 
             @Override
-            public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
+            public void valueChanged(NetworkTable table, String key, NetworkTableEntry entry, NetworkTableValue value, int flags)
             {
-                if (mAutoModeTable.getBoolean(SmartDashBoardNames.sSAVE_AUTON, false))
-                {
-                    mCommandParser.saveAutonMode();
-                }
+//                if (mAutoModeTable.getBoolean(SmartDashBoardNames.sSAVE_AUTON, false))
+//                {
+//                    mCommandParser.saveAutonMode();
+//                }
             }
         };
         
-        mAutoModeTable.addTableListener(SmartDashBoardNames.sSAVE_AUTON, saveListener, true);
-        mAutonModeChooser.getTable().addTableListener(buildAutonListener);
-        mPositionChooser.getTable().addTableListener(setPositionListener);
+//        mAutoModeTable.addTableListener(SmartDashBoardNames.sSAVE_AUTON, saveListener, true);
+//        mAutonModeChooser.getTable().addTableListener(buildAutonListener);
+//        mPositionChooser.getTable().addTableListener(setPositionListener);
     }
 
     private void setPosition()
