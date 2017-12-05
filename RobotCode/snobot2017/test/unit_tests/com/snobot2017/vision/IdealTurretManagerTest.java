@@ -1,4 +1,4 @@
-package com.visionTest.auto_turret;
+package com.snobot2017.vision;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -6,10 +6,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import com.snobot2017.vision.SavedRobotState;
-import com.snobot2017.vision.StateManager;
+import com.snobot.test.utilities.BaseSimulatorTest;
 
-public class IdealTurretManagerTest
+public class IdealTurretManagerTest extends BaseSimulatorTest
 {
     private StateManager mStateManager;
 

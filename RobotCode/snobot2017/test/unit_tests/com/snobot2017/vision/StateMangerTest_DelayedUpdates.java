@@ -1,4 +1,4 @@
-package com.visionTest.auto_turret;
+package com.snobot2017.vision;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -6,7 +6,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-public class StateMangerTest_DelayedUpdates
+import com.snobot.test.utilities.BaseSimulatorTest;
+
+public class StateMangerTest_DelayedUpdates extends BaseSimulatorTest
 {
 
 
