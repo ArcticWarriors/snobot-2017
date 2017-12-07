@@ -1,13 +1,24 @@
-
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
 plugins {
     id "java"
     id "eclipse"
     id "idea"
     id "jacoco"
     id "jaci.openrio.gradle.GradleRIO" version "2018-beta-3a"
+    id "com.snobot.simulator.plugin.SnobotSimPlugin" version "2017.12.06"
 }
 
-def snobotSimVersion = "0.3"
+apply plugin: 'com.snobot.simulator.plugin.SnobotSimPlugin'
+
+def snobotSimVersion = "0.2"
 
 wpi {
     wpilibVersion = '+'
@@ -26,9 +37,6 @@ wpi {
 }
 
 repositories {
-    //maven {
-    //    url "http://raw.githubusercontent.com/pjreiniger/maven_repo/master/"
-    //}
 
     mavenLocal()
     mavenCentral()
@@ -60,23 +68,13 @@ dependencies {
     
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
     compile files('../SnobotRobotLibs/dependencies/RIOdroid.jar')
-
-    // Snobot Sim
-    testCompile    'com.snobot.simulator:snobot_sim_gui:'  + snobotSimVersion + ':all'
-    //testCompile    'com.snobot.simulator:snobot_sim_java:' + snobotSimVersion + ':uber_native-linux'
-    testCompile    'com.snobot.simulator:snobot_sim_java:' + snobotSimVersion + ':uber_native-windows'
     
+    println snobotSimCompile()
+    testCompile snobotSimCompile()
+    //testRuntime snobotSimRuntime()
+
     // Snobot Sim Deps
     native3rdPartyDeps 'net.java.jinput:jinput:2.0.7'
-    testRuntime 'jfree:jcommon:1.0.16'
-    testRuntime 'jfree:jfreechart:1.0.13'
-    testRuntime 'log4j:log4j:1.2.16'
-    testRuntime 'org.yaml:snakeyaml:1.18'
-    testRuntime 'com.miglayout:miglayout-swing:4.2'
-    
-    testRuntime 'edu.wpi.first.ntcore:ntcore-jni:+:all'
-    testRuntime 'edu.wpi.first.cscore:cscore-jni:+:all'
-    testRuntime 'org.opencv:opencv-jni:+:all'
 }
 
 task unzipNativeLibraries(type: Copy) {
@@ -95,16 +93,6 @@ task unzipNativeLibraries(type: Copy) {
 }
 
 build.dependsOn unzipNativeLibraries
-
-eclipse.classpath.file {
-    withXml {
-        provider ->
-        provider.asNode().findAll { it.@path.contains("jinput") && !it.@path.contains("natives") }.each {
-                def container = it
-                container.appendNode('attributes').appendNode('attribute', [name: 'org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY', value:"snobot2017/build/native_libs"])
-        }
-    }
-}
 
 test {
 	ignoreFailures = true
