@@ -8,10 +8,12 @@ import com.snobot.sd.spline_plotter.SplineSegment;
 import com.snobot.sd.util.AutoUpdateWidget;
 import com.snobot2017.SmartDashBoardNames;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.networktables.TableEntryListener;
 import edu.wpi.first.smartdashboard.properties.Property;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
 
 /**
  * Widget used to plot information on driving a cubic spline, pre-planned path
@@ -25,7 +27,8 @@ public class SplinePlannerWidget extends AutoUpdateWidget
     private SplinePlotterPanel mPanel;
     private int mLastIndex;
 
-    private ITable mTable; // The network table used to send trajectory data
+    private NetworkTable mTable; // The network table used to send trajectory
+                                 // data
     private String mIdealSplineName; // The SD name used to convey the ideal spline points
     private String mRealSplineName;  // The SD name of the real points
 
@@ -37,7 +40,7 @@ public class SplinePlannerWidget extends AutoUpdateWidget
         mPanel = new SplinePlotterPanel();
         add(mPanel);
 
-        mTable = NetworkTable.getTable(SmartDashBoardNames.sSPLINE_NAMESPACE);
+        mTable = NetworkTableInstance.getDefault().getTable(SmartDashBoardNames.sSPLINE_NAMESPACE);
 
         mLastIndex = 0;
 
@@ -50,11 +53,11 @@ public class SplinePlannerWidget extends AutoUpdateWidget
     private void addPathListener()
     {
 
-        ITableListener idealSplineListener = new ITableListener()
+        TableEntryListener idealSplineListener = new TableEntryListener()
         {
 
             @Override
-            public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
+            public void valueChanged(NetworkTable arg0, String arg1, NetworkTableEntry arg2, NetworkTableValue arg3, int arg4)
             {
                 mPanel.setPath(IdealSplineSerializer.deserializePath(arg2.toString()));
                 mLastIndex = 0;
@@ -62,15 +65,15 @@ public class SplinePlannerWidget extends AutoUpdateWidget
                 repaint();
             }
         };
-        mTable.addTableListener(mIdealSplineName, idealSplineListener, true);
+        mTable.addEntryListener(mIdealSplineName, idealSplineListener, 0xFF);
 
-        ITableListener realSplineListener = new ITableListener()
+        TableEntryListener realSplineListener = new TableEntryListener()
         {
 
             @Override
-            public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
+            public void valueChanged(NetworkTable arg0, String arg1, NetworkTableEntry arg2, NetworkTableValue arg3, int arg4)
             {
-                String point_info = mTable.getString(mRealSplineName, "");
+                String point_info = mTable.getEntry(mRealSplineName).getString("");
 
                 StringTokenizer tokenizer = new StringTokenizer(point_info, ",");
 
@@ -93,7 +96,7 @@ public class SplinePlannerWidget extends AutoUpdateWidget
                 }
             }
         };
-        mTable.addTableListener(mRealSplineName, realSplineListener, true);
+        mTable.addEntryListener(mRealSplineName, realSplineListener, 0xFF);
     }
 
     @Override

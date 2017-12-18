@@ -2,7 +2,8 @@
 mAccelerometers: []
 mAnalogIO: []
 mDefaultI2CWrappers: {}
-mDefaultSpiWrappers: {}
+mDefaultSpiWrappers:
+  0: ADXRS450
 mDigitalIO:
 - mHandle: 6
   mName: Digital Source6
@@ -19,27 +20,33 @@ mEncoders:
 - mConnectedSpeedControllerHandle: 1
   mHandle: 1
   mName: Drive - Right
-mGyros: []
+mGyros:
+- mHandle: 100
+  mName: SPI ADXRS450
 mPwm:
 - mHandle: 0
   mMotorModelConfig:
-    mGearReduction: 1.0
+    mGearReduction: 11.43
     mGearboxEfficiency: 1.0
+    mHasBrake: false
+    mInverted: true
     mMotorType: CIM
     mNumMotors: 2
   mMotorSimConfig: !!com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig
     mConversionFactor: 1.0
-    mLoad: 1.0
+    mLoad: 0.6
   mName: Drive - Left
 - mHandle: 1
   mMotorModelConfig:
-    mGearReduction: 1.0
+    mGearReduction: 11.43
     mGearboxEfficiency: 1.0
+    mHasBrake: false
+    mInverted: false
     mMotorType: CIM
     mNumMotors: 2
   mMotorSimConfig: !!com.snobot.simulator.motor_sim.StaticLoadMotorSimulationConfig
     mConversionFactor: 1.0
-    mLoad: 0.0
+    mLoad: 0.6
   mName: Drive - Right
 - mHandle: 5
   mMotorModelConfig: null
@@ -51,7 +58,12 @@ mRelays:
   mName: Actor LED
 - mHandle: 1
   mName: Target LED
-mSimulatorComponents: []
+mSimulatorComponents:
+- !!com.snobot.simulator.simulator_components.TankDriveGyroSimulator$TankDriveConfig
+  mGyroHandle: 100
+  mLeftEncoderHandle: 0
+  mRightEncoderHandle: 1
+  mTurnKp: 33.33333
 mSolenoids:
 - mHandle: 0
   mName: Gearboss (A)

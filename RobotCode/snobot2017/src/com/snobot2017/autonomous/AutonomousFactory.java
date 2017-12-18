@@ -2,6 +2,7 @@ package com.snobot2017.autonomous;
 
 import java.io.File;
 
+import com.snobot.lib.autonomous.ObservableSendableChooser;
 import com.snobot.lib.autonomous.SnobotAutonCrawler;
 import com.snobot2017.Properties2017;
 import com.snobot2017.SmartDashBoardNames;
@@ -11,19 +12,19 @@ import com.snobot2017.positioner.IPositioner;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.networktables.TableEntryListener;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutonomousFactory
 {
     private static final double sY_START = 336 - 3 * 12;
     
-    protected SendableChooser<File> mAutonModeChooser;
-    protected SendableChooser<StartingPositions> mPositionChooser;
-//    protected ITable mAutoModeTable;
+    protected ObservableSendableChooser<File> mAutonModeChooser;
+    protected ObservableSendableChooser<StartingPositions> mPositionChooser;
+    protected NetworkTable mAutoModeTable;
 
     protected CommandParser mCommandParser;
     
@@ -63,9 +64,9 @@ public class AutonomousFactory
     
     public AutonomousFactory(Snobot2017 aSnobot, IDriverJoystick aDriverJoystick)
     {
-        mPositionChooser = new SendableChooser<StartingPositions>();
+        mPositionChooser = new ObservableSendableChooser<StartingPositions>();
         mCommandParser = new CommandParser(aSnobot, mPositionChooser);
-//        mAutoModeTable = NetworkTable.getTable(SmartDashBoardNames.sAUTON_TABLE_NAME);
+        mAutoModeTable = NetworkTableInstance.getDefault().getTable(SmartDashBoardNames.sAUTON_TABLE_NAME);
         
         mPositioner = aSnobot.getPositioner();
 
@@ -124,16 +125,17 @@ public class AutonomousFactory
             @Override
             public void valueChanged(NetworkTable table, String key, NetworkTableEntry entry, NetworkTableValue value, int flags)
             {
-//                if (mAutoModeTable.getBoolean(SmartDashBoardNames.sSAVE_AUTON, false))
-//                {
-//                    mCommandParser.saveAutonMode();
-//                }
+                if (mAutoModeTable.getEntry(SmartDashBoardNames.sSAVE_AUTON).getBoolean(false))
+                {
+                    mCommandParser.saveAutonMode();
+                }
             }
         };
         
-//        mAutoModeTable.addTableListener(SmartDashBoardNames.sSAVE_AUTON, saveListener, true);
-//        mAutonModeChooser.getTable().addTableListener(buildAutonListener);
-//        mPositionChooser.getTable().addTableListener(setPositionListener);
+        mAutoModeTable.addEntryListener(SmartDashBoardNames.sSAVE_AUTON, saveListener, 0xFF);
+
+        mPositionChooser.addSelectionChangedListener(setPositionListener);
+        mAutonModeChooser.addSelectionChangedListener(buildAutonListener);
     }
 
     private void setPosition()

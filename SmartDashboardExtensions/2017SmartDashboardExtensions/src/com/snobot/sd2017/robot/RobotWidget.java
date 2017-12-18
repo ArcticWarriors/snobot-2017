@@ -6,9 +6,10 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import com.snobot.sd.util.AutoUpdateWidget;
+import com.snobot.sd.util.SmartDashboardUtil;
+import com.snobot2017.SmartDashBoardNames;
 
 import edu.wpi.first.smartdashboard.properties.Property;
-import edu.wpi.first.smartdashboard.robot.Robot;
 
 public class RobotWidget extends AutoUpdateWidget
 {
@@ -33,12 +34,12 @@ public class RobotWidget extends AutoUpdateWidget
     @Override
     protected void poll() throws Exception
     {
-        boolean spchincterOpen = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sSPCHINCTER_OPEN, false);;
-        boolean isGearBossUp = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sGEAR_BOSS_SOLENOID, false);
-        double spoolSpeed = Robot.getTable().getNumber(com.snobot2017.SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED, 0);
-        boolean inAction = Robot.getTable().getBoolean(com.snobot2017.SmartDashBoardNames.sIN_ACTION, false);
-        String actorStateName = Robot.getTable().getString(com.snobot2017.SmartDashBoardNames.sSNOBOT_ACTION, "Not Found");
-        String actorActionName = Robot.getTable().getString(com.snobot2017.SmartDashBoardNames.sSNOBOT_ACTION_NAME, "");
+        boolean spchincterOpen = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sSPCHINCTER_OPEN).getBoolean(false);;
+        boolean isGearBossUp = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sGEAR_BOSS_SOLENOID).getBoolean(false);
+        double spoolSpeed = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sROBOT_ROPE_MOTOR_SPEED).getDouble(0);
+        boolean inAction = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sIN_ACTION).getBoolean(false);
+        String actorStateName = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sSNOBOT_ACTION).getString("Not Found");
+        String actorActionName = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sSNOBOT_ACTION_NAME).getString("");
 
         if (mDrawer != null)
         {

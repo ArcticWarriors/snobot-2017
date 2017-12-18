@@ -7,7 +7,7 @@ repositories {
     }
     maven {
         name = "WPI"
-        url = "http://first.wpi.edu/FRC/roborio/maven/release"
+        url = "http://first.wpi.edu/FRC/roborio/maven/development"
     }
 }
 
@@ -26,8 +26,16 @@ dependencies {
     compile 'jfree:jfreechart:1.0.13'
     compile 'org.yaml:snakeyaml:1.18'
     
-    compile 'edu.wpi.first.wpilib:SmartDashboard:2.0.3'
+    compile 'edu.wpi.first.wpilib:SmartDashboard:2.0.3-20171011234112-10-g69d9621'
 }
+
+jar {
+   from("../CoordinateViewerGui/src/2017Gui/") {
+      include  "**/*.png"
+   }
+}
+
+apply from: "publish.gradle"
 
 
 task wrapper(type: Wrapper) {

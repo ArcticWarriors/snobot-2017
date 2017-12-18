@@ -3,3 +3,6 @@
 /dist/
 .gradle
 /temp
+.project
+.classpath
+simulator_config/joystick_config.properties

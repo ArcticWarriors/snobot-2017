@@ -6,34 +6,28 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
+    
+    // UNCOMMENT for local plugin
+    //dependencies {
+    //    classpath files('C:/Users/PJ/.m2/repository/com/snobot/simulator/plugin/SnobotSimulatorPlugin/2017.12.16/SnobotSimulatorPlugin-2017.12.16.jar')
+    //}
 }
 plugins {
     id "java"
     id "eclipse"
     id "idea"
     id "jacoco"
-    id "jaci.openrio.gradle.GradleRIO" version "2018-beta-3a"
-    id "com.snobot.simulator.plugin.SnobotSimPlugin" version "2017.12.06"
+    id "jaci.openrio.gradle.GradleRIO" version "2018-beta-5b"
+    
+    // COMMENT for local plugin
+    id "com.snobot.simulator.plugin.SnobotSimulatorPlugin" version "2018.01.01"
 }
 
-apply plugin: 'com.snobot.simulator.plugin.SnobotSimPlugin'
+apply plugin: com.snobot.simulator.plugin.SnobotSimulatorPlugin
+//snobotSimVersions.snobotSimVersion = "0.1"
 
-def snobotSimVersion = "0.2"
-
-wpi {
-    wpilibVersion = '+'
-    ntcoreVersion = '+'
-    opencvVersion = '+'
-    cscoreVersion = '+'
-    wpiutilVersion = '+'
-
-//    ctreVersion = '+'
-//    navxVersion = '+'
-
-    smartDashboardVersion = '+'
-    shuffleboardVersion = '+'
-
-    toolchainVersion = '+'
+snobotSimVersions {
+    snobotSimVersion = "0.6.0"
 }
 
 repositories {
@@ -56,11 +50,6 @@ sourceSets {
     }
 }
 
-configurations {
-    native3rdPartyDeps
-    testRuntime.extendsFrom(native3rdPartyDeps)
-}
-
 dependencies {
 
     compile wpilib()
@@ -69,30 +58,12 @@ dependencies {
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
     compile files('../SnobotRobotLibs/dependencies/RIOdroid.jar')
     
-    println snobotSimCompile()
     testCompile snobotSimCompile()
-    //testRuntime snobotSimRuntime()
-
-    // Snobot Sim Deps
-    native3rdPartyDeps 'net.java.jinput:jinput:2.0.7'
+    testCompile snobotSimJavaCompile()
 }
 
-task unzipNativeLibraries(type: Copy) {
-
-    configurations.native3rdPartyDeps.each {
-        from zipTree(it)
-        into "build/native_libs"
-        include "**/*.dll"
-        include "**/*.lib"
-        include "**/*.pdb"
-        include "**/*.so*"
-        include "**/*.a"
-    }
-    
-    includeEmptyDirs = false
-}
-
-build.dependsOn unzipNativeLibraries
+// SnobotSim
+build.dependsOn snobotSimUnzipNativeTools
 
 test {
 	ignoreFailures = true

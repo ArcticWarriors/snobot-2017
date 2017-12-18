@@ -15,18 +15,22 @@ import com.snobot.coordinate_gui.ui.renderProps.CoordinateLayerRenderProps;
 import com.snobot.coordinate_gui.ui.renderProps.RobotLayerRenderProps;
 import com.snobot.sd.spline_plotter.SplineSegment;
 import com.snobot.sd.util.AutoUpdateWidget;
+import com.snobot.sd.util.SmartDashboardUtil;
 import com.snobot.sd2017.spline_plotter.IdealSplineSerializer;
 import com.snobot2017.SmartDashBoardNames;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.networktables.TableEntryListener;
 import edu.wpi.first.smartdashboard.properties.Property;
-import edu.wpi.first.smartdashboard.robot.Robot;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class CoordinateWidet2017 extends AutoUpdateWidget
 {
     public static final String NAME = "2017 Coordinate Widget";
+
+    private NetworkTable mSplineTable;
     
     private CoordinateGui2017 mCoordinateGui;
 
@@ -55,6 +59,8 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
 
         setSize(100, 100);
 
+        mSplineTable = NetworkTableInstance.getDefault().getTable(SmartDashBoardNames.sSPLINE_NAMESPACE);
+
         initializeTrajectoryListener();
     }
 
@@ -73,13 +79,11 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
 
     private void initializeTrajectoryListener()
     {
-
-        ITable mTable = NetworkTable.getTable(SmartDashBoardNames.sSPLINE_NAMESPACE);
-        ITableListener idealSplineListener = new ITableListener()
+        TableEntryListener idealSplineListener = new TableEntryListener()
         {
 
             @Override
-            public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
+            public void valueChanged(NetworkTable arg0, String arg1, NetworkTableEntry arg2, NetworkTableValue arg3, int arg4)
             {
                 List<Coordinate> coordinates = new ArrayList<>();
                 for (SplineSegment splineSegment : IdealSplineSerializer.deserializePath(arg2.toString()))
@@ -89,19 +93,17 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
                 mCoordinateGui.setPath(coordinates);
             }
         };
-        mTable.addTableListener(SmartDashBoardNames.sSPLINE_IDEAL_POINTS, idealSplineListener, true);
+        mSplineTable.addEntryListener(SmartDashBoardNames.sSPLINE_IDEAL_POINTS, idealSplineListener, 0xFF);
     }
 
     @Override
     protected void poll() throws Exception
     {
-        ITable robotTable = Robot.getTable();
-
-        if (robotTable != null && mCoordinateGui != null)
+        if (mCoordinateGui != null)
         {
-            double x = Robot.getTable().getNumber(SmartDashBoardNames.sX_POSITION, 0) / 12;
-            double y = Robot.getTable().getNumber(SmartDashBoardNames.sY_POSITION, 0) / 12;
-            double angle = Robot.getTable().getNumber(SmartDashBoardNames.sORIENTATION, 0);
+            double x = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sX_POSITION).getDouble(0) / 12;
+            double y = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sY_POSITION).getDouble(0) / 12;
+            double angle = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sORIENTATION).getDouble(0);
 
             Coordinate coord = new Coordinate(x, y, angle);
             mCoordinateGui.addCoordinate(coord);
@@ -116,12 +118,11 @@ public class CoordinateWidet2017 extends AutoUpdateWidget
     {
         List<Ray> rays = new ArrayList<>();
 
-        String targetJson = Robot.getTable().getString(SmartDashBoardNames.sVISION_TARGETS, "");
+        String targetJson = SmartDashboardUtil.getTable().getEntry(SmartDashBoardNames.sVISION_TARGETS).getString("");
         if (targetJson.equals(""))
         {
             return rays;
         }
-
 
         Yaml yaml = new Yaml();
         Map<String, Object> targetMessage = (Map<String, Object>) yaml.load(targetJson);

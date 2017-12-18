@@ -7,16 +7,18 @@ import com.snobot.sd.path_plotter.PathPlotterPanel;
 import com.snobot.sd.util.AutoUpdateWidget;
 import com.snobot2017.SmartDashBoardNames;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.networktables.TableEntryListener;
 import edu.wpi.first.smartdashboard.properties.Property;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class PlotPlannerWidget extends AutoUpdateWidget
 {
     public static final String NAME = "2017 PathPlanning";
     private PathPlotterPanel mPanel;
-    private ITable mTable;
+    private NetworkTable mTable;
     private int mLastIndex;
 
     private String mTableNamespace;
@@ -36,7 +38,7 @@ public class PlotPlannerWidget extends AutoUpdateWidget
         mSDIdealPathName = SmartDashBoardNames.sPATH_IDEAL_POINTS;
         mSDRealPathname = SmartDashBoardNames.sPATH_POINT;
 
-        mTable = NetworkTable.getTable(mTableNamespace);
+        mTable = NetworkTableInstance.getDefault().getTable(mTableNamespace);
 
         addPathListener();
     }
@@ -44,11 +46,11 @@ public class PlotPlannerWidget extends AutoUpdateWidget
     private void addPathListener()
     {
 
-        ITableListener plannedPathListener = new ITableListener()
+        TableEntryListener plannedPathListener = new TableEntryListener()
         {
 
             @Override
-            public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
+            public void valueChanged(NetworkTable arg0, String arg1, NetworkTableEntry arg2, NetworkTableValue arg3, int arg4)
             {
                 mPanel.setPath(IdealPlotSerializer.deserializePath(arg2.toString()));
                 mLastIndex = 0;
@@ -56,15 +58,15 @@ public class PlotPlannerWidget extends AutoUpdateWidget
                 repaint();
             }
         };
-        mTable.addTableListener(mSDIdealPathName, plannedPathListener, true);
+        mTable.addEntryListener(mSDIdealPathName, plannedPathListener, 0xFF);
 
-        ITableListener realPointListener = new ITableListener()
+        TableEntryListener realPointListener = new TableEntryListener()
         {
 
             @Override
-            public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3)
+            public void valueChanged(NetworkTable arg0, String arg1, NetworkTableEntry arg2, NetworkTableValue arg3, int arg4)
             {
-                String point_info = mTable.getString(mSDRealPathname, "");
+                String point_info = mTable.getEntry(mSDRealPathname).getString("");
 
                 StringTokenizer tokenizer = new StringTokenizer(point_info, ",");
 
@@ -89,7 +91,7 @@ public class PlotPlannerWidget extends AutoUpdateWidget
                 repaint();
             }
         };
-        mTable.addTableListener(mSDRealPathname, realPointListener, true);
+        mTable.addEntryListener(mSDRealPathname, realPointListener, 0xFF);
     }
 
     @Override

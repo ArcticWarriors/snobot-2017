@@ -1,0 +1,7 @@
+
+task publish {
+    copy {
+        from 'build/libs/2017SmartDashboardExtensions.jar'
+        into System.getProperty("user.home") + "/SmartDashboard/extensions"
+    }
+}

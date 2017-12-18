@@ -12,9 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.snobot.sd.util.AutoUpdateWidget;
+import com.snobot.sd.util.SmartDashboardUtil;
 
 import edu.wpi.first.smartdashboard.properties.Property;
-import edu.wpi.first.smartdashboard.robot.Robot;
 
 public class MatchNumberWidget extends AutoUpdateWidget
 {
@@ -22,10 +22,6 @@ public class MatchNumberWidget extends AutoUpdateWidget
     private static final String sLOG_DIRECTORY = "C:/Users/Public/Documents/FRC/Log Files/";
 
     private JTextField mMatchDisplay;
-    private Pattern mMatchNumberPattern = Pattern.compile("Qualification");
-    // private Pattern mMatchNumberPattern =
-    // Pattern.compile("Qualification|Elimination|Practice|None");
-    // |Elimination|Practice|None
 
     public MatchNumberWidget()
     {
@@ -93,7 +89,7 @@ public class MatchNumberWidget extends AutoUpdateWidget
             if (mMatchDisplay != null)
             {
                 mMatchDisplay.setText(output);
-                Robot.getTable().putString("MatchNumber", output);
+                SmartDashboardUtil.getTable().getEntry("MatchNumber").setString(output);
             }
         }
     }
