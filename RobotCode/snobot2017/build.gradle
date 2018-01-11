@@ -17,21 +17,42 @@ plugins {
     id "eclipse"
     id "idea"
     id "jacoco"
-    id "jaci.openrio.gradle.GradleRIO" version "2018-beta-5b"
-    
-    // COMMENT for local plugin
-    id "com.snobot.simulator.plugin.SnobotSimulatorPlugin" version "2018.01.01"
+    id "jaci.openrio.gradle.GradleRIO" version "2018.01.07"
+    id "com.snobot.simulator.plugin.SnobotSimulatorPlugin" version "2018.01.10"
 }
 
 apply plugin: com.snobot.simulator.plugin.SnobotSimulatorPlugin
-//snobotSimVersions.snobotSimVersion = "0.1"
-
 snobotSimVersions {
-    snobotSimVersion = "0.6.0"
+    snobotSimVersion = "0.7.1"
 }
 
-repositories {
 
+/////////////////////////////////////////////////////////////////////////////////
+// GradleRIO setup
+/////////////////////////////////////////////////////////////////////////////////
+
+def TEAM = 174
+def ROBOT_CLASS = "com.snobot.Snobot2017"
+
+// Define my targets (RoboRIO) and artifacts (deployable files)
+// This is added by GradleRIO's backing project EmbeddedTools.
+deploy {
+    targets {
+        target("roborio", jaci.openrio.gradle.frc.RoboRIO) {
+            team = TEAM
+        }
+    }
+    artifacts {
+        artifact('frcJava', jaci.openrio.gradle.frc.FRCJavaArtifact) {
+            targets << "roborio"
+        }
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+repositories {
     mavenLocal()
     mavenCentral()
 }
@@ -53,22 +74,21 @@ sourceSets {
 dependencies {
 
     compile wpilib()
-    //compile 'thirdparty.frc.ctre:Toolsuite-Java:4.4.1.11'
+    compile ctre()
     
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    
+    // Third Party without maven
     compile files('../SnobotRobotLibs/dependencies/RIOdroid.jar')
     
+    // Simulator
     testCompile snobotSimCompile()
     testCompile snobotSimJavaCompile()
 }
 
-// SnobotSim
-build.dependsOn snobotSimUnzipNativeTools
-
 test {
 	ignoreFailures = true
 }
-
 
 jacocoTestReport {
     reports {
@@ -87,6 +107,16 @@ jacocoTestReport {
 }
 
 
+// GradleRIO setup.  Must be after dependencies
+jar {
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
+}
+
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.2.1'
 }
+
+// SnobotSim
+build.dependsOn snobotSimUnzipNativeTools

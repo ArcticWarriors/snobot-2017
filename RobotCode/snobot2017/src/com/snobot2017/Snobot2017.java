@@ -3,6 +3,7 @@ package com.snobot2017;
 import java.text.SimpleDateFormat;
 import java.util.logging.LogManager;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.snobot.lib.ASnobot;
 import com.snobot.lib.logging.ILogger;
 import com.snobot.lib.logging.LogFormatter;
@@ -13,6 +14,7 @@ import com.snobot2017.autonomous.AutonomousFactory;
 import com.snobot2017.climbing.Climbing;
 import com.snobot2017.climbing.IClimbing;
 import com.snobot2017.drivetrain.IDriveTrain;
+import com.snobot2017.drivetrain.SnobotCanDriveTrain;
 import com.snobot2017.drivetrain.SnobotDriveTrain;
 import com.snobot2017.gearboss.IGearBoss;
 import com.snobot2017.gearboss.SnobotGearBoss;
@@ -88,13 +90,12 @@ public class Snobot2017 extends ASnobot
         boolean useCan = false;
         if (useCan)
         {
-            throw new UnsupportedOperationException();
-//            CANTalon driveLeftMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
-//            CANTalon driveLeftMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_LEFT_B_PORT);
-//            CANTalon driveRightMotorA = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
-//            CANTalon driveRightMotorB = new CANTalon(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
-//
-//            mDriveTrain = new SnobotCanDriveTrain(driveLeftMotorA, driveLeftMotorB, driveRightMotorA, driveRightMotorB, driverJoystick, logger);
+            WPI_TalonSRX driveLeftMotorA = new WPI_TalonSRX(PortMappings2017.sDRIVE_CAN_LEFT_A_PORT);
+            WPI_TalonSRX driveLeftMotorB = new WPI_TalonSRX(PortMappings2017.sDRIVE_CAN_LEFT_B_PORT);
+            WPI_TalonSRX driveRightMotorA = new WPI_TalonSRX(PortMappings2017.sDRIVE_CAN_RIGHT_A_PORT);
+            WPI_TalonSRX driveRightMotorB = new WPI_TalonSRX(PortMappings2017.sDRIVE_CAN_RIGHT_B_PORT);
+
+            mDriveTrain = new SnobotCanDriveTrain(driveLeftMotorA, driveLeftMotorB, driveRightMotorA, driveRightMotorB, driverJoystick, logger);
         }
         else
         {
