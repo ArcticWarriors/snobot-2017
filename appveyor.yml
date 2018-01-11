@@ -15,43 +15,15 @@ clone_script:
 build_script:
 - ps: >-
     
-    dir
-    
-    dir RobotCode
-    
-    dir RobotCode\SnobotRobotLibs
-
-    # Build Library
-    
-    cd RobotCode\SnobotRobotLibs
-    
-    dir
-    
-    cmd /c gradlew.bat build jacocoTestReport
-    
     # Build robot code
     
-    dir ..
-    
-    dir ..\snobot2017
-    
-    cd ..\snobot2017
-    
-    dir
+    cd RobotCode\snobot2017
     
     cmd /c gradlew.bat build jacocoTestReport
     
     # Build SmartDashboard
     
-    dir ..
-    
-    dir ..\..
-    
-    dir ..\..\SmartDashboardExtensions
-    
     cd ..\..\SmartDashboardExtensions\2017SmartDashboardExtensions
-    
-    dir
     
     cmd /c gradlew.bat build
     
