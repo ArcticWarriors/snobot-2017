@@ -51,12 +51,6 @@ public abstract class AutoUpdateWidget extends StaticWidget
             }
 
         }
-
-        @Override
-        public void destroy()
-        {
-            destroyed = true;
-        }
     }
 
     protected abstract void poll() throws Exception;
