@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="RobotCode/snobot2012/src"/>
+	<classpathentry kind="src" path="RobotCode/snobot2016/src"/>
+	<classpathentry kind="src" path="RobotCode/snobot2017/src"/>
+	<classpathentry kind="src" path="RobotCode/SnobotRobotLibs/src"/>
+	<classpathentry kind="src" path="Simulator/2017MockWpi/snobot_sim"/>
+	<classpathentry kind="src" path="Simulator/2017MockWpi/test"/>
+	<classpathentry kind="src" path="Simulator/2017MockWpi/wpilib_src"/>
+	<classpathentry kind="src" path="Simulator/2017Simulator/src"/>
+	<classpathentry kind="src" path="Simulator/2017Simulator/test"/>
+	<classpathentry kind="src" path="SmartDashboardExtensions/2017SmartDashboardExtensions/src"/>
+	<classpathentry kind="src" path="SmartDashboardExtensions/CoordinateGui/src"/>
+	<classpathentry kind="src" path="Testbed/TeachingProject/src"/>
+	<classpathentry kind="src" path="Testbed/TestRobot/src"/>
+	<classpathentry kind="src" path="Testbed/VisionTestSuite/src"/>
+	<classpathentry kind="src" path="Vision/VisionApp/app/src/main/java"/>
+	<classpathentry kind="src" path="Vision/VisionApp/opencvlibrary310/src/main/java"/>
+	<classpathentry kind="lib" path="Simulator/2017MockWpi/3rdParyLibraries/jfreechart/jcommon-1.0.17.jar"/>
+	<classpathentry kind="lib" path="Simulator/2017MockWpi/3rdParyLibraries/jfreechart/jfreechart-1.0.14.jar"/>
+	<classpathentry kind="lib" path="Simulator/2017MockWpi/3rdParyLibraries/jinput/jinput-platform-2.0.5-natives-linux.jar"/>
+	<classpathentry kind="lib" path="Simulator/2017MockWpi/3rdParyLibraries/jinput/jinput.jar"/>
+	<classpathentry kind="lib" path="Simulator/2017MockWpi/3rdParyLibraries/RIOdroid.jar"/>
+	<classpathentry kind="lib" path="Simulator/2017MockWpi/3rdParyLibraries/simple-json/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="Simulator/2017MockWpi/templibs/opencv/opencv-320.jar"/>
+	<classpathentry kind="lib" path="SmartDashboardExtensions/CoordinateGui/3rdPartyLibs/snakeyaml-1.11.jar"/>
+	<classpathentry kind="lib" path="Testbed/VisionTestSuite/snakeyaml-1.11.jar"/>
+	<classpathentry kind="lib" path="Vision/VisionApp/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="RobotCode/SnobotRobotLibs/bin"/>
+</classpath>
